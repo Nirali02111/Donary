@@ -1,0 +1,487 @@
+<div class="createNew-batch-page header-card-section">
+    <h4>New Batch</h4>
+    <div class="row">
+      <div class="col-md-9">
+          <div class="form-group">
+            <label class="label">BATCH TITLE</label>
+            <input type="text" value="Batch 12/22/2020" class="form-control batch-title-input">
+          </div>
+      </div>
+      <div class="col-md-3 pull-right">
+          <div class="actions-buttons"><button class="btn btn-default" (click)="backToBatchList()">Cancel</button><button class="btn btn-primary">Create</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+   <div class="createNew-batch-page">
+    
+  <div class="row">
+    <div class="left-filter-section col-md-3">
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>PAYMENT TYPE:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>Credit Card</option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>DATE RANGE:</h5>
+          </div>
+          <div class="col-sm-7">
+            <div class="input-group date_picker" id="dynamicsCalender">
+              <input
+                type="text"
+                class="form-control" placeholder="Last 7 days" value="" />
+              <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i  class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                  </span>
+              </div>
+          </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>CURRENCY:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>USD</option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>BATCH #:</h5>
+          </div>
+          <div class="col-sm-7">
+           
+            <select class="slct-box form-control">
+              <option *ngFor="let item of batchNumbersList" [value]="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>GATEWAY:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option></option>
+              </select>
+          </div>
+        </div>
+        <hr/>
+        <div class="seprator-title">
+          <h4>Filter payments</h4>
+          <span>&times; Clear all</span>
+        </div>
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>CAMPAIGN:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>All Campaigns</option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>REASON:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option></option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>COLLECTOR:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>All Collectors</option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>LOCATION:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>All Locations</option>
+              </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-sm-5">
+            <h5>SOURCE:</h5>
+          </div>
+          <div class="col-sm-7">
+              <select class="slct-box" name="" id="">
+                  <option>All Sources</option>
+              </select>
+          </div>
+        </div>
+  
+        <hr/>
+        <div class="row">
+          <div class="col-sm-12">
+            <h5>NOTE:</h5>
+          </div>
+          <div class="col-sm-12">
+              <textarea class="input-textarea"></textarea>
+          </div>
+        </div>
+  
+    </div>
+    <div class="newBatchList-section  col-md-9">
+        <div class="tabs--wrapper">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="custom-tabs-batch-payments-tab"
+              data-toggle="pill" role="tab"
+              aria-controls="custom-tabs-batch-payments-tab"
+              aria-selected="true" href="#custom-tabs-batch-payments">Payment
+              <p class="tagline-selected">43 selected ($5,468.00)</p>
+            </a>
+          </li>
+  
+            <li class="nav-item"><a class="nav-link" id="custom-tabs-batch-minuses-tab"
+              data-toggle="pill" role="tab"
+              aria-controls="custom-tabs-batch-minuses-tab"
+              aria-selected="true" href="#custom-tabs-batch-minuses">Minuses
+              <p class="tagline-selected">16 selected (-$468.00)</p>
+            </a></li>
+          </ul>
+  
+          <div class="right-info">
+            <div class="total-amount">$5,000.00</div>
+            <div class="custom--fields">
+                <select class="cstm-select">
+                    <option>Customize fields</option>
+                </select>
+            </div>
+          </div>
+  
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="custom-tabs-batch-payments" role="tabpanel"
+              aria-labelledby="custom-tabs-batch-payments-tab">
+              <div class="tbl_colm_sticky" id="">
+                <div class="modal_custom px-0 table-responsive overflow-hidden">
+                  <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+                    <div class="px-2" style="overflow-y: auto; height: 100%">
+                      <table class="table table-striped redesign_table batches--table">
+                        <thead>
+                          <tr>
+                            <th class="th-col-checkbox">
+                              <input type="checkbox" class="checkbox-control" />
+                            </th>
+                            <th class="th-col-batchNo">RECEIPT NO.</th>
+                            <th class="th-col-date">DATE & TIME</th>
+                            <th class="th-col-amount">AMOUNT</th>
+                            <th class="th-col-refType">REFERENCE NO.</th>
+                            <th class="th-col-donor">DONOR NAME</th>
+                            <th class="th-col-number">PHONE NUMBER</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+  
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                            <tr>
+                              <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                              <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                              <td class="td-col-date">12/22/2020 12:00AM</td>
+                              <td class="td-col-amount">$18.00</td>
+                              <td class="td-col-refType">Visa-9652-96752A</td>
+                              <td class="td-col-donor">Avi Cziment</td>
+                              <td class="td-col-number">781-478-1457</td>
+                              
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="tab-pane" id="custom-tabs-batch-minuses" role="tabpanel"
+            aria-labelledby="custom-tabs-batch-minuses-tab">
+            <div class="tbl_colm_sticky" id="">
+              <div class="modal_custom px-0 table-responsive">
+                <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+                  <div class="px-2" style="overflow-y: auto; height: 100%">
+                    <table class="table table-striped redesign_table batches--table">
+                      <thead>
+                        <tr>
+                          <th class="th-col-checkbox">
+                            <input type="checkbox" class="checkbox-control" />
+                          </th>
+                          <th class="th-col-batchNo">RECEIPT NO.</th>
+                          <th class="th-col-donor">DONOR NAME</th>
+                          <th class="th-col-number">PHONE NUMBER</th>
+                          <th class="th-col-paymentType">Payment Type</th>
+                          <th class="th-col-status">STATUS</th>
+                          <th class="th-col-amount">AMOUNT</th>
+                          
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container>
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+  
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-col-checkbox"> <input type="checkbox" class="checkbox-control" /></td>
+                            <td class="td-col-batchNo" style="color: #7B5BC4;">09237</td>
+                            <td class="td-col-donor">Avi Cziment</td>
+                            <td class="td-col-number">718-748-7282</td>
+                            <td class="td-col-paymentType">Check</td>
+                            <td class="td-col-status">Bounced</td>
+                            <td class="td-col-amount">
+                              <span class="text-danger">$18.00</span>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+  
+            </div>
+        </div>
+    </div>
+  </div>
+    
+  </div>
+  </div>
+  

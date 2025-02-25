@@ -1,0 +1,91 @@
+<footer class="main-footer">
+    <div class="container">
+        <div class="version--text">
+            <p>{{'VERSION' | translate}} {{version}} </p>
+        </div>
+
+
+        <ng-container *ngIf="showFullFill">
+            <div class="copyright--text" (click)="openFulFillment(fulFillmentTmp)">
+                <p>Fulfillment Policy</p>
+            </div>
+        </ng-container>
+
+
+        <div class="copyright--text">
+            <p>{{'COPYRIGHT' | translate}} &copy; {{currentYear}} <a href="https://donary.com/">Donary.com</a>.
+                {{'ALLRIGHTSRESERVED' | translate}}.</p>
+        </div>
+    </div>
+</footer>
+
+
+
+<ng-template #salesMailTmp>
+    <a href="mailto:sales@donary.com">sales&#64;donary.com</a>
+</ng-template>
+
+<ng-template #fulFillmentTmp let-modal>
+    <div class="modal-header modal__custom_header justify-content-between">
+        <h4 class="modal-title">Fulfillment Policy</h4>
+        <span class="close_trans" (click)="modal.dismiss('Cross click')"><span>&times;</span></span>
+    </div>
+    <div class="modal-body text-editor">
+
+        <h5>RETURNS</h5>
+
+        <p>We have a 30-day return policy, which means you have 30 days after receiving your item to request a return.
+        </p>
+
+        <p>To be eligible for a return, your item must be in the same condition that you received it, and in its
+            original packaging. You'll also need the receipt or proof of purchase.</p>
+
+
+        <p>To start a return, you can contact us at <ng-template [ngTemplateOutlet]="salesMailTmp"></ng-template>.
+            Please note that returns will need to be sent to the following address:</p>
+
+        <address>
+            630 Flushing Ave, 6Th Fl<br>
+            Brooklyn, NY, 11206 <br>
+            United States <br>
+        </address>
+
+        <p>If your return is accepted, we’ll send you a return shipping label, as well as instructions on how and where
+            to send your package. Items sent back to us without first requesting a return will not be accepted. Please
+            note that if your country of residence is not United States, shipping your goods may take longer than
+            expected.</p>
+
+        <p>You can always contact us for any return questions at <ng-template
+                [ngTemplateOutlet]="salesMailTmp"></ng-template></p>
+
+        <h5>DAMAGES AND ISSUES</h5>
+
+        <p>Please inspect your order upon receipt and contact us immediately if the item is defective, damaged, or if
+            you receive the wrong item, so that we may evaluate the issue and make it right.</p>
+
+
+        <h5>EXCHANGES</h5>
+
+        <p>The fastest way to ensure you get what you want is to return the item you have, and once the return is
+            accepted, make a separate purchase for the new item.</p>
+
+        <p>European Union 14 day cooling off period</p>
+
+        <p>Notwithstanding the above, if merchandise is being shipped into the European Union, you have the right to
+            cancel or return your order within 14 days for any reason and without justification. As above, your item
+            must be in the same condition that you received it and in its original packaging. You’ll also need the
+            receipt or proof of purchase.</p>
+
+        <h5>REFUNDS</h5>
+
+        <p>We will notify you once we’ve received and inspected your return to let you know if the refund was approved
+            or not. If approved, you’ll be automatically refunded on your original payment method within 10 business
+            days. Please remember it can take some time for your bank or credit card company to process and post the
+            refund too.</p>
+
+        <p>If more than 15 business days have passed since we’ve approved your return, please contact us at <ng-template
+                [ngTemplateOutlet]="salesMailTmp"></ng-template></p>
+
+    </div>
+
+</ng-template>

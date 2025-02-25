@@ -1,0 +1,330 @@
+<div class="vh-100 w-100 overflow-hidden d-flex flex-column" [formGroup]="formGroup">
+    <div class="modal-header flex-column">
+        <h6>Setup Alert Rules</h6>
+        <small>Can send only up to 100 alerts a day per user.</small>
+
+        <a class="icon icon-close" href="javascript:void(0)" title="Close" (click)="closePopup()"></a>
+    </div>
+    <div class="modal-body flex-fill overflow-auto">
+        <div class="row row-setting g-4">
+            <div class="col-md-6">
+                <div class="input-label d-flex flex-column">
+                    <label for="">Title</label>
+                    <small>Name this alert:</small>
+                </div>
+                <div class="form-group" [ngClass]="{'form-error': Title.invalid && Title.touched}">
+                    <input type="text" class="form-control" formControlName="title" placeholder="title" />
+                    <label for="">Title</label>
+                    <ng-container *ngIf="Title.invalid && Title.touched">
+                        <div class="row text-danger">
+                            <div class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="input-label d-flex flex-column">
+                    <label for="">Trigger</label>
+                    <small>When this happens:</small>
+                </div>
+                <div class="form-group"
+                    [class.form-error]="(Trigger.invalid && Trigger.touched) || (Trigger.touched && showError)"
+                    [ngClass]="{'fill label': Trigger.valid}">
+
+                    <ng-select formControlName="trigger" [searchable]="false" (change)="clearTrigger()">
+                        <ng-option *ngFor="let item of dropdownList" [value]="item.id">{{ item.itemName }}</ng-option>
+                    </ng-select>
+                    <label for="trigger">Trigger</label>
+                    <ng-container *ngIf="Trigger.invalid && Trigger.touched">
+                        <div class="row text-danger">
+                            <div class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="input-label d-flex flex-column">
+                    <label for="">Condition</label>
+                    <small>And it has this condition:</small>
+
+                </div>
+
+
+                <div class="form-group" [ngClass]="{'fill label': campaignIdValue}" *ngIf="isCampaign">
+
+                    <ng-select placeholder="Add Campaign" bindLabel="itemName" bindValue="id" [searchable]="false"
+                        [clearable]="true" formControlName="campaignId" [multiple]="false"
+                        [items]="commonMethodService.localCampaignList">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+                    <label>Campaign</label>
+
+                </div>
+                <div class="form-group" [ngClass]="{'fill label': ReasonIdValue}" *ngIf="isReason">
+                    <ng-select placeholder="Add Reason" bindLabel="itemName" bindValue="id" [searchable]="false"
+                        [clearable]="true" formControlName="reasonId" [multiple]="false"
+                        [items]="commonMethodService.paymentReasonList">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+                    <label>Reason</label>
+
+                </div>
+                <div class="form-group" [ngClass]="{'fill label': CollectorIdValue}" *ngIf="isCollector">
+
+                    <ng-select placeholder="Add Collector" bindLabel="itemName" bindValue="id" [searchable]="false"
+                        [clearable]="true" formControlName="collectorId" [multiple]="false"
+                        [items]="commonMethodService.localCollectorList">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+                    <label>Collector</label>
+
+                </div>
+                <div class="form-group" [ngClass]="{'fill label': SourceIdValue}" *ngIf="isSource">
+
+                    <ng-select placeholder="Add Source" bindLabel="itemName" bindValue="id" [searchable]="false"
+                        [clearable]="true" formControlName="sourceId" [multiple]="false"
+                        [items]="commonMethodService.localDeviceTypeList">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+
+                    <label>Source</label>
+                </div>
+                <div class="form-group" [ngClass]="{'fill label': LocationIdValue}" *ngIf="isLocation">
+
+                    <ng-select placeholder="Add Location" bindLabel="itemName" bindValue="id" [searchable]="false"
+                        [clearable]="true" formControlName="locationId" [multiple]="false"
+                        [items]="commonMethodService.localLocationList">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+
+                    <label>Location</label>
+                </div>
+
+
+                <div class="d-flex flex-column flex-sm-row" *ngIf="isAmountRange">
+                    <div class="form-group w-100 mr-sm-2">
+
+                        <div class="form-control-icon">
+
+
+
+                            <input type="text" class="form-control" formControlName="minAmount" (keypress)="
+                            commonMethodService.numberOnly($event) 
+                          " (blur)="formatCurrencyMinimum($event,formGroup)" placeholder="Add Min. Amount"
+                                (input)="onInputChangeMinimum($event)" (click)="MinAmountInput()" />
+                            <label>Min. Amount</label>
+                        </div>
+
+                    </div>
+                    <div class="pt-sm-1 pr-sm-2 pl-sm-1"></div>
+                    <div class="form-group w-100 ml-sm-1">
+                        <a href="javascript:void(0)" title="close" class="c-remove clear-all"
+                            (click)="clearMaxAmount()">
+                            <svg xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%"
+                                id="Capa_1" style="enable-background:new 0 0 47.971 47.971;" version="1.1"
+                                viewBox="0 0 47.971 47.971" width="100%" x="0px" xmlns="http://www.w3.org/2000/svg"
+                                y="0px">
+                                <g>
+                                    <path
+                                        d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
+                                                                                                            c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242
+                                                                                                            C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879
+                                                                                                            s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </a>
+                        <div class="form-control-icon">
+
+
+                            <input type="text" class="form-control" placeholder="Add Max. Amount" (keypress)="
+                            commonMethodService.numberOnly($event)
+                          " formControlName="maxAmount" (blur)="formatCurrencyMaximum($event)"
+                                (input)="onInputChangeMaximum($event)" />
+                            <label>Max. Amount</label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-paceholder">
+
+                    <ng-select placeholder="+ Add condition" bindValue="id" [searchable]="false" [clearable]="false"
+                        formControlName="selectCondition" [multiple]="false" [items]="dropdownList1"
+                        (change)="selectOptionFromCondition()">
+                        <ng-template ng-multi-label-tmp let-items="items">
+                            <div class="ng-value">
+                                <span class="ng-value-label">+ Add condition</span>
+                            </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.itemName }}
+                        </ng-template>
+                    </ng-select>
+
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="input-label d-flex flex-column pb-2">
+                    <label for="">Action</label>
+                    <small>This should happen:</small>
+                </div>
+
+                <div class=" form-group" [ngClass]="{'fill label': assignee}" [class.form-error]="showValidationMsgError && specificControlsEmpty">
+                    <label>Assign to:</label>
+                    <div ngbDropdown class="d-inline-block w-100">
+                        <a href="javascript:void(0)" title="close" class="c-remove clear-all" (click)="clearAssignee()"
+                            palceholder="Asign To">
+                            <svg xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%"
+                                id="Capa_1" style="enable-background:new 0 0 47.971 47.971;" version="1.1"
+                                viewBox="0 0 47.971 47.971" width="100%" x="0px" xmlns="http://www.w3.org/2000/svg"
+                                y="0px">
+                                <g>
+                                    <path
+                                        d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
+                                                                                                                                    c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242
+                                                                                                                                    C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879
+                                                                                                                                    s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </a>
+                        <button type="button"
+                            class="form-control w-100 d-flex justify-content-between align-items-center"
+                            id="dropdownBasic1" ngbDropdownToggle>
+                            <span>{{assignee}} &nbsp;</span>
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <ul>
+                                <li *ngFor="let item of commonMethodService.localAssigneeList"
+                                    (click)="getAssigneeValue(item)">
+                                    <span>{{item.itemName}}</span> <span>{{item.email}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <input type="text" class="form-control" placeholder="Write a note" formControlName="note" />
+                    <label>Add note:</label>
+                </div>
+                <div class="form-group">
+                    <div class="d-flex flex-column flex-sm-row">
+                        <div class="form-group m-0 w-100"  [class.form-error]=" Email?.errors || (showValidationMsgError && specificControlsEmpty)" >
+
+                            <input type="email" class="form-control form-control-end" placeholder="Type email address"
+                                formControlName="email" />
+                            <label>Add recipient email:</label>
+                            <button class="btn btn-light" *ngIf="Email?.valid"
+                                (click)="saveRecipients(Email.value)" >Save</button>
+                            <div class="row text-danger" *ngIf="Email?.errors">
+                                <div class="val-error">
+                                    {{ "EMAILINVALID" | translate }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-sm-1 pr-sm-2 pl-sm-1"></div>
+                        <div class="form-group m-0 w-100"    [class.form-error]=" PhoneNumber?.invalid || (showValidationMsgError && specificControlsEmpty)" >
+
+                            <div class="dropdown dropdown-country position-relative">
+                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false"><i class='{{flagDisplay}}'></i>{{dialingCodeDisplay}}</a>
+
+                                <div class="dropdown-menu">
+
+
+                                    <div class="form-check" *ngFor="let country of countries">
+                                        <input type="radio" name="selectedCountry" class="form-check-input d-none"
+                                            id="{{country.countryCodeID}}" [value]="country.countryCodeID"
+                                            formControlName="selectedCountry" (change)="onCountryChange(country)">
+
+                                        <label class="form-check-label" for="{{country.countryCodeID}}"><i
+                                                [class]="country.flagClass"></i>{{ country.countryCode }} <span>{{
+                                                country.dialingCode }}</span>
+                                        </label>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+                                <input type="phone" class="form-control form-control-end" placeholder="Type number"
+                                    minlength="10" formControlName="phoneNumber" (keypress)="commonMethodService.numberOnly($event)"/>
+                                <label>Phone number:</label>
+                                <div class="row text-danger" *ngIf="PhoneNumber.invalid ">
+                                    <div class="val-error">
+                                        {{ "PHONEINVALID" | translate }}
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-light" *ngIf="PhoneNumber?.valid"
+                                    (click)="saveRecipients(PhoneNumber.value)">Save</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group m-0">
+                        <div class="val-error" *ngIf="showValidationMsgError && specificControlsEmpty ">
+                            {{errorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+
+                <ul class="list-item d-flex flex-wrap">
+                    <li *ngFor="let item of allEmailAndPhone">{{item}}<a *ngIf="item" href="javascript:void(0)" title=""
+                            (click)="clearEmailOrPhone(item)">&#x2715;</a></li>
+
+                </ul>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer d-flex align-items-center justify-content-between mt-auto">
+        <a class="link-delete d-flex align-items-center" href="javascript:void(0)" title="Delete Rule">
+            <i>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19 3H1C0.734784 3 0.48043 3.10536 0.292893 3.29289C0.105357 3.48043 0 3.73478 0 4C0 4.26522 0.105357 4.51957 0.292893 4.70711C0.48043 4.89464 0.734784 5 1 5H3V17C3 17.7956 3.31607 18.5587 3.87868 19.1213C4.44129 19.6839 5.20435 20 6 20H14C14.394 20.0001 14.7842 19.9226 15.1482 19.7719C15.5122 19.6212 15.843 19.4002 16.1216 19.1216C16.4002 18.843 16.6212 18.5122 16.7719 18.1482C16.9226 17.7842 17.0001 17.394 17 17V5H19C19.2652 5 19.5196 4.89464 19.7071 4.70711C19.8946 4.51957 20 4.26522 20 4C20 3.73478 19.8946 3.48043 19.7071 3.29289C19.5196 3.10536 19.2652 3 19 3ZM15 17C14.9997 17.2651 14.8943 17.5193 14.7068 17.7068C14.5193 17.8943 14.2651 17.9997 14 18H6C5.73486 17.9997 5.48066 17.8943 5.29319 17.7068C5.10571 17.5193 5.00026 17.2651 5 17V5H15V17ZM8 2H12C12.2652 2 12.5196 1.89464 12.7071 1.70711C12.8946 1.51957 13 1.26522 13 1C13 0.734784 12.8946 0.48043 12.7071 0.292893C12.5196 0.105357 12.2652 0 12 0H8C7.73478 0 7.48043 0.105357 7.29289 0.292893C7.10536 0.48043 7 0.734784 7 1C7 1.26522 7.10536 1.51957 7.29289 1.70711C7.48043 1.89464 7.73478 2 8 2Z"
+                        fill="#EF3C3C" opacity="1" />
+                    <path
+                        d="M9 14V9C9 8.73478 8.89464 8.48043 8.70711 8.29289C8.51957 8.10536 8.26522 8 8 8C7.73478 8 7.48043 8.10536 7.29289 8.29289C7.10536 8.48043 7 8.73478 7 9V14C7 14.2652 7.10536 14.5196 7.29289 14.7071C7.48043 14.8946 7.73478 15 8 15C8.26522 15 8.51957 14.8946 8.70711 14.7071C8.89464 14.5196 9 14.2652 9 14ZM13 14V9C13 8.73478 12.8946 8.48043 12.7071 8.29289C12.5196 8.10536 12.2652 8 12 8C11.7348 8 11.4804 8.10536 11.2929 8.29289C11.1054 8.48043 11 8.73478 11 9V14C11 14.2652 11.1054 14.5196 11.2929 14.7071C11.4804 14.8946 11.7348 15 12 15C12.2652 15 12.5196 14.8946 12.7071 14.7071C12.8946 14.5196 13 14.2652 13 14Z"
+                        fill="#EF3C3C" opacity="1" />
+                </svg>
+            </i>
+            <span class="p-1"></span>
+            <span (click)="deleteRule()">Delete rule</span>
+        </a>
+        @if(this.commonMethodService.isfeatureSetting){
+            <button [disabled]="(formGroup.invalid && !enableSaveRule)  " class="btn btn-primary py-2 px-sm-5 py-2 w-auto"
+                (click)="saveAlert()">Save rule</button>
+        }@else {
+            <button class="btn btn-primary btn-core w-auto" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="commonMethodService.onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+        }
+    </div>
+</div>

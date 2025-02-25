@@ -1,0 +1,469 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" ngbAutofocus  tabindex="-1">
+    <!-- Content Header (Page header) -->
+ <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="filters__options">
+                        <div class="search_opts  searchdonor_opts">
+                            <div class="colm searcg_txt">
+                                <input type="text" name="advanceSearch" id="searchCollector" class="form-control float-right" placeholder="{{'SEARCHCOLLECTORS' | translate}}"  (keyup)="search($event.target.value)">
+                            </div>
+                            <div class="colm">
+                                <div class="filter_field " >
+                                    <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+                                        <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                                        <span class="filter_text">{{'FILTER' | translate}}</span>
+                                    </button>
+                                </div>
+                            </div>
+                                <ng-template [ngIf]="isTotalPanelVisible">
+                                    <div class="subby_dropdown">
+                                        <span>{{'SUMBY' | translate}}:</span>
+                                        <div class="custo_selct">
+                                            <angular2-multiselect id="ddlCardType"
+                                                [settings]="commonMethodService.setDropDownSettings('',1,false,true,false)"
+                                                [data]="cardFilter"
+                                                (onSelect)="cardTypeChange(cardType)"
+                                                [(ngModel)]="cardType"
+                                            >
+                                                <c-item>
+                                                    <ng-template let-item="item">
+                                                        <label>{{item.itemName}}</label>
+                                                        <span class="count_span">({{item.counts}})</span>
+                                                    </ng-template>
+                                                </c-item>
+                                            </angular2-multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="sort_sumcard">
+                                        <span class="sorting_icon"></span>
+                                        <div class="custo_selct sort_drpdown">
+                                            <angular2-multiselect id="ddlCardType"
+                                            [settings]="commonMethodService.setDropDownSettings('',1,false,true,true)"
+                                            [data]="sortFilter"
+                                            (onSelect)="changeSortType(sortType)"
+                                            [(ngModel)]="sortType">
+                                        </angular2-multiselect>
+                                        </div>
+                                    </div>
+
+                                    <ng-template #popContent 
+                                    ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                    </ng-template>
+                                      <div class="input-group date_picker" (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"  popoverClass="calender-modal" [ngbPopover]="popContent"  [popoverTitle]="popTitle" [autoClose]="false" placement="bottom left right" id="collectoDynamicsCalender">
+                                        <input type="text" class="form-control" value=""
+                                          [placeholder]="EngHebCalPlaceholder" />
+                                        <div class="input-group-append">
+                                          <span class="input-group-text">
+                                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <!-- calendar code ended -->
+                                </ng-template>
+                        </div>
+                        <div class="right_colms">
+                            <ng-template [ngIf]="isTotalPanelVisible">
+                                <div class="loct_showall">
+                                    <label class="switch">
+                                        <input type="checkbox" checked (change)="OnCheckboxChange($event)" >
+                                        <span class="slider round"></span>
+                                      </label>
+                                      <span class="show_all">{{'SHOWONLYACTIVE' | translate}} {{'COLLECTORS' | translate}}</span>
+                            </div>
+                        </ng-template>
+                    <div class="total_btn colm" *ngIf="showTotalPanelPermission">
+                        <button class="btn btn-primary" (click)="TogglePanel(isTotalPanelVisible)">{{panelTitle |translate}}</button>
+                    </div>
+                            <div class="colm tbl_field">
+                                <div class="dropdown">
+                                        <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-tag"> <span> {{'FIELDS' |translate}}</span></i>
+                                        </button>
+                                        <!-- <ul  class="dropdown-menu multi-level field_dropdown" role="menu" aria-labelledby="dropdownMenu" cdkDropList (cdkDropListDropped)="drop($event)" >
+
+                                            <ng-container  *ngFor="let objcolField of colFields; let i=index" >
+
+                                                <li class="dropdown" style="list-style:none;"  (click)="$event.stopPropagation();" cdkDrag *ngIf="objcolField.isTotalPanel">
+                                                    <div class="fieldlst_chkbox" style="padding-left: 50px;" >
+                                                        <input type="checkbox"  class="fields_chkbx" class="" [(ngModel)]="objcolField.isVisible"
+                                                        (change)="setGridColVisibility($event,objcolField.colName,objcolField.isVisible)" [id]="objcolField.colId">
+                                                        <label  class="fields_lbl" [for]="objcolField.colId">{{objcolField.colName}}</label>
+                                                    </div>
+                                                </li>
+                                            </ng-container>
+
+
+                                        </ul> -->
+
+
+                                        <ng-container *ngIf="!isTabulator">
+                                            <div cdkDropList [cdkDropListData]="colFields" class="field_dropdown dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                                <div cdkDropListGroup  *ngFor="let group of colFields" cdkDrag [cdkDragData]="group">
+                                                    <ng-template [ngIf]="group.isTotalPanel">
+                                                        <h3 [ngClass]="group.class">{{group.title| translate}}</h3>
+                                                        <ul cdkDropList  class="field_ul" id={{group.id}} [cdkDropListData]="group.items"  (cdkDropListDropped)="dropGroupItem($event)" role="menu" aria-labelledby="dropdownMenu">
+                                                            <li class="example-box" *ngFor="let item of group.items" (click)="$event.stopPropagation();" cdkDrag [cdkDragData]="item" class="dropdown" style="list-style:none;">
+                                                                <div class="fieldlst_chkbox" style="padding-left: 50px;" >
+                                                                    <input type="checkbox"  class="fields_chkbx" class="" [(ngModel)]="item.isVisible"
+                                                                    (change)="setGridColVisibility($event,item.colName,item.isVisible)" [id]="item.colId">
+                                                                    <label  class="fields_lbl" [for]="item.colId">{{item.colName |translate}}</label>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="isTabulator">
+
+                                            <div class="field_dropdown dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                                <div>
+    
+                                                    <ul cdkDropList  
+                                                        class="field_ul" 
+                                                        [cdkDropListData]="columnNames"  
+                                                        (cdkDropListDropped)="dropNew($event)" 
+                                                        role="menu" 
+                                                        aria-labelledby="dropdownMenu"
+                                                    >
+                                                        <li 
+                                                            cdkDrag 
+                                                            class="dropdown example-box"  
+                                                            (click)="$event.stopPropagation();" 
+                                                            [cdkDragDisabled]="objcolField.frozen"
+                                                            style="list-style:none;"
+                                                            *ngFor="let objcolField of columnNames"
+                                                        >
+                                                            <div class="fieldlst_chkbox" style="padding-left: 50px;" *ngIf="objcolField.formatter !== 'rowSelection' && !objcolField.isTotalPanel">
+                                                                <input 
+                                                                    type="checkbox"  
+                                                                    class="fields_chkbx" 
+                                                                    [(ngModel)]="objcolField.visible"
+                                                                    (change)="setGridColVisibilityNew(objcolField)" 
+                                                                    [id]="objcolField.field + '_collector_lst'"
+                                                                >
+                                                                <label  class="fields_lbl" [for]="objcolField.field + '_collector_lst'">
+                                                                    {{ objcolField.title | translate}} 
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+    
+                                                <div *ngIf="isTotalPanelVisible">                                                
+                                                    <h3  class="total_pnl_lbl" >{{ 'TOTALPANEL' | translate}}</h3>
+                                                    <ul cdkDropList  
+                                                        class="field_ul" 
+                                                        [cdkDropListData]="columnNames"  
+                                                        (cdkDropListDropped)="dropNew($event)" 
+                                                        role="menu" 
+                                                        aria-labelledby="dropdownMenu"
+                                                    >
+                                                        <li 
+                                                            *ngFor="let objcolField of columnNames"
+                                                            class="dropdown example-box"  
+                                                            style="list-style:none;"
+                                                            (click)="$event.stopPropagation();" 
+                                                            cdkDrag 
+                                                            [cdkDragDisabled]="objcolField.frozen"
+                                                        >
+                                                            <div class="fieldlst_chkbox" style="padding-left: 50px;" *ngIf="objcolField.isTotalPanel">
+                                                                <input 
+                                                                    type="checkbox"  
+                                                                    class="fields_chkbx" 
+                                                                    [(ngModel)]="objcolField.visible"
+                                                                    (change)="setGridColVisibilityNew(objcolField)" 
+                                                                    [id]="objcolField.field + '_collector_tpl'"
+                                                                >
+                                                                <label  class="fields_lbl" [for]="objcolField.field + '_collector_tpl'">
+                                                                    {{ objcolField.title | translate}} 
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        
+                                        </ng-container>
+
+                                        
+
+                                    </div>
+                            </div>
+                            <div class="colm extra_opts">
+                                <div class="dropdown dropleft">
+                                    <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <span>...</span>
+                                    </button>
+                                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                        <li class="dropdown" *ngIf="isDevEnv">
+                                            <a class="dropdown-item"><i class="fas fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                                        </li>
+                                        <!-- <hr class="seprator" /> -->
+                                        <li class="dropdown"><a class="dropdown-item" [ngClass]="{'opacity-50':gridFilterData==null || gridFilterData.length == 0}"  (click)="gridFilterData != null && gridFilterData.length > 0 && downloadExcel()"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                                        <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
+                                        <li class="dropdown">
+                                          <a class="dropdown-item" (click)="SaveLayout()"
+                                            ><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate }}</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+            </div>
+                    </div>
+
+                <ng-template [ngIf]="isTotalPanelVisible">
+                    <div class="row">
+                        <div class="col-12">
+                           <!-- chip cards with slider -->
+                            <ngx-slick class="carousel sumcard-wrapper" #slickModal="slick-modal" [config]="slideConfig" >
+                                <ng-container *ngFor="let item of paymentTypeChipData; let i = index">
+                                    <ng-container *ngIf="i % 6 == 0">
+                                        <div ngxSlickItem  class="slide">
+                                            <div class="row parent_cardchip">
+                                                <div *ngIf="i + 0 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 0]}"></ng-template>
+                                                </div>
+                                                <div *ngIf="i + 1 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp"  [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 1]}"></ng-template>
+                                                </div>
+                                                <div *ngIf="i + 2 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp"  [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 2]}"></ng-template>
+                                                </div>
+                                                <div *ngIf="i + 3 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp"  [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 3]}"></ng-template>
+                                                </div>
+                                                <div *ngIf="i + 4 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp"  [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 4]}"></ng-template>
+                                                </div>
+                                                <div *ngIf="i + 5 < paymentTypeChipData.length">
+                                                    <ng-template  [ngTemplateOutlet]="chipCardTemp"  [ngTemplateOutletContext]="{item: paymentTypeChipData[i + 5]}"></ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>
+                                </ng-container>
+                            </ngx-slick>
+                        </div>
+                    </div>
+
+                </ng-template>
+                <div class="row action_list">
+
+
+                    <ng-container *ngIf="!isTabulator">
+                        <span class="action_lbl"  *ngIf="isSelected">{{'ACTIONS'|translate}}:</span>
+                        <div class="custom_action" *ngIf="isSelected">
+                            <span class="icn_labels"  data-toggle="tooltip"  appHoverTooltip labelText="{{'GENERATEREPORT' | translate}}" (click)="onBulkCollectorReport()"></span>
+                        </div>
+                    
+                    </ng-container>
+                    <ng-container *ngIf="isTabulator">
+
+                        <ng-container *ngIf="selectedRows.length !== 0">
+                            <span class="action_lbl">{{'ACTIONS'|translate}}:</span>
+                            <div class="custom_action">
+                                <span class="icn_labels"  data-toggle="tooltip"  appHoverTooltip labelText="{{'GENERATEREPORT' | translate}}" (click)="onBulkCollectorReport()"></span>
+                            </div>
+                        </ng-container>
+
+                        
+                    
+                    </ng-container>
+
+                    
+                </div>
+                <div class="tbl_colm_sticky" [class.open_panel]="isTotalPanelVisible" id="collector_div">
+                    <div class="modal_custom px-0 table-responsive transaction__table">
+                     <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                         <div class="px-2" id="collectorsList" style="overflow-y: auto; height: 100%;">
+
+
+                            <ng-container *ngIf="!isTabulator">
+
+                                <table class="table-striped  redesign_table table-resizable" [svData]="gridFilterData" #sv="svDataTable"
+                                        [svRowsOnPage]="25" svSortBy="updatedDate" svSortOrder="asc">
+                                        <thead >
+                                            <tr>
+                                                <th class="custom-checkbox-td">
+                                                    <input type="checkbox" appHoverTooltip labelText="{{'SELECT' | translate}}"  name="selectAll" id="select_all"(change)="selectRecord($event,'selectAll',null)" />
+                                                    <label for="select_all" class="custom-checkbox"></label>
+                                                </th>
+                                                 <!-- <th><input type="checkbox" name="selectAll"/></th> -->
+                                                 <ng-container *ngFor="let groupHeader of colFields; let i=index" >
+                                                    <ng-container *ngFor="let objHeader of groupHeader.items; let i=index" >
+                                                     <th resizable  *ngIf="checkVisibility(objHeader.colName)" [ngClass]="getTableTdClassName(objHeader)">
+                                                         <sv-default-sorter  [by]="objHeader.sortName" >{{objHeader.colName|translate}}
+                                                        </sv-default-sorter>
+                                                    </th>
+                                                    </ng-container>
+                                                </ng-container>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="sv.data?.length > 0">
+                                            <tr  *ngFor="let item of sv.data; let i=index" tabindex={{i}} class="table-row table-row-{{i}}">
+                                                <td class="custom-checkbox-td"><input #checkboxes  id="{{item.collectorId}} "type="checkbox" name="singlecheck" (change)="selectRecord($event,'singlecheck',item.collectorId)" [checked]="checkselectRecord(item.collectorId)"/>
+                                                    <label for="{{item.collectorId}}" class="custom-checkbox"></label>
+                                                    <span class="tooltip-custom">{{'SELECT'|translate}}</span></td>
+                                                <!-- <td><input type="checkbox" name="singlecheck"/></td> -->
+                                                <ng-container  *ngFor="let groupHeader of colFields;">
+                                                    <ng-container  *ngFor="let objHeader of groupHeader.items;">
+                                                        <ng-container *ngIf="checkVisibility(objHeader.colName)">
+                                                     <td *ngIf="objHeader.sortName=='accountNum'">{{item.accountNum}}</td>
+                                                        <td *ngIf="objHeader.sortName=='fullName'" (click)="openCollectorCardPopup(item.collectorId)"><span style="color: #6D55A5;cursor: pointer;">{{item.fullName}}</span><br><span class="lng_hebrew hebrew_font">{{item.fullNameJewish}}</span></td>
+                                                        <td *ngIf="objHeader.sortName=='address'" >{{item.address}}<br>{{item.cityStateZip}}</td>
+                                                        <td *ngIf="objHeader.sortName=='group'">{{item.group}}</td>
+                                                        <td *ngIf="objHeader.sortName=='class'"> {{item.class}} </td>
+                                                        <td *ngIf="objHeader.sortName=='phoneLabels'" ><span [innerHTML]="item.phoneLabels2 != 'null: null' ? item.phoneLabels2 : ' '"></span><br><span [innerHTML]="item.emailLabels2 != 'null: null' ? item.emailLabels2 : ' '"></span> </td>
+                                                        <td *ngIf="objHeader.sortName=='status'">{{item.status}}</td>
+                                                        <ng-template [ngIf]="isTotalPanelVisible">
+                                                            <td *ngIf="objHeader.sortName=='payments'" class="total_panel_tbl_td collector-td-cls payment-sticky-cls" >{{ commonMethodService.formatAmount(item.payments) }}</td>
+                                                            <td *ngIf="objHeader.sortName=='paymentsCount'" class="total_panel_tbl_td" >{{ item.paymentsCount}}</td>
+                                                            <td *ngIf="objHeader.sortName=='openPledges'" class="total_panel_tbl_td collector-td-cls pledge-sticky-cls" >{{ commonMethodService.formatAmount(item.openPledges) }}</td>
+                                                            <td *ngIf="objHeader.sortName=='pledgesCount'" class="total_panel_tbl_td" >{{item.pledgesCount }}</td>
+                                                            <td *ngIf="objHeader.sortName=='scheduled'" class="total_panel_tbl_td collector-td-cls pledge-sticky-cls" >{{ commonMethodService.formatAmount(item.scheduled) }}</td>
+                                                            <td *ngIf="objHeader.sortName=='schedulesCount'" class="total_panel_tbl_td" >{{ item.schedulesCount}}</td>
+                                                            <td *ngIf="objHeader.sortName=='raised'" class="total_panel_tbl_td collector-td-cls total-sticky-cls" >{{ commonMethodService.formatAmount(item.raised) }}</td>
+                                                        </ng-template>
+                                                   </ng-container>
+                                               </ng-container>
+                                                </ng-container>
+
+                                                <!-- <td *ngIf="isCollectorAccntNoColVisible">{{item.accountNum}}</td>
+                                                <td *ngIf="isCollectorFullNameColVisible" (click)="openCollectorCardPopup(item.collectorId)" style="color: #6D55A5;cursor: pointer;">{{item.fullName}}<br>{{item.fullNameJewish}}</td>
+                                                <td *ngIf="isCollectorAddressColVisible" >{{item.address}}<br>{{item.cityStateZip}}</td>
+                                                <td *ngIf="isCollectorGroupColVisible">{{item.group}}</td>
+                                                <td *ngIf="isCollectorClassColVisible"> {{item.class}} </td>
+                                                <td *ngIf="isCollectorPhoneLabelColVisible" ><span [innerHTML]="item.phoneLabels2 != 'null: null' ? item.phoneLabels2 : ' '"></span><br><span [innerHTML]="item.emailLabels2 != 'null: null' ? item.emailLabels2 : ' '"></span> </td>
+                                                <td *ngIf="isCollectorStatusColVisible">{{item.status}}</td> -->
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="sv.data?.length == 0">
+                                            <tr>
+                                                <td colspan="13" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            
+                            </ng-container>
+                            <ng-container *ngIf="isTabulator">
+                            
+                                <app-tabulator-table 
+                                        [updatedColumn]="lastUpdatedColumns"
+                                        [columnNames]="columnNames" 
+                                        [tableData]="gridDatafiltered ? gridFilterData : []" 
+                                        [search]="searchVal" 
+                                        [filterQuery]="filterQuery"
+                                        (cellClick)="onCellClick($event)" 
+                                        (rowSelectionChanged)="selectedRows = $event"
+
+
+                                    >
+                                    </app-tabulator-table>
+                            </ng-container>
+
+
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="!isTabulator && svTable">
+                    <div class="new_tblfoot" [class.totalpnl_footer]="isTotalPanelVisible">
+                        <div class="show_entry">  <span class="total_record">{{'SHOWING'|translate}} <span *ngIf="isFiltered"><strong>{{filterRecord}}</strong> {{'OF'|translate}} </span> <strong>{{totalRecord}}</strong> {{'RECORDS'|translate}}</span>
+                            <div  class="custom_pagination">
+                                <sv-bootstrap-paginator [svTable]="svTable" [rowsOnPageSet]="[25, 50, 100]">
+                                </sv-bootstrap-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div *ngIf="isloading || !gridDatafiltered" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+            </div>
+        </div>
+            </section>
+<!-- <div class="total-panel-wrapper" [ngClass]="{'active': isClicked && isOpen}">
+    <button *ngIf="!isClicked && !isOpen" class="totalp-btn total-panel-arrow-btn" (click)="onArrowClick()"></button>
+    <button *ngIf="isClicked && !isOpen" class="totalp-btn total-panel-open-btn" (click)="onTotalBtnClick()">Totals</button>
+    <app-total-panel *ngIf="isClicked && isOpen"
+        (emtOutputClose)="ClosePanel($event)"
+        (emtOutputPageChange)="emtOutputPageChange($event)"
+        [GroupBy]="'collectorId'"
+        [ListRecords]="gridFilterData"
+        [HeaderList]="headerList"
+        [ActivePage]="sv.activePage"
+        [RowsOnPage]="sv.rowsOnPage"
+    ></app-total-panel>
+</div> -->
+    </div>
+
+    <ng-template #chipCardTemp let-item="item">
+        <div class="col-3" *ngIf="item">
+            <div [class]="item.paymentTypeChipCSSClass" [class.active]="selectedItem === item" (click)='selectedItem = item;' (click)="GetPaymentChipType(item)">
+               <div class="info-box-content">
+                  <div class="row">
+                     <div class="col-12 top_value">
+                        <span class="info-box-text" [title]="item.paymentType">{{ item.name }}</span>
+                        <span class="info-box-count">({{item.count}})</span>
+                     </div>
+                     <div class="col-12 bottom_value">
+                        <span class="info-box-number" *ngIf="item.total!=null">{{commonMethodService.formatAmount(item.total)}}</span>
+                     </div>
+                     <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span>  -->
+                  </div>
+               </div>
+               <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
+                <div class="cards filter-boxes-wrap">
+                    <ul>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Payments</p>
+                                        <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Open Pledges</p>
+                                        <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Schedules</p>
+                                        <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+            </div>
+         </div>
+    </ng-template>

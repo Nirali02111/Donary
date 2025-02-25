@@ -1,0 +1,258 @@
+<!-- Payment List Card -->
+<div class="modal_wrap" style="display: block" ngbAutofocus tabindex="-1">
+  <div class="modal-header modal__custom_header">
+    <!-- <h3>Payment List</h3> -->
+    <button class="close" (click)="closePopup()">&times;</button>
+  </div>
+  <div class="modal_content modal__custom_content">
+    <div class="row">
+      <div class="search__filter">
+        <div class="search_txt">
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '250px', height: '42px' }">
+            <input type="text" name="advanceSearch" class="form-control float-right"
+              placeholder="{{'SEARCH'|translate}}" (keyup)="search($event.target.value)" />
+          </app-skeleton-loader-component>
+        </div>
+      </div>
+      <div class="all-time-filter">
+        <div class="search-edits">
+          <div class="searchbar">
+            <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+            </ng-template>
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '250px', height: '42px' }">
+              <div class="input-group dnr-datepicker-container date_picker" (clickOutside)="onClickedOutsidePopover(p1)"
+                container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent"
+                popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+                placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                id="paymentListDynamicsCalender">
+                <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                  </span>
+                </div>
+              </div>
+            </app-skeleton-loader-component>
+
+            <!-- Calendar code ended -->
+          </div>
+        </div>
+      </div>
+      <div class="fields_opts">
+        <div class="input-group col-md-1 tbl_field">
+          <div class="dropdown">
+            <!-- added new -->
+            @if(isloading){
+
+            <app-skeleton-loader-component [isLoading]="isloading"
+              [theme]="{ width: '90px', height: '42px' }"></app-skeleton-loader-component>
+            <span style="margin-left: 10px;">
+              <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '50px', height: '42px' }"></app-skeleton-loader-component>
+            </span>
+            <span style="margin-left: 10px;">
+              <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '107px', height: '42px' }"></app-skeleton-loader-component>
+            </span>
+            <span style="margin-left: 10px;">
+              <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '86px', height: '42px' }"></app-skeleton-loader-component>
+            </span>
+            }@else {
+
+            <div class="dropwon-page_size">
+              <span class="">{{'SHOWENTRIES'|translate}}:</span>
+              <button class="btn btn-secondary dropdown-toggle btn-show-entries" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="ChangeShowEntriesDwn()">
+                <i class="fas fa-tag">
+                  <span>{{ pageSize }}</span></i>
+              </button>
+              <div class="dropwond-page" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" type="button"
+                  (click)="ChangePageSize(5, 'page_id5');ChangeShowEntriesDwn();">
+                  5
+                </button>
+                <button class="dropdown-item" type="button"
+                  (click)="ChangePageSize(10, 'page_id10');ChangeShowEntriesDwn();">
+                  10
+                </button>
+              </div>
+            </div>
+            <!--end new  -->
+            <div class="input-group filter_field">
+              <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default">
+                <span class="filter_count" *ngIf="filtercount != 0">{{
+                  filtercount
+                  }}</span>
+                <span class="filter_text">{{'FILTER'|translate}}</span>
+              </button>
+            </div>
+            <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-tag"> <span>{{'FIELDS'|translate}}</span></i>
+            </button>
+
+            }
+
+            <ul class="dropdown-menu multi-level field_dropdown" role="menu" aria-labelledby="dropdownMenu" cdkDropList
+              (cdkDropListDropped)="dropFields($event)">
+              <ng-container *ngFor="let objcolField of colFields; let i = index">
+                <li class="dropdown" (click)="$event.stopPropagation()" cdkDrag>
+                  <div class="fieldlst_chkbox" style="padding-left: 50px">
+                    <input type="checkbox" class="fields_chkbx" [(ngModel)]="objcolField.visibleCondition" (change)="
+                        setGridColVisibility(
+                          $event,
+                          objcolField.colName,
+                          objcolField.visibleCondition
+                        )
+                      " [id]="'paymentlist' + objcolField.colName" />
+                    <label class="fields_lbl" [for]="'paymentlist' + objcolField.colName">{{ objcolField.colName
+                      |translate}}</label>
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row payment__list_main">
+      <div class="col-12 col-sm-12 col-lg-12">
+
+        @if(isloading){
+        <ng-container *ngFor="let item of skeletonitems">
+          <div class="row" style="margin-left: -7.5px; margin-right: -7.5px;">
+            <span style="width: 100%; padding: 0 7.5px;">
+              <app-skeleton-loader-component
+                [isLoading]="isloading"
+                [theme]="{ width: '100%', height: '25px' }">
+              </app-skeleton-loader-component>
+            </span>
+          </div>
+        </ng-container>
+        }@else {
+        <div class="table-responsive transaction__table">
+          <div class="donor-data-list-wrap">
+            <table class="table table-striped" [svData]="gridFilterData" #sv="svDataTable" svSortBy="paymentDate"
+              svSortOrder="desc">
+              <thead>
+                <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
+                  <ng-container *ngFor="let colField of colFields; let i = index">
+                    <th cdkDrag width="14.28%" *ngIf="checkGridColVisibility(colField.colName)">
+                      <sv-default-sorter [by]="colField.sortName">{{ colField.colName | translate}}
+                      </sv-default-sorter>
+                    </th>
+                  </ng-container>
+                </tr>
+              </thead>
+              <tbody *ngIf="sv.data?.length > 0">
+                <tr *ngFor="
+                        let item of sv.data
+                          | slice: (page - 1) * pageSize:page * pageSize
+                      ">
+                  <ng-container *ngFor="let colField of colFields">
+                    <ng-container *ngIf="checkGridColVisibility(colField.colName)">
+                      <td *ngIf="colField.sortName == 'receiptNum'" (click)="openPaymentCardPopup(item.paymentId)"
+                        style="color: blueviolet; cursor: pointer">
+                        {{ item.receiptNum }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'amount'">
+                        {{ commonService.formatAmount(item.amount) }}
+                      </td>
+
+
+                      <td *ngIf="colField.sortName == 'appliedAmount'">
+                        {{ commonService.formatAmount(item.appliedAmount) }}
+                      </td>
+
+                      <td *ngIf="colField.sortName == 'reasonAmount'">
+                        {{ commonService.formatAmount(item.reasonAmount) }}
+                      </td>
+
+                      <td *ngIf="colField.sortName == 'campaignAmount'">
+                        {{ commonService.formatAmount(item.campaignAmount) }}
+                      </td>
+
+                      <td *ngIf="colField.sortName == 'paymentType'">
+                        {{ item.paymentType }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'paymentDate'">
+                        {{ item.paymentDate | donaryDateFormat: "short" }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'paymentStatus'">
+                        <span class="status paid"><span [ngClass]="item.status_class">{{
+                            item.paymentStatus
+                            }}</span></span>
+                        <span class="arrow">&nbsp;</span>
+                      </td>
+
+                      <!-- dynamic fields -->
+                      <td
+                        *ngIf="colField.sortName=='donorJewish'"
+                        class="reason-col-name"
+                        [ngClass]="checkLenDonorName(item.donorJewish,item.donorName)?'reason-item-long': ''"
+                        style="cursor: pointer" (click)="OpenDonorCard(item.accountId)">
+                        {{ item.donorJewish? item.donorJewish: item.donorName }}
+                      </td>
+
+                      <td *ngIf="colField.sortName == 'reasonId'">
+                        {{ item.reasons ? item.reasons: item.reason }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'campaignId'">
+                        {{ item.campaigns ? item.campaigns : item.campaign }}
+
+                        <!-- {{ item.campaigns ? item.campaigns : item.campaign?item.campaign:null}} -->
+                      <td *ngIf="colField.sortName == 'locationId'" name="location-id">
+                        {{ item.location }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'collectorId'" name="collector-id">
+                        {{ item.collector }}
+                      </td>
+                      <td *ngIf="colField.sortName == 'deviceId'" name="deviceid">
+                        {{ item.device }}
+                      </td>
+                      <!-- new added fields -->
+                    </ng-container>
+                  </ng-container>
+                </tr>
+              </tbody>
+
+              <tbody *ngIf="sv.data.length == 0">
+                <tr>
+                  <td colspan="15" style="text-align: center">{{'NODATAFOUND'|translate}}</td>
+                </tr>
+              </tbody>
+
+
+              <tfoot>
+                <tr>
+                  <td colspan="15" style="
+                          border-left: none !important;
+                          border-right: none !important;
+                        ">
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="row donor-card-pagination">
+            <div class="col-md-8">
+              <span>{{sv.data.length}} {{'RECORDS'|translate}}</span>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="sv.data?.length > 0">
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [ngClass]="[!showArrow ? 'singlepage' : '']"
+                  [collectionSize]="sv.data.length" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                  [directionLinks]="showArrow" [boundaryLinks]="showArrow"></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Payment List Card -->

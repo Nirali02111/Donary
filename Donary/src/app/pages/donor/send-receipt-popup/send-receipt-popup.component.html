@@ -1,0 +1,47 @@
+
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+	<div class="modal_custom_content">
+		<h4>{{'SENDRECEIPTSTO' |translate}} {{getCoubtsOfDonors()}} {{'DONORS' |translate}}</h4>
+		<button class="dismiss" (click)="closePopup()">&times;</button>
+		<div class="selection__value_content">
+			<ul>
+				<li>
+					<div class="checkbox_input_main">
+						<input type="checkbox" [(ngModel)]="isSMSSelected" class="checkbox_input" name="sms"  id="sms">
+						<label>{{getCoubtsOfPhone()}} {{'TEXTMESSAGES' |translate}}</label>
+					</div>
+				</li>
+				<li>
+					<div class="checkbox_input_main">
+						<input type="checkbox" [(ngModel)]="isEmailSelected" class="checkbox_input" name="email"  id="email">
+						<label>{{getCoubtsOfEmail()}} {{'EMAILS' |translate}}</label>
+					</div>
+				</li>
+				<li>
+					<div class="colm">
+						<div class="checkbox_input_main">
+							<input type="checkbox" [(ngModel)]="isMailSelected" class="checkbox_input" name="mail" id="mail">
+							<label>{{getCoubtsOfMail()}} {{'MAIL' |translate}}</label>
+						</div>
+					</div>
+				</li>
+
+				<li>
+					<div class="checkbox_input_main">
+						<input type="checkbox" [(ngModel)]="isPrintSelected" class="checkbox_input" name="print" id="print">
+						<label>{{getCoubtsOfPrints()}} {{'PRINTS' |translate}}</label>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+			
+		</div>	
+	<div class="modal_custom_footer">
+		<button class="btn btn-default" (click)="closePopup()">{{'CANCEL' |translate}}</button>
+		<button class="btn btn-primary" (click)="sendMail()" [disabled]="!isSMSSelected && !isEmailSelected && !isMailSelected && !isPrintSelected">{{'PROCESS' |translate}}</button>
+	</div>
+	<div *ngIf="isloading" class="card-overlay" >
+		<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+	</div>
+</div>

@@ -1,0 +1,153 @@
+<div [formGroup]="parentFormGroup">
+    <div formGroupName="details">
+        <div class="d-flex mb-3 align-items-center justify-content-between">
+            <h6 class="mb-0">Details</h6>
+            <div class="saveDefualtAction" [class.active]="savedDefault">
+                <span>{{ "SAVE_SETTING_AS_DEFAULT" | translate }}
+                    <span (click)="onSaveUISetting()">
+                        <i class="fa" [class.fa-star]="savedDefault" [class.fa-star-o]="!savedDefault"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="detailsCampaignTransaction" class="form-label">{{ "CAMPAIGN" | translate }}:</label>
+                <ng-select #campaignSelect id="detailsCampaignTransaction" formControlName="campaignId"
+                    [searchable]="false" [selectOnTab]="true" [closeOnSelect]="true" [hideSelected]="true"
+                    [items]="commonMethodService.localCampaignList">
+
+                    <ng-template ng-header-tmp>
+                        <input style="width: 100%; line-height: 24px" type="text"
+                            (input)="campaignSelect.filter($event.target.value)" />
+                    </ng-template>
+
+                    <ng-template ng-option-tmp let-item="item">
+                        <label [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                            [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                            {{ item.itemName }}
+                            <span [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                                [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                                {{ item.num }}
+                            </span>
+                        </label>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="detailsReasonTransaction" class="form-label">{{ "REASON" | translate }}:</label>
+                <ng-select #reasonSelect id="detailsReasonTransaction" formControlName="paymentReasonId"
+                    [searchable]="false" [selectOnTab]="true" [closeOnSelect]="true" [hideSelected]="true"
+                    [items]="commonMethodService.localReasonList">
+
+                    <ng-template ng-header-tmp>
+                        <input style="width: 100%; line-height: 24px" type="text"
+                            (input)="reasonSelect.filter($event.target.value)" />
+                    </ng-template>
+
+                    <ng-template ng-option-tmp let-item="item">
+                        <label [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                            [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                            {{ item.itemName }}
+                            <span [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                                [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                                {{ item.num }}
+                            </span>
+                        </label>
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="detailsLocationTransaction" class="form-label">{{ "LOCATION" | translate }}:</label>
+                <ng-select #locationSelect id="detailsLocationTransaction" formControlName="locationId"
+                    [searchable]="false" [selectOnTab]="true" [closeOnSelect]="true" [hideSelected]="true"
+                    [items]="commonMethodService.paymentGlobalLocationList">
+
+                    <ng-template ng-header-tmp>
+                        <ng-template [ngTemplateOutlet]="locationHeader"></ng-template>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                        <label [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                            [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                            {{ item.itemName }}
+                        </label>
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="detailsCollectorTransaction" class="form-label">{{ "COLLECTOR" | translate }}:</label>
+                <ng-select #collectorSelect id="detailsCollectorTransaction" formControlName="collectorId"
+                    [searchable]="false" [selectOnTab]="true" [closeOnSelect]="true" [hideSelected]="true"
+                    [items]="commonMethodService.localCollectorList">
+
+                    <ng-template ng-header-tmp>
+                        <input style="width: 100%; line-height: 24px" type="text"
+                            (input)="collectorSelect.filter($event.target.value)" />
+                    </ng-template>
+
+                    <ng-template ng-option-tmp let-item="item">
+                        <label [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                            [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                            {{ item.itemName }}
+                            <span [class.heb-dropdown-title]="contains_heb(item.itemName)"
+                                [class.simple-dropdown-title]="!contains_heb(item.itemName)">
+                                {{ item.num }}
+                            </span>
+                        </label>
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ 'RECORD' | translate}} {{ "DATE" | translate }}:</label>
+
+                <ng-template #popContent>
+                    <app-common-hebrew-english-calendar [pageName]="'details-of-transaction'" [data]="selectedStartDate"
+                        [isOneDate]="true">
+                    </app-common-hebrew-english-calendar>
+                </ng-template>
+                <!-- Calendar code started -->
+                <div (click)="openHebrewCalendarPopup(p1)" popoverClass="calender-modal" [ngbPopover]="popContent"
+                    container="body" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"
+                    [popoverTitle]="undefined" [autoClose]="false"
+                    placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                    id="recordDateDynamicsCalender">
+                    <input type="text" class="form-control" value="" [placeholder]="PlaceHolderForDate" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #locationHeader>
+    <div class="d-flex">
+        <div>
+            <input type="text" #locationSearch (input)="searchInLocationObservable.next($event.target.value)" />
+        </div>
+        <div>
+            <ng-template [ngTemplateOutlet]="checkBox"></ng-template>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #checkBox>
+    @if (!isGlobal) {
+    <label class="switch global_list_togle" appHoverTooltip [labelText]="'SWTICHLISTTOOLTIP' | translate ">
+        <input type="checkbox" [value]="isGlobal" [checked]="isGlobal" (change)="isGlobal = true" class="global_chck"
+            id="globallist" />
+        <span class="slider round"></span>
+    </label>
+    } @else {
+    <label class="switch global_list_togle" appHoverTooltip [labelText]=" 'CHARACTERTOOLTIP' | translate ">
+        <input type="checkbox" [value]="isGlobal" [checked]="isGlobal" (change)="isGlobal = false"
+            class="global_chck with-checked" id="globallist" />
+        <span class="slider round"></span>
+    </label>
+    }
+</ng-template>

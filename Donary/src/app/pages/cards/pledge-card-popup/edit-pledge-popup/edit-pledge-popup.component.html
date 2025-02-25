@@ -1,0 +1,229 @@
+<div class="edit__payment_main edit_pledge" ngbAutofocus tabindex="-1">
+    <div class="popup_header modal__custom_header">
+        <span (click)="closePopup()" class="material-icons hidden-desktop icon-back">keyboard_arrow_left</span>
+        <h4>{{'EDITPLEDGE'|translate}}</h4>
+        <div class="close_trans" (click)="closePopup()">
+            <span>&times;</span>
+        </div>
+    </div>
+    <div class="edit_pymnt_wrap modal__custom_content">
+
+        <div class="payement_fields">
+            <div class="schedule-sticky-pop">
+                @if(isloading){
+                <ng-container *ngFor="let item of skeletonitems">
+                    <app-edit-skeleton-loader [theme1]="{ width: '110px', height: '35px' }"
+                        [theme2]="{ width: '290px', height: '35px' }"></app-edit-skeleton-loader>
+                </ng-container>
+                }@else {
+                <div class="form-group d-flex">
+                    <label> {{'DONOR'|translate}}: <i *ngIf="isPledgePayments" data-toggle="tooltip" appHoverTooltip
+                            labelText="{{'REMOVEPAYMENTTOOLTIP' | translate}}"
+                            class="fa fa-question-circle"></i></label>
+                    <div class="input_group edtpayment_drp" [ngClass]="{
+                                            'show-search_btn': displaySearchIcon,
+                                            'hide-swich': isPledgePayments
+                                          }">
+                        <input type="text" class="form-control" id="donorText" [(ngModel)]="donor" [disabled]="isBlock" #donorInput
+                            [readonly]="nonEditable" (keyup)="SearchDonor($event)" />
+                        <button *ngIf="!nonEditable && !isBlock" (click)="AddNewDonor(donor)">+ Add donor</button>
+                        <span *ngIf="nonEditable && !isPledgePayments && !isBlock" class="cancel_icon" (click)="RemoveDonor()">
+                            <svg xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%"
+                                id="Capa_1" style="enable-background:new 0 0 47.971 47.971;" version="1.1"
+                                viewBox="0 0 47.971 47.971" width="100%" x="0px" xmlns="http://www.w3.org/2000/svg"
+                                y="0px">
+                                <g>
+                                    <path d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
+                        c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242
+                        C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879
+                        s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span *ngIf="isBlock" class="question-tooltip" data-toggle="tooltip"
+                            t-title="The pledge is applied to an aliya and can only be voided in the aliya popup">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0"
+                                viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"
+                                class="">
+                                <g>
+                                    <path
+                                        d="M256 0C114.509 0 0 114.496 0 256c0 141.489 114.496 256 256 256 141.491 0 256-114.496 256-256C512 114.509 397.504 0 256 0zm-7.575 375.819c-14.49 0-25.61-12.131-25.61-25.948 0-14.153 11.457-25.946 25.61-25.946 14.154 0 25.946 11.794 25.946 25.947 0 13.815-11.457 25.947-25.946 25.947zm38.414-131.083c-18.533 14.49-18.871 24.599-18.871 42.121 0 6.404-3.37 13.817-19.881 13.817-13.817 0-18.533-5.055-18.533-22.577 0-28.98 12.805-42.796 22.577-51.22 11.12-9.436 29.991-19.881 29.991-38.077 0-15.502-13.479-22.915-30.328-22.915-34.371 0-26.957 25.948-45.155 25.948-9.098 0-20.218-6.067-20.218-19.208 0-18.196 20.892-45.155 66.384-45.155 43.132 0 71.775 23.926 71.775 55.601s-28.643 54.589-37.741 61.665z"
+                                        fill="#bebebe" opacity="1" data-original="#000000" class=""></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="search_icon" *ngIf="displaySearchIcon" (click)="SearchGlobalDonor()"><i
+                                class="fa fa-search" aria-hidden="true"></i></span>
+                        <label class="switch global_list_togle" *ngIf="!nonEditable && !isPledgePayments && !isBlock"
+                            data-toggle="tooltip" appHoverTooltip labelText="{{'SWTICHLABELTOOLTIP' | translate}}">
+                            <input type="checkbox" class="global_chck" id="globallist"
+                                (change)="OnGlobalCheckboxChange($event)">
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="donor_infolist" (clickOutside)="onClickedOutside()"
+                            *ngIf="commonMethodService.donorList.length != 0 && showBox">
+                            <div class="donor_row" *ngFor="let item of commonMethodService.donorList"
+                                (click)="SelectDonor(item.id,false,null)">
+                                <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex payment_amount">
+                    <label>{{'AMOUNT'|translate}}:</label>
+                    <div class="input_group">
+                        <span [ngClass]="commonMethodService.currencyClass"></span>
+                        <input type="text" [(ngModel)]="amount" (keypress)="commonMethodService.numberOnly($event)"
+                            class="form-control" name="schedule_donationamt" />
+                    </div>
+                </div>}
+                <div class="edit-tabs-content">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#edit-pay-info" class="active"
+                                data-toggle="tab"><app-skeleton-loader-component [isLoading]="isloading"
+                                    [theme]="{ width: '190px', height: '30px' }">{{'PAYMENTINFO'|translate}}</app-skeleton-loader-component></a>
+                        </li>
+                        <li><a href="#edit-notes" data-toggle="tab"
+                                (click)="OnDivClick()"><app-skeleton-loader-component [isLoading]="isloading"
+                                    [theme]="{ width: '190px', height: '30px' }">{{'NOTES'|translate}}</app-skeleton-loader-component></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content sub_tab">
+                        @if(isloading){
+                        <ng-container *ngFor="let item of skeletonitems2">
+                            <app-edit-skeleton-loader [theme1]="{ width: '110px', height: '35px' }"
+                                [theme2]="{ width: '290px', height: '35px' }"></app-edit-skeleton-loader>
+                        </ng-container>
+                        }@else {
+                        <div class="tab-pane active" id="edit-pay-info">
+                            <div class="form-group d-flex">
+                                <label>{{'LOCATION'|translate}}:</label>
+                                <div class="input_single" (click)="OnDivClick()">
+                                    <angular2-multiselect id="ddlPaymentLocation"
+                                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                        [data]="commonMethodService.localLocationList"
+                                        [(ngModel)]="commonMethodService.selectedPaymentLocations"
+                                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                                    </angular2-multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex">
+                                <label>{{'CAMPAIGN'|translate}}:</label>
+                                <div class="input_single" (click)="OnDivClick()">
+                                    <angular2-multiselect id="ddlCampaign"
+                                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                        [data]="commonMethodService.localCampaignList"
+                                        [(ngModel)]="commonMethodService.selectedFromCampaignList"
+                                        (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                                        <c-item>
+                                            <ng-template let-item="item">
+                                                <label
+                                                    [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                    {{item.itemName}}
+                                                    <span
+                                                        [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-num' : 'simple-dropdown-num' ">{{item.num}}</span></label>
+                                                <span class="heb-dropdown-status">{{item.status}}</span>
+                                            </ng-template>
+                                        </c-item>
+                                    </angular2-multiselect>
+                                    <!-- added end -->
+                                </div>
+                            </div>
+                            <div class="form-group d-flex">
+                                <label>{{'REASON'|translate}}:</label>
+                                <div class="input_single" (click)="OnDivClick()">
+                                    <angular2-multiselect id="ddlPaymentReason"
+                                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                        [data]="commonMethodService.localReasonList"
+                                        [(ngModel)]="commonMethodService.selectedPaymentReasons"
+                                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                                        <c-item>
+                                            <ng-template let-item="item">
+                                                <label
+                                                    [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                    {{item.itemName}}
+                                                    <span
+                                                        [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-num' : 'simple-dropdown-num' ">{{item.num}}</span></label>
+                                            </ng-template>
+                                        </c-item>
+                                    </angular2-multiselect>
+                                </div>
+                            </div>
+
+                            <div class="form-group d-flex">
+                                <label>{{'COLLECTOR'|translate}}:</label>
+                                <div class="input_single" (click)="OnDivClick()">
+                                    <angular2-multiselect id="ddlCollector"
+                                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                        [data]="commonMethodService.localCollectorList"
+                                        [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+                                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                                    </angular2-multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex">
+                                <label>{{'DATE'|translate}}:</label>
+                                <div class="input_group">
+                                    <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                                            [data]="selectedDate"
+                                            [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                    </ng-template>
+                                    <div class="searchbar" (click)="openHebrewCalendarPopup()"
+                                        (clickOutside)="onClickedOutsidePopover(p1)" #p1="ngbPopover"
+                                        [ngbPopover]="popContent" container="body" popoverClass="calender-modal"
+                                        [popoverTitle]="popTitle" [autoClose]="false"
+                                        placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                        id="editPledgeDynamicsCalender">
+                                        <span class="icon cursor-pointer"><img src="/assets/dist/img/calendar-icon.svg"
+                                                width="20" height="20" alt="" /></span>
+                                        <input type="text" class="form-control" value=""
+                                            [placeholder]="EngHebCalPlaceholder" />
+                                    </div>
+                                    <!-- Calendar code ended -->
+                                </div>
+                            </div>
+
+                        </div>}
+
+                        <div class="tab-pane tabs-edit-note" id="edit-notes">
+                            <div class="form-group field-label-top">
+                                <label>{{'INTERNALNOTE'|translate}}:</label>
+                                <div class="input_single">
+                                    <textarea class="notes_input" [(ngModel)]="note"
+                                        placeholder="{{'WRITENOTE' | translate}}"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group field-label-top">
+                                <label>{{'EXTERNALNOTE'|translate}}:</label>
+                                <div class="input_single">
+                                    <textarea class="notes_input" [(ngModel)]="externalNote"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div *ngIf="commonMethodService.loaderSearch" class="card-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+
+    </div>
+    <div class="btn_info modal__custom_footer">
+
+        <div class="left part" >
+            <button type="button" *ngIf="!isBlock" class="btn delete_paymnt" (click)="onVoidClick()">{{'VOIDPLEDGE'|translate}}</button>
+        </div>
+        <div class="right_part">
+            <button type="button" class="btn btn-default"
+                (click)="closePopup()">{{'CANCEL'|translate}}</button>&nbsp;&nbsp;
+            <button class="btn btn-primary saveChanges" (click)="checkPledgePayments()" [disabled]="showDatepicker"
+                *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVECHANGES'|translate}}</button>
+            <button class="btn btn-primary saveChanges btn-core" (click)="onUpgrade()"
+                *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
+        </div>
+    </div>
+</div>

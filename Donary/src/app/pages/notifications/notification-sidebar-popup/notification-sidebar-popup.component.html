@@ -1,0 +1,296 @@
+<div class="diglog_modal notification__sidebar open_panel p-0" ngbAutofocus tabindex="-1">
+    <div class="notification_sidemenu w-100">
+        <div class="status_bar_top">
+            <div class="status-bar-left">
+                <div class="status_label active {{status_labelClass}}">{{statusLabel}}</div>
+                <div class="status_actions">
+                    <div class="mark_complete {{setclsClickedComplete}}"
+                    [ngClass]="statusId=='1' ? 'status-active' : '' " (click)="onMarkCompleted(3)">
+
+                        {{btnTitleMarkComplete}}
+                    </div>
+
+                    <div class="delete_icon {{setclsClickedDelete}}">
+                        <i class="fa fa-trash" aria-hidden="true" (click)="onDeleteStatus(4)"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="status-bar-right" (click)="CloseNotificationCard()">
+                <span><button class="dismiss" >×</button></span>
+            </div>
+        </div>
+
+        <div class="recurring-block" *ngIf="scheduleStatus!='Canceled' && recurringType!=null">
+
+            <div class="recurring-label"><span class="icon"><svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160H336c-17.7 0-32 14.3-32 32s14.3 32 32 32H463.5c0 0 0 0 0 0h.4c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v51.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1V448c0 17.7 14.3 32 32 32s32-14.3 32-32V396.9l17.6 17.5 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352H176c17.7 0 32-14.3 32-32s-14.3-32-32-32H48.4c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg></span>{{'RECURRINGWEEKLY'|translate}}</div>
+            <div class="recurring-input"><span class="recurring-input" style="cursor: pointer;" (click)="SaveEndRecurring()">{{'ENDRECURRING'|translate}}</span></div>
+
+        </div>
+        <div class="title-note-wrap">
+            <div class="title-note-inside">
+                <div class="form-group">
+                    <label class="title">{{'TITLE'|translate}} :</label>
+                    <input type="text" (change)="SaveNoteTitle()" [(ngModel)]="title" name="title" placeholder="Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="title">{{'NOTE'|translate}} :</label>
+                    <textarea (change)="SaveNoteTitle()" [(ngModel)]="note" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="duedate-assigne-wrap"  (focusin)="ChangeDate()" >
+            <div class="date lable__text">
+                <label class="lbl__text">{{'DUEDATE'|translate}} :</label>
+                <!-- <div class="duedate-right">
+                <h5 class="lbl__value" (click)="ChangeDate()" *ngIf="isDateLabel">{{dueDate}}</h5>
+                <input type="text" *ngIf="!isDateLabel" class="form-control"
+                                #calendarsearch
+                                ngxDaterangepickerMd
+                                    [singleDatePicker]="true"
+                                    [(ngModel)]="selectedDateRange"
+                                    autoUpdateInput="false"
+                                    [timePicker]="true"
+                                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                    [opens]="commonMethodService.open"
+                                    [drops]="commonMethodService.drop"
+                                    [showClearButton]="commonMethodService.showClearButton"
+                                    (datesUpdated)="datesUpdated($event)"
+                                    [keepCalendarOpeningWithRange]="true"
+                                />
+                </div> -->
+                <!-- new code started -->
+                <ng-template #popContent 
+                ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                </ng-template>
+                <div class="duedate-right" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" (click)="openCalendarPopup()" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom"  id="notificationDynamicsCalender">
+                    <input type="text" class="form-control" value="" [placeholder]="EngPlaceholder" />
+                </div>
+                <!-- new code ended -->
+            </div>
+            <div class="assignee lable__text" (focusin)="AssigneeClick()" >
+                <label class="lbl__text">{{'ASSIGNEE'|translate}} :</label>
+                <div class="asignee-right">
+                <h5 class="lbl__value" (click)="AssigneeClick()" *ngIf="!changeHtml">{{assignee}} </h5>
+                <div class="input_col"   *ngIf="changeHtml">
+                    <angular2-multiselect  id="ddlAssignee"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="assigneeList"
+                    (onSelect)="SelectAssignee($event)"
+                    [(ngModel)]="assigneeId"
+                    name="ddlassignList">
+                </angular2-multiselect>
+                <div class="toggel-switch-loader" *ngIf="isAssigneeloader">
+                    <div class="loader_img">
+                      <img src="/assets/img/loader.svg" alt="loader" />
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="linked-donar-wrap"> 
+            <div class="linked-donor-row">
+                <h6>ALERT SOURCE:</h6>
+            </div>
+            <div class="pledge__card linked-donor">
+                <div class="alert-block d-flex align-items-start">
+                    <ng-container *ngFor="let item of alertInfo">
+                        <div class="alert-left">
+                            <span class="alert-date">{{item.attachedCreatedDate | donaryDateFormat: "long"}}</span>
+                            <h5 class="alert-subject">{{item.alertSubject}}</h5>
+                            <p class="alert-message">{{item.alertMessage}}</p>
+                        </div>
+                        <button class="btn btn-update h-auto text-capitalize p-1" (click)="openPopup(item.actions)">{{item.actions}}</button>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="linked-donor-row">
+                <h6>{{'LINKEDDONOR'|translate}} :</h6>
+                <span><button class="dismiss"  *ngIf="!isLinkedDonorCard" (click)="RemoveLinkedDonor()">x</button></span>
+                <div class="input_col" (clickOutside)="onClickedOutside()" *ngIf="isLinkedDonorCard">
+                    <input type="text" class="form-control" id="donorText" name="donor" [(ngModel)]="donor"
+                        [readonly]="nonEditable" (keyup)="SearchDonor($event)" />
+                    <span *ngIf="nonEditable" class="cancel_icon" (click)="RemoveDonor()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                    <button class="search_btn hover_tooltip search_icon" *ngIf="isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable"  data-toggle="tooltip" appHoverTooltip labelText="{{'CHARACTER2TOOLTIP' | translate}}" type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="search_btn hover_tooltip search_icon"  data-toggle="tooltip"  type="button"  *ngIf="!isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable" (click)="SearchGlobalDonor()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="toggel-switch-loader" *ngIf="isloader || commonMethodService.isLoaderNewTrans">
+                        <div class="loader_img">
+                          <img src="/assets/img/loader.svg" alt="loader" />
+                        </div>
+                      </div>
+                      <div class="donor_infolist"   *ngIf="commonMethodService.donorList.length > 0 && showBox" >
+                        <div class="donor_row" *ngFor="let item of commonMethodService.donorList"
+                            (click)="SelectDonor(item.id)">
+                            <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="pledge__card linked-donor" *ngIf="!isLinkedDonorCard" (click)="linkDonorPopup(linkDonorId
+        )"> 
+            <div class="linked-donor-inside">
+                <div class="linked-donor-top">
+
+                    <div class="name_col">
+                        <div class="left">
+                            <div class="donor-name-left">
+                                <h3>{{fullName}}</h3>
+                                <h3 class="lng_hebrew">{{fullNameJewish}}</h3>
+
+                            </div>
+                            <div class="donor-name-right">
+                                <ul>
+                                    <li>
+                                        <label>{{father}}</label>
+                                        <span class="lng_hebrew">: בן</span>
+                                    </li>
+                                    <li>
+                                        <label>{{fatherInLaw }}</label>
+                                        <span class="lng_hebrew">: חתן</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="amounts_colms donor-amount">
+                        <div class="t-col">
+                            <span class="lbl__text text-uppercase">{{'PHONE'|translate}} :</span>
+
+                            <span class="lbl__value">{{phone_linkDonar}}</span>
+                        </div>
+                        <div class="t-col">
+                            <span class="lbl__text text-uppercase">{{'ADDRESS'|translate}} :</span>
+                            <span class="lbl__value">{{address_linkDonar}}</span>
+                        </div>
+                        <div class="t-col">
+                        <span class="lbl__text text-uppercase">{{'EMAIL'|translate}} :</span>
+                        <span class="lbl__value">{{email_linkDonar}} </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="linked-donor-bottom">
+                </div>
+            </div>
+        </div>
+
+        <div class="attached-to-wrap" *ngIf="linkDonor">
+        <h6>{{transactionTypeTxt}}:</h6>
+        <div class="select-pledge" [ngClass]="[recordId!=null ? 'attach_to' : '']">
+            <input type="text" class="form-control" name="transactionType" [(ngModel)]="transactionType"  [readonly]="true" (click)="inputFocus($event);openPaymentListCardPopup()" />
+            <span *ngIf="showPaymentBox" class="cancel_icon" (click)="RemoveLinkedTransaction()" >
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+        </div>
+        </div>
+        <div class="pledge__card"  *ngIf="!isAttachedTrans">
+            <span><button class="dismiss" (click)="RemoveLinkedTransaction()">x</button></span>
+            <div class="pledge-card-row">
+                <div class="pledge-card-left">
+                    <div class="p">
+                        <span class="text">{{paymentDate| donaryDateFormat: 'name'}}</span>
+                        <span class="lng_hebrew">{{paymentDateJewish}}</span>
+                    </div>
+                </div>
+                <div class="pledge-card-right">
+                    <div class="name_col">
+
+                        <div class="right">
+                            <p [ngClass]="status_class">{{status}}</p>
+                            <h6 *ngIf="transactionType!='Pledge'"><span class="card__icon" [ngClass]="paymenttype_icn"></span> {{ commonMethodService.formatAmount(amount)}}</h6>
+                            <h6 *ngIf="transactionType=='Pledge'"><span  class="Pledge-text" style="color:#7b5bc4">PLEDGE</span> {{ commonMethodService.formatAmount(amount)}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="amounts_colms">
+                <div class="t-col">
+                    <span class="lbl__text text-uppercase">{{'CAMPAIGN'|translate}}:</span>
+                    <span class="lbl__value">{{campaignName}}</span>
+                </div>
+                <div class="t-col">
+                    <span class="lbl__text text-uppercase">{{'LOCATION'|translate}}:</span>
+                    <span class="lbl__value">{{locationName}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="note_desc">
+            <div class="lbl__text text-uppercase">
+                {{'NOTE'|translate}}:
+            </div>
+            <p>{{note}} </p>
+        </div>
+
+        <div class="inputs__data">
+            <ul class="note-dropdown">
+
+                <li class="field_email">
+                    <div class="custom__checkbox">
+                        <input type="checkbox" id="email-l" (change)="emailCheckbox($event)" class="cstm_checkbox" [(ngModel)]="notifyEmail"/>
+                         <label for="email-l">Email: </label>
+
+                    </div>
+                    <div class="dropdown-notification">
+                    <input type="text" id="assigneeEmailId" class="form-control" [(ngModel)]="assigneeEmail"/>
+
+                    </div>
+                </li>
+                <li class="field_text">
+                    <div class="custom__checkbox">
+                        <input type="checkbox" id="text-l" (change)="smsCheckbox($event)" class="cstm_checkbox"  [(ngModel)]="notifySMS"/>
+                        <label for="text-l">Text:</label>
+                    </div>
+                    <div class="dropdown-notification">
+                    <input type="text" id="assigneePhoneId" class="form-control" [(ngModel)]="assigneePhone"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="other__data">
+            <div class="inline__data task-by-wrap">
+                <div class="taks-label">
+                    <span class="lbl__text">{{'TASKBY'|translate}} :</span>
+
+                    <span class="lbl__value lng_hebrew">{{userCreatedName}}</span>
+                </div>
+                <span class="lbl__value-createdate">{{createdDate | donaryDateFormat: 'name-long'}}</span>
+            </div>
+
+        </div>
+        <div class="comment_sect" *ngFor="let item of notificationComments">
+            <div class="comment-top">
+            <div class="inline__data">
+                <span class="lbl__text">{{'NOTEBY'|translate}} :</span>
+                <span class="lbl__value lng_hebrew">{{item.userCreated}}</span>
+            </div>
+            <div class="comment-date">
+
+                <span class="lbl__value-createdate">{{item.createdDate | donaryDateFormat: 'name-long'}}</span>
+            </div>
+            </div>
+            <div class="comment_line">
+             <span class="lbl__value lng_hebrew" [innerHTML]="item.comment"></span>
+            </div>
+        </div>
+    <div class="ckeditor_sect">
+
+      <ckeditor  *ngIf="isBrowser"  [(ngModel)]="txtCommands" [editor]="Editor" (ready)="onReady($event)" [config]="{ toolbar: [  'Bold', 'Italic', 'Underline',
+         'Link' ,'NumberedList', 'BulletedList'],placeholder: 'Write a note...' }"> </ckeditor>
+        <button class="comment_btn" type="button" (click)="saveComments()">{{'COMMENT'|translate}}</button>
+    </div>
+
+    </div>
+
+
+</div>
+</div>

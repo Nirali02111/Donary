@@ -1,0 +1,227 @@
+<div class="modal__heading form-section pb-0">
+    <button class="close" (click)="closePopup()">&times;</button>
+    <h4 class="headline mt-0">{{title}}</h4>
+</div>
+<div class="modal__custom_content form-section pt-0">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '25px' }">
+                    <label>{{'GATEWAYNICKNAME' | translate}}:</label> </app-skeleton-loader-component>
+                @if(isloading){
+                <br>
+                }
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                    <input class="form-control" type="text" placeholder="" [(ngModel)]="nickName"
+                        [ngStyle]="{'border-color': (isNickNameRequired) ? '#ff0404' : null}"
+                        (input)="isNickNameRequired=false" />
+                </app-skeleton-loader-component>
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '150px', height: '25px' }"> <label>{{'CREDITCARDGATEWAY' | translate}}:</label> </app-skeleton-loader-component>
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '30px' }">  <select class="form-control" [(ngModel)]="gatewayProviderId" (change)="isAPIKeyPin()"
+                [ngStyle]="{'border-color': (isGatewayProviderIdRequired) ? '#ff0404' : null}">
+                <option *ngFor="let item of gateWayList" [value]="item.gatewayId">
+                {{item.gatewayName}}
+                </option>
+                </select></app-skeleton-loader-component>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '150px', height: '25px' }"> <label>{{'APITYPE' | translate}}:</label> </app-skeleton-loader-component>
+                @if(isloading){
+                    <br>
+                }
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '30px' }">   <select class="form-control" [(ngModel)]="gatewayTypeId" style="font-family: 'FontAwesome', 'Avenir', sans-serif" [ngStyle]="{'border-color': (isGatewayTypeIdRequired) ? '#ff0404' : null}"
+                (change)="isGatewayTypeIdRequired=false">
+            <option *ngFor="let item of gateWayTypesList" [value]="item.id" [disabled]="isDisableApiType(item.id) && isAdvancedKeys"
+            [attr.title]=" isDisableApiType(item.id) && isAdvancedKeys ? disableMsg : ''">
+                {{item.itemName}}  {{ isDisableApiType(item.id) && isAdvancedKeys ?'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#xf059;':''}}
+
+                </option>
+                </select></app-skeleton-loader-component>
+            </div>
+        </div> -->
+
+
+        <!-- Single skeleton loader covering both columns -->
+        @if (isloading) {
+        <div class="col-md-12">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '25px' }">
+                <label>{{'PROCESSINGINTEGRATIONKEY' | translate}}:</label> </app-skeleton-loader-component>
+
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100%', height: '30px' }">
+            </app-skeleton-loader-component>
+        </div>
+        }
+
+        @else {
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>{{'CREDITCARDGATEWAY' | translate}}:</label>
+                <select class="form-control" [(ngModel)]="gatewayProviderId" (change)="isAPIKeyPin()"
+                    [ngStyle]="{'border-color': (isGatewayProviderIdRequired) ? '#ff0404' : null}">
+                    <option *ngFor="let item of gateWayList" [value]="item.gatewayId">
+                        {{item.gatewayName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>{{'APITYPE' | translate}}:</label>
+                <select class="form-control" [(ngModel)]="gatewayTypeId"
+                    style="font-family: 'FontAwesome', 'Avenir', sans-serif"
+                    [ngStyle]="{'border-color': (isGatewayTypeIdRequired) ? '#ff0404' : null}"
+                    (change)="isGatewayTypeIdRequired=false">
+                    <option *ngFor="let item of gateWayTypesList" [value]="item.id"
+                        [disabled]="isDisableApiType(item.id) && isAdvancedKeys"
+                        [attr.title]=" isDisableApiType(item.id) && isAdvancedKeys ? disableMsg : ''">
+                        {{item.itemName}} {{ isDisableApiType(item.id) && isAdvancedKeys
+                        ?'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#xf059;':''}}
+                    </option>
+                </select>
+            </div>
+        </div>}
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '25px' }">
+                    <label>{{'PROCESSINGINTEGRATIONKEY' | translate}}:</label> </app-skeleton-loader-component>
+                @if(isloading){
+                <br>
+                }
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                    <input class="form-control" type="text" placeholder="" [(ngModel)]="integrationKey"
+                        [ngStyle]="{'border-color': (isIntegrationKeyRequired) ? '#ff0404' : null}"
+                        (input)="isIntegrationKeyRequired=false" /></app-skeleton-loader-component>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group" *ngIf="apiPinHideShow">
+                <label>{{'APIKEYPIN' | translate}}: <small>(if using {{gateway}} It's required to have a
+                        pin)</small></label>
+                @if(isloading){
+                <br>
+                }
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                    <div [attr.data-hover]="setToolTip" class="data-hover"><input class="form-control" type="text"
+                            placeholder="" [(ngModel)]="pin" (input)="removePinRequired()"
+                            [ngStyle]="isApiPinRequired ?{'border-color': '#ff0404'} : null" /></div>
+                </app-skeleton-loader-component>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '25px' }">
+                    <label>{{'SELECTCURRENCY' | translate}}:</label></app-skeleton-loader-component>
+                @if(isloading){
+                <br>
+                }
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                    <select class="form-control" [(ngModel)]="currencyId"
+                        [ngStyle]="{'border-color': (isCurrencyIdRequired) ? '#ff0404' : null}"
+                        (change)="isCurrencyIdRequired=false" [disabled]="this.gatewayProviderId==13">
+                        <option *ngFor="let item of currenciesList" [value]="item.currencyId">
+                            {{item.currencyName}}
+                        </option>
+                    </select></app-skeleton-loader-component>
+            </div>
+        </div>
+    </div>
+    @if (isDevEnv) {
+    <div class="col-md-12">
+        <div class="form-group colm-number">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '25px' }">
+                <label>SELECT COUNTRY:</label></app-skeleton-loader-component>
+            @if(isloading){
+            <br>
+            }
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                <div class="dropdown dropdown-country">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                            class='{{selectedFlag}}'></i>{{selectedCountryCode}}</a>
+                    <div class="dropdown-menu">
+                        <div class="form-check" *ngFor="let country of countries">
+                            <input type="radio" name="cellcountry" class="form-check-input d-none"
+                                id="Phone_{{country.countryCodeID}}" [value]="'Phone_'+country.countryCodeID"
+                                [(ngModel)]="selectedCountry"
+                                (change)="onCountryChange(country.countryCodeID,country.countryCode)">
+                            <label class="form-check-label" for="Phone_{{country.countryCodeID}}"><i
+                                    [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }}</label>
+                        </div>
+                    </div>
+                </div>
+            </app-skeleton-loader-component>
+        </div>
+    </div>
+    }
+    <div class="selected-reason api-keys-drp" *ngIf="isAdvancedKeys">
+        <div class="form-group">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '30px' }">
+                <label>{{'PROCESSMERCHANT' | translate}}</label></app-skeleton-loader-component>
+            <ul>
+                <li class="d-flex align-items-center" *ngIf="commonMethodService.advancedAPIKey=='True'">
+                    <div class="radio_input">
+                        <input type="radio" id="reason" name="selection" (change)="disableDrpChange($event)"
+                            [checked]="isReasonDwnChecked" />
+                        <label for="reason">{{'REASON' | translate}}:</label>
+                    </div>
+                    <div class="apikeys-reason-drp {{disableReasonCls}}">
+                        <angular2-multiselect id="ddlReason"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.localReasonList" [(ngModel)]="selectedReasons"
+                            (onSelect)="onReasonSelect($event)" (onDeSelectAll)="onDeSelectAll('reasonList')">
+                        </angular2-multiselect>
+                        <span *ngIf="isDublicateReason" class="account-duplicate"
+                            style="color: red;font-style: italic;">{{'DUPLICATE' | translate}} {{'REASON' |
+                            translate}}</span>
+                    </div>
+                </li>
+                <li class="d-flex align-items-center" *ngIf="commonMethodService.advancedAPIKey=='False'">
+                    <div class="radio_input">
+                        <app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '190px', height: '30px' }">
+                            <input type="radio" id="campaign" name="selection" (change)="disableDrpChange($event)"
+                                [checked]="isCampiangDwnChecked" />
+                            <label for="campaign">{{'CAMPAIGN' | translate}}:</label></app-skeleton-loader-component>
+                    </div>
+                    <div class="apikeys-campaign-drp {{disableCampiangCls}}">
+                        <app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '190px', height: '30px' }">
+                            <angular2-multiselect id="ddlCampaign"
+                                [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                [data]="commonMethodService.localCampaignList" [(ngModel)]="selectedCampaigns"
+                                (onSelect)="onCampaignSelect($event)" (onDeSelectAll)="onDeSelectAll('campaignList')">
+                            </angular2-multiselect>
+                            <span *ngIf="isDublicateCampaign" class="account-duplicate"
+                                style="color: red;font-style: italic;"> {{'DUPLICATECAMP' | translate}}</span>
+                        </app-skeleton-loader-component>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="btn_info modal__custom_footer align-items-center">
+    <div class="left_part">
+        <button class="btn btn-removal" *ngIf="!isAddNewApiKey" (click)="delete(gatewayAPIId)"><i
+                class="fas fa-trash"></i> Remove</button>
+    </div>
+    <div class="right_part">
+        <button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+        <button class="btn btn-primary" (click)="onSaveChanges()" [disabled]="isDisableSaveChangesBtn()"
+            *ngIf="this.commonMethodService.isfeatureSetting || !this.commonMethodService.isfeatureSetting && !isAdvancedKeys">{{'SAVECHANGES'
+            | translate}}</button>
+        <button class="btn btn-primary btn-core" (click)="onUpgrade()" [disabled]="isDisableSaveChangesBtn()"
+            *ngIf="!this.commonMethodService.isfeatureSetting && isAdvancedKeys">{{'UPGRADETOSAVE' |
+            translate}}</button>
+    </div>
+
+</div>

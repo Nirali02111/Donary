@@ -1,0 +1,199 @@
+<div class="card" NgbAutoFocus tabindex="-1">
+    <div class="card-body">
+        <!-- Date range and advanced filter options -->
+        <div class="row">
+            <div class="input-group col-md-5">
+                &nbsp;
+            </div>
+            <div class="input-group col-md-3">
+                <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+                    [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                    [ranges]="commonMethodService.isHebrew==true?commonMethodService.hebranges:commonMethodService.ranges"
+                    [locale]="commonMethodService.isHebrew==true?commonMethodService.heblocale:commonMethodService.locale" [linkedCalendars]="commonMethodService.linkedCalendars"
+                    [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                    [showClearButton]="commonMethodService.showClearButton"
+                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                    [placeholder]="commonMethodService.placeholder" (datesUpdated)="datesUpdated($event)" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt ngx-daterangepicker-action" (click)="CalendarFocus()"></i>
+                    </span>
+                </div>
+            </div> 
+            <div class="input-group col-md-3">
+                <input type="text" name="advanceSearch" class="form-control float-right" placeholder="{{'SEARCH'|translate}}"  (keyup)="search($event.target.value)">
+                <div class="input-group-append">
+                    <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default"><i
+                            class="fas fa-search-plus"></i></button>
+                </div>
+            </div>
+            <div class="input-group col-md-1">
+                <div class="row">
+                    <div class="input-group col-md-5" (click)="OpenHelpPage()">
+                        <i class="far fa-question-circle fa-lg" style="margin-top: 11px !important;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="border-bottom: 1px solid #dee2e6;">
+            &nbsp;
+        </div>
+        <div class="row">
+            &nbsp;
+        </div>
+              
+        <div class="row">
+            &nbsp;
+        </div>
+
+        <!-- Filter Fields and More options -->
+        <div class="row">
+            <div class="col-8 mb-2">
+                <span class="total_record">Showing <span *ngIf="isFiltered"><strong>{{filterRecord}}</strong> {{'OF'|translate}} </span> <strong>{{totalRecord}}</strong> {{'PRINT'|translate}}</span>
+            </div>
+            <div class="col-4 mb-2">
+                <div class="row">
+                    <div class="col-6">
+                        &nbsp;
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-tag"> <span> {{'FIELDS'|translate}}</span></i>
+                            </button>
+                            <ul class="dropdown-menu multi-level field_dropdown" role="menu" aria-labelledby="dropdownMenu" >
+                               <li class="dropdown" (click)="$event.stopPropagation();"  *ngFor="let objcolField of colFields; let i=index">
+                                    <div class="custom-control custom-switch" style="padding-left: 50px;" >
+                                        <input type="checkbox"   class="custom-control-input" [(ngModel)]="objcolField.isVisible"
+                                        (change)="setGridColVisibility($event,objcolField.colName,objcolField.isVisible)" [id]="'campaign'+objcolField.colName">
+                                        <label class="custom-control-label" [for]="'campaign'+objcolField.colName">{{objcolField.colName}}</label>
+                                    </div>
+                                </li>                                               
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="dropdown dropleft">
+                            <button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <span>...</span>
+                            </button>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="dropdown"><a class="dropdown-item">{{'IMPORT'|translate}}</a>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropleft">{{'EXPORT'|translate}}/{{'PRINT'|translate}}</a>
+                                    <ul class="dropdown-menu dropleft" style="min-width: 80px !important;">
+                                        <li><a class="dropdown-item" (click)="downloadExcel()"><i class="fa fa-file-excel"></i>  {{'EXCEL'|translate}}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-12 col-sm-12 col-lg-12">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <div class="table-responsive transaction__table">
+                            <table class="table table-striped" [svData]="gridFilterData" #sv="svDataTable"
+                            [svRowsOnPage]="25" svSortBy="transNum" svSortOrder="asc">
+                                <thead>
+                                    <tr>     
+                                        <th *ngIf="isCampaignFullNameColVisible">
+                                            <sv-default-sorter by="fullName">{{'FULLNAME'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th *ngIf="isCampaignFullNameJewishColVisible">
+                                            <sv-default-sorter by="fullNameJewish">{{'FULLNAMEJEWISH'|translate}} 
+                                            </sv-default-sorter>
+                                        </th>                                                                          
+                                        <th *ngIf="isCampaignPaymentTypeColVisible">
+                                            <sv-default-sorter by="paymentType">{{'PAYMENTTYPE'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th *ngIf="isCampaignNameColVisible">
+                                            <sv-default-sorter by="campaignName">{{'CAMPAIGN'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th *ngIf="isCampaignTransactionNoColVisible">
+                                            <sv-default-sorter by="transNum">{{'TRANSACTIONNO'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th *ngIf="isCampaignPledgedAmountColVisible">
+                                            <sv-default-sorter by="pledgedAmount">{{'PLEDGEDAMOUNT'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                    <th *ngIf="isCampaignScheduledAmountColVisible">
+                                            <sv-default-sorter by="scheduledAmount">{{'SCHEDULEDAMOUNT'|translate}}
+                                            </sv-default-sorter>
+                                        </th>                                        
+                                        <th *ngIf="isCampaignPaidAmountColVisible">
+                                            <sv-default-sorter by="paidAmount">{{'PAIDAMOUNT'|translate}}
+                                            </sv-default-sorter>
+                                        </th>
+                                      
+                                        <th *ngIf="isCampaignBalanceColVisible">
+                                            <sv-default-sorter by="balance">{{'BALANCE'|translate}}
+                                            </sv-default-sorter>
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="sv.data?.length > 0">
+                                    <tr *ngFor="let item of sv.data; let i=index">
+                                        <td *ngIf="isCampaignFullNameColVisible" (click)="openDonorCardPopup(item.accountId)" class="blueviolet">
+                                            {{ (item.fullName != null && item.fullName.length > 18) ? (item.fullName | slice:0:18)+'..': (item.fullName) }}
+                                        </td>                                       
+                                        <td *ngIf="isCampaignFullNameJewishColVisible" class="lng_hebrew hebrew_font" (click)="openDonorCardPopup(item.accountId)">
+                                             {{ (item.fullNameJewish != null && item.fullNameJewish.length > 18) ? (item.fullNameJewish | slice:0:18)+'..': (item.fullNameJewish) }}
+                                        </td>       
+                                            <td *ngIf="isCampaignPaymentTypeColVisible">{{ item.paymentType }}</td>
+                                            <td *ngIf="isCampaignNameColVisible">{{ item.campaignName }} </td>
+                                            <td *ngIf="isCampaignTransactionNoColVisible">{{ item.transNum }} </td>                                 
+                                        <td  *ngIf="isCampaignPledgedAmountColVisible">
+                                            {{ commonMethodService.formatAmount(item.pledgedAmount) }}
+                                        </td>
+                                        <td  *ngIf="isCampaignScheduledAmountColVisible">
+                                            {{ commonMethodService.formatAmount(item.scheduledAmount) }}
+                                        </td>
+                                        <td  *ngIf="isCampaignPaidAmountColVisible">
+                                            {{ commonMethodService.formatAmount(item.paidAmount) }}
+                                        </td>
+                                        <td  *ngIf="isCampaignBalanceColVisible">
+                                            {{ commonMethodService.formatAmount(item.balance) }}
+                                        </td>                                                                               
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="sv.data?.length == 0">
+                                    <tr>
+                                        <td colspan="15" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="15" style="border-left: none !important;border-right: none !important;">
+                                            <sv-bootstrap-paginator  [rowsOnPageSet]="[25, 50, 100]">
+                                            </sv-bootstrap-paginator>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isloading" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>

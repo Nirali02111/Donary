@@ -1,0 +1,10 @@
+<div class="d-flex align-items-center" *ngIf="isLoader">
+  <app-skeleton-loader-component [isLoading]="isLoader" [theme]="{ width: '45px', height: '45px' }">
+  </app-skeleton-loader-component>
+  <span class="flex-fill d-flex flex-column" style="margin-left:10px">
+    <app-skeleton-loader-component [isLoading]="isLoader" [theme]="{ width: '120px', height: '20px' }">
+    </app-skeleton-loader-component>
+    <app-skeleton-loader-component [isLoading]="isLoader" [theme]="{ width: '170px', height: '20px' }">
+    </app-skeleton-loader-component>
+  </span>
+</div>

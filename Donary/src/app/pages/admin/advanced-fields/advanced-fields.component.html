@@ -1,0 +1,104 @@
+<div class="px-3 px-xl-4">
+
+    <div class="advance-setting-block setting-block d-flex align-items-md-start flex-column flex-md-row">
+        <ul class="setting-menu list-unstyled m-0">
+            <li [class.active]="activeSection === 'section1'" class="active" (click)="onSectionChange('section1')">
+                <a>Custom fields</a>
+            </li>
+
+            <li [class.active]="activeSection === 'section2'" (click)="onSectionChange('section2')">
+                <a>Tags</a>
+            </li>
+
+
+        </ul>
+        <div class="setting-content advance-setting-content w-100 mt-5 mt-md-0">
+            <div class="automatic-call-block section1" id="section1">
+                <div class="advance-setting-title d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="headline">Custom fields</h4>
+                        <p class="sub-headline">Customize your fields.</p>
+                    </div>
+                    <button class="btn btn-secondary" (click)="addAdvanceField('text')">+ Add Field</button>
+                </div>
+                <ul>
+                    <li *ngFor="let item of advancedFieldValues;let i = index">
+                        <span class="flex-fill">{{item.advancedField.fieldName}}</span>
+
+                        <a data-toggle="tooltip" t-title="Edit" href="javascript:void(0)" (click)="editField(item)"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="17.139" height="17.137"
+                                viewBox="0 0 17.139 17.137">
+                                <g id="Icon_akar-pencil" data-name="Icon akar-pencil" transform="translate(0.6 0.76)"
+                                    opacity="0.55">
+                                    <path id="Path_17808" data-name="Path 17808"
+                                        d="M5.675,16.062,16.46,5.276a2.256,2.256,0,0,1,3.191,3.19L8.864,19.252a1.763,1.763,0,0,1-.9.482L4.5,20.426l.693-3.464A1.763,1.763,0,0,1,5.675,16.062Z"
+                                        transform="translate(-4.5 -4.649)" fill="none" stroke="#434246"
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" />
+                                    <path id="Path_17809" data-name="Path 17809" d="M21.75,9.75l2.468,2.468"
+                                        transform="translate(-11.409 -6.782)" fill="none" stroke="#434246"
+                                        stroke-width="1.2" />
+                                </g>
+                            </svg>
+                        </a>
+                        <a data-toggle="tooltip" t-title="Delete" href="javascript:void(0)"
+                            (click)="deleteField(item,i)"><svg _ngcontent-ng-c2529483137="" width="20" height="20"
+                                viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path _ngcontent-ng-c2529483137=""
+                                    d="M19 3H1C0.734784 3 0.48043 3.10536 0.292893 3.29289C0.105357 3.48043 0 3.73478 0 4C0 4.26522 0.105357 4.51957 0.292893 4.70711C0.48043 4.89464 0.734784 5 1 5H3V17C3 17.7956 3.31607 18.5587 3.87868 19.1213C4.44129 19.6839 5.20435 20 6 20H14C14.394 20.0001 14.7842 19.9226 15.1482 19.7719C15.5122 19.6212 15.843 19.4002 16.1216 19.1216C16.4002 18.843 16.6212 18.5122 16.7719 18.1482C16.9226 17.7842 17.0001 17.394 17 17V5H19C19.2652 5 19.5196 4.89464 19.7071 4.70711C19.8946 4.51957 20 4.26522 20 4C20 3.73478 19.8946 3.48043 19.7071 3.29289C19.5196 3.10536 19.2652 3 19 3ZM15 17C14.9997 17.2651 14.8943 17.5193 14.7068 17.7068C14.5193 17.8943 14.2651 17.9997 14 18H6C5.73486 17.9997 5.48066 17.8943 5.29319 17.7068C5.10571 17.5193 5.00026 17.2651 5 17V5H15V17ZM8 2H12C12.2652 2 12.5196 1.89464 12.7071 1.70711C12.8946 1.51957 13 1.26522 13 1C13 0.734784 12.8946 0.48043 12.7071 0.292893C12.5196 0.105357 12.2652 0 12 0H8C7.73478 0 7.48043 0.105357 7.29289 0.292893C7.10536 0.48043 7 0.734784 7 1C7 1.26522 7.10536 1.51957 7.29289 1.70711C7.48043 1.89464 7.73478 2 8 2Z"
+                                    fill="#434246" opacity="0.55"></path>
+                                <path _ngcontent-ng-c2529483137=""
+                                    d="M9 14V9C9 8.73478 8.89464 8.48043 8.70711 8.29289C8.51957 8.10536 8.26522 8 8 8C7.73478 8 7.48043 8.10536 7.29289 8.29289C7.10536 8.48043 7 8.73478 7 9V14C7 14.2652 7.10536 14.5196 7.29289 14.7071C7.48043 14.8946 7.73478 15 8 15C8.26522 15 8.51957 14.8946 8.70711 14.7071C8.89464 14.5196 9 14.2652 9 14ZM13 14V9C13 8.73478 12.8946 8.48043 12.7071 8.29289C12.5196 8.10536 12.2652 8 12 8C11.7348 8 11.4804 8.10536 11.2929 8.29289C11.1054 8.48043 11 8.73478 11 9V14C11 14.2652 11.1054 14.5196 11.2929 14.7071C11.4804 14.8946 11.7348 15 12 15C12.2652 15 12.5196 14.8946 12.7071 14.7071C12.8946 14.5196 13 14.2652 13 14Z"
+                                    fill="#434246" opacity="0.55"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="li-link cursor-pointer" (click)="addAdvanceField('text')">
+                        <span>+ Add New Field</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="automatic-call-block section2" id="section2">
+                <div class="advance-setting-title d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="headline">Tags</h4>
+                        <p class="sub-headline">Customize your tags.</p>
+                    </div>
+                    <button class="btn btn-secondary" (click)="AddNewTag()">+ Add Tag</button>
+                </div>
+                <div class="tag-item d-flex flex-wrap">
+                    <div class="badge" *ngFor="let item of tagList; let i = index"
+                        [style.background-color]="item.tagColor">
+                        <span>{{ item.tagName}}</span>
+                        <a (click)="editTag(item)" data-toggle="tooltip" t-title="Edit" href="javascript:void(0)"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="17.139" height="17.137"
+                                viewBox="0 0 17.139 17.137">
+                                <g id="Icon_akar-pencil" data-name="Icon akar-pencil" transform="translate(0.6 0.76)"
+                                    opacity="0.55">
+                                    <path id="Path_17808" data-name="Path 17808"
+                                        d="M5.675,16.062,16.46,5.276a2.256,2.256,0,0,1,3.191,3.19L8.864,19.252a1.763,1.763,0,0,1-.9.482L4.5,20.426l.693-3.464A1.763,1.763,0,0,1,5.675,16.062Z"
+                                        transform="translate(-4.5 -4.649)" fill="none" stroke="currentColor"
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" />
+                                    <path id="Path_17809" data-name="Path 17809" d="M21.75,9.75l2.468,2.468"
+                                        transform="translate(-11.409 -6.782)" fill="none" stroke="currentColor"
+                                        stroke-width="1.2" />
+                                </g>
+                            </svg>
+                        </a>
+                        <a (click)="onDelete(item)" data-toggle="tooltip" t-title="Delete"
+                            href="javascript:void(0)"><svg _ngcontent-ng-c2529483137="" width="20" height="20"
+                                viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path _ngcontent-ng-c2529483137=""
+                                    d="M19 3H1C0.734784 3 0.48043 3.10536 0.292893 3.29289C0.105357 3.48043 0 3.73478 0 4C0 4.26522 0.105357 4.51957 0.292893 4.70711C0.48043 4.89464 0.734784 5 1 5H3V17C3 17.7956 3.31607 18.5587 3.87868 19.1213C4.44129 19.6839 5.20435 20 6 20H14C14.394 20.0001 14.7842 19.9226 15.1482 19.7719C15.5122 19.6212 15.843 19.4002 16.1216 19.1216C16.4002 18.843 16.6212 18.5122 16.7719 18.1482C16.9226 17.7842 17.0001 17.394 17 17V5H19C19.2652 5 19.5196 4.89464 19.7071 4.70711C19.8946 4.51957 20 4.26522 20 4C20 3.73478 19.8946 3.48043 19.7071 3.29289C19.5196 3.10536 19.2652 3 19 3ZM15 17C14.9997 17.2651 14.8943 17.5193 14.7068 17.7068C14.5193 17.8943 14.2651 17.9997 14 18H6C5.73486 17.9997 5.48066 17.8943 5.29319 17.7068C5.10571 17.5193 5.00026 17.2651 5 17V5H15V17ZM8 2H12C12.2652 2 12.5196 1.89464 12.7071 1.70711C12.8946 1.51957 13 1.26522 13 1C13 0.734784 12.8946 0.48043 12.7071 0.292893C12.5196 0.105357 12.2652 0 12 0H8C7.73478 0 7.48043 0.105357 7.29289 0.292893C7.10536 0.48043 7 0.734784 7 1C7 1.26522 7.10536 1.51957 7.29289 1.70711C7.48043 1.89464 7.73478 2 8 2Z"
+                                    fill="currentColor" opacity="0.55"></path>
+                                <path _ngcontent-ng-c2529483137=""
+                                    d="M9 14V9C9 8.73478 8.89464 8.48043 8.70711 8.29289C8.51957 8.10536 8.26522 8 8 8C7.73478 8 7.48043 8.10536 7.29289 8.29289C7.10536 8.48043 7 8.73478 7 9V14C7 14.2652 7.10536 14.5196 7.29289 14.7071C7.48043 14.8946 7.73478 15 8 15C8.26522 15 8.51957 14.8946 8.70711 14.7071C8.89464 14.5196 9 14.2652 9 14ZM13 14V9C13 8.73478 12.8946 8.48043 12.7071 8.29289C12.5196 8.10536 12.2652 8 12 8C11.7348 8 11.4804 8.10536 11.2929 8.29289C11.1054 8.48043 11 8.73478 11 9V14C11 14.2652 11.1054 14.5196 11.2929 14.7071C11.4804 14.8946 11.7348 15 12 15C12.2652 15 12.5196 14.8946 12.7071 14.7071C12.8946 14.5196 13 14.2652 13 14Z"
+                                    fill="currentColor" opacity="0.55"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div (click)="AddNewTag()" class="badge badge-add">+ Add New Tag</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

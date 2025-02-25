@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.202" height="17.985" viewBox="0 0 21.202 17.985">
+  <g id="newspaper" transform="translate(0)">
+    <path id="Path_18028" data-name="Path 18028" d="M9.6,27.36V42.8a.977.977,0,0,1-1.955,0V31.27H6.08V42.8a2.544,2.544,0,0,0,2.541,2.541H24.741A2.544,2.544,0,0,0,27.282,42.8V27.36ZM25.718,42.8a.979.979,0,0,1-.977.977H10.967a2.528,2.528,0,0,0,.2-.977V28.924H25.718Z" transform="translate(-6.08 -27.36)" fill="#9a97a0"/>
+    <path id="Path_18029" data-name="Path 18029" d="M64.8,51.68H57.76V59.5H64.8Zm-1.564,6.256h-3.91V53.244h3.91Z" transform="translate(-51.114 -48.552)" fill="#9a97a0"/>
+    <path id="Path_18030" data-name="Path 18030" d="M124.64,51.68h2.706v1.564H124.64Z" transform="translate(-109.391 -48.552)" fill="#9a97a0"/>
+    <path id="Path_18031" data-name="Path 18031" d="M124.64,76h2.706v1.564H124.64Z" transform="translate(-109.391 -69.744)" fill="#9a97a0"/>
+    <path id="Path_18032" data-name="Path 18032" d="M124.64,100.32h2.706v1.564H124.64Z" transform="translate(-109.391 -90.937)" fill="#9a97a0"/>
+  </g>
+</svg>

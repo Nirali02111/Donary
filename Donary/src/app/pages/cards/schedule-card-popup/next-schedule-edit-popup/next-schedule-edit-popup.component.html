@@ -1,0 +1,64 @@
+<div class="diglog_modal setup_schedule_pop" ngbAutofocus tabindex="-1">
+    <div class="popup_header modal__custom_header">
+       <h4>{{'SHEDULERCARD'|translate}}</h4>
+       <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+    <div class="schedule-sticky-pop">
+       <div class="modal__custom_content">
+          <div class="form-group d-flex donation_amount">
+             <label class="scheduler_card_lbl">{{'DONATIONAMOUNTLEFT'|translate}}:</label>
+             <label class="scheduler_card_amt_lbl"> {{commonMethodService.formatAmount(donationAmount)}} </label>
+          </div>
+          <div class="form-group d-flex">
+             <label class="scheduler_card_lbl">{{'COUNT'|translate}}:</label>
+             <div class="input_group">
+                <span class="icon"><img src="/assets/dist/img/count_icon.svg" width="20" height="20" alt="" /></span>
+                <input type="text" [maxLength]="countMaxLength" class="form-control" (keypress)="commonMethodService.numberOnly($event)"  [(ngModel)]="count" (change)="ChangeCount($event)" />
+                <!-- <span class="text-danger error_message" *ngIf="isCountError">Count is required</span> -->
+             </div>
+          </div>
+          <div class="form-group d-flex">
+             <label class="scheduler_card_lbl">{{'AMOUNTPERPAYMENT'|translate}}:</label>
+             <div class="input_group">
+                <span class="icon"><img src="/assets/dist/img/dollar-sign.svg" width="20" height="20" alt="" /></span>
+                <input  type="text" maxlength="16" class="form-control" (keypress)="commonMethodService.numberOnly($event)" [(ngModel)]="amtPerPayment" (change)="ChangeAmtPerPayment($event)"/>
+             </div>
+          </div>
+          <div class="form-group d-flex">
+             <label class="scheduler_card_lbl">{{'FREQUENCY'|translate}}:</label>
+             <div class="input_single">
+                <angular2-multiselect 
+                    id="ddlScheduleRepeatType"
+                    [settings]="getSetting()"
+                    [data]="commonMethodService.scheduleRepatTypeList"
+                    [(ngModel)]="commonMethodService.selectedScheduleRepeatTypes"
+                    
+                    (onDeSelectAll)="commonMethodService.onDeSelectAll('scheduleRepatTypeList')">
+                </angular2-multiselect>
+             </div>
+          </div>
+          <div class="form-group d-flex">
+             <label class="scheduler_card_lbl">{{'NEXTPAYMENTDATE'|translate}}:</label>
+             <div class="input_group">
+                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20" alt="" /></span>
+                <div class="searchbar">
+                   <input type="text" class="form-control" #calendarsearch  ngxDaterangepickerMd
+                   [singleDatePicker]="true"
+                   [minDate]="minDate"
+                   [(ngModel)]="selectedStartDate"
+                   [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                   [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"                                
+                   [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                   [showClearButton]="commonMethodService.showClearButton"                                
+                   />
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="modal__custom_footer">
+          <div class="btn_info">   
+             <button class="btn btn-primary" [ngClass]="getNgClass()" (click)="onSaveChanges()">{{'SAVECHANGES'|translate}}</button>
+          </div>
+       </div>
+    </div>
+ </div>

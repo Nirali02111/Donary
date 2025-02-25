@@ -1,0 +1,116 @@
+<div class="edit-source-field-wrap" ngbAutofocus  tabindex="-1">
+    <div class="modal-header pledgepay-popup modal__custom_header">
+        <h4 class="modal-title">{{'EDITSOURCE'|translate}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closePopup()" >
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <!-- added new -->
+    <div class="form-group d-flex">
+        <div class="edit-source-label">
+            <label for="lblDonor">{{'DEVICENAME'|translate}}:</label>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_group">
+                <input type="text" class="form-control" [(ngModel)]="device" name="txtDevice" id="input-device" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group d-flex" *ngIf="device != 'Donary Pay'">
+        <div class="edit-source-label" *ngIf="!isShulKiosk">
+            <label>{{'CAMPAIGN'|translate}}:</label>
+        </div>
+        <div class="edit-source-field" *ngIf="!isShulKiosk">
+        <div class="input_single" (click)="OnDivClick()">
+            <angular2-multiselect id="ddlCampaign"
+            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+            [data]="commonMethodService.localCampaignList"
+            [(ngModel)]="selectedFromCampaignList"
+            (onDeSelectAll)="selectedFromCampaignList=[]">
+            <c-item>
+                <ng-template let-item="item">
+                     <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                            {{item.itemName}}
+                        <span class="heb-dropdown-status">{{item.status}}</span></label>
+                </ng-template>
+            </c-item>
+        </angular2-multiselect>
+        <div *ngIf="selectedFromCampaignList?.length > 0" class="modal-icon-lock"></div>
+        </div>
+    </div>
+    </div>
+    <div class="form-group d-flex" *ngIf="device != 'Donary Pay'">
+        <div class="edit-source-label" *ngIf="!isShulKiosk">
+            <label>{{'REASON'|translate}}:</label>
+        </div>
+        <div class="edit-source-field" *ngIf="!isShulKiosk">
+        <div class="input_single" (click)="OnDivClick()">
+            <angular2-multiselect id="ddlPaymentReason"
+            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+            [data]="commonMethodService.localReasonList"
+            [(ngModel)]="selectedPaymentReasons"
+            (onDeSelectAll)="selectedPaymentReasons=[]">
+        </angular2-multiselect>
+        <div *ngIf="selectedPaymentReasons?.length > 0" class="modal-icon-lock"></div>
+        </div>
+    </div>
+    </div>
+    <div class="form-group d-flex edit-source-location" *ngIf="!isShulKiosk && device != 'Donary Pay'">
+        <div class="edit-source-label">
+        <label>{{'LOCATION'|translate}}:</label>
+    </div>
+    <div class="edit-source-field">
+        <div class="input_single" (click)="OnDivClick()">
+            <angular2-multiselect id="ddlPaymentLocation"
+                [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                [data]="commonMethodService.localLocationList"
+                [(ngModel)]="selectedPaymentLocations"
+                (onDeSelectAll)="selectedPaymentLocations=[]">
+            </angular2-multiselect>
+            <div *ngIf="selectedPaymentLocations?.length > 0" class="modal-icon-lock"></div>
+    </div>
+    </div>
+    </div>
+    <div class="form-group d-flex" *ngIf="!isShulKiosk">
+        <div class="edit-source-label">
+            <label>{{'COLLECTOR'|translate}}:</label>
+        </div>
+        <div class="edit-source-field">
+        <div class="input_single" (click)="OnDivClick()">
+            <angular2-multiselect id="ddlCollector"
+        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+        [data]="commonMethodService.localCollectorList"
+        [(ngModel)]="selectedPaymentCollectors"
+        (onDeSelectAll)="selectedPaymentCollectors=[]">
+    </angular2-multiselect>
+    <div *ngIf="selectedPaymentCollectors?.length > 0" class="modal-icon-lock"></div>
+        </div>
+        </div>
+    </div>
+
+    @if (isPocket) {
+    <div class="form-group  d-flex">
+        <div class="edit-source-label">
+        <label for="note">
+            {{'PIN'|translate}}:
+        </label>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_group">
+                <input  type="text" [value]='pin' [(ngModel)]="pin" class="form-control" name="pin" maxlength="4" mask="0000">
+            </div>
+        </div>
+    </div>
+}
+   
+    <!-- added end -->
+
+    <div class="btn-wrapper">
+        <button  class="btn btn-primary" (click)="saveData()"><span
+                > {{'SAVE'|translate}} </span></button>
+        <div class="loader" *ngIf="isloading">
+            <img src="assets/dist/img/rolling-loader.svg" alt="" />
+        </div>
+    </div>
+</div>

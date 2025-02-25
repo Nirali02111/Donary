@@ -1,0 +1,435 @@
+<div class="aliyas-pledge-main">
+    <div>
+        <div class="modal__custom_header">
+            <h4>{{'DREAMDONATION' | translate}}</h4>
+            <button class="dismiss" (click)="closePopup()">&times;</button>
+        </div>
+
+        <div class="aliyas-body" ngbAutofocus tabindex="-1">
+            <div class="aliyas-inside">
+                <div class="aliyas-top">
+                    <div class="aliyas-campaign">
+                        <label>{{'DEFAULTCAMPAIGN' | translate}}</label>
+                        <div class="aliyas-campaign-right">
+                            <div class="form-group campaign-dropdown">
+                                <angular2-multiselect id="ddlCampaign"
+                                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                    [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
+                                    (onSelect)="onCampaignSelect(selectedCampaign)"
+                                    (onDeSelectAll)="OnCampaignDeSelect($event)" [(ngModel)]="selectedCampaign">
+                                    <c-item>
+                                        <ng-template let-item="item">
+                                            <label
+                                                [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                {{item.itemName}}
+                                                <span class="heb-dropdown-status">{{item.status}}</span></label>
+                                        </ng-template>
+                                    </c-item>
+                                </angular2-multiselect>
+                                <span *ngIf="isDefaultCampaignReq" style="color: red;">{{'DEFAULTCAMPAIGNREQUIRED' |
+                                    translate}}</span>
+                            </div>
+                            <div class="form-group date_picker">
+                                <ng-template #popContent
+                                ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                </ng-template>
+                                <div  (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)" #p1="ngbPopover" container="body" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom"  id="dynamicsCalender">
+                                    <input type="text" class="form-control" value=""
+                                    [placeholder]="EngHebCalPlaceholder" />
+                                </div>
+                                <!-- Calendar code ended -->
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                                    </span>
+                                </div>
+                                <span *ngIf="isGroupDateReq" style="color: red;">{{'GROUPDATEREQUIRED' |
+                                    translate}}</span>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                    <ng-template #popContent2>
+                      <div id="popContent2">
+                        <app-aliyas-reportdate-popup></app-aliyas-reportdate-popup>
+                      </div>
+                     </ng-template>
+                    <div ngbDropdown [autoClose]="false" #myDropdown="ngbDropdown" class="aliyas-campaign-name download-report" *ngIf="!isProdEnv">
+                        <button class="btn btn-primary " type="button" ngbDropdownToggle (click)="openDropdown()" (clickOutside)="closeDropdown()"
+                            ><i
+                                class="material-icons">insert_drive_file</i>{{'DOWNLOAD' | translate}} {{'REPORTS' | translate}}</button>
+                        <ul  ngbDropdownMenu  >
+                            <li ngbDropdownItem>
+                                <a  style="cursor: pointer;"(click)="openHebrewPickerPopup(p2)"   [ngbPopover]="popContent2" #p2="ngbPopover"  popoverClass="calender-modal advance_search aliyas-calender" [popoverTitle]="popTitle"  [autoClose]="false" container="body" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="paymentTransactionsCalender" (clickOutside)="onClickedOutsidePopover(p2)"
+                                    > <i class="material-icons">calendar_today</i> <span>{{'REPORTBYDATE' | translate}}</span> <i class="material-icons arrow">keyboard_arrow_right</i> </a>
+                            </li>
+                            <li ngbDropdownItem (click)="getDonorReport()" >
+                                <a  style="cursor: pointer;"
+                                   > <i class="material-icons">person</i> <span class="aliyes_icon">{{'REPORTBYDONOR' | translate}}</span> <i class="material-icons arrow">keyboard_arrow_right</i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="aliyas-mid">
+                    <div class="aliyas-row" *ngFor="let pledge of pledgeAliyaNames; let j=index">
+                        <div class="aliyas-field field-one">
+                            <button class="aliyas-exand" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                NgbAutoFocus tabindex="-1" aria-expanded="false">...</button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                <li>
+                                    <a class="dropdown-item" style="cursor: pointer;"
+                                        (click)="ExpandOption(j)">{{'EXPANDOPTION' | translate}}</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" style="cursor: pointer;"
+                                        (click)="AddHosafa1(j)">{{'ADDHOSAFA' | translate}}</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" style="cursor: pointer;"
+                                        (click)="AddMiShebirach(j,pledge.aliyaNameId)">{{'ADDMISHEB' | translate}}</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" style="cursor: pointer;"
+                                        (click)="clearSection(j)">{{'CLEAR' | translate}}</a>
+                                </li>
+                            </ul>
+                            <div class="aliyas-input">
+                                <span [ngClass]="commonMethodService.currencyClass"></span>
+                                <input type="text" name="pledgeAmt" [(ngModel)]="pledge.amount" class="form-control"
+                                    placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="aliyas-field field-two">
+                            <ul>
+                                <ng-container *ngFor="let objType of pledgeAliyaTypes; let i=index">
+                                    <li>
+                                        <input type="radio" id="pledge_{{j}}_{{objType.id}}" name="pledge_{{j}}_{{i}}"
+                                            name="peldgeType_{{j}}_{{i}}" [(ngModel)]="pledge.aliyaTypeId"
+                                            [value]="i==0?2:1" (click)="UpdateNotes(i,pledge)"
+                                            (change)="selcteditems[j]= !selcteditems[j]">
+                                        <label for="pledge_{{j}}_{{objType.id}}">{{objType.itemName}}</label>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                        <!-- [data]="commonMethodService.donorList" -->
+                        <div class="aliyas-field field-dropdown">
+                            <!-- donor code started -->
+                            <div class="input_group edtpayment_drp">
+                                    <input type="text" class="form-control"
+                                    (focusout)="DonorRequired(pledge.aliyaNameId,pledge.aliyaTypeId,$event.target.value,pledge.hosafacount)"
+                                    name="donortext" id="donorText_{{j}}" [(ngModel)]="pledge.donorname"
+                                    (input)="SearchDonor($event,j)" />
+
+                                    <span *ngIf="pledge.nonEditable==j" class="cancel_icon"
+                                        (click)="RemoveDonor(pledge.accountId)">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                
+                                    <span class="search_icon" *ngIf="pledge.displaySearchIcon==j"
+                                        (click)="SearchGlobalDonor(j)">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </span>
+
+                                    <label class="switch global_list_togle"
+                                        *ngIf="pledge.nonEditable!=j && !isloading" data-toggle="tooltip"
+                                        appHoverTooltip labelText="{{'SWTICHLABELTOOLTIP' | translate}}">
+                                        <input type="checkbox" class="global_chck" id="globallist"
+                                            (change)="OnGlobalCheckboxChange($event,j,pledge.aliyaNameId)">
+                                        <span class="slider round"></span>
+                                        <div class="toggel-switch-loader" style="background: #fafafa;height: 32px;" *ngIf="this.commonMethodService.isLoaderNewTrans">
+                                            <div class="loader_img">
+                                                <img src="/assets/img/loader.svg" alt="loader" />
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <div class="donor_infolist" (clickOutside)="onClickedOutside(j)"
+                                        *ngIf="showBox==j && commonMethodService.donorList.length != 0 ">
+                                        
+                                            <div class="donor_row"
+                                                *ngFor="let item of commonMethodService.donorList"
+                                                (click)="SelectDonor(item.id,pledge.aliyaNameId,pledge.aliyaTypeId,j,pledge.hosafacount)">
+                                                <app-donor-list-template
+                                                    [donorObj]="item"></app-donor-list-template>
+                                            </div>
+                                        
+                                            <div class="btn-add-new-donor">
+                                                <button type="button"
+                                                    (click)="OpenCreateDonorPopup(pledge.donorname,pledge,j,1)"><i
+                                                        class="fa fa-plus"></i> {{'ADDDONOR' | translate}}</button>
+                                            </div>
+                                    </div>
+
+                                    <span class="text-danger" *ngIf="pledge.isDonorNameReq">{{'DONORREQUIRED' |
+                                        translate}}</span>
+                                    <span class="text-danger"
+                                        *ngIf="pledge.isDonorNameSel">{{'DONORSELECTEDREQUIRED' |
+                                        translate}}</span>
+                            </div>
+                            <!-- donor code ended -->
+                        </div>
+                        <div class="aliyas-field field-dropdown-name">
+                            <label>{{pledge.itemName}}</label>
+                            <input type="hidden" [(ngModel)]="pledge.aliyaNameId" name="pledgeName">
+                        </div>
+
+                        <div class="aliyas-child-wrap first-aliyas-row" *ngIf="isExpand==j" style="width:82.5%">
+                            <div class="child-campaing-left">
+                                <label>{{'NOTE' | translate}}</label>
+                                <textarea name="note" rows="2" style="direction:rtl" [(ngModel)]="pledge.note1"
+                                    placeholder="{{'WRITENOTE' | translate}}" class="field-note"></textarea>
+                            </div>
+                            <div class="child-campaing-right sub-dropdown">
+                                <div class="child-campaign-inside">
+                                    <angular2-multiselect id="ddlCampaign1"
+                                        [settings]="commonMethodService.setDropDownSettings('Search Campaign',2,false,true,true)"
+                                        [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
+                                        [(ngModel)]="pledge.campaign1">
+                                        <c-item>
+                                            <ng-template let-item="item">
+                                                <label
+                                                    [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                    {{item.itemName}}
+                                                    <span class="heb-dropdown-status">{{item.status}}</span></label>
+                                            </ng-template>
+                                        </c-item>
+                                    </angular2-multiselect>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aliyas-child-wrap" *ngFor="let item of pledge.expandShebirach1">
+                            <div class="aliyas-input">
+                                <span [ngClass]="commonMethodService.currencyClass"></span>
+                                <input type="text" name="pledgeAmt" [(ngModel)]="item.amount3" class="form-control"
+                                    placeholder="0.00">
+                            </div>
+                            <div class="child-campaing-left">
+                                <label>{{'NOTE' | translate}}</label>
+                                <textarea name="note" rows="2" style="direction:rtl" [(ngModel)]="item.note2"
+                                    placeholder="{{'WRITENOTE' | translate}}" class="field-note"></textarea>
+                            </div>
+                            <div class="child-campaing-right sub-dropdown add-mi">
+                                <div class="child-campaign-inside">
+
+                                    <div class="child-campaign-inside">
+                                        <angular2-multiselect id="ddlCampaign2"
+                                            [settings]="commonMethodService.setDropDownSettings('Search Campaign',2,false,true,true)"
+                                            [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
+                                            [(ngModel)]="item.campaign2">
+                                            <c-item>
+                                                <ng-template let-item="item">
+                                                    <label
+                                                        [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                        {{item.itemName}}
+                                                        <span class="heb-dropdown-status">{{item.status}}</span></label>
+                                                </ng-template>
+                                            </c-item>
+                                        </angular2-multiselect>
+
+                                    </div>
+                                </div>
+                                <div class="aliyas-field field-dropdown-name">
+                                    <label>{{pledge.itemName2}}</label>
+                                    <input type="hidden" [(ngModel)]="pledge.aliyaNameId" name="pledgeName">
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="selcteditems[j]" let j=index class="child-donor-campaign">
+                            <div class="aliyas-row aliyas-row-inside">
+                                <div class="aliyas-field field-one">
+                                    <button class="aliyas-exand" type="button" data-toggle="dropdown"
+                                        aria-haspopup="true" NgbAutoFocus tabindex="-1"
+                                        aria-expanded="false">...</button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                        <li>
+                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                (click)="ExpandOptions(j)">{{'EXPANDOPTION' | translate}}</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                (click)="AddHosafa2(j)">{{'ADDHOSAFA' | translate}}</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                (click)="AddMiShebirach2(j,pledge.aliyaNameId)">{{'ADDMISHEB' |
+                                                translate}}</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                (click)="clearSection2(j)">{{'CLEAR' | translate}}</a>
+                                        </li>
+                                    </ul>
+                                    <div class="aliyas-input">
+                                        <span [ngClass]="commonMethodService.currencyClass"></span>
+                                        <input type="text" [(ngModel)]="pledge.amount2" class="form-control"
+                                            placeholder="0.00">
+                                    </div>
+                                </div>
+                                <div class="aliyas-field field-two">
+                                    <label class="lng_hebrew">{{'WHOBLESSED' | translate}}</label>
+
+                                </div>
+                                <!-- donor1 code started -->
+                                <div class="aliyas-field field-dropdown 2222">
+                                    <div class="input_group edtpayment_drp">
+                                        <input type="text" class="form-control"
+                                        (focusout)="Donor2Required(pledge.aliyaNameId,pledge.aliyaTypeId,$event.target.value,pledge.hosafacount)"
+                                        name="donortext" id="donorText2_{{j}}" [(ngModel)]="pledge.selectedDonor2"
+                                        (input)="SearchDonor2($event,j)" />
+
+                                        <span *ngIf="pledge.nonEditable2==j" class="cancel_icon"
+                                            (click)="RemoveDonor2(pledge.accountId2)">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </span>
+                                       
+                                        <span class="search_icon" *ngIf="pledge.displaySearchIcon2==j"
+                                            (click)="SearchGlobalDonor2(j)">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </span>
+
+                                        <label class="switch global_list_togle"
+                                            *ngIf="pledge.nonEditable2!=j && !isloading" data-toggle="tooltip"
+                                            appHoverTooltip labelText="{{'SWTICHLABELTOOLTIP' | translate}}">
+                                            <input type="checkbox" class="global_chck" id="globallist"
+                                                (change)="OnGlobalCheckboxChange2($event,j,pledge.aliyaNameId)">
+                                            <span class="slider round"></span>
+                                            <div class="toggel-switch-loader" style="background: #fafafa;height: 32px;" *ngIf="this.commonMethodService.isLoaderNewTrans">
+                                                <div class="loader_img">
+                                                    <img src="/assets/img/loader.svg" alt="loader" />
+                                                </div>
+                                            </div>
+                                        </label>
+
+                                        <div class="donor_infolist" (clickOutside)="onClickedOutside2(j)" *ngIf="showBox2==j && commonMethodService.donorList.length != 0 ">
+                                            <div class="donor_row" *ngFor="let item of commonMethodService.donorList"
+                                                    (click)="SelectDonor2(item.id,pledge.aliyaNameId,j,pledge.hosafacount)">
+                                                    <app-donor-list-template
+                                                        [donorObj]="item"></app-donor-list-template>
+                                            </div>
+                                            
+                                            <div class="btn-add-new-donor">
+                                                <button type="button"
+                                                    (click)="OpenCreateDonorPopup(pledge.selectedDonor2,pledge,j,2)"><i
+                                                        class="fa fa-plus"></i> {{'ADDDONOR' | translate}}</button>
+                                            </div>
+                                        </div>
+                                        <span class="text-danger" *ngIf="pledge.isDonorName2Req">{{'DONORREQUIRED' |
+                                            translate}}</span>
+                                        <span class="text-danger"
+                                            *ngIf="pledge.isDonorName2Sel">{{'DONORSELECTEDREQUIRED' |
+                                            translate}}</span>
+                                    </div>
+                                </div>
+                                <!-- donor1 code ended -->
+                                <div class="aliyas-field field-dropdown-name">
+                                    <label>{{pledge.itemName5}}</label>
+                                </div>
+                            </div>
+                            <div class="aliyas-child-wrap aliyas-option-two" *ngIf="isExpanded==j" style="width:82.5%">
+                                <div class="child-campaing-left">
+                                    <label>{{'NOTE' | translate}}:</label>
+                                    <textarea name="note" rows="2" style="direction:rtl" [(ngModel)]="pledge.note"
+                                        placeholder="{{'WRITENOTE' | translate}}" class="field-note"></textarea>
+                                </div>
+                                <div class="child-campaing-right sub-dropdown">
+                                    <div class="child-campaign-inside">
+                                        <div class="child-campaign-inside">
+                                            <angular2-multiselect id="ddlCampaign3"
+                                                [settings]="commonMethodService.setDropDownSettings('Search Campaign',2,false,true,true)"
+                                                [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
+                                                [(ngModel)]="pledge.campaign3">
+                                                <c-item>
+                                                    <ng-template let-item="item">
+                                                        <label
+                                                            [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                            {{item.itemName}}
+                                                            <span
+                                                                class="heb-dropdown-status">{{item.status}}</span></label>
+                                                    </ng-template>
+                                                </c-item>
+                                            </angular2-multiselect>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="aliyas-child-wrap" *ngFor="let item of pledge.expandShebirach2">
+                                <div class="aliyas-input">
+                                    <span [ngClass]="commonMethodService.currencyClass"></span>
+                                    <input type="text" name="pledgeAmt" [(ngModel)]="item.amount4" class="form-control"
+                                        placeholder="0.00">
+                                </div>
+                                <div class="child-campaing-left">
+                                    <label>{{'NOTE' | translate}}:</label>
+                                    <textarea name="note" rows="2" style="direction:rtl" [(ngModel)]="item.note3"
+                                        placeholder="{{'WRITENOTE' | translate}}" class="field-note"></textarea>
+                                </div>
+                                <div class="child-campaing-right sub-dropdown add-mi">
+                                    <div class="child-campaign-inside">
+
+                                        <div class="child-campaign-inside">
+                                            <angular2-multiselect id="ddlCampaign4"
+                                                [settings]="commonMethodService.setDropDownSettings('Search Campaign',2,false,true,true)"
+                                                [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
+                                                [(ngModel)]="item.campaign4">
+                                                <c-item>
+                                                    <ng-template let-item="item">
+                                                        <label
+                                                            [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                            {{item.itemName}}
+                                                            <span
+                                                                class="heb-dropdown-status">{{item.status}}</span></label>
+                                                    </ng-template>
+                                                </c-item>
+                                            </angular2-multiselect>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="aliyas-field field-dropdown-name">
+                                        <label>{{pledge.itemName2}}</label>
+                                        <input type="hidden" [(ngModel)]="pledge.aliyaNameId" name="pledgeName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aliyas-bottom">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="aliyas-footer">
+                    <div class="schedule_showall">
+
+                        <label class="switch">
+                            <input type="checkbox" [(ngModel)]="isEmailPledge" />
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="show_all">&nbsp; {{'EMAILPLEDGEBILL' | translate}}</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-cancel">{{'CANCEL' | translate}}</button>
+                        <button class="btn btn-primary btn-pledge" (click)="SavePledges()" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVEPLEDGES' |
+                            translate}}</button>
+                        <button class="btn btn-primary btn-pledge btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="commonMethodService.loaderSearch" class="card-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+            <div class="overlay" *ngIf="isloading">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        </div>

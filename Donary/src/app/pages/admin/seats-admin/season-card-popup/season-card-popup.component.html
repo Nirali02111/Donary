@@ -1,0 +1,224 @@
+<div class="modal_custom">
+  <div class="modal__custom_header">
+    <button class="close" (click)="closePopup()">&times;</button>
+    <h4 class="headline mt-0">Create new season</h4>
+  </div>
+  <div class="modal__custom_content">
+    <div class="col-md-12">
+      <div class="tabs--wrap">
+        <ul class="nav nav-tabs pt-0">
+          <li class="active">
+            <a href="#seasonInfo" class="active" data-toggle="tab"
+              >SEASON INFO</a
+            >
+          </li>
+          <li><a href="#copyData" data-toggle="tab">COPY DATA</a></li>
+        </ul>
+        <div class="tab-content tab_draggable">
+          <div class="tab-pane fade in active show" id="seasonInfo">
+            <div class="season-form">
+              <div class="form-group campaignName-input">
+                <label for="">CAMPAIGN NAME:</label>
+                <div class="addNewCampagin" *ngIf="dropdownVisible">
+                    <button class="btn btn-primary" (click)="openSaveCampaignPopup()"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+                <angular2-multiselect
+                  id="ddlCampaign"
+                  style="border: none"
+                  [settings]="
+                    commonMethodService.setDropDownSettings(
+                      '',
+                      2,
+                      false,
+                      true,
+                      true
+                    )
+                  "
+                  [data]="commonMethodService.localCampaignList"
+                  [(ngModel)]="campaignList"
+                  class="campaign_cls"
+                  #campaigndrp
+                  (onDeSelectAll)="selectCampaign($event);"
+                  (onSelect)="selectCampaign($event)"
+                  (click)="openDrop()"
+                >
+                  <c-item>
+                    <ng-template let-item="item">
+                      <label
+                        [ngClass]="
+                          contains_heb(item.itemName)
+                            ? 'heb-dropdown-title'
+                            : 'simple-dropdown-title'
+                        "
+                      >
+                        {{ item.itemName }}
+                        <span
+                          [ngClass]="
+                            contains_heb(item.itemName)
+                              ? 'heb-dropdown-num'
+                              : 'simple-dropdown-num'
+                          "
+                          >{{ item.num }}</span
+                        >
+                      </label>
+                      <span class="heb-dropdown-status status_align">{{
+                        item.status
+                      }}</span>
+                    </ng-template>
+                  </c-item>
+                </angular2-multiselect>
+              </div>
+              <div class="form-group">
+                <label for="">APPLY MAPS (LOCATIONS):</label>
+                <div class="dropdown">
+                  <angular2-multiselect
+                    id="ddlLocation"
+                    [settings]="
+                      commonMethodService.setDropDownSettings(
+                        '',
+                        2,
+                        true,
+                        false,
+                        true
+                      )
+                    "
+                    [data]="locationList"
+                    [(ngModel)]="selectedLocation"
+                    (onSelect)="onSelectLocation($event)"
+                  >
+                    <c-item>
+                      <ng-template let-item="item">
+                        <label>
+                          {{ item.itemName }}
+                        </label>
+                        <!-- <span class="season-count">({{ getLocationCount(item.id) }})</span> -->
+                      </ng-template>
+                    </c-item>
+                  </angular2-multiselect>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="copyData">
+            <div class="copyData-form">
+              <div class="form-group row">
+                <div class="col-md-7">
+                  <label for="">COPY DATA FROM SEASON:</label>
+                  <select>
+                    <option value="0">Tishrie 58</option>
+                  </select>
+                </div>
+                <div class="col-md-5 copyDataFromID">
+                  <input
+                    type="checkbox"
+                    id="copyDataFromID"
+                    class="custom-checkbox"
+                  />
+                  <label for="copyDataFromID"> Copy with duplicates </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="seats-count"><span> 530 </span> Search seasons</div>
+              </div>
+              <div class="sale-seats">
+                <label>Sale seats (145)</label>
+              </div>
+              <div class="form-group rentals-section">
+                <h4>Recurring rentals (150)</h4>
+                <div class="radio-inputs-options">
+                  <div class="radio-col">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="markAsRented1"
+                      class="radio-input"
+                    />
+                    <label for="markAsRented1">Mark as Rented</label>
+                  </div>
+                  <div class="radio-col">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="dontReserve1"
+                      class="radio-input"
+                    />
+                    <label for="dontReserve1">Don't Reserve</label>
+                  </div>
+                  <div class="radio-col tillNoDate">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="reserve1"
+                      class="radio-input"
+                    />
+                    <label for="reserve1">Reserve</label>
+                    <div class="tillNoDate">
+                      <span>
+                        Till:
+                        <select>
+                          <option>No Date</option>
+                        </select>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group rentals-section">
+                <h4>One time rentals (155)</h4>
+                <div class="radio-inputs-options">
+                  <div class="radio-col">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="markAsRented2"
+                      class="radio-input"
+                    />
+                    <label for="markAsRented3">Mark as Rented</label>
+                  </div>
+                  <div class="radio-col">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="dontReserve2"
+                      class="radio-input"
+                    />
+                    <label for="dontReserve2">Don't Reserve</label>
+                  </div>
+                  <div class="radio-col tillNoDate">
+                    <input
+                      type="radio"
+                      name="Recurring rentals"
+                      id="reserve2"
+                      class="radio-input"
+                    />
+                    <label for="reserve2">Reserve</label>
+                    <div class="tillNoDate">
+                      <span>
+                        Till:
+                        <select>
+                          <option>No Date</option>
+                        </select>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btn_info modal__custom_footer justify-content-end">
+    <div class="right_part">
+      <button class="btn btn-default" (click)="closePopup()">
+        {{ "CANCEL" | translate }}
+      </button>
+      <button class="btn btn-primary" (click)="onGenerate()">Generate</button>
+    </div>
+  </div>
+  <div *ngIf="isloading" class="card-overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>

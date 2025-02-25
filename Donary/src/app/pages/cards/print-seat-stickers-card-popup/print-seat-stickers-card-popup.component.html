@@ -1,0 +1,118 @@
+<div class="modal__custom_body" *ngIf="isPrintSeatMap" [formGroup]="formGroup1">
+    <div class="diglog_header modal__custom_header">
+        <div class="titlebar">
+            <h4>{{ 'PRINTMAP'| translate }}</h4>
+            <button class="close" (click)="closePopup()">&times;</button>
+        </div>
+    </div>
+    <div class="modal_content modal__custom_content">
+        <h5>DISPLAY IN:</h5>
+        <div class="radio-inputs-options">
+            <div class="radio-row">
+                <input
+                type="radio"
+                name="seatRowCol"
+                id="seatRowColumn"
+                class="radio-input"
+                value="SeatRow"
+                formControlName="seatRowCol"
+                />
+                <label for="seatRowColumn">{{ 'SEATROWCOLUMN'| translate }}</label>
+            </div>
+            <div class="radio-row">
+                <input
+                type="radio"
+                name="seatRowCol"
+                id="seatSeatID"
+                class="radio-input"
+                value="SeatId"
+                formControlName="seatRowCol"
+                />
+                <label for="seatSeatID">{{ 'SEATANDSEATID'| translate }}</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="action_footer modal__custom_footer">
+        <button class="btn btn-default" (click)="closePopup()">
+            {{ 'CANCEL'| translate }}
+        </button>
+        <button class="btn btn-primary" (click)="onMapPrint()">
+            {{ 'PRINT'| translate }}
+        </button>
+    </div>
+</div>
+
+
+<div class="modal__custom_body print_stickers" *ngIf="!isPrintSeatMap" [formGroup]="formGroup">
+    <div class="diglog_header modal__custom_header">
+        <div class="titlebar">
+            <h4>{{ 'PRINTSTICKERS' | translate }}</h4>
+            <button class="close" (click)="closePopup()">&times;</button>
+        </div>
+    </div>
+    <div class="modal_content modal__custom_content">
+        <!-- <div class="ShowSeatLocation-input">
+            <input
+              type="checkbox"
+              id="ShowSeatLocation"
+              class="custom-checkbox"
+              formControlName="seatInfo"
+            />
+            <label for="ShowSeatLocation">Hide location details </label>
+        </div> -->
+        <div class="radio-inputs-options radio-row-wrap">
+            <div class="radio-row custom-radio-btn">
+                <input
+                    type="radio"
+                    name="seatInfo"
+                    id="ShowSeatLocation"
+                    class="radio-input"
+                    value=""
+                    formControlName="seatInfo"
+                    [checked]="true"
+                />
+                <label for="ShowSeatLocation">{{ 'HIDELOCATIONDETAILS' | translate }}</label>
+            </div>
+            <div class="radio-row custom-radio-btn">
+                <input
+                    type="radio"
+                    name="seatInfo"
+                    id="fullDetails"
+                    class="radio-input"
+                    value="Full"
+                    formControlName="seatInfo"
+                />
+                <label for="fullDetails">{{ 'FULLDETAILS' | translate }} <span class="tooltip-help-text" data-toggle="tooltip" appHoverTooltip
+                    labelText="Will Display on the sticker the Location, section, Column, row, seat, Name"><span class="material-icons">
+                    help
+                    </span></span></label>
+            </div>
+            <div class="radio-row custom-radio-btn">
+                <input
+                    type="radio"
+                    name="seatInfo"
+                    id="OnlyInitials"
+                    class="radio-input"
+                    value="Initials"
+                    formControlName="seatInfo"
+                />
+                <label for="OnlyInitials">{{ 'ONLYINITIALS' | translate }}  <span class="tooltip-help-text" data-toggle="tooltip" appHoverTooltip
+                    labelText="Will show only the initials from the Location, Column, row, seat"><span class="material-icons">
+                    help
+                    </span></span></label>
+            </div>
+        </div>
+    </div>
+    <div class="action_footer modal__custom_footer">
+        <button class="btn btn-default" (click)="closePopup()">
+            {{ 'CANCEL'| translate }}
+        </button>
+        <button class="btn btn-primary" (click)="onPrint()">
+            {{ 'PRINT'| translate }}
+        </button>
+    </div>
+</div>
+<div *ngIf="isLoading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>

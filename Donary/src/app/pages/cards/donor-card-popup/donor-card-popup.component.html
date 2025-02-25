@@ -1,0 +1,651 @@
+<div class="diglog_modal donor_card_redesign" ngbAutofocus tabindex="-1">
+  <div class="diglog_header modal__custom_header" style="cursor: grab">
+    <div class="titlebar">
+      <h4>{{ "DONORCARD" | translate }}</h4>
+      <span *ngIf="!isloading" [ngClass]="[
+          isDonorActive ? 'donor-card-active' : 'donor-card-inactive'
+        ]">{{ isDonorActive ? "Active" : "InActive" }}</span>
+      <span class="donor_reactive" (click)="UpdateDonor()" *ngIf="!isDonorActive"><u>{{ "REACTIVATE" | translate
+          }}</u></span>
+    </div>
+    <div class="header_actions">
+      <div class="filter_field hidden-mobile">
+        <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+          <span class="filter_count" *ngIf="filtercount != 0">{{
+            filtercount
+            }}</span>
+          <span class="filter_text">{{ "FILTER" | translate }}</span>
+        </button>
+      </div>
+      <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+          [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+      </ng-template>
+      <div class="input-group dnr-datepicker-container date_picker" (click)="openHebrewCalendarPopup()"
+        (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" [ngbPopover]="popContent"
+        popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+        placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+        id="donarCardDynamicsCalender">
+        <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+          </span>
+        </div>
+      </div>
+      <!-- calendar code ended -->
+      <div>
+        <button class="b_tn hidden-mobile" type="button" id="drpAction" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu action_opts donor_drp" role="menu" aria-labelledby="dropdownMenu">
+          <li>
+            <a class="dropdown-item" style="cursor: pointer" (click)="ExportStatement()">
+              <i class="fa fa-file-text" aria-hidden="true"></i> {{"GENERATEREPORT" |translate}}
+            </a>
+          </li>
+          <li *ngIf="isDevEnv">
+            <a class="dropdown-item" style="cursor: pointer" (click)="SaveLayout()">
+              <i class="fa fa-tags" aria-hidden="true"></i> {{"SAVELAYOUT"| translate}}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+
+
+
+
+      <!-- Disable edit for default donor start -->
+      <ng-template *ngIf="canEditDonor(); then editButtonTmp; else disableEditButtonTmp"></ng-template>
+
+      <ng-template #editButtonTmp>
+
+        <button class="b_tn edit_icon" appDataHover labelText="{{'EDIT' | translate}}" type="button"
+          (click)="EditDonor(accountId)">
+
+          <i class="fa fa-pencil-square-o hidden-mobile" aria-hidden="true"></i>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+      </ng-template>
+
+      <ng-template #disableEditButtonTmp>
+
+        <button class="b_tn edit_icon " type="button" disabled data-toggle="tooltip" appHoverTooltip
+          labelText="{{'CANNOTEDIT' | translate}}" style="background: rgba(123, 91, 196, 0.5)">
+
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </button>
+      </ng-template>
+      <!-- Disable edit for default donor end -->
+      <div>
+        <button class="b_tn hidden-mobile" type="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        <ul class=" dropdown-menu transaction_opts donor_drp" role="menu" aria-labelledby="dropdownMenu">
+          <li>
+            <a class="dropdown-item" style="cursor: pointer" *ngIf="makeTransactionPermission"
+              (click)="makeTransactionPopup()">
+              <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+              {{ "NEWTRANSACTION" | translate }}</a>
+          </li>
+          <li>
+            <a class="dropdown-item" style="cursor: pointer" *ngIf="this.isDonorActive" (click)="AddReminderPopup()">
+              <i class="fas fa-bell" aria-hidden="true"></i>{{ "ADDREMINDER" | translate }}</a>
+          </li>
+        </ul>
+      </div>
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+  </div>
+  <div class="diglog_body modal__custom_content">
+    <div class="cards_secton">
+      <div class="hidden-desktop w-100">
+        <div class="filter-btns d-flex align-items-center mb-2">
+          <div class="filter_field">
+            <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+              <img alt="filter" src="/assets/dist/img/icon-filter.svg">
+              <span class="filter_count" *ngIf="filtercount != 0">{{
+                filtercount
+                }}</span>
+              <span class="filter_text">{{ "FILTER" | translate }}</span>
+            </button>
+          </div>
+          <app-donary-date-picker [isFullView]="false" [SelectedDateRange]="selectedDateRange"
+            (emtDatesUpdated)="datesUpdated($event)" [IsDisabled]="isloading"></app-donary-date-picker>
+          <button class="b_tn ml-auto" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span>...</span>
+          </button>
+          <ul class="dropdown-menu transaction_opts donor_drp" role="menu" aria-labelledby="dropdownMenu">
+            <li>
+              <a class="dropdown-item" style="cursor: pointer" *ngIf="makeTransactionPermission"
+                (click)="makeTransactionPopup()">
+                <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+                {{ "NEWTRANSACTION" | translate }}</a>
+            </li>
+            <li>
+              <a class="dropdown-item" style="cursor: pointer" (click)="AddReminderPopup()">
+                <i class="fas fa-bell" aria-hidden="true"></i>{{ "CREATEREMINDER" | translate }}</a>
+            </li>
+            <li>
+              <a class="dropdown-item" style="cursor: pointer" (click)="ExportStatement()">
+                <i class="fas fa-file" aria-hidden="true"></i>{{ "EXPORTSTATMENT" | translate }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-inner d-flex ">
+        <div class="card " id="card-payment">
+          <a style="cursor: pointer" (click)="openPaymentListCardPopup(accountId)">
+
+            <span class="data">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <p>{{ "PAYMENTS" | translate }}</p>
+              </app-skeleton-loader-component>
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <h6>
+                  {{
+                  commonMethodService.formatAmount(totalPayments) ||
+                  commonMethodService.formatAmount(0.0)
+                  }}
+                </h6>
+              </app-skeleton-loader-component>
+
+            </span>
+            <span class="right-arrow action_btn"></span>
+          </a>
+        </div>
+        <div class="card" id="card-pledge">
+          <a style="cursor: pointer" (click)="openPledgeListCardPopup(accountId)">
+            <span class="data">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <p>{{ "OPENPLEDGES" | translate }}</p>
+              </app-skeleton-loader-component>
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <h6>
+                  {{
+                  commonMethodService.formatAmount(totalPledges) ||
+                  commonMethodService.formatAmount(0.0)
+                  }}
+
+                  <span *ngIf="runningCount !== null"> {{runningCount}} Running</span>
+                </h6>
+
+
+              </app-skeleton-loader-component>
+            </span>
+            <span class="right-arrow action_btn"></span>
+          </a>
+        </div>
+        <div class="card" id="card-shedule">
+          <a style="cursor: pointer" (click)="openScheduleListCardPopup(accountId)">
+            <span class="data">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <p>{{ "SCHEDULED" | translate }}</p>
+              </app-skeleton-loader-component>
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+                <h6>
+                  {{
+                  commonMethodService.formatAmount(totalSchedules) ||
+                  commonMethodService.formatAmount(0.0)
+                  }}
+                </h6>
+              </app-skeleton-loader-component>
+            </span>
+            <span class="right-arrow action_btn"></span>
+          </a>
+        </div>
+      </div>
+      <div class="card total_raised">
+        <span class="data">
+          <p>{{ "TOTALRAISED" | translate }}</p>
+          <h6>{{ commonMethodService.formatAmount(totalRaised) }}</h6>
+        </span>
+      </div>
+    </div>
+    <div class="top_row">
+      <div class="name_colm" (click)="CopyText($event)" style="cursor: text">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }">
+          <h4 id="fullNameId">{{ fullName }}</h4>
+        </app-skeleton-loader-component>
+        <div>
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '170px', height: '15px' }">
+            <h5 class="lng_hebrew" id="jewishNameId">{{ fullNameJewish }}</h5>
+          </app-skeleton-loader-component>
+        </div>
+      </div>
+      <div class="right_info_col">
+        <div class="text_right_col seat-donor-card">
+          <p style="cursor: pointer" (click)="OpenDonorCard(fatherId)">
+            <span class="name lng_hebrew">אב:</span>
+            <span class="text {{ class_fatherId }}" [ngClass]="
+                contains_heb_fatherId(fatherNameJewish, fatherId)
+                  ? 'lng_hebrew'
+                  : 'lng_eng'
+              ">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }">
+                {{ fatherNameJewish ? fatherNameJewish : fatherName }}</app-skeleton-loader-component>
+            </span>
+          </p>
+          <p style="cursor: pointer" (click)="OpenDonorCard(fatherInLawId)">
+
+            <span class="name lng_hebrew">חמיו: </span>
+
+            <span class="text {{ class_fatherInLawId }}" [ngClass]="
+                contains_heb_fatherInLawId(fatherInLawNameJewish, fatherInLawId)
+                  ? 'lng_hebrew'
+                  : 'lng_eng'
+              ">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }">
+                {{
+                fatherInLawNameJewish ? fatherInLawNameJewish : fatherInLawName
+                }} </app-skeleton-loader-component>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs__wrap">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#{{ 'info' + navTabId }}" class="active" data-toggle="tab">{{
+            "DONORINFO" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'adavaceField' + navTabId }}" data-toggle="tab">{{
+            "ADVANCEDFIELDS" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'tags' + navTabId }}" data-toggle="tab">
+            {{ "TAGS" | translate }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'wallet' + navTabId }}" data-toggle="tab">{{
+            "WALLET" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'locationsTab' + navTabId }}" data-toggle="tab">{{
+            "LOCATIONS" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'familyTree' + navTabId }}" data-toggle="tab">{{
+            "FAMILYTREE" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'logs' + navTabId }}" data-toggle="tab">{{
+            "LOGS" | translate
+            }}</a>
+        </li>
+        <li>
+          <a href="#{{ 'reminder' + navTabId }}" data-toggle="tab">{{
+            "REMINDERS" | translate
+            }}</a>
+        </li>
+      </ul>
+
+      <div class="tab-content ">
+        <div class="tab-pane active" id="{{ 'info' + navTabId }}" style="cursor: text">
+
+
+          <div class="phonelist">
+            <div class="left_colm">
+              <ng-container *ngFor="let item of skeletonitems">
+                <div style="margin-bottom: 10px;">
+                  <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="phoneList && phoneList.length">
+                <div class="block-col" *ngFor="let item of phoneList; let i = index">
+                  <span class="number_icon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                  <span class="text">
+
+                    <h6>{{ item.type | translate }}:</h6>
+                    <p class="phone-field">{{ item.number }}</p>
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+
+
+          <div class="right_colm">
+            <ng-container *ngFor="let item of skeletonitems">
+              <div style="margin-bottom: 10px;">
+                <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+              </div>
+            </ng-container>
+            <div class="block_list" *ngIf="lstAddress && lstAddress.length">
+              <div class="block-col" *ngFor="let item of lstAddress; let i = index">
+                <span class="house_icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                <span class="text">
+                  <!-- <h6>Street Address:</h6> -->
+                  <h6>{{ item.addressLabel | translate }}:</h6>
+                  <p>
+                    {{ item.houseNum }} {{ item.streetName }} {{ item.unit }}
+                    <br />
+                    {{ item.city }} {{ item.state }} {{ item.country }}
+                    {{ item.zip }}
+                  </p>
+                </span>
+              </div>
+            </div>
+
+
+            <div class="emaillist" *ngIf="lstEmail && lstEmail.length">
+              <div class="block_list" *ngFor="let item of lstEmail; let i = index">
+                <div class="block-col">
+                  <span class="email_icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                  <span class="text">
+                    <h6>{{ item.type | translate }}:</h6>
+                    <p>{{ item.email }}</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="{{ 'adavaceField' + navTabId }}">
+          <div class="content__inside_wrap d-flex">
+            <div class="form-group-inline" *ngFor="let data of advancedFieldValues; let i = index">
+              <div class="form-group">
+                <div class="block_label">
+                  <span [ngClass]="contains_hebrew(data.advancedField.fieldName)">{{ data.advancedField.fieldName
+                    }}</span>
+                </div>
+                <div class="block_inputs">
+                  <label [ngClass]="contains_hebrew(data.value)">{{
+                    data.value
+                    }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags Tab -->
+        <div class="tab-pane" id="{{ 'tags' + navTabId }}">
+          <div class="badge_wrapper">
+            <ng-container *ngFor="let itemTag of donorTagList">
+              <p class="badge" [ngClass]="
+                  commonMethodService.getTagBackgroundColor(itemTag.tagColor)
+                ">
+                {{ tagService.formatTagName(itemTag.tagName) }}
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="tab-pane" id="{{ 'wallet' + navTabId }}">
+          <div class="card_grid">
+            <div [class.disabled]="isWalletDisable" class="card_item" (click)="EditWallet('edit', item.walletId)"
+              *ngFor="let item of accountWalletDetails">
+              <div class="left">
+                <h6>{{ item.accountName }} <span *ngIf="item.isPrimary == true">Default</span></h6>
+                <p>{{ item.description }}</p>
+              </div>
+              <div class="right arrow">
+                <span class="right_arrow"></span>
+              </div>
+            </div>
+            <div class="card_item highlighted" (click)="EditWallet('add', null)">
+              <div class="add_card">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                {{ "ADD" | translate }} {{ "METHOD" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="{{ 'locationsTab' + navTabId }}">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="table-responsive transaction__table">
+                <table class="table table-striped" [svData]="locationGridData" #sv="svDataTable" [svRowsOnPage]="25"
+                  svSortBy="locationName" svSortOrder="asc">
+                  <thead>
+                    <tr>
+                      <th>
+                        <sv-default-sorter by="locationName">{{ "LOCATIONNAME" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="address">{{ "ADDRESS" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="city">{{ "CITY" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="state">{{ "STATE" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="country">{{ "COUNTRY" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="zip">
+                          {{ "ZIP" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="locationGridData?.length > 0">
+                    <tr *ngFor="let item of locationGridData; let i = index">
+                      <td (click)="openLocationCard(item.locationId)" style="color: blueviolet; cursor: pointer">
+                        {{ item.locationName }}
+                      </td>
+                      <td>{{ item.address }}</td>
+                      <td>{{ item.city }}</td>
+                      <td>{{ item.state }}</td>
+                      <td>{{ item.country }}</td>
+                      <td>{{ item.zip }}</td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="locationGridData?.length == 0">
+                    <tr>
+                      <td colspan="15" style="text-align: center">
+                        {{ "NODATAFOUND" | translate }}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="15" style="
+                          border-left: none !important;
+                          border-right: none !important;
+                        ">
+                        <sv-bootstrap-paginator [rowsOnPageSet]="[25, 50, 100]">
+                        </sv-bootstrap-paginator>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New family code started -->
+        <div class="tab-pane" id="{{ 'familyTree' + navTabId }}">
+          <div class="subt_table family-tree">
+            <table cellspacing="0" cellpadding="0" border="0">
+              <thead>
+                <tr>
+                  <th>{{ "YOURFAMILY" | translate }}</th>
+                  <th>{{ "FATHERFAMILY" | translate }}</th>
+                  <th>{{ "FATHERINLAWFAMILY" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="families?.length > 0">
+                <tr *ngFor="let item of families; let i=index">
+                  <td>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="left-side" style="cursor:pointer; color:#6D55A5 "
+                        (click)="OpenDonorCard(item.family.accountId)">{{item.family==null?null:item.family.fullName}}</span>
+                      <span class="right-side"> {{item.family==null?null: ":"}}{{item.family==null?null:
+                        getHebrewWord(item.family.type)}}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="left-side" style="cursor:pointer;color:#6D55A5"
+                        (click)="OpenDonorCard(item.father.accountId)">{{item.father==null?null:item.father.fullName}}</span>
+                      <span class="right-side">{{item.father==null?null: ":"}}{{item.father==null?null:
+                        getHebrewWord(item.father.type)}}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="left-side" style="cursor:pointer;color:#6D55A5"
+                        (click)="OpenDonorCard(item.fatherInLaw.accountId)">
+                        {{item.fatherInLaw==null?null:item.fatherInLaw.fullName}}</span>
+                      <span class="right-side">{{item.fatherInLaw==null?null: ":"}}{{item.fatherInLaw==null?null:
+                        getHebrewWord(item.fatherInLaw.type)}}</span>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- New family code ended -->
+
+        <!--  -->
+        <div class="tab-pane" id="{{ 'logs' + navTabId }}">
+          <div class="tabs__wrap">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#{{ 'statementlog' + navTabId }}" class="active" data-toggle="tab">{{ "STATEMENTLOG" |
+                  translate }}</a>
+              </li>
+              <li>
+                <a href="#{{ 'donoreditlog' + navTabId }}" data-toggle="tab">{{
+                  "DONOREDITLOG" | translate
+                  }}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="{{ 'statementlog' + navTabId }}" style="cursor: text">
+              <div class="table__main donor-receipt-log">
+                <table cellpadding="0" cellspacing="0" border="0" [svData]="lstDonorReceiptLog" #sv="svDataTable"
+                  [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+                  <thead>
+                    <tr>
+                      <th>
+                        <sv-default-sorter by="source">{{ "SOURCE" | translate }}
+                        </sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="sentTo">{{
+                          "SENTTO" | translate
+                          }}</sv-default-sorter>
+                      </th>
+                      <th>
+                        <sv-default-sorter by="createdDate">{{
+                          "DATE&TIME" | translate
+                          }}</sv-default-sorter>
+                      </th>
+                      <th class="status success_pymnt">
+                        <sv-default-sorter by="status">{{
+                          "STATUS" | translate
+                          }}</sv-default-sorter>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstDonorReceiptLog?.length > 0">
+                    <tr *ngFor="let item of lstDonorReceiptLog; let i = index">
+                      <td>{{ item.source }}</td>
+                      <td>{{ item.sentTo }}</td>
+                      <td>
+                        {{ item.createdDate | donaryDateFormat: "long" }}
+                      </td>
+                      <td class="status">
+                        <span [ngClass]="item.status_class">{{
+                          item.status == true ? "Success" : "Failed"
+                          }}</span>
+                        <span *ngIf="item.documentPath" style="cursor: pointer" (click)="OpenPdf(item.documentPath)"><i
+                            class="fas fa-eye"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="{{ 'donoreditlog' + navTabId }}" style="cursor: text">
+              <ul class="donar-log">
+                <li><span [innerHTML]="changelog"></span><br /></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+        <div class="tab-pane" id="{{ 'reminder' + navTabId }}">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="table-responsive transaction__table reminder__table">
+                <table class="table table-striped" cellspacing="0" cellpadding="0" border="0"
+                  [svData]="lstRelatedNotifications" #sv="svDataTable" [svRowsOnPage]="10" svSortBy="createdDate"
+                  svSortOrder="asc">
+                  <thead>
+                    <tr>
+                      <th>{{ "TITLE" | translate }}</th>
+                      <th>{{ "DUEDATE" | translate }}</th>
+                      <th class="text-uppercase">{{ "STATUS" | translate }}</th>
+                      <th>{{ "ATTACHED" | translate }}</th>
+                      <th>{{ "ASSIGNEE" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstRelatedNotifications?.length > 0">
+                    <tr *ngFor="let item of lstRelatedNotifications">
+                      <td>{{ item.title }}</td>
+                      <td>
+                        {{ item.dueDate | donaryDateFormat: "long" }}
+                      </td>
+                      <td class="status">
+                        <span class="status-{{ item.status }}">{{
+                          item.status
+                          }}</span>
+                      </td>
+                      <td>
+                        <span class="link-text" (click)="
+                            openReminderCardPopup(item.cardId, item.isPayment)
+                          ">{{ item.attachedTo }}</span>
+                      </td>
+                      <td class="notification-td">
+                        {{ item.assignee }}
+                        <span class="open-notification" *ngIf="isNotificationSidebar" (click)="
+                            openNotificationSidebarPopup(item.notificationId)
+                          ">></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="lstRelatedNotifications?.length == 0">
+                    <tr>
+                      <td class="text-center" colspan="5">
+                        {{ "NOACTIVEREMINDER" | translate }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

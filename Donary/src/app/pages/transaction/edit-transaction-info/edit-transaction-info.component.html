@@ -1,0 +1,121 @@
+<div class="edit__payment_main" ngbAutofocus tabindex="-1">
+    <div class="popup_header modal__custom_header">
+        <h4>{{'EDIT'|translate}} {{'TRANSACTION'|translate}}</h4>
+        <div class="close_trans" (click)="closePopup()">
+            <span>&times;</span>
+        </div>
+    </div>
+    <div class="edit_pymnt_wrap modal__custom_content">
+        <div class="payement_fields">
+            <div class="schedule-sticky-pop">
+                <div class="form-group d-flex ">
+                    <label>
+                        {{'DATE'|translate}}:
+                        <span class="material-icons" appHoverTooltip labelText="{{'CANNOTEDITTRANSACTION' | translate}}">help</span>
+                    </label>
+                    <div class="input_group">
+                        <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                alt="" /></span>
+                        <div class="searchbar">
+                            <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
+                                [singleDatePicker]="true"
+                                [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                [(ngModel)]="updateDate" [showClearButton]="commonMethodService.showClearButton" />
+                        </div>
+                    </div>  
+                </div>
+
+                <div class="form-group d-flex {{disableDropdown}}">
+                    <label>
+                        {{'REASON'|translate}}:
+                        <span class="material-icons" appHoverTooltip labelText="{{'CANNOTEDITTRANSACTION' | translate}}">help</span>
+                    </label>
+
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlPaymentReason"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.paymentReasonList" [(ngModel)]="selectedPaymentReasons"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+                <div class="form-group d-flex {{disableDropdown}}">
+                    <label>
+                        {{'CAMPAIGN'|translate}}:
+                        <span class="material-icons" appHoverTooltip labelText="{{'CANNOTEDITTRANSACTION' | translate}}">help</span>
+                    </label>
+
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlCampaign"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.CampaignList" [(ngModel)]="selectedFromCampaignList"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group d-flex ">
+                    <label>
+                        {{'LOCATION'|translate}}:
+                        <span class="material-icons" appHoverTooltip labelText="{{'CANNOTEDITTRANSACTION' | translate}}">help</span>
+                    </label>
+
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlPaymentLocation"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.paymentLocationList" [(ngModel)]="paymentLocationList"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+
+                <div class="form-group d-flex ">
+                    <label>
+                        {{'COLLECTOR'|translate}}:
+                        <span class="material-icons" appHoverTooltip labelText="{{'CANNOTEDITTRANSACTION' | translate}}">help</span>
+                    </label>
+
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlCollector"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.paymentCollectorList" [(ngModel)]="paymentCollectorList"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+                    <div class="form-group d-flex dropdown-check" *ngIf="isCheckStatusDwp && isPaymentTypeCheck">
+                        <label>Check Status:</label>
+                        <div class="input_single" >
+                            <angular2-multiselect id="ddlCheckStatus"
+                                [settings]="setDropDownSettings('',2,false,true,false)"
+                                [data]="checkStatusList"
+                                [(ngModel)]="checkStatusId"
+                                (onSelect)="onItemSelectCheckStatus($event)"
+                                >
+                                <c-item>
+                                <ng-template let-item="item">
+                                    <label [ngClass]="setClsCheckStatusDrp(item.itemName)">{{item.itemName}}</label>
+                                </ng-template>
+                                 </c-item>
+                            </angular2-multiselect>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn_info modal__custom_footer">
+        <button type="button" class="btn btn-default" (click)="closePopup()">{{'CANCEL'|translate}}</button>&nbsp;&nbsp;
+        <button class="btn btn-primary" (click)="update()" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVECHANGES'|translate}}</button>
+        <button class="btn btn-primary btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
+    </div>
+    <div *ngIf="isloading" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>

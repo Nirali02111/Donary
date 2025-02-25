@@ -1,0 +1,63 @@
+<div class="modal__wrapper" ngbAutofocus tabindex="-1">
+  <div class="popup_header modal__custom_header">
+    <h4>{{'CHOSEPAYMENTMETHOD'|translate}}</h4>
+    <button type="button" class="btn btn-dismiss hidden-desktop" (click)="closePopup()">
+        &times;
+    </button>
+  </div>
+
+  <form (ngSubmit)="ProcessPayment()" #f="ngForm">
+    <div class="modal__custom_content">
+      <div class="newCard-label hidden-desktop" (click)="EditWallet('add', null)">
+        <div class="add_card">
+          <i class="fa fa-plus" aria-hidden="true"></i> {{'ADDCARD'| translate}}
+        </div>
+      </div>
+      <div class="card_grid">
+        <div class="card_item" *ngFor="let item of walletList" [ngClass]="{'declined': item.declined==true}">
+          <div class="left">
+            <input
+              type="radio"
+              class="rdbtnwallet"
+              [value]="item.walletId"
+              [(ngModel)]="wallet"
+              (change)="changeWallet(item.walletId)"
+              name="wallet"
+            />
+            <ng-container *appIsMobile>
+              <div class="info">
+                <h6 *ngIf="item.accountName">{{ item.accountName }}</h6>
+                <p *ngIf="item.description">{{ item.description }}</p>  
+              </div>
+            </ng-container>
+            <ng-container *appIsWeb>
+              <h6 *ngIf="item.accountName">{{ item.accountName }}</h6>
+              <p *ngIf="item.description">{{ item.description }}</p>
+            </ng-container>
+          
+          </div>
+          <div class="right arrow" (click)="EditWallet('edit', item.walletId)">
+            <span class="right_arrow"></span>
+          </div>
+        </div>
+
+        <div class="card_item highlighted hidden-mobile" (click)="EditWallet('add', null)">
+          <div class="add_card">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{'ADDCARD'|translate}}
+          </div>
+        </div>
+      </div>
+      <div class="modal__custom_footer">
+        <button type="button" class="btn btn-default" (click)="closePopup()">
+          {{'CANCEL'|translate}}</button
+        >&nbsp;&nbsp;
+        <button class="btn btn-primary" type="submit" *ngIf="!isProcess && this.commonMethodService.isfeatureSetting">{{'PROCESS'|translate}}</button>
+        <button class="btn btn-primary" type="submit" *ngIf="isProcess && this.commonMethodService.isfeatureSetting" [disabled]="isDisable">{{'PROCESS'|translate}}</button>
+        <button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="isloading" class="card-overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>

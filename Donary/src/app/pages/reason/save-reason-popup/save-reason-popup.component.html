@@ -1,0 +1,237 @@
+<div class="create_reason" style="display:block" ngbAutofocus tabindex="-1">
+	<div class="modal-header modal__custom_header">
+		<h4>{{title |translate}}</h4>
+		<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
+	</div>
+	<form  name="reasonInfoForm" (ngSubmit)="fg.form.valid && SaveReasonInfo()" #fg="ngForm" >
+   <div class="reason_wrap">
+	@if(isloading){
+        <ng-container *ngFor="let item of skeletonitems">
+                <app-edit-skeleton-loader [theme1]="{ width: '170px', height: '35px' }" [theme2]="{ width: '350px', height: '35px' }"></app-edit-skeleton-loader>
+          </ng-container>
+		  <!-- <ng-container *ngFor="let item of skeletonitems">
+		  <div class="d-flex align-items-center px-3 pt-3"  >
+			<span class="flex-fill d-flex " style="margin-left:10px" >
+			  <app-skeleton-loader-component style="margin-right:20px"  [isLoading]="isloading" [theme]="{ width: '150px', height: '35px' }">
+			  </app-skeleton-loader-component>
+			  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '350px', height: '35px' }">
+			  </app-skeleton-loader-component>
+			</span>
+		  </div>
+		</ng-container> -->
+    }@else {
+	<div class="inside_wrap modal__custom_content">
+		<div class="form-group-block search-global-donor">              
+			<div class="block_label">{{'SEARCHGLOBALDONOR'| translate}}:</div>
+			<div class="block_inputs">
+			  <div class="form-group">
+				<div class="colm colm-12">
+				  <input type="text" class="form-control" [(ngModel)]="globalDonor" (keyup)="EnterDonor($event)" name="txtglobalDonor" autofocus="" id="globalDonorText"    />                   				  
+				  <button class="search_btn hover_tooltip" *ngIf="isSearchDisable"  data-toggle="tooltip" appHoverTooltip labelText="{{'CHARACTERTOOLTIP' | translate}}" type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>
+			          	  <button class="search_btn hover_tooltip" *ngIf="!isSearchDisable"  data-toggle="tooltip"  type="button"  (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>             				
+				</div>
+				<div *ngIf="commonMethodService.donorList.length == 0 && noResult && !commonMethodService.loaderSearch" class="row">
+                    <div  class="val-error">{{'NORESULTFOUND'|translate}}</div>
+                </div>
+				 <div class="donor_infolist" (clickOutside)="onClickedOutside()" *ngIf="commonMethodService.donorList.length != 0 && showGlobalDonor">
+				  	<div *ngFor="let item of commonMethodService.donorList">                      
+						<div class="donor_row"  (click)="SelectGlobalDonor(item.id)">
+							<app-donor-list-template [donorObj]="item"></app-donor-list-template>
+				  		</div> 
+					</div>
+				</div>                  
+			  </div>
+			</div>
+		  </div>
+		<!-- <div class="form-group-block">
+			<div class="block_label">
+				Sort #:
+			</div>
+			<div class="block_inputs">
+				<input type="text" class="input-text" name="" />
+			</div>
+		</div> -->
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'REASON#'| translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" class="input-text" required maxlength="9" (keypress)="commonMethodService.numberOnly($event)"  [ngClass]="[(reasonNumReq || reasonDuplicate) ? 'error-field' : '']"  id="txtReasonNum" [(ngModel)]="reasonNum" (focusout)="DuplicateReason($event)"  (keyup)="ValidReasonKeyPress($event,'reasonnum')" autofocus  #txtReasonNum="ngModel" name="txtReasonNum"  />
+				<div *ngIf="reasonNumReq" class="row text-danger">
+					<div class="val-error">{{'REASON#'|translate}} {{'ISREQUIRED'|translate}}</div>
+				</div>
+				<div *ngIf="reasonDuplicate" class="row text-danger">
+					<div class="val-error">{{'DUPLICATEREASON'|translate}}</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="form-group-block" *ngIf="this.commonMethodService.isHebrew">
+			<div class="block_label">
+				{{'REASONYIDDISHNAME'| translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" maxlength="90"  [ngClass]="[reasonYiddishReq ? 'error-field' : '']" class="input-text" (keyup)="ValidReasonKeyPress($event,'nameyiddish')"  (keypress)="commonMethodService.HebrewOnly($event)"  id="txtReasonNameJewish" [(ngModel)]="reasonNameJewish"  #txtReasonNameJewish="ngModel" name="txtReasonNameJewish"  />
+				<div *ngIf="reasonYiddishReq" class="row text-danger">
+					<div  class="val-error">Reason Yiddish Name is required</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'REASONNAME' |translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" maxlength="90" required class="input-text" [ngClass]="[reasonReq ? 'error-field' : '']" (keyup)="ValidReasonKeyPress($event,'name')"  (keypress)="commonMethodService.EnglishOnly($event)"  id="txtReasonName" [(ngModel)]="reasonName"   #txtReasonName="ngModel" name="txtReasonName"  />
+				<div *ngIf="reasonReq" class="row text-danger">
+					<div  class="val-error">{{'REASONNAME' |translate}} {{'ISREQUIRED'|translate}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block" *ngIf="!this.commonMethodService.isHebrew">
+			<div class="block_label">
+				{{'REASONYIDDISHNAME'| translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" maxlength="90"  [ngClass]="[reasonYiddishReq ? 'error-field' : '']" class="input-text" (keyup)="ValidReasonKeyPress($event,'nameyiddish')"  (keypress)="commonMethodService.HebrewOnly($event)"  id="txtReasonNameJewish" [(ngModel)]="reasonNameJewish"  #txtReasonNameJewish="ngModel" name="txtReasonNameJewish"  />
+				<div *ngIf="reasonYiddishReq" class="row text-danger">
+					<div  class="val-error">{{'REASONYIDDISHNAME'| translate}} {{'ISREQUIRED'|translate}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'PARENTREASON' |translate}}:
+			</div>
+			<div class="block_inputs">
+				<div class="input_single">                      
+					<angular2-multiselect id="ddlReason"
+					[settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+					[data]="commonMethodService.localReasonList"
+					#drpReason="ngModel" 
+					name="drpReason"
+					(onDeSelect)="OnItemDeSelect($event)"
+					(onDeSelectAll)="OnItemDeSelect($event)"
+					[(ngModel)]="parentId">
+				</angular2-multiselect>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'CAMPAIGN'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<div class="input_single">                      
+					<angular2-multiselect id="ddlCampaign"
+					[settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+					[data]="commonMethodService.localCampaignList"
+					#drpCampaign="ngModel" name="drpCampaign"
+					(onDeSelect)="OnCampaignDeSelect($event)"
+					(onDeSelectAll)="OnCampaignDeSelect($event)"
+					[(ngModel)]="campaignId">
+					<c-item>
+	                    <ng-template let-item="item">
+				            <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+								{{item.itemName}}
+				            	<span class="heb-dropdown-status">{{item.status}}</span></label>
+						</ng-template>
+					</c-item>
+				</angular2-multiselect>
+				</div>
+			</div>
+		</div>	
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'GOAL'|translate}}:
+			</div>
+			<div class="block_inputs" [ngClass]="commonMethodService.reasonCurrencyClass">
+				<input type="text" class="input-text" [maxlength]="10"  (keypress)="commonMethodService.numberOnly($event)"  id="txtGoal" [(ngModel)]="goal"    #txtGoal="ngModel" name="txtGoal"  />					
+			</div>
+		</div>
+
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'EMAIL'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="email" class="input-text" (keyup)="ValidReasonKeyPress($event,'email')"   id="txtEmail" [(ngModel)]="email"    #txtEmail="ngModel" name="txtEmail"  />
+				<div *ngIf="emailInvalid" class="row text-danger">
+					<div  class="val-error">{{'EMAIL'|translate}} {{'ISREQUIRED'|translate}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'HOMEPHONE'|translate}}:
+			</div>
+			<div class="block_inputs colm-number">
+				<div class="d-flex align-items-stretch">
+					<div class="dropdown">
+		                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{selectedPhoneFlag}}></i>{{dailingPhoneCode}}</a>
+		                <div class="dropdown-menu">
+						  <div class="form-check" *ngFor="let country of countries">
+							<input type="radio" name="phonecountry" class="form-check-input d-none" id="Phone_{{country.countryCodeID}}" [value]="country.countryCodeID" [(ngModel)]="selectedPhoneCountry" (change)="onCountryChange(country.countryCodeID,country.dialingCode,'Phone')">
+							<label class="form-check-label" for="Phone_{{country.countryCodeID}}"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>		
+					       </div>						 
+		                </div>								  
+		              </div>
+					<input type="text" class="input-text phone-field" id="txtPhone1" [(ngModel)]="phone1"    #txtPhone1="ngModel" name="txtPhone1"
+						[validation]="true" 
+						mask="{{maskSetVal}}"  (input)="onSearchChange($event.target.value)" 
+					/>
+				</div>
+				<div class="row text-danger" *ngIf="txtPhone1.invalid">
+					<div class="val-error">{{'PHONEINVALID'|translate}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'CELL'|translate}}:
+			</div>
+			<div class="block_inputs colm-number">
+				<div class="d-flex align-items-stretch">
+					<div class="dropdown">
+	                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{selectedCellFlag}}></i>{{dailingCellCode}}</a>
+	                    <div class="dropdown-menu">
+						  <div class="form-check" *ngFor="let country of countries">
+							<input type="radio" name="cellcountry" class="form-check-input d-none" id="Cell_{{country.countryCodeID}}" [value]="country.countryCodeID" [(ngModel)]="selectedCellCountry" (change)="onCountryChange(country.countryCodeID,country.dialingCode,'Cell')">
+							<label class="form-check-label" for="Cell_{{country.countryCodeID}}"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>		
+					       </div>	
+	                    </div>
+	                  </div>
+					<input type="text" class="input-text phone-field" id="txtPhone2" [(ngModel)]="phone2" #txtPhone2="ngModel" name="txtPhone2" 
+						[validation]="true" 
+						mask="{{maskSetVal2}}"  (input)="onSearchChange2($event.target.value)" 
+					/>
+				</div>
+				<div class="row text-danger" *ngIf="txtPhone2.invalid">
+					<div class="val-error">{{'PHONEINVALID'|translate}}</div>
+				</div>
+
+			</div>
+		</div>		
+	</div>
+
+	
+	 } 
+	 <div class="btn_info modal__custom_footer">
+		<div class="left_part">
+			<button class="btn btn-remove" type="button" (click)="deleteReason()"*ngIf="isEditMode">{{'DELETE'|translate}}</button>
+		</div>
+		<div class="right_part">
+			<button class="btn btn-default" type="button" (click)="closePopup()">{{'CANCEL'|translate}}</button>
+			<!-- <button class="btn btn-primary btn-for-disable"  [disabled]="!formValid || !fg.form.valid">Save</button> -->
+			<button class="btn btn-primary btn-for-disable" [disabled]="!fg.form.valid || disabledSaveButton" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
+			<button class="btn btn-primary btn-for-disable btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
+		</div>
+	</div>
+	</div>
+</form>
+<div *ngIf="commonMethodService.loaderSearch" class="card-overlay" >
+	<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div> 
+</div>
+
+

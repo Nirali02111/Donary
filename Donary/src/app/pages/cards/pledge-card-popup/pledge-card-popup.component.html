@@ -1,0 +1,615 @@
+<div
+  class="diglog_modal payment_schedule_moodal pledge_card"
+  ngbAutofocus
+  tabindex="-1"
+>
+  <div class="diglog_header modal__custom_header">
+    <div class="titlebar">
+      <div class="pledge_num">
+        <h4>Pledge #{{ pledgeNum }}</h4>
+      </div>
+      <p>
+        {{ pledgeDate | donaryDateFormat : "name" }} |
+        <span class="lng_hebrew">{{ pledgeJewishDate }}</span>
+      </p>
+    </div>
+    <div class="header_actions pledge_actions">
+      <ng-template
+        *ngIf="!isDisabled; then editButtonTmp; else disableEditButtonTmp"
+      ></ng-template>
+
+      <ng-template #editButtonTmp>
+        <button
+          class="b_tn btn_ primary"
+          (click)="openEditPledgePopup(pledgeId)"
+          data-hover="Edit"
+        >
+          <i class="fa fa-edit" aria-hidden="true"></i>
+        </button>
+      </ng-template>
+
+      <ng-template #disableEditButtonTmp>
+        <div class="save-btn-wrapper">
+          <button
+            class="b_tn btn_ primary plege-edit-disable plege-edit  "
+            style="background: rgba(123, 91, 196, 0.5)"
+          >
+            <i class="fa fa-edit" aria-hidden="true"></i>
+            <span
+            class="tooltip-button-disabled"
+            *ngIf="isDisabled"
+            data-hover="Pledge can not be voided/edited if its applied to a seat, To make changes on pledge please update seat information"
+          >
+          </span>
+          </button>
+
+        </div>
+      </ng-template>
+
+      <div (clickOutside)="onClickedOut()">
+        <button class="b_tn hidden-mobile" type="button" (click)="showTransMenu()">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu transaction_opts show" *ngIf="showTrans">
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              *ngIf="makeTransactionPermission"
+              (click)="makeTransactionPopup()"
+            >
+              <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+              New Transaction
+            </a>
+          </li>
+          <li *ngIf="isReminderDisplay()">
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="AddReminderPopup()"
+            >
+              <i class="fas fa-bell" aria-hidden="true"></i>
+              Add Reminder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div (clickOutside)="onClickedOutside()">
+        <button
+          class="b_tn"
+          data-hover="Actions"
+          type="button"
+          (click)="showActionMenu()"
+          aria-expanded="false"
+        >
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu paymnt_opts" *ngIf="showAction">
+          <li class="hidden-mobile">
+            <ng-template
+              *ngIf="!isDisabled; then editPlegdeTmp; else disableEditPledgeTmp"
+            ></ng-template>
+
+            <ng-template #editPlegdeTmp>
+              <a
+                class="dropdown-item"
+                style="cursor: pointer"
+                (click)="openEditPledgePopup(pledgeId)"
+              >
+                <i class="fa fa-edit" aria-hidden="true"></i>
+                Edit Pledge
+              </a>
+            </ng-template>
+
+            <ng-template #disableEditPledgeTmp>
+              <div class="save-btn-wrapper">
+                <a class="anchor-disable plege-edit-disable">
+                  <span class="anchor-disable-span"><i class="fa fa-edit" aria-hidden="true"></i>
+                  Edit Pledge
+                  </span>
+                  <span
+                  class="tooltip-button-disabled"
+                  data-hover="Pledge can not be voided/edited if its applied to a seat, To make changes on pledge please update seat information"
+                ></span>
+                </a>
+
+              </div>
+            </ng-template>
+          </li>
+          <li class="hidden-desktop">
+            <a class="dropdown-item" type="button" (click)="makeTransactionPopup()">
+              <span class="material-icons">payment</span>
+              {{'ADD' | translate}} {{'PAYMENT' | translate}}
+            </a>
+          </li>
+          <li class="hidden-desktop reminder-li">
+            <a class="dropdown-item" (click)="AddReminderPopup()">
+              <span class="material-icons">notifications</span>
+              {{'CREATEREMINDER' | translate}}
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="printReceipt(pledgeId)"
+            >
+              <i class="fa fa-print" aria-hidden="true"></i>
+              {{'PRINT'|translate}} {{'Bill' | translate}}
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="SendTextReceipt(pledgeId, phoneNumbers,accountId)"
+            >
+              <span class="text_icon"></span>
+              {{'TEXT'|translate}} {{'Bill' | translate}}
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="SendEmailReceipt(pledgeId, emails, phoneNumbers)"
+            >
+              <i class="fa fa-at" aria-hidden="true"></i>
+              {{'EMAIL'|translate}} {{'Bill' | translate}}
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="sendMailReceipt(pledgeId)"
+            >
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              {{'MAIL' | translate}} {{'Bill' | translate}}
+            </a>
+          </li>
+          <li>
+            <ng-template
+              *ngIf="
+                !isDisabled;
+                then editVoidPlegdeTmp;
+                else disableEditVoidPledgeTmp
+              "
+            ></ng-template>
+
+            <ng-template #editVoidPlegdeTmp>
+              <a
+                class="dropdown-item"
+                style="cursor: pointer"
+                appHoverTooltip
+                (click)="!pledgeDetails?.aliyaGroupId && (VoidPledge(pledgeId))"
+                [ngStyle]="pledgeDetails?.aliyaGroupId ? { opacity: '0.5' } : null"
+                [labelText]="!pledgeDetails?.aliyaGroupId ? ('VOIDPLEDGE' | translate) : 'The pledge is applied to an aliya and can only be voided in the aliya popup'"
+              >
+                <i class="fa fa-ban" aria-hidden="true"></i>
+                {{'VOIDPLEDGE' | translate}}
+              </a>
+            </ng-template>
+
+            <ng-template #disableEditVoidPledgeTmp>
+              <div class="save-btn-wrapper">
+                <a class="anchor-disable plege-edit-disable">
+                  <span class="anchor-disable-span"><i class="fa fa-ban" aria-hidden="true"></i>
+                  {{'VOIDPLEDGE' | translate}}
+                  </span>
+                  <span
+                  class="tooltip-button-disabled"
+                  data-hover="Pledge can not be voided/edited if its applied to a seat, To make changes on pledge please update seat information"
+                ></span>
+                </a>
+
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+  </div>
+  <div class="diglog_body modal__custom_content">
+    <div class="top_row">
+      <div class="name_colm">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }"><h4>{{ donor }}</h4></app-skeleton-loader-component>
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '170px', height: '15px' }"><h5 class="lng_hebrew">{{ donorJewishName }}</h5></app-skeleton-loader-component>
+      </div>
+      @if(isloading){
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '290px', height: '100px' }"></app-skeleton-loader-component>
+      }@else{
+        <div class="amounts_colm">
+          <div class="inline-col">
+            <div class="pledge-total-box">
+              <h6>Total Amount:</h6>
+              <div class="value">
+                {{ commonMethodService.formatAmount(totalAmount) }}
+              </div>
+            </div>
+            <span class="label-status" [ngClass]="status_class">
+              {{ status }}
+            </span>
+          </div>
+          <div class="pledge-total-amount-box">
+            <div class="inline-col">
+              <h6>Paid:</h6>
+              <div class="value small-text">
+                {{ commonMethodService.formatAmount(paidAmount) }}
+              </div>
+            </div>
+            <div class="inline-col">
+              <h6>Balance:</h6>
+              <div class="value small-text">
+                {{ commonMethodService.formatAmount(balance) }}
+              </div>
+            </div>
+            <div class="inline-col">
+              <button
+                *ngIf="status != 'Paid'"
+                class="btn btn-primary"
+                (click)="makeTransactionPopup()"
+              >
+                Pay Pledge
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    
+    </div>
+
+    <div class="tabs__wrap">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+          <a class="active" href="#pledgeInfo" role="tab" data-toggle="tab">
+            Info
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#pledgeApplied" role="tab" data-toggle="tab">
+            Payments Applied
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#pledgeNotesInput" role="tab" data-toggle="tab">Notes</a>
+        </li>
+        <li role="presentation">
+          <a href="#pledgeRecieptLog" role="tab" data-toggle="tab">
+            Reciept Log
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#pledgeReminder" role="tab" data-toggle="tab">REMINDERS</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div
+          role="tabpanel"
+          class="tab-pane fade in active show"
+          id="pledgeInfo"
+        >
+          <div class="left_colm">
+            @if(isloading){
+
+              <ng-container *ngFor="let item of skeletonitems">
+                <div style="margin-bottom: 0px;">
+                  <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+                </div>
+              </ng-container>
+            }
+            @else{
+              <div class="block-col">
+                <span class="icon campaign_icon"></span>
+                <span class="text">
+                  <h6>Campaign:</h6>
+                  <p>{{ campaign }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon reason_icon"></span>
+                <span class="text">
+                  <h6>Reason:</h6>
+                  <p>{{ reason }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon location_icon"></span>
+                <span class="text">
+                  <h6>Location:</h6>
+                  <p>{{ location }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon collector_icon"></span>
+                <span class="text">
+                  <h6>Collector:</h6>
+                  <p>{{ collector }}</p>
+                </span>
+              </div>
+              <div class="block-col" *ngIf="latitude && longitude">
+                <span class="icon map_icon-view">
+                  <img src="assets/dist/img/pin-map.svg" />
+                </span>
+                <span class="text">
+                  <p
+                    class="lng_hebrew"
+                    (click)="openMapCardPopup()"
+                    style="cursor: pointer; text-decoration: underline"
+                  >
+                    Map View:
+                  </p>
+                </span>
+              </div>
+            }
+          </div>
+          <div class="right_colm">
+            @if(isloading){
+              <div class="inline-colms">
+                <ng-container *ngFor="let item of skeletoncolitems">
+                  <div class="inline-col" style="margin-bottom: 0px;" >
+                    <app-skeleton-info-loader [isLoader]="isloading"></app-skeleton-info-loader>
+                  </div>
+                </ng-container>
+              </div>
+            } @else {
+              <div class="inline-colms">
+                <div class="inline-col">
+                  <h6>User:</h6>
+                  <div class="value small-text">
+                    {{ createdBy }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>Source:</h6>
+                  <div class="value small-text">
+                    {{ source }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6></h6>
+                  <div class="value small-text"></div>
+                </div>
+                <div class="inline-col">
+                  <h6>Device Name:</h6>
+                  <div class="value small-text">
+                    {{ deviceName }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6></h6>
+                  <div class="value small-text"></div>
+                </div>
+                <div class="inline-col">
+                  <h6>Ref. Num</h6>
+                  <div class="value small-text">
+                    {{ refNum }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>Created At:</h6>
+                  <div class="value small-text">
+                    {{ createdDate | donaryDateFormat: "long" }}
+                  </div>
+                </div>
+                <div *ngIf="seatId != null" class="inline-col">
+                  <h6>Applied to seat</h6>
+                  <div
+                    (click)="openSeatsCardPopup(seatId,seatSaleId)"
+                    class="value small-text"
+                  >
+                    <a style="color: #8a2be2; cursor: pointer">{{ seatId }}</a>
+                  </div>
+                </div>
+              </div>
+            }
+           </div>
+         </div>
+        <div role="tabpanel" class="tab-pane fade" id="pledgeApplied">
+          <div class="table__main">
+            <table
+              cellpadding="0"
+              cellspacing="0"
+              border="0"
+              [svData]="pledgePayments"
+              #sv="svDataTable"
+              [svRowsOnPage]="10"
+              svSortBy="paymentDate"
+              svSortOrder="asc"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <sv-default-sorter by="source">Receipt #</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="source">Amount</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="source">Date</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="source">
+                      Yiddish Date
+                    </sv-default-sorter>
+                  </th>
+                  <th class="status">
+                    <sv-default-sorter by="source">Status</sv-default-sorter>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="pledgePayments?.length > 0">
+                <tr *ngFor="let item of pledgePayments; let i = index">
+                  <td
+                    style="cursor: pointer; color: blueviolet"
+                    (click)="openPaymentCardPopup(item.paymentId)"
+                  >
+                    #{{ item.receiptNum }}
+                  </td>
+                  <td>
+                    <strong>
+                      {{ commonMethodService.formatAmount(item.amount) }}
+                    </strong>
+                  </td>
+                  <td>
+                    {{ item.paymentDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td>
+                    <strong class="lng_hebrew">
+                      {{ item.paymentJewishDate }}
+                    </strong>
+                  </td>
+                  <td class="status">
+                    <span class="status " [ngClass]="plagePaymentStatusCls(item.status)">{{ item.status }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          role="tabpanel"
+          class="tab-pane fade pledge-note"
+          id="pledgeNotesInput"
+        >
+          <div class="notes-box">
+            <label class="lbl_text">INTERNAL NOTE:</label>
+            <textarea
+              class="notes_input"
+              [disabled]="true"
+              [(ngModel)]="note"
+            ></textarea>
+          </div>
+          <div class="notes-box">
+            <label class="lbl_text">EXTERNAL NOTE:</label>
+            <textarea
+              class="notes_input"
+              [disabled]="true"
+              [(ngModel)]="ExternalNote"
+            ></textarea>
+          </div>
+          <div class="pymt_log" *ngIf="loglist != null">
+            <span class="lblPaymentLogs">Pledge Logs</span>
+            <br />
+            <br />
+            <span [innerHTML]="loglist"></span>
+            <br />
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="pledgeRecieptLog">
+          <div class="table__main">
+            <table
+              cellpadding="0"
+              cellspacing="0"
+              border="0"
+              [svData]="lstRelatedReceiptLogs"
+              #sv="svDataTable"
+              [svRowsOnPage]="10"
+              svSortBy="createdDate"
+              svSortOrder="asc"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <sv-default-sorter by="source">Source</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="sentTo">Sent To</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="createdDate">
+                      Date & Time
+                    </sv-default-sorter>
+                  </th>
+                  <th class="status success_pymnt">
+                    <sv-default-sorter by="status">Status</sv-default-sorter>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="lstRelatedReceiptLogs?.length > 0">
+                <tr *ngFor="let item of lstRelatedReceiptLogs; let i = index">
+                  <td>{{ item.source }}</td>
+                  <td>{{ item.sentTo }}</td>
+                  <td>
+                    {{ item.createdDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td class="status">
+                    <span [ngClass]="item.status_class">
+                      {{ item.status == true ? "Success" : "Failed" }}
+                    </span>
+                    <span (click)="OpenPdf(item.documentPath)">
+                      <i class="fas fa-eye"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" role="tabpanel" id="pledgeReminder">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="table__main reminder__table">
+                <table
+                  class="table table-striped"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  [svData]="lstRelatedNotifications"
+                  #sv="svDataTable"
+                  [svRowsOnPage]="10"
+                  svSortBy="createdDate"
+                  svSortOrder="asc"
+                >
+                  <thead>
+                    <tr>
+                      <th>TITLE</th>
+                      <th>DUE DATE & TIME</th>
+                      <th>STATUS</th>
+                      <th>ASSIGNEE</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstRelatedNotifications?.length > 0">
+                    <tr *ngFor="let item of lstRelatedNotifications">
+                      <td>{{ item.title }}</td>
+                      <td>
+                        {{ item.dueDate | donaryDateFormat: "long" }}
+                      </td>
+                      <td class="status">
+                        <span class="status-{{ item.status }}">
+                          {{ item.status }}
+                        </span>
+                      </td>
+                      <td class="notification-td">
+                        {{ item.assignee
+                        }}<span
+                          class="open-notification"
+                          style="cursor: pointer"
+                          (click)="
+                            openNotificationSidebarPopup(item.notificationId)
+                          "
+                          >></span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="lstRelatedNotifications?.length == 0">
+                    <tr>
+                      <td class="text-center" colspan="5">
+                        No active reminders
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

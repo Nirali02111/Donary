@@ -1,0 +1,20 @@
+<div class="modal-body">
+    <button class="modal-close"><span (click)="closePopup()">×</span></button>
+    <h2>Generate receipt</h2>
+    <p>SELECT FILING COUNTRY:</p>
+    <ul class="d-flex flex-column" >
+        <li *ngFor="let country of filteredCountries; let i = index">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" [(ngModel)]="selectedCountry" [value]="country.id" [id]="'country'+country.id" (change)="onCountryChange(country.id)">
+                <label class="form-check-label" [for]="'country'+country.id">
+                   {{country.countryName}}
+                </label>
+            </div>
+        </li>
+    </ul>
+    <div class="d-flex w-100">
+        <button class="btn btn-default w-100" (click)="closePopup()" >Cancel</button>
+        <span class="p-2"></span>
+        <button class="btn btn-primary w-100" (click)="Submit()" [disabled]="isloading">Generate</button>
+    </div>
+</div>

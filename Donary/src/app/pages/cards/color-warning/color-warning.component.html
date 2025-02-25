@@ -1,0 +1,24 @@
+<div class="modal-body text-center">
+    <a class="modal-close" href="javascript:void(0)" title="Close" (click)="closeModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11.323" height="11.323" viewBox="0 0 11.323 11.323">
+            <g id="Group_417" data-name="Group 417" transform="translate(5.662 -2.833) rotate(45)">
+                <line id="Line_185" data-name="Line 185" y2="12.013" transform="translate(6.007 0)" fill="none"
+                    stroke="#b8b8b8" stroke-linecap="round" stroke-width="2" />
+                <line id="Line_186" data-name="Line 186" x2="12.013" transform="translate(0 6.007)" fill="none"
+                    stroke="#b8b8b8" stroke-linecap="round" stroke-width="2" />
+            </g>
+        </svg>
+    </a>
+    <h4 class="modal-title">Color warning</h4>
+    <p>Your logo is more than 50% color. Logos should be no more than 50% full color. Otherwise your receipts will not
+        be
+        printed properly.</p>
+    <p class="small">Example of how your upload should be:</p>
+    <figure>
+        <img src="assets/dist/img/image-dark.png" alt="Dark Image" width="" height="" />
+    </figure>
+</div>
+<div class="modal-footer d-flex flex-column border-0 pt-0">
+    <button class="btn btn-primary w-100 m-0" (click)="uploadNewLogo()">Upload new logo</button>
+    <button class="btn btn-defult mx-auto p-0 border-0 mt-4" (click)="closeModal()">Cancel</button>
+</div>

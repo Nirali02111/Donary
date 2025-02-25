@@ -1,0 +1,272 @@
+
+<div class="card ui-widget-content" id="resizable" ngbAutofocus tabindex="-1">
+  <button  class="totalp-btn total-panel-close-btn" (click)="closePanel()" type="button"></button>
+  <div class="card-body">
+    <div class="extra__details">
+      <!-- Date range and advanced filter options -->
+      <div class="filters__options">        
+        <div class="search_opts">
+          <button class="dismiss" (click)="closePanel()">&times;</button>
+          <h4>{{'TOTAL' | translate}}</h4>
+          <!-- Card Type Drop Down -->
+
+          <div class="subby_dropdown">
+            <span>{{'SUMBY' | translate}}:</span>
+            <div class="custo_selct">
+              <angular2-multiselect id="ddlCardType"
+              [settings]="commonMethodService.setDropDownSettings('',1,false,true,false)"
+              [data]="cardFilter"   
+              (onSelect)="cardTypeChange(cardType)"                                   
+              [(ngModel)]="cardType"
+              >
+          </angular2-multiselect> 
+            </div>
+          </div>
+          <div class="input-group date_picker">
+            <input
+              type="text"
+              class="form-control"
+              ngxDaterangepickerMd
+              [(ngModel)]="selectedDateRange"
+              [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+              [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+              [ranges]="commonMethodService.isHebrew==true?commonMethodService.hebranges:commonMethodService.ranges"
+              [locale]="commonMethodService.isHebrew==true?commonMethodService.heblocale:commonMethodService.locale"
+              [linkedCalendars]="commonMethodService.linkedCalendars"
+              [opens]="commonMethodService.open"
+              [drops]="commonMethodService.drop"
+              [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+              [showClearButton]="commonMethodService.showClearButton"
+              [placeholder]="commonMethodService.placeholder"
+              (datesUpdated)="datesUpdated($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="far fa-calendar-alt ngx-daterangepicker-action"
+                  (click)="CalendarFocus()"
+                ></i>
+              </span>
+            </div>
+          </div>
+
+          
+
+          <div class="input-group filter_field">
+            <button
+              type="button"
+              
+              class="btn btn-default"
+            >
+              <span class="filter_count">0</span>
+              <span class="filter_text">{{'FILTER'|translate}}</span>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="fields_opts">
+
+          <div class="input-group">
+            <div class="loct_showall">
+                <span class="show_all">{{'SHOWALL'|translate}}: &nbsp;</span>
+                <label class="switch">
+                    <input type="checkbox" (change)="OnCheckboxChange($event)" >
+                    <span class="slider round"></span>
+                  </label>
+            </div> 
+          </div>
+          
+
+          <div class="dropdown field_nwdsgn tbl_field">
+            <button
+              id="dLabel"
+              type="button"
+              class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-tag"> <span> {{'FIELDS'|translate}}</span></i>
+            </button>
+            <ul
+              class="dropdown-menu multi-level field_dropdown"
+              role="menu"
+              aria-labelledby="dropdownMenu"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <li
+                class="dropdown"
+                style="list-style: none"
+                (click)="$event.stopPropagation()"
+                cdkDrag
+                *ngFor="let objcolField of colFields; let i = index"
+              >
+                <div class="fieldlst_chkbox" style="padding-left: 50px">
+                  <input
+                    type="checkbox"
+                    class="fields_chkbx"
+                    class=""
+                    [(ngModel)]="objcolField.isVisible"
+                    (change)="
+                      setGridColVisibility(
+                        $event,
+                        objcolField.colName,
+                        objcolField.isVisible
+                      )
+                    "
+                    [id]="objcolField.colId"
+                  />
+                  <label class="fields_lbl" [for]="objcolField.colId">{{
+                    objcolField.colName
+                  }}</label>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown dropleft extra_opts">
+            <button
+            appHoverTooltip labelText="{{'MOREACTIONS' | translate}}"
+              type="button"
+              class="btn btn-default"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span>...</span>
+            </button>
+            <ul
+              class="dropdown-menu multi-level"
+              role="menu"
+              aria-labelledby="dropdownMenu"
+            >
+              <li class="dropdown">
+                <a class="dropdown-item"
+                  ><i class="fa fa-file-import"></i> {{'IMPORT'|translate}}</a
+                >
+              </li>
+              <hr class="seprator" />
+              <li class="dropdown">
+                <a class="dropdown-item" (click)="downloadExcel()"
+                  ><i class="fa fa-file-excel"></i> {{'EXCEL'|translate}}</a
+                >
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-item" 
+                  ><i class="fa fa-print"></i> {{'PRINT'|translate}}</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Type Chip -->
+      <div class="row">
+        <div class="col-12">
+            <div class="row parent_cardchip">
+                <div class="col-3" *ngFor="let objPaymentTypeChip of paymentTypeChipData">
+                    <div [class]="objPaymentTypeChip.paymentTypeChipCSSClass"
+                        (click)="GetPaymentChipType(objPaymentTypeChip)">
+                        <div class="info-box-content">
+                            <div class="row">
+                                <div class="col-12 top_value">
+                                    <span class="info-box-text"
+                                        [title]="objPaymentTypeChip.paymentType">{{ (objPaymentTypeChip.name != null && objPaymentTypeChip.name.length>18)? (objPaymentTypeChip.name | slice:0:18)+'..':(objPaymentTypeChip.name) }}</span>
+                                        <span class="info-box-count ">({{objPaymentTypeChip.paymentCount}}) </span>
+                                </div>
+                                <div class="col-12 bottom_value">
+                                    <span class="info-box-number">{{commonMethodService.formatAmount(objPaymentTypeChip.total)}}</span>
+                                </div> 
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-12 col-sm-12 col-lg-12">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-lg-12">
+          <div class="table__sticky" id="print_trans_div">
+            <div class="table-responsive transaction__table total-pnl-tbl">
+              <table
+                class="table table-striped redesign_table"
+                id="paymenttranstbl"
+                [svData]="gridFilterData"
+                #sv="svDataTable"
+               
+                svSortBy="receiptNum"
+                svSortOrder="desc"
+              >
+                <thead>
+                  <tr
+                    cdkDropList
+                    cdkDropListOrientation="horizontal"
+                    (cdkDropListDropped)="dropColumn($event)"
+                  >
+                    <ng-container
+                      *ngFor="let objHeader of headerList; let i = index"
+                    >
+                      <th
+                        cdkDrag
+                        *ngIf="checkGridColVisibility(objHeader.colName)"
+                      >
+                        <sv-default-sorter [by]="objHeader.sortName"
+                          >{{ objHeader.colName }}
+                        </sv-default-sorter>
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+
+
+                <tbody *ngIf="sv.data?.length > 0">
+                  <tr *ngFor="let item of sv.data; let i=index">
+                      
+                      <ng-container  *ngFor="let objHeader of headerList;">  
+                          <ng-container  *ngIf="checkGridColVisibility(objHeader.colName)">
+                            <td  *ngIf="objHeader.sortName=='payments'">{{ commonMethodService.formatAmount(item.payments) }}</td>                                        
+                            <td  *ngIf="objHeader.sortName=='openPledges'" > {{ commonMethodService.formatAmount(item.openPledges) }} </td>                                        
+                            <td  *ngIf="objHeader.sortName=='scheduled'">{{ commonMethodService.formatAmount(item.scheduled) }}</td>
+                            <td  *ngIf="objHeader.sortName=='raised'">{{ commonMethodService.formatAmount(item.raised) }}</td>
+                          </ng-container>
+                      </ng-container>    
+                                                                        
+                  </tr>
+              </tbody>
+
+                <tbody *ngIf="sv.data?.length == 0">
+                  <tr>
+                    <td colspan="15" style="text-align: center">
+                      {{'NODATAFOUND'|translate}}
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="24">                      
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="new_tblfoot">
+              <div class="show_entry">                                                  
+                  <sv-bootstrap-paginator [svTable]="sv">
+                  </sv-bootstrap-paginator>                          
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>
+

@@ -1,0 +1,32 @@
+<div class="input-amount position-relative">
+  <span class="currency"> {{ symbol }}</span>
+  <ng-select class="ng-currency" bindLabel="currencyName" bindValue="currencyName" formControlName="currency"
+    [items]="currencies" [searchable]="false">
+    <ng-template ng-option-tmp let-item="item">
+      {{ item.currencyName }}
+    </ng-template>
+  </ng-select>
+
+  <input type="text" maxlength="14"
+    (keypress)="commonMethodService.numberOnly($event)  && changeSideTab($event.target.value,'payPledgeTab')"
+    (keydown.Tab)="focusAmtEvent()" (input)="formatAmt$.next($event.target.value)"
+    class="form-control" placeholder="0.00" formControlName="amount" #donationAmt name="" autofocus
+    (blur)="removeDpw()" />
+  <ul class="predefine_amount" style="cursor: pointer">
+    <li #amount10 *ngFor="let item of presetAmountList; let i = index" (click)="
+      SelectAmount(item.amount, item.amountID);
+    " class="btn-ten-li li-{{ item.amountID }}">
+      <span tabindex="0" [id]="item.amountID" (focusin)="
+        fisrtIndexTab($event, item.amount, item.amountID)
+      " (focusout)="removeClsfisrtIndexTab($event)">{{ item.text }}</span>{{
+      commonMethodService.formatAmount(item.amount) }}
+    </li>
+    <!-- <li #amount10 *ngFor="let item of presetAmountList; let i = index">
+        <span tabindex="0" [id]="item.amountID">{{ item.text }}</span>{{
+        commonMethodService.formatAmount(item.amount) }}
+      </li> -->
+  </ul>
+  @if (amount?.touched && amount?.invalid) {
+  <app-input-error [errors]="amount?.errors"></app-input-error>
+  }
+</div>

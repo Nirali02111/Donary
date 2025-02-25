@@ -1,0 +1,17 @@
+/* Define a custom CSS class for the slow animation */
+.slow-modal-open {
+    animation: modalOpenAnimation 0.5s ease; /* Adjust the animation duration as needed */
+  }
+  
+  /* Define the animation keyframes */
+  @keyframes modalOpenAnimation {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  

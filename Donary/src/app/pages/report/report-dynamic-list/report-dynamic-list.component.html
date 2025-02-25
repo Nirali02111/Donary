@@ -1,0 +1,146 @@
+<table class="table table-striped column-{{setClmCls}}" [id]="tableId"  [svData]="gridFilterData" #sv="svDataTable"
+[svRowsOnPage]="recordCount" svSortBy="receiptNum" svSortOrder="asc">
+
+    <tr class="thead-tr dynamic-col">
+        <th colspan="4">
+            <!-- <sv-default-sorter by="amount"> -->
+                <!-- <span class="col-bckground"> -->
+                    <!-- <span class="expand-button" *ngIf="!isCompare" (click)="rowExpand()">
+                        <span *ngIf="!isGridVisible">+</span><span *ngIf="isGridVisible">-</span>
+                    </span> -->
+                    <span class="report_colinfo">
+                        <p class="reprt_colname">{{columnName}}</p>
+                        <p class="reprt_tlt">{{'TOTAL'  |translate}} :  {{ commonMethodService.formatAmount(totalAmount)}}</p>
+                    </span>
+                    <span class="report_sort">
+                      <i class="fa fa-angle-up" style="cursor: pointer;" (click)="Sort('desc')"></i> <i class="fa fa-angle-down" style="cursor: pointer;" (click)="Sort('asc')"></i>
+                    </span>
+                    <span class="report_action">
+                        <i class="fa fa-edit"  *ngIf="!isCompare" (click)="EditSettingParameter(true)"></i>
+                        <i class="fa fa-trash" (click)="DeleteComponent(tableId,reportQueryId)"></i>
+                    </span>
+                    <!-- </span> -->
+            <!-- </sv-default-sorter> -->
+            <ng-container *ngIf="isGridVisible">
+                <div class="select-parameter">
+                 <p>
+                     <span class="parameter-title">{{'TRANSECTIONTYPE'  |translate}} :</span>
+                     <span class="parameter-value">{{transactionTypeStr}}</span>
+                    </p>
+                <p *ngIf="transactionType==1 && isPaymentTypeStr">
+                    <span class="parameter-title">{{'PAYMENTTYPE'  |translate}}:</span>
+                    <span class="parameter-value">{{paymentTypeStr}}</span>
+                </p>
+                <p>
+                    <span class="parameter-title">{{'AMOUNTRANGE'  |translate}} :</span>
+                    <span class="parameter-value">{{amountRange}}</span>
+                </p>
+                <p *ngIf="isDateRangeStr">
+                    <span class="parameter-title">{{'DATERANGE'  |translate}} :</span>
+                    <span class="parameter-value">{{dateRangeStr}}</span>
+                </p>
+                <p *ngIf="isReasonStr">
+                    <span class="parameter-title">{{'PAYMENTREASON'  |translate}} :</span>
+                    <span class="parameter-value"> {{reasonStr}}</span>
+                </p>
+                <p *ngIf="isCollectorStr">
+                    <span class="parameter-title">{{'COLLECTOR'  |translate}} :</span>
+                    <span class="parameter-value">{{collectorStr}}</span>
+                </p>
+                <p *ngIf="isLocationStr">
+                    <span class="parameter-title">{{'LOCATION'  |translate}} :</span>
+                    <span class="parameter-value">{{locationStr}}</span>
+                </p>
+                <p *ngIf="isCampaignStr">
+                    <span class="parameter-title">{{'CAMPAIGN'  |translate}} :</span>
+                    <span class="parameter-value"> {{campaignStr}}</span>
+                </p>
+                <p *ngIf="transactionType==1">
+                    <span class="parameter-title">{{'PAYMENTSTATUS'  |translate}} :</span>
+                    <span class="parameter-value">{{paymentStatusStr}}</span>
+                </p>
+                <p *ngIf="transactionType==4 || transactionType==5 ">
+                    <span class="parameter-title">{{'SCHEDULESTATUS'  |translate}} :</span>
+                    <span class="parameter-value">{{scheduleStatusStr}}</span>
+                </p>
+                <p *ngIf="transactionType!=1">
+                    <span class="parameter-title">{{'AMOUTTYPE'  |translate}} :</span>
+                    <span class="parameter-value"> {{amountTypeStr}}</span>
+                </p>
+            </div>
+
+            </ng-container>
+        </th>
+</tr>
+<!-- <tr class="transparent" *ngIf="transactionType==1 || transactionType==0"></tr> -->
+
+
+<tbody  *ngIf="sv.data?.length > 0">
+    <tr class="tbody_header" *ngIf="transactionType==2">
+        <td colspan="4">
+            <table>
+                <tr>
+                    <th *ngIf="isTotalAmountType">{{'TOTALAMOUNT'  |translate}}</th>
+                    <th *ngIf="isBalanceAmountType">{{'BALANCE'  |translate}}</th>
+                    <th *ngIf="isPaidAmountType">{{'PAID'  |translate}}</th>
+                    <th>&nbsp;</th>
+               </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="tbody_header" *ngIf="transactionType==6">
+        <td colspan="4">
+            <table>
+                <tr>
+                    <th *ngIf="isTotalPaymentType">{{'PAYMENTS'  |translate}}</th>
+                    <th *ngIf="isOpenPledgesType">{{'OPENPLEDGES'  |translate}}</th>
+                    <th *ngIf="isPendingScheduleType">{{'PENDINGSHEDULES'  |translate}}</th>
+                    <th *ngIf="isTotalAmtType">{{'TOTALAMOUNT'  |translate}}</th>
+               </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="tbody_header empty_space_header"*ngIf="transactionType==1||transactionType==3 || transactionType==0 || transactionType==4 ||transactionType==5">
+        <td colspan="4">
+            <table>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+               </tr>
+            </table>
+        </td>
+    </tr>
+   <!-- <tr  *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : 'twoline_height']"> -->
+   <tr  *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : Treeline ?'threeline_height' : 'twoline_height']">
+        <td *ngIf="transactionType==0 && CheckInteger(item.amount)==0" > {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==0 && CheckInteger(item.amount)==-1" class="highlight_red" > {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==0 && CheckInteger(item.amount)==1" class="highlight_green" >+ {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==1" style="color: #6D55A5;cursor: pointer;" (click)="openPaymentListCardPopup(item.accountId)"> {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==4 || transactionType==5"> {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==2 && isTotalAmountType" style="color: #6D55A5;cursor: pointer;" (click)="openPledgeListCardPopup(item.accountId)" > {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==2 && isBalanceAmountType" class="highlight_red"  style="color: #6D55A5;cursor: pointer;" (click)="openPledgeListCardPopup(item.accountId)"> {{ commonMethodService.formatAmount(item.balance) }}</td>
+        <td *ngIf="transactionType==2 && isPaidAmountType" class="highlight_green" style="color: #6D55A5;cursor: pointer;" (click)="openPledgeListCardPopup(item.accountId)" > {{ commonMethodService.formatAmount(item.paid) }}</td>
+        <td *ngIf="transactionType==3 && isTotalAmountType"> {{ commonMethodService.formatAmount(item.amount) }}</td>
+        <td *ngIf="transactionType==3 && isBalanceAmountType" class="highlight_red"> {{ commonMethodService.formatAmount(item.balance) }}</td>
+        <td *ngIf="transactionType==3 && isPaidAmountType" class="highlight_green"> {{ commonMethodService.formatAmount(item.paid) }}</td>
+        <!--<td *ngIf="transactionType==6 && isTotalPaymentType"> {{ commonMethodService.formatAmount(item.payment) }}</td>-->
+        <td *ngIf="transactionType==6 && isTotalPaymentType"> {{ item && item.payment?commonMethodService.formatAmount(item.payment):commonMethodService.formatAmount(0) }}</td>
+        <!--<td *ngIf="transactionType==6 && isOpenPledgesType"> {{ commonMethodService.formatAmount(item.pledge) }}</td>-->
+        <td *ngIf="transactionType==6 && isOpenPledgesType"> {{item && item.pledge? commonMethodService.formatAmount(item.pledge):commonMethodService.formatAmount(0) }}</td>
+        <!--<td *ngIf="transactionType==6 && isPendingScheduleType"> {{ commonMethodService.formatAmount(item.schedule) }}</td>-->
+        <td *ngIf="transactionType==6 && isPendingScheduleType"> {{ item && item.schedule? commonMethodService.formatAmount(item.schedule) :commonMethodService.formatAmount(0)}}</td>
+        <!--<td *ngIf="transactionType==6 && isTotalAmtType"> {{ commonMethodService.formatAmount(item.amount) }}</td>-->
+        <td *ngIf="transactionType==6 && isTotalAmtType"> {{item && item.amount? commonMethodService.formatAmount(item.amount):commonMethodService.formatAmount(0) }}</td>
+    </tr>
+</tbody>
+<!-- changes start -->
+<tbody *ngIf="sv.data?.length == 0">
+    <tr>
+        <td colspan="5" style="text-align: center;">
+        </td>
+    </tr>
+</tbody>
+<!-- changes end -->
+</table>

@@ -1,0 +1,139 @@
+<div class="content-wrapper register__form_wrapper admin-page">
+    <div class="add_new_button trans_add">
+        <app-add-new-dropdown></app-add-new-dropdown>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="tabs__wrapper head__tabs">
+                <div class="card card__tabs list_tab">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-profile-tab" data-toggle="pill"
+                                    href="#custom-tabs-profile" role="tab" aria-controls="custom-tabs-profile"
+                                    aria-selected="true">{{'PROFILE' | translate}}</a>
+                            </li>
+                            <li class="nav-item" *ngIf="userPermission">
+                                <a class="nav-link" id="custom-tabs-users-tab" data-toggle="pill"
+                                    href="#custom-tabs-users" role="tab" aria-controls="custom-tabs-users"
+                                    aria-selected="false" (click)="userList()">{{'USERS' | translate}}</a>
+                            </li>
+                            <li class="nav-item" (click)="registerEvent()">
+                                <a class="nav-link" id="custom-tabs-branding-tab" data-toggle="pill"
+                                    href="#custom-tabs-branding" role="tab" aria-controls="custom-tabs-branding"
+                                    aria-selected="false">{{'BRANDING' | translate}}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-apikeys-tab" data-toggle="pill"
+                                    href="#custom-tabs-apikeys" role="tab" aria-controls="custom-tabs-apikeys"
+                                    aria-selected="false">{{'API Keys'}}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-minyanim-tab" data-toggle="pill"
+                                    href="#custom-tabs-minyanim" role="tab" aria-controls="custom-tabs-minyanim"
+                                    aria-selected="false">{{'Minyanim'}}</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-seats-tab" data-toggle="pill"
+                                    href="#custom-tabs-seats" role="tab" aria-controls="custom-tabs-seats"
+                                    aria-selected="false">{{'SEATS' | translate}}</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-preset-tab" data-toggle="pill"
+                                    href="#custom-tabs-preset" role="tab" aria-controls="custom-tabs-preset"
+                                    aria-selected="false">{{'PRESETAMOUNT' | translate}}</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-advance-tab" data-toggle="pill"
+                                    href="#custom-tabs-advance" role="tab" aria-controls="custom-tabs-advance"
+                                    aria-selected="false">Advanced fields</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body list_body">
+                        <div class="tab-content" id="custom-tabs-three-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-profile" role="tabpanel"
+                                aria-labelledby="custom-tabs-profile-tab">
+                                <div class="container admin-register">
+                                    <div class="row justify-content-between">
+                                        <div class="right_colm col-md-6">
+                                            <app-organization-details-form-group [formGroup]="registractionForm"
+                                                [isorganzation]="true" [isloading]="isloading"
+                                                (submited)="onRegister($event)"></app-organization-details-form-group>
+                                        </div>
+                                        <div class="admin-redirect col-md-6">
+                                            <div class="inside-redirect-item">
+                                                <a href="https://portal.donary.com/Home/Login"
+                                                    target="_blank">{{'CLICKHEREREDIRECTDONARY' | translate}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template #feedbackError let-item="item">
+                                    <div class="row text-danger">
+                                        <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID' |
+                                            translate}}</div>
+                                        <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID' | translate}}
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-users" role="tabpanel"
+                                aria-labelledby="custom-tabs-users-tab">
+                                <app-user-list></app-user-list>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-branding" role="tabpanel"
+                                aria-labelledby="custom-tabs-branding-tab">
+                                <div class="container admin-register">
+                                    <div class="row justify-content-between">
+                                        <div class="right_colm col-md-6">
+                                            <app-organization-details-form-group [formGroup]="registractionForm"
+                                                [isbranding]="true" [isloading]="isloading"
+                                                (submited)="onRegister($event,true)"
+                                                (isBrandingEnable)="isBrandingFn($event)"></app-organization-details-form-group>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template #feedbackError let-item="item">
+                                    <div class="row text-danger">
+                                        <!-- <div *ngIf="item.errors?.required"  class="val-error">field is required</div> -->
+                                        <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID' |
+                                            translate}}</div>
+                                        <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID' | translate}}
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-preset" role="tabpanel"
+                                aria-labelledby="custom-tabs-preset-tab">
+                                <app-preset-amount></app-preset-amount>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-apikeys" role="tabpanel"
+                                aria-labelledby="custom-tabs-apikeys-tab">
+                                <app-api-keys></app-api-keys>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-minyanim" role="tabpanel"
+                                aria-labelledby="custom-tabs-minyanim-tab">
+                                <app-minyanim></app-minyanim>
+                            </div>
+
+                            <div class="tab-pane fade" id="custom-tabs-seats" role="tabpanel"
+                                aria-labelledby="custom-tabs-seats-tab">
+                                <app-seats-admin></app-seats-admin>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-advance" role="tabpanel"
+                                aria-labelledby="custom-tabs-advance-tab">
+                                <app-advanced-fields></app-advanced-fields>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+</div>

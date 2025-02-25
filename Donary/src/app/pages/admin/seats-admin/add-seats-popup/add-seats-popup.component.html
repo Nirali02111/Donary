@@ -1,0 +1,97 @@
+<div class="modal__custom_header">
+    <button class="close" (click)="closePopup()">&times;</button>
+    <h4 class="headline mt-0">
+        <ng-container *ngIf="!seatRateData">
+            Add seat rate
+        </ng-container>
+        <ng-container *ngIf="seatRateData">
+            Edit seat rate
+        </ng-container>
+    </h4>
+</div>
+<div class="modal__custom_content">
+   <div class="row" [formGroup]="formGroup">
+        <div class="col-md-12">
+            <h4>Seat Type</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [class.error-field]="MapLocationId.invalid && MapLocationId.touched">
+                        <label>LOCATION:</label>
+                        <select formControlName="mapLocationId">
+                            <ng-container *ngFor="let location of locationDropdown">
+                                <option [value]="location.mapLocationId">{{ location.mapName }}</option>
+                            </ng-container>
+                        </select>
+                        <ng-container *ngIf="MapLocationId.invalid && MapLocationId.touched">
+                            <div class="row text-danger">
+                                <div  class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" [class.error-field]="SectionId.invalid && SectionId.touched">
+                        <label>SECTION:</label>
+                        <select formControlName="sectionId">
+                            <ng-container *ngFor="let section of sectionDropdown">
+                                <option [value]="section.sectionID">{{ section.sectionName }}</option>
+                            </ng-container>
+                        </select>
+                         <ng-container *ngIf="SectionId.invalid && SectionId.touched">
+                            <div class="row text-danger">
+                                <div  class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h4>Rates</h4>
+            <h4>ONE TIME RENTAL</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" [class.error-field]="SeatPrice.invalid && SeatPrice.touched">
+                        <label>SEAT PRICE:</label>
+                       <div class="input-group-icon">
+                            <i class="form-icn fa fa-dollar"></i>
+                            <input type="text" class="form-control" formControlName="seatPrice"/>
+                       </div>
+                        <ng-container *ngIf="SeatPrice.invalid && SeatPrice.touched">
+                            <div class="row text-danger">
+                                <div  class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" [class.error-field]="AisleAdditionalFee.touched && AisleAdditionalFee.invalid">
+                        <label>IF AISLE ADD:</label>
+                        <div class="input-group-icon">
+                            <i class="form-icn fa fa-dollar"></i>
+                            <input type="text" class="form-control" formControlName="aisleAdditionalFee"/>
+                       </div>
+                       <ng-container *ngIf="AisleAdditionalFee.invalid && AisleAdditionalFee.touched">
+                        <div class="row text-danger">
+                            <div  class="val-error">{{'FIELDISREQUIRED' | translate}}</div>
+                        </div>
+                    </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+</div>
+
+
+
+<div class="btn_info modal__custom_footer justify-content-end">
+    <div class="right_part">
+        <button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+        <button class="btn btn-primary" (click)="onSubmit()" >{{'SAVE' | translate}}</button>
+    </div>
+</div>
+<div *ngIf="isLoading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+

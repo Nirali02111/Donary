@@ -1,0 +1,140 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body pt-0 tab-api">
+            <div class="tabs__wrap">
+                <ul class="nav nav-tabs p-0">
+                <li class="active"> <a href="#{{'key'+navTabId}}" class="active" data-toggle="tab">{{'DEFAULTKEYS' | translate}} </a> </li>
+                <li><a href="#{{'adavaceKey'+navTabId}}" data-toggle="tab">{{'ADVANCEDKEYS' | translate}}</a></li>
+                </ul>
+                <div class="tab-content tab_draggable">
+                    <div class="tab-pane active"  id ="{{'key'+navTabId}}">
+                        <div class="extra__details">
+                            <div class="filters__options api_page">
+                                <div class="search_opts">
+                                    <div class="input-group search_input">
+                                        <input  type="text" name="advanceSearch" id="localsearch" class="form-control float-right" placeholder="{{'SEARCHKEYS' | translate}}" (keyup)="search($event.target.value)">
+                                    </div>
+                                </div>
+                                <div class="fields_opts justify-content-end">
+                                    <button type="button" class="btn new-btn btn-default" (click)="AddNewApiKey(false)"><i class="fa fa-plus"></i> {{'NEW' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tbl_colm_sticky"  id="">
+                            <div class="modal_custom px-0 table-responsive ">
+                                <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                                    <div class="px-2" id="apiListScroll" style="overflow-y: auto; height: 100%;">
+                                        <table class="table table-striped redesign_table admin-api-kyes" [svData]="gridFilterData" #sv="svDataTable" [svRowsOnPage]="75"  svSortOrder="asc">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{'ACCOUNTNAME' | translate}}</th>
+                                                    <th>{{'APITYPE' | translate}}</th>
+                                                    <th>{{'GATEWAY' | translate}}</th>
+                                                    <th>{{'CURRENCY' | translate}}</th>
+                                                    <th>{{'CAMPAIGN' | translate}}</th>
+                                                    <th>{{'REASON' | translate}}</th>
+                                                    <th>{{'APIKEY' | translate}}</th>
+                                                    <th>{{'PIN' | translate}}</th>
+                                                    <th>{{'COUNTRY' | translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="sv.data?.length > 0">
+                                                <ng-container *ngFor="let item of sv.data; let i=index">
+                                                <tr *ngIf="isDefaultGridShow(item)">
+                                                    <td class="key-highlight">{{item.gatewayAPIId}}</td>
+                                                    <td>{{item.gatewayTypeName}}</td>
+                                                    <td>{{item.gatewayProviderName}}</td>
+                                                    <td>{{item.currencyName}}</td>
+                                                    <td>{{item.campaignName}}</td>
+                                                    <td>{{item.reasonName}}</td>
+                                                    <td>
+                                                        <div class="key-block">
+                                                            <span class="key-default">{{item.integrationKey}}</span>
+                                                            <span class="key-hover"><span id="inputId-{{item.gatewayAPIId}}">{{item.integrationKey}}</span> <i class="fas fa-link" (click)="copyToClipboard(item.gatewayAPIId)"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{item.pin}}</td>
+                                                    <td>{{item.countryName}}</td>
+                                                    <td class="custom_action hover__action">
+                                                        <div class="float__action">
+                                                            <span  class="icn_edit" data-toggle="tooltip"  appHoverTooltip  labelText="{{'EDIT' | translate}}" (click)="editOpenApiKeyPopup(false,item)"></span>
+                                                            <span  class="icn_delete" data-toggle="tooltip"  appHoverTooltip  labelText="{{'DELETE' | translate}}"  (click)="delete(item.gatewayAPIId)"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane"  id ="{{'adavaceKey'+navTabId}}">
+                        <div class="extra__details">
+                            <div class="filters__options api_page">
+                                <div class="search_opts">
+                                    <div class="input-group search_input">
+                                        <input  type="text" name="advanceSearch" id="localsearch1" class="form-control float-right" placeholder="{{'SEARCHKEYS' | translate}}" (keyup)="search($event.target.value)">
+                                    </div>
+                                </div>
+                                <div class="fields_opts justify-content-end">
+                                    <button type="button" class="btn new-btn btn-default" (click)="AddNewApiKey(true)"><i class="fa fa-plus"></i> {{'NEW' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tbl_colm_sticky"  id="">
+                            <div class="modal_custom px-0 table-responsive ">
+                                <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                                    <div class="px-2" style="overflow-y: auto; height: 100%;">
+                                        <table class="table table-striped redesign_table admin-api-kyes" [svData]="gridFilterData" #sv="svDataTable" [svRowsOnPage]="75"  svSortOrder="asc">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{'ACCOUNTNAME' | translate}}</th>
+                                                    <th>{{'APITYPE' | translate}}</th>
+                                                    <th>{{'GATEWAY' | translate}}</th>
+                                                    <th>{{'CURRENCY' | translate}}</th>
+                                                    <th>{{'CAMPAIGN' | translate}}</th>
+                                                    <th>{{'REASON' | translate}}</th>
+                                                    <th>{{'APIKEY' | translate}}</th>
+                                                    <th>{{'PIN' | translate}}</th>
+                                                    <th>{{'COUNTRY' | translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="sv.data?.length > 0">
+                                                <ng-container *ngFor="let item of sv.data; let i=index">
+                                                    <tr *ngIf="!isDefaultGridShow(item)">
+                                                        <td class="key-highlight">{{item.gatewayAPIId}}</td>
+                                                        <td>{{item.gatewayTypeName}}</td>
+                                                        <td>{{item.gatewayProviderName}}</td>
+                                                        <td>{{item.currencyName}}</td>
+                                                        <td>{{item.campaignName}}</td>
+                                                        <td>{{item.reasonName}}</td>
+                                                        <td>
+                                                            <div class="key-block">
+                                                                <span class="key-default">{{item.integrationKey}}</span>
+                                                                <span class="key-hover"><span id="inputId-{{item.gatewayAPIId}}">{{item.integrationKey}}</span> <i class="fas fa-link" (click)="copyToClipboard(item.gatewayAPIId)"></i></span>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{item.pin}}</td>
+                                                        <td>{{item.countryName}}</td>
+                                                        <td class="custom_action hover__action">
+                                                            <div class="float__action">
+                                                                <span  class="icn_edit" data-toggle="tooltip" appHoverTooltip  labelText="{{'EDIT' | translate}}"  (click)="editOpenApiKeyPopup(true,item)"></span>
+                                                                <span  class="icn_delete" data-toggle="tooltip"  appHoverTooltip  labelText="{{'DELETE' | translate}}"  (click)="delete(item.gatewayAPIId)"></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

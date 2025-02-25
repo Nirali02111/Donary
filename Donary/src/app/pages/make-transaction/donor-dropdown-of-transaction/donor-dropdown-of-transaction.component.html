@@ -1,0 +1,118 @@
+<div [formGroup]="formGroup">
+    <h6>{{ "DONORINFO" | translate }}</h6>
+    <div class="d-inine-block w-100 mb-4 pb-3 " [class.donor-selected]="donorDrp.selectedItems.length > 0">
+        <ng-template [ngTemplateOutlet]="donorHeader"></ng-template>
+
+        <ng-select class="ng-select-donor" #donorDrp id="donation-transaction-donor-drp"
+        [items]="(isGlobal ? commonMethodService.donorList : commonMethodService.localDonorList) || []"
+            bindLabel="fullNameJewish" bindValue="accountId" [clearable]="true" [searchable]="false"
+            formControlName="accountId" [searchFn]="customSearchFn"
+            [loading]="isGlobal && commonMethodService.loaderSearch" (change)="donorChange.emit($event)">
+
+            <!-- <ng-template ng-header-tmp>
+            <ng-template [ngTemplateOutlet]="donorHeader"></ng-template>
+        </ng-template> -->
+
+            <ng-template ng-label-tmp let-item="item">
+                <div class="d-flex justify-content-between align-items-center "   >
+                    <span class="ng-name" >{{
+                        item.fullNameJewish != ""
+                        ? item.fullNameJewish
+                        : item.displayText
+                        }}</span>
+                    <span class="ng-number">
+                        @if (item.accountNum) {
+                        {{ "#" + item.accountNum }}
+                        }
+                    </span>
+                </div>
+                <span class="ng-location">{{ item.defaultLocation }}</span>
+                <span class="ng-address">{{ item.address }} {{ item.cityStateZip != "" ? "," : ""
+                    }}{{ item.cityStateZip }}</span>
+
+                <span class="ng-contact" [innerHTML]="item.phoneNumber">
+                </span>
+
+                <span class="ng-small">@if (item.father) {
+                    {{ item.father + " / " }}
+                    }
+                    {{ item.fatherInLaw }}</span>
+
+            </ng-template>
+
+            <ng-template ng-option-tmp let-item="item">
+                <div>
+                    <span class="lng_hebrew"><strong>{{ item.fullNameJewish }}</strong></span>
+                    <span><strong>{{ item.displayText }}</strong></span>
+                </div>
+                <div>
+                    <span>
+                        @if (item.father) {
+                        <span class="father_lbl">בן :</span>
+                        }
+                        <strong>{{ item.father }}</strong>
+                    </span>
+                    <span>
+                        @if (item.fatherInLaw) {
+                        <span class="father_lbl">חתן: </span>
+                        }
+                        <strong>{{ item.fatherInLaw }}</strong>
+                    </span>
+                </div>
+                <div [innerHTML]="item.phoneNumber">
+                </div>
+                <div>
+                    {{ item.address }}
+                    {{ item.cityStateZip }}
+                </div>
+
+                @if (item.id == item.globalId && isGlobal) {
+                <div class="global_search">
+                    <span class="global_icon"></span>
+                </div>
+                }
+            </ng-template>
+
+            <ng-template ng-footer-tmp>
+                <div class="donor_infolist p-0 position-static shadow-none w-100 border-0">
+                    <div class="donorinfo_addnew transaction-modal-button">
+                        <button type="button" class="rounded-arrow m-0 mr-3"> Display as Donor Cardholder/Display Name
+                        </button>
+                        <button type="button" class="m-0" (click)="OpenCreateDonorPopup()" ><i class="fa fa-plus"></i> Add New Donor</button>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-select>
+    </div>
+</div>
+
+<ng-template #donorHeader>
+    <div class="donor-info d-flex align-items-center justify-content-between">
+        <div class="position-relative w-100">
+            <input class="form-control" type="text" (input)="searchInDonorObservable.next($event.target.value)" />
+            <ng-template [ngTemplateOutlet]="checkBox"></ng-template>
+        </div>
+
+        @if (isGlobal) {
+        <button type="button" class="btn btn-primary ml-2" (click)="onClickGlobalSearch()">Search</button>
+        }
+    </div>
+</ng-template>
+
+<ng-template #checkBox>
+    @if (!isGlobal) {
+    <label class="switch global_list_togle position-relative" appHoverTooltip
+        [labelText]="'SWTICHLISTTOOLTIP' | translate ">
+        <input type="checkbox" [value]="isGlobal" [checked]="isGlobal" (change)="isGlobal = true" class="global_chck"
+            id="globallist" />
+        <span class="slider round"></span>
+    </label>
+    } @else {
+    <label class="switch global_list_togle position-relative" appHoverTooltip
+        [labelText]=" 'CHARACTERTOOLTIP' | translate ">
+        <input type="checkbox" [value]="isGlobal" [checked]="isGlobal" (change)="isGlobal = false"
+            class="global_chck with-checked" id="globallist" />
+        <span class="slider round"></span>
+    </label>
+    }
+</ng-template>

@@ -1,0 +1,453 @@
+<!-- Schedule List Card -->
+<div class="modal_wrap" style="display: block;" ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header">
+        <div class="tabs__wrap">
+            <ul class="nav nav-tabs">
+                <li>
+                    <a class="active" href="#schdlpayment" data-toggle="tab"> {{'SCHEDULEDPAYMENTS'|translate}}</a>
+                </li>
+                <li>
+                    <a href="#schdlpledge" data-toggle="tab"> {{'SCHEDULEPLEDGES'|translate}}</a>
+                </li>
+            </ul>
+        </div>
+        <button class="close" (click)="closePopup()">&times;</button>
+    </div>
+    <div class="modal_content modal__custom_content">
+        <div class="tab-content py-0 max-min-height">
+            <div class="tab-pane active" id="schdlpayment">
+                <div class="row">
+                    <div class="search__filter">
+                        <div class="search_txt">
+                            <app-skeleton-loader-component [isLoading]="isloading"
+                                [theme]="{ width: '190px', height: '42px' }">
+                                <input type="text" name="advanceSearch" class="form-control float-right"
+                                    placeholder="{{'SEARCHSHEDULEDPAYMENT'|translate}}"
+                                    (keyup)="searchPayment($event.target.value)">
+                            </app-skeleton-loader-component>
+                        </div>
+                    </div>
+                    <div class="all-time-filter">
+                        <div class="search-edits">
+                            <div class="searchbar">
+                                <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                                        [data]="selectedPaymentDateRange"
+                                        [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                </ng-template>
+                                <div class="input-group dnr-datepicker-container date_picker"
+                                    (click)="openPaymentHebrewCalendarPopup(p1)"
+                                    (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"
+                                    [ngbPopover]="popContent" container="body" popoverClass="calender-modal"
+                                    [popoverTitle]="popTitle" [autoClose]="false"
+                                    placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                    id="scheduleListDynamicsCalender">
+                                    <app-skeleton-loader-component [isLoading]="isloading"
+                                        [theme]="{ width: '190px', height: '42px' }">
+                                        <input type="text" class="form-control" value=""
+                                            [placeholder]="EngHebCalPlaceholder" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                                            </span>
+                                        </div>
+                                    </app-skeleton-loader-component>
+                                </div>
+                                <!-- Calendar code ended -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fields_opts">
+                        <div class="input-group col-md-1 tbl_field">
+                            @if(isloading){
+                            <app-skeleton-loader-component [isLoading]="isloading"
+                                [theme]="{ width: '90px', height: '42px' }"></app-skeleton-loader-component>
+                            <span style="margin-left: 10px;">
+                                <app-skeleton-loader-component [isLoading]="isloading"
+                                    [theme]="{ width: '50px', height: '42px' }"></app-skeleton-loader-component>
+                            </span>
+                            <span style="margin-left: 10px;">
+                                <app-skeleton-loader-component [isLoading]="isloading"
+                                    [theme]="{ width: '107px', height: '42px' }"></app-skeleton-loader-component>
+                            </span>
+                            <span style="margin-left: 10px;">
+                                <app-skeleton-loader-component [isLoading]="isloading"
+                                    [theme]="{ width: '86px', height: '42px' }"></app-skeleton-loader-component>
+                            </span>
+                            }@else {
+
+
+                            <div class="dropdown">
+                                <!-- added new -->
+                                <div class="dropwon-page_size">
+                                    <span class="">{{'SHOWENTRIES'|translate}}:</span>
+                                    <button class="btn btn-secondary dropdown-toggle btn-show-entries" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" (click)="ChangeShowEntriesDwn()">
+                                        <i class="fas fa-tag">
+                                            <span>{{ paymentPageSize }}</span></i>
+                                    </button>
+                                    <div class="dropwond-page" aria-labelledby="dropdownMenuButton">
+                                        <button class="dropdown-item" type="button"
+                                            (click)="ChangePaymentPageSize(5,'paypage_id5');ChangeShowEntriesDwn();">
+                                            5
+                                        </button>
+                                        <button class="dropdown-item" type="button"
+                                            (click)="ChangePaymentPageSize(10,'paypage_id10');ChangeShowEntriesDwn();">
+                                            10
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--end new  -->
+                                <div class="input-group filter_field">
+                                    <button type="button" (click)="openAdvanceSearchFilterPopup()"
+                                        class="btn btn-default">
+                                        <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                                        <span class="filter_text">{{'FILTER'|translate}}</span>
+                                    </button>
+                                </div>
+                                <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-tag"> <span>{{'FIELDS'|translate}}</span></i>
+                                </button>
+                                <ul class="dropdown-menu multi-level field_dropdown" role="menu"
+                                    aria-labelledby="dropdownMenu" cdkDropList
+                                    (cdkDropListDropped)="dropPaymentFields($event)">
+                                    <li class="dropdown" (click)="$event.stopPropagation();" cdkDrag
+                                        *ngFor="let objcolField of colFieldsPaymentList; let i=index">
+                                        <div class="fieldlst_chkbox" style="padding-left: 50px;">
+                                            <input type="checkbox" class="fields_chkbx"
+                                                [(ngModel)]="objcolField.visibleCondition"
+                                                (change)="setPaymentGridColVisibility($event,objcolField.colName,objcolField.visibleCondition)"
+                                                [id]="objcolField.colId">
+                                            <label class="fields_lbl"
+                                                [for]="objcolField.colId">{{objcolField.colName|translate}}</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row payment__list_main">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        @if(isloading){
+                            <ng-container *ngFor="let item of skeletonitems">
+                                <div class="row" style="margin-left: -7.5px; margin-right: -7.5px;">
+                                  <span style="width: 100%; padding: 0 7.5px;">
+                                    <app-skeleton-loader-component
+                                      [isLoading]="isloading"
+                                      [theme]="{ width: '100%', height: '25px' }">
+                                    </app-skeleton-loader-component>
+                                  </span>
+                                </div>
+                              </ng-container>
+                   
+
+                        }@else {
+
+                        <div class="table-responsive transaction__table">
+                            <div class="donor-data-list-wrap">
+                                <table class="table table-striped" [svData]="gridPaymentFilterData" #sv="svDataTable"
+                                    svSortBy="createdDate" svSortOrder="desc">
+                                    <thead>
+                                        <tr cdkDropList cdkDropListOrientation="horizontal"
+                                            (cdkDropListDropped)="dropPaymentColumn($event)">
+                                            <ng-container *ngFor="let colField of colFieldsPaymentList; let i=index">
+                                                <th cdkDrag width="14.28%"
+                                                    *ngIf="checkPaymentGridColVisibility(colField.colName)">
+                                                    <sv-default-sorter
+                                                        [by]="colField.sortName">{{colField.colName|translate}}
+                                                    </sv-default-sorter>
+                                                </th>
+                                            </ng-container>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="sv.data?.length > 0">
+                                        <tr
+                                            *ngFor="let item of sv.data | slice: (paymentPage-1) * paymentPageSize : paymentPage * paymentPageSize">
+                                            <ng-container *ngFor="let colField of colFieldsPaymentList;">
+                                                <ng-container *ngIf="checkPaymentGridColVisibility(colField.colName)">
+                                                    <td *ngIf="colField.sortName=='scheduleNum'"
+                                                        class="blueviolet"
+                                                        (click)="openSchedulePaymentCardPopup(item.scheduleId)">{{
+                                                        item.scheduleNum }}</td>
+                                                    <td *ngIf="colField.sortName=='createdDate'">{{ item.createdDate |
+                                                        donaryDateFormat: "short" }}</td>
+                                                    <td *ngIf="colField.sortName=='totalAmount'">
+                                                        {{commonService.formatAmount(item.totalAmount)}}</td>
+                                                    <td *ngIf="colField.sortName=='openAmount'">
+                                                        {{commonService.formatAmount(item.openAmount)}}</td>
+                                                    <td *ngIf="colField.sortName=='paymentsLeft'">{{ item.paymentsLeft
+                                                        }}</td>
+                                                    <td *ngIf="colField.sortName=='nextScheduleDate'">{{
+                                                        item.nextScheduleDate| donaryDateFormat: "short" }}</td>
+                                                    <td *ngIf="colField.sortName=='scheduleStatus'">
+                                                        <span
+                                                            [ngClass]="item.status_class">{{item.scheduleStatus}}</span>
+                                                    </td>
+
+                                                    <!-- dynamic fields -->
+                                                    <td *ngIf="colField.sortName=='nameId'" class="reason-col-name"
+                                                        [ngClass]="checkLenDonorName(item.donorJewish,item.donor)?'reason-item-long': ''"
+                                                        style="cursor: pointer" (click)="OpenDonorCard(item.accountId)">
+                                                        {{ item.donorJewish ? item.donorJewish: item.donor }}</td>
+                                                    <td *ngIf="colField.sortName=='reasonId'">{{ item.reason }}</td>
+                                                    <td *ngIf="colField.sortName=='campaignIds'">{{ item.campaigns ?
+                                                        item.campaigns : item.campaign }}</td>
+                                                    <td *ngIf="colField.sortName=='locationId'">{{ item.location }}</td>
+                                                    <td *ngIf="colField.sortName=='collectorId'">{{ item.collector }}
+                                                    </td>
+                                                    <td *ngIf="colField.sortName=='deviceId'">{{ item.device }}</td>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="sv.data?.length == 0">
+                                        <tr>
+                                            <td colspan="15" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="15"
+                                                style="border-left: none !important;border-right: none !important;">
+                                                <!-- <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 15]">
+                                            </sv-bootstrap-paginator> -->
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="row donor-card-pagination">
+                                <div class="col-md-8">
+                                    <span>{{sv.data.length}} {{'RECORDS'|translate}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <div class="page_size" *ngIf="sv.data?.length > 0">
+                                        <label class="show_entries">Show Entries:</label>
+                                        <span class="page_number active" id="paypage_id5" (click)="ChangePaymentPageSize(5,'paypage_id5')">5</span>
+                                        <span class="page_number" id="paypage_id10"(click)="ChangePaymentPageSize(10,'paypage_id10')">10</span>
+                                         <span class="page_number" id="paypage_id15" (click)="ChangePaymentPageSize(15,'paypage_id15')">15</span>
+                                    </div>
+                                    -->
+                                    <div *ngIf="sv.data?.length>0">
+                                        <ngb-pagination [(page)]="paymentPage" [pageSize]="paymentPageSize"
+                                            [ngClass]="[!showPArrow?'singlepage':'']" [collectionSize]="sv.data.length"
+                                            [maxSize]="5" #pagination [rotate]="true" [ellipses]="false"
+                                            [directionLinks]="showPArrow" [boundaryLinks]="showPArrow"></ngb-pagination>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="schdlpledge">
+                <div class="row">
+                    <div class="search__filter">
+                        <div class="search_txt">
+                            <input type="text" name="advanceSearch" class="form-control float-right"
+                                placeholder="{{'SEARCHSHEDULEDPLEDGE'|translate}}"
+                                (keyup)="searchPledge($event.target.value)">
+                        </div>
+                    </div>
+                    <div class="all-time-filter">
+                        <div class="search-edits">
+                            <div class="searchbar">
+                                <!-- <app-donary-date-picker
+                        [isFullView]="false"
+                        [SelectedDateRange]="selectedPledgeDateRange"
+                        (emtDatesUpdated)="datesPledgeUpdated($event)"
+                    ></app-donary-date-picker> -->
+
+                                <!-- Calendar code started -->
+                                <ng-template #popContent2><app-common-hebrew-english-calendar
+                                        [pageName]="PledgePageName" [data]="selectedPledgeDateRange"
+                                        [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                </ng-template>
+                                <div class="input-group dnr-datepicker-container date_picker"
+                                    (click)="openPledgeHebrewCalendarPopup(p2)"
+                                    (clickOutside)="onClickedOutsidePopover(p2)" container="body" #p2="ngbPopover"
+                                    [ngbPopover]="popContent2" container="body" popoverClass="calender-modal"
+                                    [popoverTitle]="popTitle" [autoClose]="false"
+                                    placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                    id="dynamicsCalender">
+                                    <input type="text" class="form-control" value=""
+                                        [placeholder]="EngHebCalPlaceholder" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Calendar code ended -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fields_opts">
+                        <div class="input-group col-md-1 tbl_field">
+                            <div class="dropdown">
+                                <!-- added new -->
+                                <div class="dropwon-page_size">
+                                    <span class="">{{'SHOWENTRIES'|translate}}:</span>
+                                    <button class="btn btn-secondary dropdown-toggle btn-show-entries" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" (click)="ChangeShowEntriesDwn()">
+                                        <i class="fas fa-tag">
+                                            <span>{{ pledgePageSize }}</span></i>
+                                    </button>
+                                    <div class="dropwond-page" aria-labelledby="dropdownMenuButton">
+                                        <button class="dropdown-item" type="button"
+                                            (click)="ChangePageSize(5, 'page_id5');ChangeShowEntriesDwn();">
+                                            5
+                                        </button>
+                                        <button class="dropdown-item" type="button"
+                                            (click)="ChangePageSize(10, 'page_id10');ChangeShowEntriesDwn();">
+                                            10
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--end new  -->
+                                <div class="input-group filter_field">
+                                    <button type="button" (click)="openPledgeAdvanceSearchFilterPopup()"
+                                        class="btn btn-default">
+                                        <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                                        <span class="filter_text">{{'FILTER'|translate}}</span>
+                                    </button>
+                                </div>
+                                <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-tag"> <span>{{'FIELDS'|translate}}</span></i>
+                                </button>
+                                <ul class="dropdown-menu multi-level field_dropdown" role="menu"
+                                    aria-labelledby="dropdownMenu" cdkDropList
+                                    (cdkDropListDropped)="dropPledgeFields($event)">
+                                    <li class="dropdown" (click)="$event.stopPropagation();" cdkDrag
+                                        *ngFor="let objcolField of colFieldsPledgeList; let i=index">
+                                        <div class="fieldlst_chkbox" style="padding-left: 50px;">
+                                            <input type="checkbox" class="fields_chkbx"
+                                                [(ngModel)]="objcolField.visibleCondition"
+                                                (change)="setPledgeGridColVisibility($event,objcolField.colName,objcolField.visibleCondition)"
+                                                [id]="objcolField.colId">
+                                            <label class="fields_lbl"
+                                                [for]="objcolField.colId">{{objcolField.colName|translate}}</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row payment__list_main">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <div class="table-responsive transaction__table">
+                            <div class="donor-data-list-wrap">
+                                <table class="table table-striped" [svData]="gridPledgeFilterData" #svp="svDataTable"
+                                    svSortBy="createdDate" svSortOrder="asc">
+                                    <thead>
+                                        <tr cdkDropList cdkDropListOrientation="horizontal"
+                                            (cdkDropListDropped)="dropPledgeColumn($event)">
+                                            <ng-container *ngFor="let colField of colFieldsPledgeList; let i=index">
+                                                <th cdkDrag width="14.28%"
+                                                    *ngIf="checkPledgesGridColVisibility(colField.colName)">
+                                                    <sv-default-sorter
+                                                        [by]="colField.sortName">{{colField.colName|translate}}
+                                                    </sv-default-sorter>
+                                                </th>
+                                            </ng-container>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="svp.data?.length > 0">
+                                        <tr
+                                            *ngFor="let item of svp.data| slice: (pledgePage-1) * pledgePageSize : pledgePage * pledgePageSize">
+                                            <ng-container *ngFor="let colField of colFieldsPledgeList;">
+                                                <ng-container *ngIf="checkPledgesGridColVisibility(colField.colName)">
+                                                    <td *ngIf="colField.sortName=='scheduleNum'"
+                                                        class="blueviolet"
+                                                        (click)="openSchedulePledgeCardPopup(item.scheduleId)">{{
+                                                        item.scheduleNum }}</td>
+                                                    <td *ngIf="colField.sortName=='createdDate'">{{ item.createdDate |
+                                                        donaryDateFormat: "short" }}</td>
+                                                    <td *ngIf="colField.sortName=='totalAmount'">
+                                                        {{commonService.formatAmount(item.totalAmount)}}</td>
+                                                    <td *ngIf="colField.sortName=='openAmount'">
+                                                        {{commonService.formatAmount(item.openAmount)}}</td>
+                                                    <td *ngIf="colField.sortName=='paymentsLeft'">{{ item.paymentsLeft
+                                                        }}</td>
+                                                    <td *ngIf="colField.sortName=='nextScheduleDate'">{{
+                                                        item.nextScheduleDate| donaryDateFormat: "short" }}</td>
+                                                    <td *ngIf="colField.sortName=='scheduleStatus'">
+                                                        <span
+                                                            [ngClass]="item.status_class">{{item.scheduleStatus}}</span>
+                                                    </td>
+
+                                                    <!-- dynamic fields -->
+                                                    <td *ngIf="colField.sortName=='nameId'">{{ item.donorJewish ?
+                                                        item.donorJewish: item.donor }}</td>
+                                                    <td *ngIf="colField.sortName=='reasonId'">{{ item.reason }}</td>
+                                                    <td *ngIf="colField.sortName=='campaignId'">{{ item.campaign }}</td>
+                                                    <td *ngIf="colField.sortName=='locationId'">{{ item.location }}</td>
+                                                    <td *ngIf="colField.sortName=='collectorId'">{{ item.collector }}
+                                                    </td>
+                                                    <td *ngIf="colField.sortName=='deviceId'">{{ item.device }}</td>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="svp.data?.length == 0">
+                                        <tr>
+                                            <td colspan="15" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="15"
+                                                style="border-left: none !important;border-right: none !important;">
+                                                <!-- <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 15]">
+                                                </sv-bootstrap-paginator> -->
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="row donor-card-pagination">
+                                <div class="col-md-8">
+                                    <span>{{svp.data.length}} records</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <div class="page_size" *ngIf="svp.data?.length > 0">
+                                            <label class="show_entries">Show Entries:</label>
+                                            <span class="page_number active" id="page_id5" (click)="ChangePageSize(5,'page_id5')">5</span>
+                                            <span class="page_number" id="page_id10"(click)="ChangePageSize(10,'page_id10')">10</span>
+                                             <span class="page_number" id="page_id15" (click)="ChangePageSize(15,'page_id15')">15</span>
+                                        </div>
+                                        -->
+                                    <div *ngIf="svp.data?.length>0">
+                                        <ngb-pagination [(page)]="pledgePage" [pageSize]="pledgePageSize"
+                                            [ngClass]="[!showArrow?'singlepage':'']"
+                                            [collectionSize]="gridPledgeFilterData.length" [maxSize]="5" [rotate]="true"
+                                            [ellipses]="false" [directionLinks]="showArrow"
+                                            [boundaryLinks]="showArrow"></ngb-pagination>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Schedule List Card -->

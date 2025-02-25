@@ -1,0 +1,214 @@
+<div class="reason_card_modal updated_card_dsgn" style="display: block;" ngbAutofocus tabindex="-1">
+  <div class="diglog_header modal__custom_header">
+    <div class="titlebar">
+      <h4>{{'REASONCARD'|translate}}</h4>
+    </div>
+    <div class="header_actions popup-header">
+      <div class="filter_field">
+        <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+          <span class="filter_count" *ngIf="filterCount!=0">{{filterCount}}</span>
+          <span class="filter_text">{{'FILTER'|translate}}</span>
+        </button>
+      </div>
+      <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+          [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+      </ng-template>
+      <div class="input-group dnr-datepicker-container date_picker" (clickOutside)="onClickedOutsidePopover(p1)"
+        container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent"
+        popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+        placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dynamicsCalender">
+        <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+          </span>
+        </div>
+      </div>
+      <!-- Calendar code ended -->
+
+      <button class="b_tn hidden-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" *ngIf="isDevEnv"
+        aria-expanded="false">
+        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu action_opts donor_drp" role="menu" aria-labelledby="dropdownMenu">
+        <li>
+          <a class="dropdown-item" style="cursor: pointer" (click)="SaveLayoutAsDefault()">
+            <i class="fa fa-tags"></i>
+            Save layout as default
+          </a>
+        </li>
+      </ul>
+
+
+      <button class="b_tn edit_icon" appDataHover labelText="{{'EDIT' | translate}}" type="button"
+        (click)="openEditReasonPopup(reasonId)">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </button>
+      <button class="b_tn" *ngIf="newReasonPermission" appDataHover labelText="{{'NEWREASON' | translate}}"
+        type="button" (click)="openAddReasonPopup()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+  </div>
+
+  <div class="modal__custom_content">
+    <div class="cards_secton">
+      <div class="card" id="card-payment">
+        <a style="cursor: pointer" (click)="openPaymentListCardPopup(reasonId)">
+          <span class="data">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <p>{{'PAYMENTS'|translate}}</p>
+            </app-skeleton-loader-component>
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <h6>{{ commonMethodService.formatAmount(payments) || commonMethodService.formatAmount(0.00) }}</h6>
+            </app-skeleton-loader-component>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card" id="card-pledge">
+        <a style="cursor: pointer" (click)="openPledgeListCardPopup(reasonId)">
+          <span class="data">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <p>{{'OPENPLEDGES'|translate}}</p>
+            </app-skeleton-loader-component>
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <h6>{{ commonMethodService.formatAmount(openPledges) || commonMethodService.formatAmount(0.00) }}</h6>
+            </app-skeleton-loader-component>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card" id="card-shedule">
+        <a style="cursor: pointer" (click)="openScheduleListCardPopup(reasonId)">
+          <span class="data">
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <p>{{'SCHEDULED'|translate}}</p>
+            </app-skeleton-loader-component>
+            <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">
+              <h6>{{ commonMethodService.formatAmount(scheduled) || commonMethodService.formatAmount(0.00) }}</h6>
+            </app-skeleton-loader-component>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card total_raised">
+        <span class="data">
+          <p>{{'TOTALRAISED'|translate}}</p>
+
+          <h6>{{ commonMethodService.formatAmount(raised) || commonMethodService.formatAmount(0.00) }}</h6>
+        </span>
+      </div>
+    </div>
+
+    <div class="progressbar_wrap">
+      <div class="progress_inside">
+        <div class="progress">
+          <div class="progress-bar" id="progressbarId" role="progressbar" style="width: fundRaisedPercentWidth"
+            aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <span class="goal_txt"> <app-skeleton-loader-component [isLoading]="isloading"
+            [theme]="{ width: '70px', height: '8px' }"> {{'GOAL'|translate}}:</app-skeleton-loader-component></span>
+        <div class="progress_number" id="progressNumberId"> {{fundRaisedPercent}}% </div>
+        <div class="count_number"> <app-skeleton-loader-component [isLoading]="isloading"
+            [theme]="{ width: '70px', height: '8px' }">
+            {{commonMethodService.formatAmount(goal)}}</app-skeleton-loader-component></div>
+      </div>
+    </div>
+
+    <div class="donor_information">
+      <div class="donor_name" (click)="CopyText($event)" style="cursor: text;">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }">
+          <h2>{{reasonName}}</h2>
+        </app-skeleton-loader-component>
+        <div>
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '170px', height: '15px' }">
+            <h2 class="lang_hebrew">{{reasonJewishName}} </h2>
+          </app-skeleton-loader-component>
+        </div>
+      </div>
+      <div class="right_col">
+        <div class="reason_num">
+          <p> <app-skeleton-loader-component [isLoading]="isloading"
+              [theme]="{ width: '190px', height: '20px' }">{{'REASONNUMBER'|translate}}:</app-skeleton-loader-component>
+          </p>
+          <h5> <app-skeleton-loader-component [isLoading]="isloading"
+              [theme]="{ width: '170px', height: '15px' }">{{reasonNum}}</app-skeleton-loader-component></h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="content_info">
+      <div class="row">
+        <div class="col_left">
+          <ng-container *ngFor="let item of skeletonitems">
+            <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+          </ng-container>
+          <ng-container *ngIf="!isloading">
+            <div class="block-col">
+              <ng-container></ng-container>
+              <span class="icon"><i class="reason_icon"></i></span>
+              <span class="text">
+                <h6>{{'PARENTREASON'|translate}}:</h6>
+                <p style="color: #8568CA; cursor: pointer;" (click)="openReasonCardPopup(parentreasonId)"
+                  class="lang_hebrew">{{parentReasonName}} </p>
+              </span>
+            </div>
+            <div class="block-col">
+              <span class="icon"><i class="campain_icon"></i></span>
+              <span class="text">
+                <h6>{{'CAMPAIGN'|translate}}:</h6>
+                <p style="color: #8568CA; cursor: pointer;" (click)="openCampaignCardPopup(campaignID)"
+                  class="lang_hebrew">{{campaign}}</p>
+              </span>
+            </div>
+          </ng-container>
+
+        </div>
+        <div class="col_right">
+          <ng-container *ngFor="let item of skeletonitems2">
+            <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+          </ng-container>
+          <ng-container *ngIf="!isloading">
+            <div class="block-col">
+
+              <span class="icon"><i class="fa fa-envelope"></i></span>
+              <span class="text">
+                <h6>{{'EMAIL'|translate}}:</h6>
+                <p>{{email}} </p>
+              </span>
+            </div>
+
+            <div class="block-col">
+              <span class="icon"><i class="fa fa-phone"></i></span>
+              <span class="text">
+                <h6>{{'HOMEPHONE'|translate}}:</h6>
+                <p>{{phone1}} </p>
+              </span>
+            </div>
+            <div class="block-col">
+              <span class="icon"><i class="fa fa-phone"></i></span>
+              <span class="text">
+                <h6>{{'CELL'|translate}}:</h6>
+                <p>{{phone2}} </p>
+              </span>
+            </div>
+            <div class="block-col">
+              <span class="icon"><i class="fa fa-external-link-square"></i></span>
+              <span class="text">
+                <h6>{{'URL'|translate}}:</h6><a [href]="donatePageUrl" target="_blank">
+                  <p>{{donatePageUrl}}</p>
+                </a>
+              </span>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

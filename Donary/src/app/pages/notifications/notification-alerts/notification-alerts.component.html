@@ -1,0 +1,263 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" ngbAutofocus tabindex="-1">
+  <!-- Content Header (Page header) -->
+<section class="content">
+      <div class="container-fluid">
+          <div class="card">
+              <div class="card-body">
+                <div class="extra__details">
+                  <!-- Date range and advanced filter options -->
+                  <div class="filters__options notification_page">
+                      <div class="search_opts">
+                      <div class="input-group search_input">
+                          <input  type="text" name="advanceSearch" id="localsearch" class="form-control float-right" placeholder="{{'SEARCHALERTS'  |translate}}" (keyup)="search($event.target.value)">
+                      </div>
+                      <!-- Card Type Drop Down -->
+
+                      <div class="input-group date_picker" *appIsWeb>
+                          <!-- <input
+                      type="text"
+                      class="alltime_filter_btn"
+                      ngxDaterangepickerMd
+                      #calendar
+                      [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+                      [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                      [ranges]="commonMethodService.upcomingranges"
+                      [linkedCalendars]="commonMethodService.linkedCalendars"
+                      [opens]="commonMethodService.open"
+                      [drops]="commonMethodService.drop"
+                      [(ngModel)]="selectedDateRange"
+                      [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                      (datesUpdated)="datesUpcomingUpdated($event)"
+                      (rangeClicked)="upcomingRangeClicked($event)"
+                      id="calendar"
+                                    [showClearButton]="commonMethodService.showClearButton"
+                                    [placeholder]="commonMethodService.placeholder"
+                                    autocomplete="off"
+                    /> -->
+                    <!-- Calendar code started -->
+                    <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"></app-common-hebrew-english-calendar>
+                    </ng-template>
+                    <div class="input-group dnr-datepicker-container date_picker"  container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [closePopoverOnClickOutside]="p1"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dynamicsCalender">
+                      <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                    </div>
+                    <!-- Calendar code ended -->
+                      </div>
+                      <div class="input-group date_picker" id="datehebwrapper" (click)="openHebrewCalendarPopup()" id="dynamicsCalender" *appIsMobile>
+                        <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder"/>
+                        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="input-group filter_field" >
+                          <button type="button"  class="btn btn-default">
+                            <ng-container *appIsMobile>
+                              <img src="/assets/dist/img/icon-filter.svg" alt="filter" />
+                            </ng-container>
+                              <span class="filter_text">{{'FILTER'|translate}}</span>
+                              <ng-container *appIsMobile><span class="filter_count" *ngIf="filtercount != 0">{{
+                                filtercount
+                                }}</span></ng-container>
+                          </button>
+                      </div>
+                      </div>
+                      <ng-container *appIsWeb>
+                      <div class="fields_opts" style="flex-basis: auto;">
+                              <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn dot-btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                                  aria-expanded="false">
+                                  <span>...</span>
+                              </button>
+                              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                  <li class="dropdown">
+                                      <a class="dropdown-item"><i class="fas fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                                  </li>
+                                  <hr class="seprator" />
+                              <li class="dropdown"><a class="dropdown-item" (click)="downloadExcel()"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                              <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> {{'PRINT'  |translate}}</a></li>
+                              </ul>
+                      </div>
+                      </ng-container>
+                      <ng-container *appIsMobile>
+                        <div class="filters__options flex-nowrap mb-0">
+                          <div class="right_colms">
+                            <div class="sort-filter-icon">
+                              <img src="/assets/dist/img/sort-filter-icon.png" alt="" />
+                            </div>
+                          </div>
+                          <div class="mobile-options">
+                            <div class="sort_sumcard">
+                              <span class="sorting_icon"></span>
+                              <div class="custo_selct sort_drpdown" (click)="openHebrewCalendarPopup()">
+                                <angular2-multiselect
+                                  id="ddlCardType"
+                                  [settings]="
+                                    commonMethodService.setDropDownSettings(
+                                      '',
+                                      1,
+                                      false,
+                                      true,
+                                      true
+                                    )
+                                  "
+                                >
+                                </angular2-multiselect>
+                              </div>
+                            </div>
+                            <div class="colm extra_opts">
+                              <div class="dropdown dropleft">
+                                <button
+                                  type="button"
+                                  appHoverTooltip
+                                  labelText="{{ 'MOREACTIONS' | translate }}"
+                                  class="btn btn-default"
+                                  data-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false"
+                                >
+                                  <span>...</span>
+                                </button>
+                                <ul
+                                  class="dropdown-menu multi-level"
+                                  role="menu"
+                                  aria-labelledby="dropdownMenu"
+                                >
+                                  <li class="dropdown">
+                                    <a class="dropdown-item"><i class="fas fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                                  </li>
+                                  <li class="dropdown"><a class="dropdown-item" (click)="downloadExcel()"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                                  <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> {{'PRINT'  |translate}}</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                  </div>
+              </div>
+
+              <div class="tbl_colm_sticky"  id="alert_div">
+                  <div class="modal_custom px-0 table-responsive transaction__table">
+                   <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                       <div class="px-2 table-alert" id="alertList" style="overflow-y: auto; height: 100%;">
+
+                                  <!-- class="table table-striped redesign_table" -->
+                                  <table class="table-striped redesign_table table-resizable" [svData]="gridFilterData" #sv="svDataTable" [svRowsOnPage]="25" svSortBy="updatedDate" svSortOrder="asc">
+                                    <ng-container *appIsWeb>
+                                    <thead>
+                                      <tr>
+                                        <th>
+                                            <div class="ae-checkbox">
+                                                <input type="checkbox" appHoverTooltip labelText="{{'SELECT' | translate}}"  name="selectAll" id="select_all" />
+                                                <label for="select_all" class="custom-checkbox"></label>
+                                            </div>
+                                      </th>
+                                          <th>{{'SUBJECT'  |translate}}</th>
+                                          <th>{{'DATE&TIME'  |translate}}</th>
+                                          <th>{{'MESSAGE'  |translate}}</th>
+                                          <th>{{'CAMPAIGN'  |translate}}</th>
+                                          <th>{{'SOURCE'  |translate}}</th>
+                                          <th></th>
+                                          
+                                      </tr>
+                                  </thead></ng-container>
+                                      <tbody  *ngIf="sv.data?.length > 0">
+
+                                          <tr  *ngFor="let item of sv.data; let i=index" tabindex={{i}} class="table-row table-row-{{i}}">
+                                            <ng-container *appIsWeb>
+                                              <td>
+                                                <div class="ae-checkbox">
+                                                    <input #checkboxes   type="checkbox" name="singlecheck" />
+                                                    <label  class="custom-checkbox"></label>
+                                                    <span class="tooltip-custom">{{'SELECT'|translate}}</span>
+                                                </div>
+                                                </td>
+                                              </ng-container>
+                                                <td class="alert-sub">{{item.subject}}</td>
+                                                <td class="alert-date">
+                                                  {{item.scheduleDate | donaryDateFormat: "long" }}
+                                                  <ng-container *appIsMobile>
+                                                      <span class="alert-desc">{{item.campaignName}}</span>
+                                                  </ng-container>
+                                                </td>
+                                                <td class="alert-message">
+                                                  <span (click)="item.recordType === 'Payment'? openPaymentCardPopup(item.recordID, item.globalId,item.legalReceiptNum) : OpenScheduleCard(item.recordID)">
+                                                    {{item.recordType}} #{{item.recordNum}}
+                                                  </span>
+                                                  of {{this.commonMethodService.formatAmount(item.recordAmount)}}
+                                                  from
+                                                  <span (click)="OpenDonorCard(item.accountID)">
+                                                    {{item.donorName}}
+                                                  </span>
+                                                  was completed
+                                                </td>
+                                                <ng-container *appIsMobile>
+                                                  <td class="alert-status mt-2 ml-0 order-4">
+                                                    <button (click)="openAddTransactionPopup(item)" *ngIf="item.availableActions.includes('Recreate Schedule')" class="table-btn table-btn-md">
+                                                      {{'RENEW' | translate}}
+                                                    </button>
+                                                  </td>
+                                                </ng-container>
+                                                <ng-container *appIsWeb><td class="alert-campaign" (click)="OpenCampaignCard(item.campaignID)" style="cursor: pointer;color:blueviolet">{{item.campaignName}}</td></ng-container>
+                                                <ng-container *appIsWeb><td class="alert-source"> {{item.source}} </td></ng-container>
+                                                <td class="alert-btns">
+                                                  <div class="d-flex align-items-center">
+                                                    <button (click)="AddReminderPopup(item.alertId,item.accountID,item.recordID,item.recordType)" class="table-btn" *ngIf="item.linkedNotificationId==null" data-toggle="tooltip" appHoverTooltip labelText="{{'CREATE' | translate}} {{'REMINDER' | translate}}">
+                                                      <ng-container *appIsWeb><span class="material-icons">notifications_none</span></ng-container>
+                                                      <ng-container *appIsMobile>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16.975" height="17.285" viewBox="0 0 16.975 17.285">
+                                                        <g id="Group_2641" data-name="Group 2641" transform="translate(-320.344 -471.625)">
+                                                          <path id="Subtraction_56" data-name="Subtraction 56" d="M6.868,16a2.893,2.893,0,0,1-2.882-2.843H1.381a1.367,1.367,0,0,1-1.255-.77A1.289,1.289,0,0,1,.3,11.009l.031-.038L.471,10.8c.777-.94,1.246-1.507,1.247-4.171,0-2.448.982-4.042,3-4.874l.009-.007A2.305,2.305,0,0,1,6.868,0,2.1,2.1,0,0,1,8.292.579a4.23,4.23,0,0,0-.6,1.168.984.984,0,0,0-.821-.53,1.141,1.141,0,0,0-.981.894,1.231,1.231,0,0,1-.706.767c-1.047.431-2.249,1.247-2.249,3.75,0,2.951-.581,3.8-1.526,4.945l-.169.2a.077.077,0,0,0-.014.09c.013.029.052.076.158.076H12.358a.153.153,0,0,0,.153-.076.078.078,0,0,0-.013-.091l-.115-.14-.053-.064a5.862,5.862,0,0,1-1.516-4.334,4.273,4.273,0,0,0,.909.1c.1,0,.206,0,.308-.011A4.576,4.576,0,0,0,13.264,10.8l.11.134.064.078a1.286,1.286,0,0,1,.168,1.379,1.361,1.361,0,0,1-1.249.769H9.748A2.891,2.891,0,0,1,6.868,16ZM5.2,13.157a1.667,1.667,0,0,0,3.334,0Z" transform="translate(320.344 472.91)" fill="#7b5bc4"/>
+                                                          <path id="Union_45" data-name="Union 45" d="M3.037,6.679V4.249H.607a.606.606,0,1,1,0-1.212h2.43V.612a.606.606,0,1,1,1.213,0V3.037H6.68a.606.606,0,1,1,0,1.212H4.25V6.679a.606.606,0,0,1-1.213,0Z" transform="translate(330.031 471.625)" fill="#7b5bc4"/>
+                                                        </g>
+                                                      </svg>
+                                                      </ng-container>
+                                                    </button>
+                                                    <button (click)="openNotificationSidebarPopup(item.linkedNotificationId,item.alertId)" class="table-btn view-reminder" *ngIf="item.linkedNotificationId!=null" data-toggle="tooltip" appHoverTooltip labelText="{{'VIEW' | translate}} {{'REMINDER' | translate}}">
+                                                      <span class="material-icons">arrow_forward</span>
+                                                    </button>
+                                                    <ng-container *appIsWeb><button (click)="openAddTransactionPopup(item)" *ngIf="item.availableActions.includes('Recreate Schedule')" class="table-btn table-btn-md">
+                                                      {{'RENEW' | translate}}
+                                                    </button></ng-container>
+                                                    <button class="border-0 bg-transparent btn-close d-flex align-items-center" (click)="removeAlert(item)"><span class="material-icons">close</span></button>
+                                                   </div>
+                                                </td>
+                                          </tr>
+                                      </tbody>
+                                      <tbody *ngIf="sv.data?.length == 0">
+                                        <tr>
+                                          <td colspan="15" style="text-align: center">{{'NODATAFOUND' | translate}}</td>
+                                        </tr>
+                                      </tbody>
+                                  </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <ng-container *appIsWeb>
+              <div class="new_tblfoot">
+                <div class="show_entry">
+                    <span class="total_record">{{'SHOWING' | translate}}
+                      <span *ngIf="isFiltered"><strong>{{ filterRecord }}</strong> {{'OF' | translate}}
+                      </span>
+                      <strong>{{ totalRecord }}</strong> {{'RECORDS' | translate}}</span>
+                    <div class="show_entry">
+                      <span class="total_record">
+                        {{'SELECTED' | translate}}
+                        <strong>{{ totalSelectedShow() }}</strong>
+                        {{'RECORDS' | translate}}
+                      </span>
+                    </div>
+                    <div class="custom_pagination">
+                      <!-- <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+                      </sv-bootstrap-paginator> -->
+                    </div>
+                 </div>
+              </div>
+              </ng-container>
+          </div>
+          </div>
+      </div>
+          </section>
+  </div>

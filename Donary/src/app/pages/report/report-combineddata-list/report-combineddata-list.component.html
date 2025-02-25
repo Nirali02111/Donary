@@ -1,0 +1,206 @@
+<div class="card" NgbAutoFocus  tabindex="-1">
+    <div class="card-body">
+        <!-- Date range and advanced filter options -->
+        <div class="filters__options">
+            <div class="search_opts"> 
+            <div class="input-group search_input">
+                <input type="text" name="advanceSearch" class="form-control float-right" placeholder="{{'SEARCH'|translate}}" (keyup)="search($event.target.value)"> 
+            </div>
+             <!-- Card Type Drop Down -->
+    
+                <div class="sub_radio">
+                   <span class="rdn_option">
+                       <input type="radio" name="campaign"/>
+                       <label class="lbl_campaign">{{'CAMPAIGN'  |translate}}</label>
+                   </span>
+                   <span class="rdn_option">
+                    <input type="radio" name="reason"/>
+                    <label class="lbl_reason">{{'REASON'  |translate}}</label>
+                </span>
+                </div>
+            <div class="input-group date_picker">
+                <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+                    [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                    [ranges]="commonMethodService.isHebrew==true?commonMethodService.hebranges:commonMethodService.ranges"
+                    [locale]="commonMethodService.isHebrew==true?commonMethodService.heblocale:commonMethodService.locale" [linkedCalendars]="commonMethodService.linkedCalendars"
+                    [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                    [showClearButton]="commonMethodService.showClearButton"
+                    [placeholder]="commonMethodService.placeholder" (datesUpdated)="datesUpdated($event)" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt ngx-daterangepicker-action" (click)="CalendarFocus()"></i>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="input-group filter_field" >
+                <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default">
+                    <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                    <span class="filter_text">{{'FILTER'|translate}}</span>
+                </button>
+            </div>
+            </div>
+            <!-- <div class="input-group help_icon">
+                <i class="far fa-question-circle fa-lg" style="margin-top: 11px !important;"></i>
+            </div> -->
+            <div class="fields_opts">
+                <div class="dropdown field_nwdsgn tbl_field">
+                    <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-tag"> <span> Fields</span></i>
+                    </button>
+                    <ul class="dropdown-menu multi-level field_dropdown" role="menu" aria-labelledby="dropdownMenu"  cdkDropList (cdkDropListDropped)="drop($event)" >
+                       <li class="dropdown" style="list-style:none;" (click)="$event.stopPropagation();" cdkDrag  *ngFor="let objcolField of colFields; let i=index">
+                        <div class="fieldlst_chkbox" style="padding-left: 50px;" >
+                            <input type="checkbox"  class="fields_chkbx" class="" [(ngModel)]="objcolField.isVisible"
+                            (change)="setGridColVisibility($event,objcolField.colName,objcolField.isVisible)" [id]="objcolField.colId">
+                            <label  class="fields_lbl" [for]="objcolField.colId">{{objcolField.colName}}</label>
+                        </div>
+                        </li>                                               
+                    </ul>
+                </div>                       
+                <div class="dropdown dropleft extra_opts">
+                    <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span>...</span>
+                    </button>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <li class="dropdown">
+                            <a class="dropdown-item"><i class="fa fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                        </li>     
+                        <hr class="seprator" />                          
+                      <li class="dropdown"><a class="dropdown-item" (click)="downloadExcel()"><i class="fa fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                    <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
+                    </ul>
+                </div>   
+                </div>         
+        </div>
+
+
+       
+    
+
+        <!-- Card Type Chip -->
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-3" *ngFor="let objPaymentTypeChip of paymentTypeChipData">
+                        <div [class]="objPaymentTypeChip.paymentTypeChipCSSClass"
+                            (click)="GetPaymentTransByPaymentChipType(objPaymentTypeChip)">
+                            <div class="info-box-content">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <span class="info-box-text"
+                                            [title]="objPaymentTypeChip.paymentType">{{ (objPaymentTypeChip.paymentType != null && objPaymentTypeChip.paymentType.length>18)? (objPaymentTypeChip.paymentType | slice:0:18)+'..':(objPaymentTypeChip.paymentType) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5 text-left">
+                                        <span class="info-box-number ">#{{objPaymentTypeChip.paymentCount}} </span>
+                                    </div>
+                                    <div class="col-7 text-center">
+                                        <span
+                                            class="info-box-number">{{ objPaymentTypeChip.totalAmount | currency : 'USD' : 'symbol' : '1.0-0' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="col-12 col-sm-12 col-lg-12">  
+            <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="table__sticky">
+                    <div class="table-responsive transaction__table">
+                        <table class="table table-striped" [svData]="gridFilterData" #sv="svDataTable"
+                        [svRowsOnPage]="25" svSortBy="transNum" svSortOrder="asc">
+                            <thead>
+                                <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
+                                    <th><input type="checkbox" name="selectAll"/></th>
+                                    <ng-container  *ngFor="let objHeader of headerList; let i=index" >
+                                        <th cdkDrag  *ngIf="checkGridColVisibility(objHeader.colName)">
+                                            <sv-default-sorter  [by]="objHeader.sortName" >{{objHeader.colName}}
+                                           </sv-default-sorter>                                                                                              
+                                       </th>  
+                                   </ng-container>
+                                <!-- <tr>     
+                                    <th *ngIf="isCampaignDonorNameColVisible">
+                                        <sv-default-sorter by="fullNameJewish">Donor Name
+                                        </sv-default-sorter>
+                                    </th>                                   
+                                    <th *ngIf="isCampaignNameColVisible">
+                                        <sv-default-sorter by="campaignName">Campaign
+                                        </sv-default-sorter>
+                                    </th>
+                                    <th *ngIf="isCampaignTotalAmountColVisible">
+                                        <sv-default-sorter by="totalAmount">Total Amount
+                                        </sv-default-sorter>
+                                    </th>                                                                          
+                                    <th *ngIf="isCampaignPaidAmountColVisible">
+                                        <sv-default-sorter by="paidAmount">Paid 
+                                        </sv-default-sorter>
+                                    </th>
+                                    <th *ngIf="isCampaignPendingAmountColVisible">
+                                        <sv-default-sorter by="pendingAmount">Pending
+                                        </sv-default-sorter>
+                                    </th>
+                                  
+                                    <th *ngIf="isCampaignBalanceColVisible">
+                                        <sv-default-sorter by="balance">Balance
+                                        </sv-default-sorter>
+                                    </th>                                        
+                                </tr> -->
+                            </thead>
+                            <tbody *ngIf="sv.data?.length > 0">
+                                <tr *ngFor="let item of sv.data; let i=index">    
+                                    <td><input type="checkbox" name="singlecheck"/></td>
+                                    <ng-container  *ngFor="let objHeader of headerList;">
+                                        <ng-container *ngIf="checkGridColVisibility(objHeader.colName)">                                                                    
+                                    <td  *ngIf="objHeader.sortName=='fullNameJewish'" (click)="openCombinedDataCardPopup()" class="lng_hebrew hebrew_font">
+                                         {{ (item.fullNameJewish != null && item.fullNameJewish.length > 18) ? (item.fullNameJewish | slice:0:18)+'..': (item.fullNameJewish) }}
+                                    </td>                                             
+                                        <td  *ngIf="objHeader.sortName=='campaignName'">{{ item.campaignName }} </td>
+                                        <td  *ngIf="objHeader.sortName=='totalAmount'"> </td>                                                                   
+                                    <td   *ngIf="objHeader.sortName=='paidAmount'" class="success">
+                                        <span class="paid_success">{{ commonMethodService.formatAmount(item.paidAmount) }}</span>
+                                    </td>
+                                    <td   *ngIf="objHeader.sortName=='pendingAmount'">                                      
+                                    </td>
+                                    <td   *ngIf="objHeader.sortName=='balance'">
+                                        {{ commonMethodService.formatAmount(item.balance) }}
+                                    </td>      
+                                    </ng-container>
+                                    </ng-container>                                                                         
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="sv.data?.length == 0">
+                                <tr>
+                                    <td colspan="15" style="text-align: center;">No data found
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="15" style="border-left: none !important;border-right: none !important;">
+                                        <sv-bootstrap-paginator  [rowsOnPageSet]="[25, 50, 100]">
+                                        </sv-bootstrap-paginator>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>              
+            </div>
+        </div>    
+    <div *ngIf="isloading" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>

@@ -1,0 +1,433 @@
+
+.product-details-page {
+    background: #FAFAFA;
+  }
+  
+  .donor-relation .back-button a .back-button-link {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+    color: #434246;
+  }
+  .donor-relation .back-button a .back-button-icon {
+    background-color: #e6e6e6;
+    color: #707070;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    margin-right: 12px;
+  }
+  .donor-relation {
+    padding: 75px 0px;
+  }
+  .donor-relation .donor-relation-title h1 {
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 38px;
+    color: #434246;
+    margin-bottom: 4px;
+  }
+  .donor-relation .donor-relation-date h5 {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #434246;
+    margin-bottom: 0;
+  }
+  .donor-relation .donor-relation-price {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 55px;
+    color: #434246;
+  }
+  .donor-relation .donor-relation-date {
+    margin-bottom: 30px;
+  }
+  .donor-relation .donor-relation-text p {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #69696a;
+    margin-bottom: 0;
+  }
+  .donor-relation .donor-relation-text {
+    margin-bottom: 27px;
+  }
+  /*
+  .donor-relation .donor-relation-list ul {
+    padding: 0;
+    margin: 0;
+  }
+  .donor-relation .donor-relation-list ul li {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #69696a;
+    margin: 10px 0px;
+    padding-left: 30px;
+    list-style-type: none;
+    position: relative;
+  }
+  .donor-relation .donor-relation-list ul li:before {
+    content: "";
+    position: absolute;
+    background-image: url(/assets/dist/img/tick-mark.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 50%;
+    height: 16px;
+    width: 16px;
+    transform: translateY(-50%);
+  }
+  .donor-relation .donor-relation-list ul li:first-child {
+    margin-top: 0;
+  }
+  .donor-relation .donor-relation-list ul li:last-child {
+    margin-bottom: 0;
+  }*/
+  
+  /*donary relation end*/
+  
+  
+  /*donory page start*/
+  
+  .donor-page .donor-header h1 {
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 27px;
+    color: #434246;
+  }
+  .donor-page .donor-page-division {
+    border-bottom: 1px solid #C9C9C9;
+    padding-bottom: 35px;
+  }
+  .donor-page .donor-header {
+    margin-bottom: 30px;
+  }
+  .donor-page .donor-plan-wrapper {
+    padding: 25px;
+    background: #fafafa;
+    border: 1px solid #e4e1eb;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+  }
+  .donor-plan-wrapper .plans-item-bottom {
+    margin-top: 5px;
+}
+  .donor-page .donor-plan-wrapper:hover {
+    box-shadow: 0px 10px 20px #0000001a;
+    border: 1px solid #7b5bc4;
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -ms-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+  }
+  .donor-page .donor-plan h3 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 25px;
+    color: #434246;
+    margin-bottom: 0;
+  }
+  .donor-page .donor-plan-wrapper:hover .donor-plan h3,
+  .donor-page .donor-plan-wrapper:hover .donor-plan h4 {
+    color: #7b5bc4;
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -ms-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+  }
+  .donor-page .donor-plan h4 {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 22px;
+    color: #434246;
+    margin-bottom: 0;
+  }
+  .donor-page .donor-plan {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #c9c9c9;
+  }
+  .donor-page .donor-page-container {
+    background: #f1f0f3;
+    border-radius: 8px;
+    padding: 50px 150px 42px 150px;
+  }
+  .donor-page .quantity-button {
+    width: 100%;
+    height: 45px;
+    border: 1px solid #B1B1B1;
+    border-radius: 3px;
+    max-width: 116px;
+  }
+  .donor-page .users-title {
+    margin-right: 25px;
+  }
+  .donor-page .users-title h4 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #434246;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+  .donor-page .quantity-left-minus.btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background: #f2f2f2;
+    padding: 0;
+    height: 43px;
+    width: 34px;
+    text-align: center;
+    color: #434246;
+    font-size: 20px;
+    max-width: 34px;
+  }
+  .donor-page .quantity-number {
+    background: #F2F2F2;
+    border: 0;
+    padding: 0;
+    width: 45px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 25px;
+    color: #434246;
+    height: 43px;
+    max-width: 45px;
+  }
+  .donor-page .select-device-inner {
+    margin-bottom: 15px;
+  }
+  .donor-page .quantity-right-plus.btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #f2f2f2;
+    padding: 0;
+    height: 43px;
+    width: 34px;
+    text-align: center;
+    color: #434246;
+    font-size: 18px;
+    max-width: 34px;
+ 
+  }
+
+  /*
+  .donor-page .donor--info ul {
+    padding: 0;
+    margin: 0;
+  }
+  .donor-page .donor--info ul li {
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 20px;
+    color: #69696a;
+    margin: 10px 0px;
+    padding-left: 30px;
+    list-style-type: none;
+    position: relative;
+  }
+  .donor-page .donor--info ul li:last-child {
+    margin-bottom: 0;
+  }
+  .donor-page .donor--info ul li:first-child {
+    margin-top: 0;
+  }
+  .donor-page .donor--info ul li:before {
+    content: "";
+    position: absolute;
+    background-image: url(/assets/dist/img/tick-mark.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    top: 50%;
+    height: 16px;
+    width: 16px;
+    transform: translateY(-50%);
+  }
+  .donor-page .donor--info {
+    padding: 20px 0px;
+  }
+  */
+
+  .donor-page .select-plan-division {
+    padding-top: 45px;
+  }
+  .donor-page .select-plan h6 {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #9F9EA0;
+    margin-bottom: 5px;
+  }
+  .donor-page .select-plan h4 {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 900;
+    color: #434246;
+    position: relative;
+    margin-bottom: 0;
+  }
+  .donor-page .select-plan-device:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 18px;
+    background: #6E6D71;
+    top: 0;
+    right: 0;
+  }
+  .donor-page .select-plan-device {
+    position: relative;
+    padding-right: 7px;
+  }
+  .donor-page .quantity-text {
+    padding-left: 7px;
+  }
+  .donor-page .select-plan .add-to-cart a {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 900;
+    color: #7B5BC4;
+    background-color: #E5E1EE;
+    border: 1px solid #7B5BC4;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 14px 54px 12px 54px;
+  }
+  .donor-page .select-plan .add-to-cart a:hover {
+    color: #fff;
+    background-color: #7B5BC4;
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -ms-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+  }
+  .donor-page .select-plan .add-to-cart {
+    margin-bottom: 10px;
+  }
+  .donor-page .select-plan .checkout a {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 900;
+    color: #fff;
+    background-color: #7B5BC4;
+    border: 1px solid #7B5BC4;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 14px 63px 12px 63px;
+  }
+  .donor-page .select-plan .checkout a:hover {
+    color: #7B5BC4;
+    background-color: #E5E1EE;
+    border: 1px solid #7B5BC4;
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -ms-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+  }
+  .donor-page .select-plan .close-icon {
+    padding-left: 7px;
+    margin-top: 1px;
+  }
+  .donor-page .select-plan .close-icon span {
+    background: rgba(198, 188, 222, 0.35);
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 15px;
+    vertical-align: top;
+    line-height: 17px;
+  }
+  .donor-page .select-plan .close-icon span i {
+    font-size: 10px;
+    color: #7B5BC4;
+  }   
+  .donor-page .select-plan-inner h6 {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #434246;
+    margin-bottom: 3px;
+  }
+  .donor-page .select-plan-inner h4 {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 900;
+    color: #434246;
+  }
+  .donor-page .add-to-checkout {
+    margin-left: auto;
+  }
+  
+  /*donor page end*/
+  
+  
+  /*donor links start*/
+  
+  .donor-links {
+    padding-top: 60px;
+  }
+  .donor-links .donor-tabs {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #C9C9C9;
+  }
+  .donor-links .donor-tabs li.active a {
+    color: #7B5BC4;
+  }
+  .donor-links .donor-tabs li.active {
+    border-bottom: 1px solid #7B5BC4;
+  }
+  .donor-links .donor-tabs li a {
+    font-size: 14px;
+    font-weight: 900;
+    color: #B1B1B1;
+    line-height: 19px;
+    display: inline-block;
+    padding: 0px 20px 20px 20px;
+  }
+  .donor-links .donor-tabs li {
+    display: inline-block;
+    list-style-type: none;
+  }
+  
+  .product-details-page-plans.quantity-button.hasZeroCount {
+    border-color: red;
+  }
+  @media (max-width: 1199px){
+    .product-details-page {      margin-top: -60px;  }
+  }
+
+  @media (max-width: 767px) {
+    
+    .donor-page {background: #f1f0f3;}
+    .donor-page .donor-page-container {      padding: 50px 0px !important;  }
+    .donor-relation {padding: 50px 0;}
+    .donor-plan-wrapper {margin-bottom: 25px;}
+    .donor-page .donor-page-container .plans-item-bottom {      flex-direction: row;      align-items: center !important;      justify-content: space-between;  }
+    .donor-page .donor-page-division { padding-bottom: 15px; }
+    .donor-page .select-plan .add-to-cart {    text-align: left;margin-top: 30px; margin-bottom: 0;}
+    .donor-page .select-plan-division {  padding-top: 0px;    }
+    .donor-page .select-plan h6 { margin-top: 25px; margin-bottom: 3px;}
+    .donor-links .donor-tabs li a {    padding: 0px 5px 10px 5px; }
+    .donor-links {padding-top: 40px; min-height: initial;}
+    .donor-page .select-plan .add-to-cart a {width: 100%;}
+    .donor-page .add-to-checkout {padding-right: 7.5px;}
+    .donor-page .select-device-inner {      margin-bottom: 0px;    }
+    .donor-relation .donor-relation-title h1 {font-size: 22px; margin-bottom: 0;}
+    .donor-relation .donor-relation-price {      font-size: 30px;line-height: 36px; margin-bottom: 4px;}
+    .donor-relation .donor-relation-date {margin-bottom: 20px;}
+  }

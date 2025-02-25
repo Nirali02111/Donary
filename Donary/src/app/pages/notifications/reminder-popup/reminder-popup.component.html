@@ -1,0 +1,258 @@
+<div class="create_reminder" ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header">
+        <h4 class="large">{{'CREATEREMINDER' |translate}}</h4>
+        <div class="close_trans" (click)="closePopup()"><span>×</span></div>
+    </div>
+    <form name="ReminderForm">
+        <div class="modal_body">
+            @if(isloading){
+            <ng-container *ngFor="let item of skeletonitems">
+                <app-edit-skeleton-loader [theme1]="{ width: '120px', height: '35px' }"
+                    [theme2]="{ width: '440px', height: '35px' }"></app-edit-skeleton-loader>
+            </ng-container>
+            }@else {
+            <div class="content_section">
+                <div class="form-group">
+                    <div class="lbl_text">
+                        <label>
+                            {{'TITLE' |translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col">
+                        <input type="text" class="form-control" [(ngModel)]="title" name="Title"
+                            (focus)="inputFocus($event)" (focusout)="inputFocusOut($event)" />
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="!isMobileView">
+                    <div class="lbl_text">
+                        <label>
+                            {{'NOTE' |translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col check_input">
+                        <textarea class="textarea_box" name="note" [(ngModel)]="note" (focus)="inputFocus($event)"
+                            (focusout)="inputFocusOut($event)"></textarea>
+                    </div>
+                </div>
+                <div class="form-group assignee-field">
+                    <div class="lbl_text">
+                        <label class="text-capitalize">
+                            {{'ASSIGNEE' |translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col" id="div_assignee_dwn">
+                        <angular2-multiselect id="ddlAssignee"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="assigneeList" [(ngModel)]="assigneeId" name="ddlassignList"
+                            (onSelect)="onItemSelectAssignee($event)" (onDeSelectAll)="onDeSelectAllAssignee($event)">
+                        </angular2-multiselect>
+                        <div class="toggel-switch-loader" *ngIf="isAssigneeloader">
+                            <div class="loader_img">
+                                <img src="/assets/img/loader.svg" alt="loader" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group assignee-col">
+                    <div class="lbl_text">
+                        <label>
+                            {{'LINKDONOR' |translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col input_col_donor" (clickOutside)="onClickedOutside()">
+                        <input type="text" class="form-control" id="donorrText" name="donor" [(ngModel)]="donor"
+                            [readonly]="nonEditable" (keyup)="SearchDonor($event)" />
+                        <button class="btn-add" *ngIf="!nonEditable" (click)="AddNewDonor()">+ Add new</button>
+                        <span *ngIf="nonEditable" class="cancel_icon" (click)="RemoveDonor()">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                        <button class="search_btn hover_tooltip search_icon"
+                            *ngIf="isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable"
+                            data-toggle="tooltip" appHoverTooltip labelText="{{'CHARACTER2TOOLTIP' | translate}}"
+                            type="button" [disabled]="isSearchDisable"
+                            (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>
+                        <button class="search_btn hover_tooltip search_icon" data-toggle="tooltip" type="button"
+                            *ngIf="!isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable"
+                            (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>
+                        <div class="toggel-switch-loader" *ngIf="isloader || commonMethodService.isLoaderNewTrans">
+                            <div class="loader_img">
+                                <img src="/assets/img/loader.svg" alt="loader" />
+                            </div>
+                        </div>
+                        <div class="donor_infolist" *ngIf="commonMethodService.donorList.length > 0 && showBox">
+                            <div class="donor_row" *ngFor="let item of commonMethodService.donorList"
+                                (click)="SelectDonor(item.id,false,null)">
+                                <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                            </div>
+                        </div>
+                        <span class="required-donar invalid-feedback d-block"
+                            *ngIf="isLinkedDonor">{{'YOUMUSTSELECTDONOR'|translate}}</span>
+                    </div>
+                </div>
+
+                <!-- //   -->
+                <div class="form-group attach-col" [style.display]="displayTransactionButton ? 'flex' : 'none'">
+                    <div class="lbl_text">
+                        <label>
+                            {{'ATTACHTO'|translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col">
+                        <input type="text" class="form-control" name="transactionType" [(ngModel)]="transactionType"
+                            [readonly]="true" (click)="inputFocus($event);openPaymentListCardPopup()" />
+                        <span *ngIf="showPaymentBox" class="cancel_icon" (click)="RemoveAssignee()">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="notification_sidemenu" *ngIf="SelectedPaymentArray.length != 0 && showPaymentBox">
+                        <div class="pledge__card" *ngFor="let item of SelectedPaymentArray">
+                            <div class="p">
+                                <span class="text">{{paymentDate| donaryDateFormat: 'name'}}</span>
+                                <span class="lng_hebrew">{{paymentDateJewish}}</span>
+                            </div>
+                            <div class="name_col">
+                                <div class="left">
+                                    <h3>{{fullName}}</h3>
+                                    <h3 class="lng_hebrew">{{fullNameJewish}} </h3>
+                                </div>
+                                <div class="right">
+                                    <h6><span [ngClass]="paymenttype_icn"></span> {{
+                                        commonMethodService.formatAmount(amount)}}</h6>
+                                    <p [ngClass]="status_class">{{status}}</p>
+                                </div>
+                            </div>
+                            <div class="amounts_colms">
+                                <div class="t-col">
+                                    <span class="lbl__text text-uppercase">{{'CAMPAIGN'|translate}} :</span>
+                                    <span class="lbl__value">{{campaignName}}</span>
+                                </div>
+                                <div class="t-col">
+                                    <span class="lbl__text text-uppercase">{{'LOCATION'|translate}} :</span>
+                                    <span class="lbl__value">{{locationName}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group date-time-col">
+                    <div class="lbl_text">
+                        <label>
+                            {{'DATE&TIME'|translate}} :
+                        </label>
+                    </div>
+                    <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                            [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                    </ng-template>
+                    <div class="input_col row" (clickOutside)="onClickedOutsidePopover(p1)" container="body"
+                        #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent"
+                        popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+                        placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                        id="dynamicsCalender">
+                        <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                        <span class="required-donar invalid-feedback d-block" *ngIf="isDateSelected">Please select a
+                            date</span>
+                    </div>
+                    <!-- Calendar code ended -->
+                </div>
+
+                <div class="form-group">
+                    <div class="lbl_text">
+                        <label>
+                            {{'REPEAT'|translate}} :
+                        </label>
+                    </div>
+                    <div class="weekly_col">
+                        <angular2-multiselect id="ddlrepeatId" class=""
+                            [settings]="commonMethodService.setDropDownSettings('Select',2,false,true)"
+                            [data]="RepeatList" [(ngModel)]="repeatId" name="repeatId" (click)="inputFocus($event)"
+                            (focusout)="inputFocusOut($event)" (onDeSelectAll)="onDeSelectAll()">
+                        </angular2-multiselect>
+                        <ng-container *appIsMobile>
+                            <div class="lbl_text mt-4">
+                                <label>
+                                    {{'NOTIFY'|translate}} {{ "ASSIGNEE" | translate }}:
+                                </label>
+                            </div>
+                        </ng-container>
+                        <div class="custom__checkbox">
+                            <input type="checkbox" id="sendText-1" name="notifySMS" [(ngModel)]="notifySMS"
+                                class="cstm_checkbox" (change)="setNotifySMS($event)" />
+                            <label for="sendText-1">{{'SEND'|translate}} {{'TEXT'|translate}}</label>
+                        </div>
+                        <div class="custom__checkbox">
+                            <input type="checkbox" id="sendEmail-1" name="notifyEmail" [(ngModel)]="notifyEmail"
+                                class="cstm_checkbox" (change)="setNotifyEmail($event)" />
+                            <label for="sendEmail-1">{{'SEND'|translate}} {{'EMAIL'|translate}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="isMobileView">
+                    <div class="lbl_text">
+                        <label>
+                            {{'NOTE' |translate}} :
+                        </label>
+                    </div>
+                    <div class="input_col check_input">
+                        <textarea class="textarea_box" name="note" [(ngModel)]="note" (focus)="inputFocus($event)"
+                            (focusout)="inputFocusOut($event)"></textarea>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                <div class="lbl_text">
+                    <label>
+                        Phone:
+                    </label>
+                </div>
+                <div class="input_col check_input">
+                    <div class="txt_input">
+                        <input type="text" class="form-control" [(ngModel)]="phone" name="Phone" (focus)="inputFocus($event)" (focusout)="inputFocusOut($event)"/>
+                        <input type="text" class="form-control" name="Phone" [(ngModel)]="phone" #txtCellPhone="ngModel"
+                            [validation]="true" mask="(000) 000-000099999" (focus)="inputFocus($event)"
+                            (focusout)="inputFocusOut($event)" />
+                    </div>
+                    <div class="custom__checkbox">
+                        <input type="checkbox" id="sendText-1" name="notifySMS" [(ngModel)]="notifySMS"
+                            class="cstm_checkbox" (change)="setNotifySMS($event)" />
+                        <label for="sendText-1">Send Text</label>
+                    </div>
+                </div>
+            </div> -->
+
+                <!-- <div class="form-group">
+                <div class="lbl_text">
+                    <label>
+                        Email:
+                    </label>
+                </div>
+                <div class="input_col check_input">
+                    <div class="txt_input">
+                        <input type="email" class="form-control" [(ngModel)]="email" name="Email"
+                            (focus)="inputFocus($event)" (focusout)="inputFocusOut($event)" />
+                    </div>
+                    <div class="custom__checkbox">
+                        <input type="checkbox" id="sendEmail-1" name="notifyEmail" [(ngModel)]="notifyEmail"
+                            class="cstm_checkbox" (change)="setNotifyEmail($event)" />
+                        <label for="sendEmail-1">Send Text</label>
+                    </div>
+                </div>
+            </div> -->
+            </div>
+            }
+        </div>
+    </form>
+    <div class="action_footer justify-content-between">
+        <div class="left_part">
+            <button class="btn btn-default">{{'CANCEL'|translate}}</button>
+        </div>
+        <div class="right_part">
+            <button class="btn btn-primary" type="button" (click)="SaveReminderInfo()"
+                *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
+            <button class="btn btn-primary btn-core" type="button" (click)="onUpgrade()"
+                *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
+        </div>
+    </div>
+</div>

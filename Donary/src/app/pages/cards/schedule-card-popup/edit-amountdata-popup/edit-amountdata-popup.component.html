@@ -1,0 +1,109 @@
+<div class="setup_schedule_pop" ngbAutofocus tabindex="-1">
+  <div class="popup_header modal__custom_header">
+    <h4>{{ title }}</h4>
+    <button class="close-btn" type="button" (click)="closePopup()">&times;</button>
+  </div>
+  <ng-container *appIsWeb>
+    <div class="schedule-sticky-pop">
+      <div class="modal__custom_content" (click)="OnDivClick()">
+        <div class="form-group d-flex" *ngIf="isEditAmount">
+          <label>{{ "ENTERSHEDULEAMOUNT" | translate }}:</label>
+          <div class="input_group">
+            <span [ngClass]="commonMethodService.currencyClass"></span>
+            <input type="text" maxlength="16" (keypress)="commonMethodService.numberOnly($event)" class="form-control"
+              [(ngModel)]="amount" name="schedule_donationamt" />
+          </div>
+        </div>
+        <div class="form-group d-flex next_paymnt_date" *ngIf="!isEditAmount">
+          <label>{{ "CHOOSEPAYMENTDATE" | translate }}:</label>
+          <div class="input_group m-0">
+
+            <ng-template #popContent>
+              <app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+                [isOneDate]="isOneDate">
+              </app-common-hebrew-english-calendar>
+            </ng-template>
+
+            <div class="form-group aliyas-date position-relative">
+              <div class="form-group date_picker">
+                <div (click)="openHebrewCalendarPopup()" class="input-group date_picker"
+                  (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"
+                  [ngbPopover]="popContent" popoverClass="calender-modal" [autoClose]="false"
+                  placement="bottom left right start end bottom-start bottom-end end-top end-bottom">
+                  <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                </div>
+                <div class="input-group-append">
+                  <span class="input-group-text icon">
+                    <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal__custom_footer">
+        <div class="btn_info">
+          <button type="button" class="btn btn-default" (click)="closePopup()">
+            {{ "CANCEL" | translate }}</button>&nbsp;&nbsp;
+          <button class="btn btn-primary" [disabled]="isDisable()" (click)="UpdateAmountDate()">
+            {{ "SAVECHANGES" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *appIsMobile>
+    <div class="schedule-sticky-pop">
+      <div class="modal__custom_content" (click)="OnDivClick()">
+        <div class="form-group d-flex" *ngIf="isEditAmount">
+          <label>{{ "ENTERSHEDULEAMOUNT" | translate }}:</label>
+          <div class="input_group">
+            <span [ngClass]="commonMethodService.currencyClass"></span>
+            <input type="text" maxlength="16" (keypress)="commonMethodService.numberOnly($event)" class="form-control"
+              [(ngModel)]="amount" name="schedule_donationamt" />
+          </div>
+        </div>
+        <div class="form-group d-flex next_paymnt_date" *ngIf="isEditAmount">
+          <label>{{ "CHOOSEPAYMENTDATE" | translate }}:</label>
+
+          <div class="input_group">
+            <ng-template #popContent>
+              <app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+                [isOneDate]="isOneDate">
+              </app-common-hebrew-english-calendar>
+            </ng-template>
+
+            <div class="form-group aliyas-date position-relative">
+              <div class="form-group date_picker">
+                <div (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)" container="body"
+                  #p1="ngbPopover" [ngbPopover]="popContent" popoverClass="calender-modal" [autoClose]="false"
+                  placement="bottom left right start end bottom-start bottom-end end-top end-bottom">
+                  <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                </div>
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal__custom_footer">
+        <div class="btn_info">
+          <button type="button" class="btn btn-default" (click)="closePopup()">
+            {{ "CANCEL" | translate }}</button>&nbsp;&nbsp;
+          <button class="btn btn-primary" [disabled]="isDisable()" (click)="UpdateAmountDate()">
+            {{ "SAVECHANGES" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div [formGroup]="parentFormGroup">
+    <div class="payment-ach" formGroupName="achType">
+        <div class="form-group">
+            <label for="bankType">{{'BANKTYPE' | translate}}</label>
+            <div class="radio-group type-bank">
+                <input type="radio" formControlName="bankType" value="Personal" id="personal" />
+                <label class="radio-label" for="personal">
+                    <span class="icon-personal"></span> {{'PERSONAL' | translate}}
+                </label>
+                <input type="radio" formControlName="bankType" value="Business" id="business" />
+                <label class="radio-label" for="business">
+                    <span class="icon-business"></span> {{'BUSINESS' | translate}}
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{'ACCOUNT' | translate}} {{'TYPE' | translate}}</label>
+            <div class="radio-group  d-flex align-items-center">
+                <div class="input-checkbox">
+                    <input type="radio" formControlName="accountType" value="Checking" id="checking" />
+                    <label class="radio-label" for="checking">
+                        {{'CHECKING' | translate}}
+                    </label>
+                </div>
+                <div class="input-checkbox">
+                    <input type="radio" formControlName="accountType" value="Savings" id="saving" />
+                    <label class="radio-label" for="saving">
+                        {{'SAVINGS' | translate}}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="nameOnAccount">{{'NAME' | translate}} {{'ON' | translate}} {{'ACCOUNT' |
+                translate}}</label>
+            <input type="text" formControlName="nameOnAccount" class="form-input" />
+
+            @if (NameOnAccount?.touched && NameOnAccount?.invalid) {
+                <app-input-error [errors]="NameOnAccount?.errors"></app-input-error>
+            } 
+        </div>
+
+        <div class="form-group">
+            <label for="routingNumber">{{'ROUNTINGNUMBER' | translate}}</label>
+            <input type="text" formControlName="routingNumber" class="form-input" />
+
+            @if (RoutingNumber?.touched && RoutingNumber?.invalid) {
+                <app-input-error [errors]="RoutingNumber?.errors"></app-input-error>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="accountNumber">{{'ACCOUNTNUMBER' | translate}}</label>
+            <input type="text" formControlName="accountNumber" class="form-input" />
+
+            @if (AccountNumber?.touched && AccountNumber?.invalid) {
+                <app-input-error [errors]="AccountNumber?.errors"></app-input-error>
+            }
+        </div>
+
+        <div class="note_panel">
+            <span class="note_lbl text-uppercase">{{ "NOTE" | translate }}</span>
+            <textarea class="note_area" formControlName="note" [placeholder]="'WRITENOTE' | translate"></textarea>
+        </div>
+    </div>
+</div>

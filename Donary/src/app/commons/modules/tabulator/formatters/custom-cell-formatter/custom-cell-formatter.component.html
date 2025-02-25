@@ -1,0 +1,34 @@
+
+<ng-container *ngIf="isCurrency">
+    {{ commonMethodService.formatAmount(cell.getValue()) }}
+</ng-container>
+
+<ng-container *ngIf="isDateShort">
+    {{ datePipe.transform(cell.getValue(), 'short') }}
+</ng-container>
+
+<ng-container *ngIf="isDateLong">
+    {{ datePipe.transform(cell.getValue(), 'long') }}
+</ng-container>
+
+<ng-container *ngIf="isAddress">
+    {{ cell.getValue() }}
+</ng-container>
+
+
+<ng-container *ngIf="isPhone">
+    {{ cell.getValue() }}
+</ng-container>
+
+<ng-container *ngIf="isCampaignTree">
+    {{ cell.getValue() }}
+</ng-container>
+
+@if (cell.getColumn().getDefinition().field == 'reasonName') {
+    {{ cell.getValue().reasonName}} <br/>
+    {{ cell.getValue().jewishName}} 
+}
+
+@if(isOther && cell.getColumn().getDefinition().field != 'reasonName'){
+    {{ cell.getValue() }}
+}

@@ -1,0 +1,225 @@
+<form name="form" (ngSubmit)="f.form.valid && PayPledgeAmount(f)"  #f="ngForm" aria-labelledby="title" ngbAutofocus  tabindex="-1">
+    <div class="modal-header pledgepay-popup modal__custom_header">
+        <h4 class="modal-title">Payment</h4>
+        <button type="button" class="close" *ngIf="!payButtonClickLoading" aria-label="Close" (click)="closePopup()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="for-mobile-only">
+            <a href="#" class="brand-link" >
+                <img src="assets/dist/img/donary-logo.svg" alt="AdminLTE Logo" class="brand-image">
+                <span class="pay_text">Pay</span>
+            </a>
+        </div>
+    </div>
+    <div *ngIf="payButtonClickLoading" class="overlay"></div>
+    <div class="loader" *ngIf="isloading">
+        <h4>Processing payment</h4>
+        <h3>{{commonMethodService.formatAmount(totalPaidAmount)}}</h3>
+        <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
+    <div class="modal-body pledgepay-popup modal__custom_content payment-modal-pay">
+        <div class="card" style="box-shadow: none !important;">
+            <div class="card-body">
+                <div class="row pay-total_row">
+                    <div class="h4">
+                        Pay Total :
+                    </div>
+                    <div class="total">{{commonMethodService.formatAmount(totalPaidAmount)}}</div>
+                </div>
+
+                <div class="row input-group card_inut-box">
+                    <div class="col-sm-6 card-number">
+                        <label class="lbl--text text-upppercase">
+                            Card Number :
+                        </label>
+                        <div
+                            class="input-text {{ isFocusedSetClass }}"
+                            [class.swingAnimate]="swingAnimate"
+                            [class.hasZeroCount]="f.submitted && txtcreditCardNumber.invalid"
+                        >
+                            <i class="cc-icon"
+                                ><img src="/assets/dist/img/credit-card-icon.svg" alt=""
+                            />
+                            
+                        </i>
+
+                            <input type="text" class="form-control" [(ngModel)]="creditCardNumber"
+                            name="txtcreditCardNumber"
+                            (focusin)="isFocusedSetClass='is-focused';isFocusedSetClass2='';isFocusedSetClass3=''"
+                            (focusout)="MaskNumber();isFocusedSetClass=''" [mask]="maskValue" [showMaskTyped]="true"
+                            (keypress)="ChangeMask();" placeholder="____-____-____-____"
+                            #txtcreditCardNumber="ngModel" id="input-creditCardNumber"  (keyup)="EnterCreditCard($event);onCvvHideShow($event)"
+                            [ngClass]="{ 'is-invalid': f.submitted && creditCardNumber.invalid }" required autofocus
+                            pattern="[0-9]*" inputmode="numeric"/>
+                            <div *ngIf="f.submitted && creditCardNumber.invalid" class="input-group col-12">
+                                <span class="error invalid-feedback" style="display: block;">Credit Card Number is required</span>
+                            </div>
+                            <span class="text-danger" *ngIf="inValidCCNum">Please enter a valid credit card number</span>
+                        </div>
+                    </div>
+
+                    <div class="col-3 exp-date">
+                        <label class="lbl--text">
+                        Exp Date :
+                        </label>
+
+                        <div class="input-text {{isFocusedSetClass2}}" [class.swingAnimate]="swingAnimate" [class.hasZeroCount]="f.submitted  &&  !isExpiryDateValid">
+                            <input
+                            class="form-control"
+                            [(ngModel)]="expDate"
+                            name="txtexpDate"
+                            #txtexpDate="ngModel"
+                            maxlength="5"
+                            minlength="5"
+                            id="expiryDate"
+                            (keyup)="EnterExpiryDate($event)"
+                            (focusout)="ValidExpiryDate($event)"
+                            autocomplete="cc-exp"
+                            placeholder="MM/YY"
+                            required
+                            (focusin)="isFocusedSetClass2='is-focused';isFocusedSetClass='';isFocusedSetClass3=''"
+                            (focusout)="isFocusedSetClass='';isFocusedSetClass2='';isFocusedSetClass3=''"
+                            type="text" inputmode="numeric"/>
+                            <span class="val-exp-error" *ngIf="isInValid" style="color: red;"
+                            >Invalid expiry date</span
+                            >
+                    </div>
+                    </div>
+
+                    <div class="col-3 mb-3 cvv-col" *ngIf="isCvvHideShow">
+                        <label class="lbl-text">
+                            CVV :
+                        </label>
+                        <div class="input-text {{isFocusedSetClass3}}" [class.swingAnimate]="swingAnimate" [class.hasZeroCount]="f.submitted && txtcreditCardCVV.invalid">
+
+
+                            <input class="form-control" [(ngModel)]="creditCardCVV" name="txtcreditCardCVV"
+                            #txtcreditCardCVV="ngModel" id="input-txtcreditCardCVV" [maxlength]="cvvMaxLength"
+                            (keypress)="commonMethodService.numberOnly($event)"
+                            [ngClass]="{ 'is-invalid': f.submitted && txtcreditCardCVV.invalid }"
+                            (focusin)="isFocusedSetClass3='is-focused';isFocusedSetClass2='';isFocusedSetClass=''"
+                            (focusout)="isFocusedSetClass='';isFocusedSetClass2='';isFocusedSetClass3=''"
+                            type="text" pattern="[0-9]*" inputmode="numeric"/>
+                            <div *ngIf="f.submitted && creditCardCVV.invalid" class="input-group col-12 text-danger">
+                                <span class="val-error" >CVV is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-payment-row">
+                    <div class="cards-icons"><img src="/assets/dist/img/cc-card-icons.png" alt="" />
+                        <img src="/assets/dist/img/metro-diners-club.svg" width="40" alt="" /></div>
+                    <div class="scheduled-payment-switch">
+                        <div class="schedule-payment-switch">
+                            <label class="switch">
+                                <input  type="checkbox" [checked]="isSchedulePayment" (change)="onSchedulePaymentSwitch()">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-label">Schedule Payment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group count-fre-start-row" *ngIf="isSchedulePayment">
+                    <div class="box-col box-count" [class.swingAnimate]="swingAnimate" [class.hasZeroCount]="f.submitted && txtscheduleCount.invalid">
+                        <label>Count</label>
+                        <input class="form-control" [required]="isSchedulePayment" placeholder="0" (keyup)="GetAmtPerPayment()" [(ngModel)]="scheduleCount" name="txtscheduleCount" #txtscheduleCount="ngModel">
+                    </div>
+                    <div class="box-col" [class.swingAnimate]="swingAnimate" [class.hasZeroCount]="f.submitted && drpscheduleFreq.invalid">
+                        <label class="text-uppercase">Frequency</label>
+                        <angular2-multiselect id="ddlScheduleRepeatType"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true)"
+                            [data]="commonMethodService.localscheduleRepatTypeList"
+                            [(ngModel)]="scheduleFreg"
+                            [required]="isSchedulePayment"
+                            name="drpscheduleFreq" #drpscheduleFreq="ngModel" (onSelect)= "ChangeFrequency($event)"    >
+                        </angular2-multiselect>
+                    </div>
+                    <div class="box-col box-start-date" [class.swingAnimate]="swingAnimate" [class.hasZeroCount]="f.submitted && startdate.invalid">
+                        <label class="text-uppercase">Start Date</label>
+                        <div class="input_group">
+                            <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20" alt="" /></span>
+                            <div class="searchbar">
+                                <input type="text" class="form-control" #calendarsearch  ngxDaterangepickerMd
+                                        [singleDatePicker]="true"
+                                        [minDate]="minDate"
+                                        [(ngModel)]="scheduleStart"
+                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                        [opens]="commonMethodService.open" drops="up"
+                                        [showClearButton]="commonMethodService.showClearButton"
+                                        required (datesUpdated)="datesUpdated($event)"
+                                        name="startdate"    #startdate="ngModel" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="box-col box-amount-day"
+                        [class.swingAnimate]="swingAnimate"
+                    >
+                        <label>Amount Per Payment</label>
+                        <label class="amount-box"> {{commonMethodService.formatAmount(amtPerPayment)}}</label>
+                    </div>
+                    <div *ngIf="isHighCount" class="input-group col-12 text-danger">
+                        <span style="width: 330px;" class="val-error" >Choose a number less than 36</span>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- <div class="box-col box-amount-day" [class.swingAnimate]="swingAnimate" >
+                <label>Amount Per Payment</label>
+                <label class="amount-box"> {{commonMethodService.formatAmount(amtPerPayment)}}</label>
+            </div> -->
+        </div>
+
+
+        <div class="row email-row">
+            <div class="input-group col-12 mb-3">
+                <label class="lbl-text text-uppercase">
+                    Email Address :
+                </label>
+
+                <div
+                class="input-text"
+                [class.swingAnimate]="swingAnimate"
+                [class.hasZeroCount]="f.submitted && txtemaillAddress.invalid"
+                >
+                    <input
+                        type="text"
+                        [(ngModel)]="emailAddress"
+                        class="form-control"
+                        name="txtemailaddress"
+                        #txtemaillAddress="ngModel"
+                        id="input-txtemailAddress"
+                        [ngClass]="{
+                        'is-invalid': f.submitted && txtemaillAddress.invalid
+                        }"
+                        required
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="row note-row">
+            <div class="input-group col-5 mb-3">
+                <label for="note">
+                    Note
+                </label>
+            </div>
+            <div class="input-group col-6 mb-3">
+                <textarea [(ngModel)]="note" class="form-control" name="txtnote" rows="2"></textarea>
+            </div>
+        </div>
+
+    </div>
+    <!-- pay -->
+
+    <div class="modal-footer modal__custom_footer pledgepay-popup-ft">
+        <div class="btn-wrapper">
+            <button [disabled]="buttonDisabled" (click)="PayPledgeAmount(f)" class="btn btn-primary"><span *ngIf="!isloading"> Pay {{commonMethodService.formatAmount(totalPaidAmount)}}</span></button>
+        </div>
+    </div>
+</form>

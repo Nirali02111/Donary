@@ -1,0 +1,55 @@
+<div class="modal-body w-100">
+	
+
+<h4>Aliyas Report By Date</h4>
+<div class="jewish-calendar">
+	<div class="left-calendar-menu">
+		<div class="jewish-date">
+			<h5 class="date-heading">SELECT DATE RANGE:</h5>
+			<div class="start-date"> <input type="text" name="" id="heb_startDate" value="{{displayFromHebDate(fromDate)}}"></div>
+			<div class="end-date"><input type="text" name="" id="heb_endDate" value="{{displayToHebDate(toDate)}}"></div>
+		</div>
+	<div class="jewish-datepicker">
+		<div class="datepicker-arrow">
+			<div class="datepicker-arrow-inner">
+				<span class="arrow-left" (click)="onNavigateToMonth(1)"><span class="material-icons">chevron_left</span></span>
+			</div>
+			<div class="datepicker-arrow-inner">
+				<span class="arrow-right" (click)="onNavigateToMonth(-1)"><span class="material-icons">chevron_right</span></span>
+			</div>
+		</div>
+		 <ngb-datepicker
+			class="hebrew rtl"
+			[(ngModel)]="model"
+			#dp
+			[displayMonths]="2"
+			[firstDayOfWeek]="7"
+			[dayTemplate]="dt"
+			[dayTemplateData]="dayTemplateData"
+			[firstDayOfWeek]="7"
+			(dateSelect)="onDateSelection($event)"
+			navigation="none"
+		>
+		</ngb-datepicker>
+
+		<ng-template #dt let-date let-data="data" let-selected="selected" let-currentMonth="currentMonth" let-focused="focused">
+
+			<div class="hebrew-day" [class.outside]="date.month !== currentMonth" [class.selected]="selected" 		class="custom-day"
+				[class.focused]="focused"
+				[class.range]="isRange(date)"
+				[class.faded]="isHovered(date) || isInside(date)"
+				(mouseenter)="hoveredDate = date"
+				(mouseleave)="hoveredDate = null">
+				<div class="gregorian-num">{{ data.gregorian.day + '/' + (data.gregorian.month) }}</div>
+				<div class="hebrew-num">{{ i18n.getDayNumerals(date) }}</div>
+			</div>
+		</ng-template>
+    <div class="btn-action d-flex justify-content-end mt-4">
+      <button class="btn btn-cancel" id="id_Clear" (click)="onClear()">Cancel</button>
+       <button class="btn btn-primary" (click)="getDateReport()">Generate</button>
+    </div>
+ 
+		</div>
+	</div>
+</div>
+</div>

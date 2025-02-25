@@ -1,0 +1,87 @@
+<div class="modal-header justify-content-center">
+    <h4 class="modal-title">{{'CREATE' | translate}} {{'ALIYOS' | translate}}</h4>
+    <button class="modal-close" (click)="closePopup()"><span>&times;</span></button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="createAliosActionForm">
+        <div class="aliyos-info">
+            <fieldset class="aliyos-fieldset">
+                <legend class="h5">Aliyos info</legend>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="form-label" for="title">GROUP TITLE:</label>
+                            <input type="text" name="title" id="title" class="form-control" formControlName="groupTitle" />
+                            <ng-container *ngIf="GroupTitleControl.invalid && (GroupTitleControl.touched || isFormSubmitted)">
+                                <div class="row text-danger">
+                                    <div  class="val-error">{{'TITLEISREQUIRED' | translate}}</div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="block_label">
+                                {{'CAMPAIGN'|translate}}:
+                            </div>
+                            <div class="block_inputs">
+                                <div class="input_single">                      
+                                    <angular2-multiselect id="ddlCampaign"
+                                    [ngClass]="{'error-field': CampaignIdControl.invalid && (CampaignIdControl.touched || isFormSubmitted)}"
+                                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                    [data]="commonMethodService.localCampaignList"
+                                    (onDeSelect)="OnCampaignDeSelect()"
+                                    (onDeSelectAll)="OnCampaignDeSelect()"
+                                    formControlName="campaignId">
+                                    <c-item>
+                                        <ng-template let-item="item">
+                                            <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                                {{item.itemName}}
+                                                <span class="heb-dropdown-status">{{item.status}}</span></label>
+                                        </ng-template>
+                                    </c-item>
+                                </angular2-multiselect>
+                                <ng-container *ngIf="CampaignIdControl.invalid && (CampaignIdControl.touched || isFormSubmitted)">
+                                    <div class="row text-danger">
+                                        <div  class="val-error">{{'CAMPAIGNISREQUIRED' | translate}}</div>
+                                    </div>
+                                </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="aliyos-date">
+                <legend class="h5">{{'SELECT' | translate}} {{ 'ALIYOS' | translate}} {{'DATE' | translate}}</legend>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label mb-3">{{'SELECT' | translate}} {{'LATESTDATES' | translate}}:</label>
+                    </div>
+                    <div class="col-md-3" *ngFor="let item of latestEvents; let i = index">
+                        <div class="form-group">
+                            <input type="radio" name="aliyosDate" [id]="'radio_' + i" [value]="item" (change)="onRadioChange(item)" [checked]="i === 0"/>
+                            <label [for]="'radio_' + i" class="d-flex flex-column justify-content-center align-items-center">
+                                <span class="hebrew_lng">{{item.hebrewDate}}</span>
+                                <span>{{item.englishDate | donaryDateFormat: "short"}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <ng-template #popContent ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDate" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+            </ng-template>
+
+            <div class="form-group" (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="aliyosDynamicsCalender">
+                <label class="form-label" for="date">{{'CHOOSEDDATE' | translate}}:</label>
+                <input type="text" class="form-control col-md-5" value=""
+                  [placeholder]="EngHebCalPlaceholder" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer d-flex justify-content-end">
+    <button class="btn btn-defult"  (click)="closePopup()">{{'CANCEL' | translate}}</button>
+    <button class="btn btn-primary" (click)="openAliyesWindow()">{{'CONTINUE' | translate}}</button>
+</div>

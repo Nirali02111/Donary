@@ -1,0 +1,63 @@
+.diglog_modal {
+    .tab-content{
+        .right_colm {
+            .block-col{
+                display: flex;
+            }
+        }
+    }
+    .header_actions{
+        .dnr-datepicker-container.input-group.date_picker{
+            height: 38px;
+        }
+        button.dismiss{
+            color:#6d6d6d;
+           
+        }
+    }
+}
+
+.donor_card_redesign {
+    .number_icon {
+        background-color: #F0EEF5;
+        width: 44px;
+        height: 44px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 20px;
+        position: relative;
+        text-align: center;
+        line-height: 44px;
+
+
+        .fa-phone::before {
+            color: #7b5bc4;
+            font-size: 17px;
+        }
+    }
+
+    .email_icon{
+        background-color: #F0EEF5;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 20px;
+        position: relative;
+        text-align: center;
+        line-height: 44px;
+
+        .fa::before {
+            color: #7b5bc4;
+            font-size: 17px;
+        }
+    }
+    
+    .house_icon{
+        background-color: #F0EEF5; 
+    }
+    
+       
+}
+

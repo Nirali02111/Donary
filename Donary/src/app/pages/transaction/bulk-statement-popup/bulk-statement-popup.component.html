@@ -1,0 +1,99 @@
+<div class="modal-body create__donor bulk-statement-modal">
+    <div class="modal-header modal__custom_header ui-draggable-handle">
+        <h4>{{'GENERATEBULK'|translate}}</h4>
+        <div class="close_trans" (click)="closePopup()"><span>×</span></div>
+    </div>
+    <div class="bulk-statement-body modal__custom_content export_multiSelectDesign">
+        <div class="bulk-statement-content">
+            <div class="form-group d-flex">
+                <label>{{'DATERANGE'|translate}}:</label>
+                <div class="input_group date_picker">
+                    <div class="input-group col-9 mb-2 date-field">
+                        <app-donary-date-picker [isFullView]="false" [SelectedDateRange]="selectedDateRange"
+                            (emtDatesUpdated)="datesUpdated($event)"></app-donary-date-picker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'TEMPLATE'|translate}}:
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentReason"
+                        [settings]="commonMethodService.setDropDownSettings('Select',2,false,false)"
+                        [data]="statementTypeList" [(ngModel)]="statementType" (onDeSelectAll)="statementType=null">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'REASON'|translate}}:
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentReason"
+                        [settings]="commonMethodService.setDropDownSettings('Select Payment Reason',2,false,false,true,true)"
+                        [data]="commonMethodService.paymentReasonList"
+                        [(ngModel)]="commonMethodService.selectedPaymentReasons"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'COLLECTOR'|translate}}:
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentCollector"
+                        [settings]="commonMethodService.setDropDownSettings('Select Collector',2,false,false,true,true)"
+                        [data]="commonMethodService.paymentCollectorList"
+                        [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'LOCATION'|translate}}:
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentLocation"
+                        [settings]="commonMethodService.setDropDownSettings('Select Location',2,false,false,true,true)"
+                        [data]="commonMethodService.paymentLocationList"
+                        [(ngModel)]="commonMethodService.selectedPaymentLocations"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'PRINT'|translate}}:
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlCampaign"
+                        [settings]="commonMethodService.setDropDownSettings('Select Campaign',2,false,false,true,true)"
+                        [data]="commonMethodService.CampaignList"
+                        [(ngModel)]="commonMethodService.selectedFromCampaignList"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                    </angular2-multiselect>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn_info modal__custom_footer bulk-statement-footer">
+    <div class="footer-inside">
+        <div class="left part">
+            <button class="btn btn-primary" (click)="Print()">{{'PRINT'|translate}}</button>
+        </div>
+    </div>
+</div>

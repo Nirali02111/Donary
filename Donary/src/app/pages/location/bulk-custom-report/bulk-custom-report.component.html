@@ -1,0 +1,57 @@
+<div class="diglog_modal bulk_custom_report custom-report-card-modal" ngbAutofocus  tabindex="-1">
+    <div class="diglog_header modal__custom_header">
+        <div class="titlebar">
+            <h4>{{'CUSTOMREPORT'  |translate}}</h4>
+        </div>
+        <div class="header_actions">
+            <button class="dismiss" (click)="closePopup()">&times;</button>
+        </div>
+    </div>
+    <form [formGroup]="customReportActionForm" (ngSubmit)="onSubmit()">
+        <div class="diglog_body modal__custom_content">
+            <div class="row">
+                <div class="col-12">
+                    <span class="selected_donor_count" *ngIf="donorList.length > 1">({{donorList.length}}) {{'LOCATIONSELECTED'  |translate}}</span>
+                    <span class="selected_donor_count" *ngIf="donorList.length === 1">({{donorList.length}}) {{'LOCATIONSELECTED'  |translate}}</span>
+                    <span class="selected_donor_count" *ngIf="donorList.length === 0">{{'NO'  |translate}} {{'LOCATIONSELECTED'  |translate}}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12" >
+                  <!--  <select class="selct_box"  formControlName="action">
+                        <option selected>Choose...</option>
+                        <option *ngFor="let state of stateList" [value]="state.value">{{state.label}}</option>
+                    </select> -->
+                    <angular2-multiselect  id="ddllist"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,false)"
+                    [data]="customRepostList"
+                    [(ngModel)]="selectList"
+                    name="ddlclist" formControlName="action"
+                    (onDeSelectAll)="onDeSelectAll($event)"
+                    (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)">
+                    </angular2-multiselect>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="modal-custom-footer">
+            <ul class="custom-report-buttons">
+                <li><button class="btn btn-default">Print</button></li>
+                <li><button class="btn btn-primary">Text</button></li>
+                <li><button class="btn btn-primary">Mail</button></li>
+                <li><button class="btn btn-primary">Email</button></li>
+            </ul>
+        </div> -->
+        <div class="btn-run">
+            <button [disabled]="isRunBtnDisable" class="btn btn-primary">{{'RUN'  |translate}}</button>
+        </div>
+
+    </form>
+
+    <!-- {{ customReportActionForm.value | json }} -->
+    <div *ngIf="isloading" class="card-overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>

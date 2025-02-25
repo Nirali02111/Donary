@@ -1,0 +1,44 @@
+<div class="modal-header pay-confirm-pop modal__custom_header" ngbAutofocus  tabindex="-1">
+    <h4 class="modal-title">{{'PLEDGEPAYMENT'  |translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body pay-confirm-pop modal__custom_content" style="padding: 0 !important;">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body">
+            <form name="form" (ngSubmit)="f.form.valid && verify()" #f="ngForm" class="material-form">
+                <div class="field-group">
+                    <label for="input-accountId" class="{{accountlblclass}}">{{'ACCOUNT#'  |translate}}</label>
+                    <input type="text" class="floating-label " (focus)="focusAccountLabel()" (blur)="blurAccountLabel()" [(ngModel)]="user.accountId" #accountId="ngModel"
+                        name="accountId" (keypress)="commonMethodService.numberOnly($event)" id="input-accountId"
+                         [ngClass]="{ 'is-invalid': f.submitted && accountId.invalid }" required
+                        autofocus>                       
+                    <div *ngIf="f.submitted && accountId.invalid" class="input-group col-12">
+                        <span class="error invalid-feedback" style="display: block;">{{'ACCOUNT#'  |translate}} {{'ISREQUIRED'  |translate}}</span>
+                    </div>
+                </div>              
+                <div class="field-group">
+                    <label for="input-phonenumber"  class="{{phonenolblclass}}">{{'LASTFOURPHONENUMBR'  |translate}}</label>
+                    <input type="text" class="floating-label" [(ngModel)]="user.phonenumber" (focus)="focusPhoneLabel()" (blur)="blurPhoneLabel()" #phonenumber="ngModel"
+                        maxlength="4" name="phonenumber" id="input-phonenumber"      (keypress)="commonMethodService.numberOnly($event)"
+                            [ngClass]="{ 'is-invalid': f.submitted && phonenumber.invalid }" required>                                                  
+                            <div *ngIf="f.submitted && phonenumber.invalid" class="input-group col-12">
+                            <span class="error invalid-feedback" style="display: block;">{{'PHONENUMBER'  |translate}} {{'ISREQUIRED'  |translate}}</span>
+                        </div>
+                </div>               
+                <div class="form-group">
+                    <button [disabled]="isloading || !f.valid" class="btn btn-primary btn-block">{{'VERIFY'  |translate}}</button>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="isloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin">
+            </i>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="activeModal.close('Close click')">Close</button>   
+    <button type="button" class="btn btn-primary">Save</button>
+</div> -->

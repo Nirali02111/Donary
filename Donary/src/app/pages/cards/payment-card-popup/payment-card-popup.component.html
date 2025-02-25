@@ -1,0 +1,710 @@
+<div class="diglog_modal payment_schedule_moodal paymentcard_modal" ngbAutofocus tabindex="-1">
+  <div class="diglog_header modal__custom_header">
+    <button class="dismiss" (click)="closePopup()">&times;</button>
+    <div class="titlebar" ngbAutofocus tabindex="-1">
+      <h4>{{ "PAYMENT" | translate }} #{{ receiptNum }}</h4>
+      <p>
+        {{ paymentDate | donaryDateFormat : "name" }} |
+        <span class="lng_hebrew"> {{ paymentDateJewish }}</span>
+      </p>
+    </div>
+    <div class="header_actions transaction_actions">
+      <button class="b_tn btn_ primary hidden-mobile"
+        *ngIf="status == 'Error' || status == 'Declined' && this.paymentType !=='Check' && this.paymentType !=='ACH'"
+        (click)="OpenWalletDetails()">
+        <i class="fa fa-repeat" aria-hidden="true"></i>
+      </button>
+
+      <button class="b_tn btn_ primary" [ngClass]="{'disabled-edit-button default-cursor': ((batchNum || donaryBatchNum) && !isEventBatchEdit) }"
+        appDataHover [labelText]="((!batchNum && !donaryBatchNum) || isEventBatchEdit) ? ('EDIT' | translate) : 'Payment already batched'"
+        [disabled]="batchNum && !isEventBatchEdit" (click)="((!batchNum && !donaryBatchNum) || isEventBatchEdit) && editPaymentPopup(paymentId)">
+        <i class="fa fa-edit hidden-mobile" aria-hidden="true"
+          [ngClass]="{'default-cursor': batchNum || donaryBatchNum}"></i>
+        <i class="fa fa-pencil hidden-desktop" aria-hidden="true"
+          [ngClass]="{'default-cursor': batchNum || donaryBatchNum}"></i>
+      </button>
+
+      <div (clickOutside)="onClickedOut()" class="hidden-mobile">
+        <button class="b_tn" (click)="showTransMenu()" type="button" id="drpTrans">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu transaction_opts show" *ngIf="showTrans">
+          <li>
+            <a class="dropdown-item" style="cursor: pointer" *ngIf="makeTransactionPermission"
+              (click)="makeTransactionPopup()">
+              <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+              {{ "NEWTRANSACTION" | translate }}</a>
+          </li>
+          <li *ngIf="isReminderDisplay()">
+            <a class="dropdown-item" style="cursor: pointer" (click)="AddReminderPopup()">
+              <i class="fas fa-bell" aria-hidden="true"></i>{{ "ADDREMINDER" | translate }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <button class="header-btn-void hidden-mobile" appDataHover
+        [ngClass]="{'disabled-void-button default-cursor': batchNum || donaryBatchNum}"
+        [disabled]="(!batchNum && !donaryBatchNum)"
+        [labelText]="(!batchNum && !donaryBatchNum) ? ('VOIDPAYMENT' | translate): 'Payment already batched'">
+        <i class="fa fa-ban" aria-hidden="true"
+          (click)="(!batchNum && !donaryBatchNum) && VoidPayment(paymentId,status)"
+          [ngClass]="{'default-cursor': batchNum || donaryBatchNum}"></i>
+      </button>
+      <ng-template [ngIf]="notSuccessAction" [ngIfElse]="notSuccessAction">
+        <button class="b_tn disable-tooltip" *ngIf="isGlobal" appDataHover
+          labelText="{{'ENABLEACTIONUPDATE' | translate}}">
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <div (clickOutside)="onClickedOutside()">
+          <button class="b_tn" type="button"
+            *ngIf="!isGlobal && (paymentStatus != 'Declined' && paymentStatus != 'Error' && paymentStatus != 'Voided') && isDevEnv && TransColName"
+            appDataHover
+            [labelText]="isLegalReceiptNum && !receiptGenerated ? 'To enable generate the legal receipt':('ACTIONS' | translate) "
+            (click)="(!isLegalReceiptNum || receiptGenerated) && showActionMenu()">
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+          </button>
+          <button class="b_tn" type="button"
+            *ngIf="!isGlobal && (paymentStatus != 'Declined' && paymentStatus != 'Error' && paymentStatus != 'Voided') && (!isDevEnv|| (isDevEnv && !TransColName )) "
+            appDataHover labelText="{{'ACTIONS' | translate}}" (click)=" showActionMenu()">
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu paymnt_opts" *ngIf="!isGlobal && showAction">
+            <li class="hidden-desktop reminder-li">
+              <a (click)="AddReminderPopup()" class="dropdown-item"><span class="material-icons">notifications</span>
+                {{'CREATEREMINDER' | translate}}</a>
+            </li>
+            <li>
+
+
+
+            </li>
+            <li>
+              <a class="dropdown-item" style="cursor: pointer;" (click)="printReceipt(paymentId)"> <i
+                  class="fa fa-print" aria-hidden="true"></i> {{'PRINT'|translate}} {{'RECEIPT'|translate}}</a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" style="cursor: pointer;" (click)=" SendTextReceipt(paymentId)">
+                <span class="text_icon"></span>{{ 'TEXT' | translate }} {{ 'RECEIPT' | translate }}
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" style="cursor: pointer;"
+                (click)="SendEmailReceipt(paymentId,emails,emailLabels)"><i class="fa fa-at" aria-hidden="true"></i>
+                {{'EMAIL'|translate}} {{'RECEIPT'|translate}}</a>
+            </li>
+            <li>
+              <a class="dropdown-item" style="cursor: pointer;" (click)="sendMailReceipt(paymentId)"><i
+                  class="fa fa-envelope" aria-hidden="true"></i> {{'MAIL'|translate}} {{'RECEIPT'|translate}}</a>
+            </li>
+
+            <li class="hidden-desktop">
+              <a (click)="VoidPayment(paymentId,status)" class="dropdown-item"><span class="material-icons">block</span>
+                {{'VOIDPAYMENT' | translate}}</a>
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+
+      <ng-template #notSuccessAction>
+        <ng-template *ngIf="status!='Voided'">
+          <button *ngIf="!!walletId && isGlobal" appDataHover labelText="{{'ENABLEACTIONUPDATE' | translate}}"
+            class="b_tn">
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+          </button>
+          <div (clickOutside)="onClickedOutside()">
+            <button *ngIf="!!walletId && !isGlobal" appDataHover labelText="{{'ACTIONS' | translate}}" class="b_tn"
+              (click)="showActionMenu()">
+              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu paymnt_opts" *ngIf="!!walletId && !isGlobal && showAction">
+              <li>
+                <a class="dropdown-item" style="cursor: pointer;" (click)="RetryPayment(paymentId, walletId)"> <i
+                    class="fa fa-repeat" aria-hidden="true"></i> {{'RETRYPAYMENT'|translate}}</a>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </ng-template>
+
+    </div>
+  </div>
+  <div class="diglog_body modal__custom_content">
+    <div class="top_row">
+      <div class="name_colm">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }"> <h4>{{fullName}}</h4></app-skeleton-loader-component>
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '170px', height: '15px' }"><h5 class="lng_hebrew">{{fullNameJewish}}</h5></app-skeleton-loader-component>
+      </div>
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '60px' }">
+      <div class="amounts_colm">
+        <div class="value currency-amount">
+          <div class="current-amt-left">
+            <span class="icon-currency {{ccIconCls}}"></span>
+            {{ commonMethodService.formatAmount(currencyAmount,currencyName)}}
+            <sub class="currency-name">{{currencyName}}</sub>  
+
+          </div>
+          <div class="original-currency" *ngIf="checkCurrency()">
+            <span>Converted: {{ formatAmount(amount)}}</span>
+            <span class="original-currency-name">{{eventCurrency}}</span>
+          </div>
+        </div>
+        <div class="value card_detail">
+          <p><i *ngIf="isCheckPaymentType">Check#</i> {{refNum}}
+            <!-- show right arrow -->
+            <ng-template [ngIf]="isCheckPaymentType">
+              <i class="arrow right_arrow" (click)="OpenCheckDetails()"></i>
+            </ng-template>
+          </p>
+          <span class="status_desktop" [ngClass]="status_class" *ngIf="!isCheckPaymentType">{{status | uppercase | translate}}</span>
+          <div *ngIf="isCheckPaymentType" class="status-dropdown ">
+            <p class="status-dropdown-label " [ngClass]="this.status_class" (click)="statusDropdown()">{{status}}
+              <i class="status-dropdown-arrow" [class.show-arrow]="!checkStatus" *ngIf="!isDeclinedStatus"></i>
+            </p>
+            <ul *ngIf="!checkStatus">
+              <li (click)="onStatusChange(9)" class="status-depositTo" style="cursor: pointer;">Pending</li>
+              <li (click)="onStatusChange(10)" class="status-deposit" style="cursor: pointer;">Deposited</li>
+              <li (click)="onStatusChange(3)" class="status-returned" style="cursor: pointer;">Declined</li>
+            </ul>
+          </div>
+        </div>
+
+
+
+        <ng-template [ngIf]="status != 'Success' && paymentType != 'Check' && paymentType != 'ACH'">
+          <span class="arrow right_arrow" *ngIf="
+              status != 'Success' &&
+              status != 'Voided' &&
+              status != 'Declined' &&
+              status != 'Error'
+            " (click)="OpenWalletDetails()"></span>
+        </ng-template>
+      </div>
+    </app-skeleton-loader-component>
+    </div>
+
+    <div class="tabs__wrap">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+          <a class="active" href="#paymentinfo-{{ this.tabRandNumber }}" role="tab" data-toggle="tab">{{ "INFO" |
+            translate }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#paymentAppliedtoPledges-{{ this.tabRandNumber }}" role="tab" data-toggle="tab">{{ "APPLIEDPLEDGES" |
+            translate }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#paymentGatewayActions-{{ this.tabRandNumber }}" role="tab" data-toggle="tab">{{ "GATEWAYACTION" |
+            translate }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#paymentRecieptLog-{{ this.tabRandNumber }}" role="tab" data-toggle="tab">{{ "RECIEPTLOG" | translate
+            }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#paymentNotes-{{ this.tabRandNumber }}" role="tab" data-toggle="tab">{{ "NOTES" | translate }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#paymentReminder-{{ this.tabRandNumber }}" role="tab" data-toggle="tab" class="text-uppercase">{{
+            "REMINDERS" | translate }}</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active show" id="paymentinfo-{{ this.tabRandNumber }}">
+          <div class="left_colm">
+            @if(isloading){
+              <ng-container *ngFor="let item of skeletonitems">
+                <div style="margin-bottom: 10px;">
+                  <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+                </div>
+              </ng-container>
+            }
+            @else{
+              <div class="block-col">
+             
+                <span class="icon campaign_icon"></span>
+                <span class="text">
+                  <h6>{{ "CAMPAIGN" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ campaignName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon reason_icon"></span>
+                <span class="text">
+                  <h6>{{ "REASON" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ reasonName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon location_icon"></span>
+                <span class="text">
+                  <h6>{{ "LOCATION" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ locationName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon collector_icon"></span>
+                <span class="text">
+                  <h6>{{ "COLLECTOR" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ collector }}</p>
+                </span>
+              </div>
+              <div class="block-col" *ngIf="latitude && longitude">
+                <span class="icon map_icon-view"><img src="assets/dist/img/pin-map.svg" /></span>
+                <span class="text">
+                  <p class="lng_hebrew" (click)="openMapCardPopup()" style="cursor: pointer; text-decoration: underline">
+                    {{ "MAPVIEW" | translate }}:
+                  </p>
+                </span>
+              </div>
+            }
+           
+          
+          
+          </div>
+          <div class="right_colm">
+            @if(isloading){
+              <div class="inline-colms">
+                <ng-container *ngFor="let item of skeletoncolitems">
+                  <div class="inline-col" style="margin-bottom: 0px;" >
+                    <app-skeleton-info-loader [isLoader]="isloading"></app-skeleton-info-loader>
+                  </div>
+                </ng-container>
+              </div>
+            }         
+            @else{
+            <div class="inline-colms">
+              <div class="inline-col">
+                <h6>{{ "USER" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ createdBy }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "SOURCE" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ source }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "APPROVAL" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ approval }} &nbsp;
+                </div>
+              </div>
+            
+              <div class="inline-col">
+                <h6>{{ "DEVICENAME" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ deviceName }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "BATCH#" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ donaryBatchNum || batchNum }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "GATEWAYBATCH#" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ gatewayBatchNum }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "REFNUMBER" | translate }}</h6>
+                <div class="value small-text">
+                  {{ gatewayRefNum }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "TRANSACTIONCREATED" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ createdDate | donaryDateFormat: "long" }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "RECIEPTNUM" | translate }}:</h6>
+                <div class="value small-text">
+                  {{ receiptNum }} &nbsp;
+                </div>
+              </div>
+              <div class="inline-col">
+                <h6>{{ "CARDHOLDERNAME" | translate }}</h6>
+                <div class="value small-text">
+                  {{ cardHolderName }} &nbsp;
+                </div>
+            
+              </div>
+              <div class="inline-col" *ngIf="schedulenum != null">
+                <h6>{{ "SHEDULENUM" | translate }}:</h6>
+                <div class="value small-text schedule-num-value" style="cursor: pointer" (click)="OpenScheduleCard(scheduleId)">
+                  {{ schedulenum }} &nbsp;
+                </div>
+            
+              </div>
+              @if(TransColName){
+              @if(isLegalReceiptNum && !receiptGenerated){
+              <div class="inline-col d-flex align-self-start" *ngIf="isLegalReceiptNum">
+                <span class="modal-recept d-flex align-items-center mr-auto opacity-100 visible"
+                  (click)="status!='Error' && (!(paymentStatus === 'Pending' && paymentType === 'Check')) && status!='Declined' && fullNameJewish!=null &&OpenLegalReceipt(paymentId,PaymentCardDataValue,paymentType)"
+                  [ngClass]="{'modal-recept-50': status === 'Error' || status === 'Declined' || fullNameJewish === null || (paymentStatus === 'Pending' && paymentType === 'Check')}"
+                  data-toggle="tooltip" appHoverTooltip [labelText]="status === 'Error' || status === 'Declined' ? 'Can\'t generate a receipt for error or declined payments' :
+                  paymentStatus === 'Pending' && paymentType === 'Check' ? 'Can\'t generate legal receipt for pending checks' :
+                                    fullNameJewish === null ? ('DONORSELECTEDTRANSACTION' | translate) :
+                                      null"><i class="icon icon-receipt mr-1"></i> Generate Receipt</span>
+              </div>
+              }@else{
+              <div class="inline-col">
+                <h6>Legal Receipt</h6>
+                <div class="value small-text">
+                  {{ isLegalReceipt }} &nbsp;
+                </div>
+              </div>
+              }
+
+              }
+            
+            </div>
+            }
+           
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="paymentAppliedtoPledges-{{ this.tabRandNumber }}">
+          <ng-container *appIsWeb>
+            <div class="applied-tabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation">
+                  <a class="active" href="#tab-campaigns" role="tab" data-toggle="tab">{{ "CAMPAIGNS" | translate }}</a>
+                </li>
+                <li role="presentation">
+                  <a href="#tab-reasons" role="tab" data-toggle="tab">{{
+                    "REASONS" | translate
+                    }}</a>
+                </li>
+              </ul>
+              <div role="tabpanel" class="tab-pane fade in active show" id="tab-campaigns">
+                <div class="table__main">
+                  <table cellpadding="0" cellspacing="0" border="0" [svData]="lstRelatedPledgePayments"
+                    #sv="svDataTable" [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+                    <thead>
+                      <tr>
+                        <th>{{ "CAMPAIGN" | translate }}</th>
+                        <th>{{ "PLEDGE#" | translate }}</th>
+                        <th>{{ "PLEDGE" | translate }}</th>
+                        <th>{{ "APPLIED" | translate }}</th>
+                        <th>{{ "BALANCE" | translate }}</th>
+                        <th>{{ "DATE" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="lstRelatedPledgePayments?.length > 0">
+                      <tr *ngFor="
+                        let item of lstRelatedPledgePayments;
+                        let i = index
+                      ">
+                        <td (click)="openCampaignCard(item.campaignId)">
+                          <ng-container *ngIf="item.campaignId != undefined">
+                            <span style="color: blueviolet; cursor: pointer">{{
+                              item.campaignName
+                              }}</span>
+                          </ng-container>
+                          <ng-container *ngIf="item.campaignId == undefined">
+                            <span style="color: black">{{
+                              item.campaignName
+                              }}</span>
+                          </ng-container>
+                        </td>
+                        <td (click)="openPledgeCardPopup(item.pledgeId)" style="color: blueviolet; cursor: pointer">
+                          {{ item.pledgeNum }}
+                        </td>
+                        <td>
+                          {{
+                          commonMethodService.formatAmount(item.pledgeAmount)
+                          }}
+                        </td>
+                        <td>
+                          {{ commonMethodService.formatAmount(item.paidAmount) }}
+                        </td>
+                        <td>
+                          {{ commonMethodService.formatAmount(item.balance) }}
+                        </td>
+                        <td>
+                          {{ item.pledgeDate | donaryDateFormat : "name" }} <br />{{
+                          item.pledgeJewishDate
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="tab-reasons">
+                <div class="table__main">
+                  <table cellpadding="0" cellspacing="0" border="0" [svData]="lstRelatedPledgePayments"
+                    #sv="svDataTable" [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+                    <thead>
+                      <tr>
+                        <th>{{ "REASON#" | translate }}</th>
+                        <th>{{ "PLEDGE#" | translate }}</th>
+                        <th>{{ "PLEDGE" | translate }}</th>
+                        <th>{{ "APPLIED" | translate }}</th>
+                        <th>{{ "BALANCE" | translate }}</th>
+                        <th>{{ "DATE" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="lstRelatedPledgePayments?.length > 0">
+                      <tr *ngFor="
+                        let item of lstRelatedPledgePayments;
+                        let i = index
+                      ">
+                        <td (click)="openReasonCard(item.reasonId)" style="color: blueviolet; cursor: pointer">
+                          <ng-container *ngIf="item.reasonId != undefined">
+                            <span style="color: blueviolet; cursor: pointer">{{
+                              item.reasonName
+                              }}</span>
+                          </ng-container>
+                          <ng-container *ngIf="item.reasonId == undefined">
+                            <span style="color: black">{{
+                              item.reasonName
+                              }}</span>
+                          </ng-container>
+                        </td>
+                        <td (click)="openPledgeCardPopup(item.pledgeId)" style="color: blueviolet; cursor: pointer">
+                          {{ item.pledgeNum }}
+                        </td>
+                        <td>
+                          {{
+                          commonMethodService.formatAmount(item.pledgeAmount)
+                          }}
+                        </td>
+                        <td>
+                          {{ commonMethodService.formatAmount(item.paidAmount) }}
+                        </td>
+                        <td>
+                          {{ commonMethodService.formatAmount(item.balance) }}
+                        </td>
+                        <td>
+                          {{ item.pledgeDate | donaryDateFormat : "name" }} <br />{{
+                          item.pledgeJewishDate
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *appIsMobile>
+            <div class="pledge-mobileTabs">
+              <div class="table__main">
+                <table cellpadding="0" cellspacing="0" border="0" [svData]="lstRelatedPledgePayments" #sv="svDataTable"
+                  [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+                  <thead>
+                    <tr>
+                      <th>{{ "PLEDGE#" | translate }}</th>
+                      <th>{{ "PLEDGE" | translate }}</th>
+                      <th>{{ "APPLIED" | translate }}</th>
+                      <th>{{ "BALANCE" | translate }}</th>
+                      <th>{{ "CAMPAIGN" | translate }}</th>
+                      <th>{{ "DATE" | translate }}</th>
+                      <th>{{ "REASON#" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstRelatedPledgePayments?.length > 0">
+                    <tr *ngFor="
+                      let item of lstRelatedPledgePayments;
+                      let i = index
+                    ">
+                      <td (click)="openPledgeCardPopup(item.pledgeId)" style="color: blueviolet; cursor: pointer">
+                        {{ item.pledgeNum }}
+                      </td>
+                      <td>
+                        {{
+                        commonMethodService.formatAmount(item.pledgeAmount)
+                        }}
+                      </td>
+                      <td>
+                        {{ commonMethodService.formatAmount(item.paidAmount) }}
+                      </td>
+                      <td>
+                        {{ commonMethodService.formatAmount(item.balance) }}
+                      </td>
+                      <td (click)="openCampaignCard(item.campaignId)">
+                        <ng-container *ngIf="item.campaignId != undefined">
+                          <span style="color: blueviolet; cursor: pointer">{{
+                            item.campaignName
+                            }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="item.campaignId == undefined">
+                          <span style="color: black">{{
+                            item.campaignName
+                            }}</span>
+                        </ng-container>
+                      </td>
+                      <td class="date-td">
+                        {{ item.pledgeDate | donaryDateFormat : "name" }} <br />{{
+                        item.pledgeJewishDate
+                        }}
+                      </td>
+                      <td (click)="openReasonCard(item.reasonId)" style="color: blueviolet; cursor: pointer">
+                        <ng-container *ngIf="item.reasonId != undefined">
+                          <span style="color: blueviolet; cursor: pointer">{{
+                            item.reasonName
+                            }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="item.reasonId == undefined">
+                          <span style="color: black">{{
+                            item.reasonName
+                            }}</span>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="paymentGatewayActions-{{ this.tabRandNumber }}">
+          <div class="table__main">
+            <table cellpadding="0" cellspacing="0" border="0" [svData]="lstGatewayTransaction" #sv="svDataTable"
+              [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+              <thead>
+                <tr>
+                  <th>{{ "GATEWAY" | translate }}</th>
+                  <th>{{ "CARDNUMBER" | translate }}</th>
+                  <th>{{ "AMOUNT" | translate }}</th>
+                  <th>{{ "DATE&TIME" | translate }}</th>
+                  <th>{{ "REF#" | translate }}</th>
+                  <th class="status">{{ "MESSAGE" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="lstGatewayTransaction?.length > 0">
+                <tr *ngFor="let item of lstGatewayTransaction; let i = index">
+                  <td>{{ item.gateway }}</td>
+                  <td>{{ item.cardNumber }}</td>
+                  <td>{{formatAmount(item.amount,currencyName)}}
+                  </td>
+                  <td>
+                    {{ item.createdDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td>{{ item.gatewayRefNum }}</td>
+                  <td class="status">
+                    {{ item.status }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="paymentRecieptLog-{{ this.tabRandNumber }}">
+          <div class="table__main">
+            <table cellpadding="0" cellspacing="0" border="0" [svData]="lstRelatedReceiptLogs" #sv="svDataTable"
+              [svRowsOnPage]="10" svSortBy="createdDate" svSortOrder="asc">
+              <thead>
+                <tr>
+                  <th>
+                    <sv-default-sorter by="source">{{ "SOURCE" | translate }}
+                    </sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="sentTo">{{
+                      "SENTTO" | translate
+                      }}</sv-default-sorter>
+                  </th>
+                  <th>
+                    <sv-default-sorter by="createdDate">{{
+                      "DATE&TIME" | translate
+                      }}</sv-default-sorter>
+                  </th>
+                  <th class="status success_pymnt">
+                    <sv-default-sorter by="status">{{
+                      "STATUS" | translate
+                      }}</sv-default-sorter>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="lstRelatedReceiptLogs?.length > 0">
+                <tr *ngFor="let item of lstRelatedReceiptLogs; let i = index">
+                  <td>{{ item.source }}</td>
+                  <td>{{ item.sentTo }}</td>
+                  <td>
+                    {{ item.createdDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td class="status">
+                    <span [ngClass]="item.status_class">{{
+                      item.status == true ? "Success" : "Failed"
+                      }}</span>
+                    <span (click)="OpenPdf(item.documentPath)"><i class="fas fa-eye"></i></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="paymentNotes-{{ this.tabRandNumber }}">
+
+          <div class="notes-box">
+            <label class="lbl_text hidden-mobile"> {{ "NOTE" | translate }} </label>
+            <textarea class="notes_input" readonly="true">{{ note }}</textarea>
+          </div>
+          <div class="pymt_log" *ngIf="loglist != null">
+            <span class="lblPaymentLogs">{{ "PAYMENTLOGS" | translate }}</span><br /><br />
+            <span [innerHTML]="loglist"></span><br />
+          </div>
+        </div>
+        <div class="tab-pane fade" role="tabpanel" id="paymentReminder-{{ this.tabRandNumber }}">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="table__main reminder__table">
+                <table class="table table-striped" cellspacing="0" cellpadding="0" border="0"
+                  [svData]="lstRelatedNotifications" #sv="svDataTable" [svRowsOnPage]="10" svSortBy="createdDate"
+                  svSortOrder="asc">
+                  <thead>
+                    <tr>
+                      <th>{{ "TITLE" | translate }}</th>
+                      <th>{{ "DUEDATE" | translate }}</th>
+                      <th>{{ "STATUS" | translate }}</th>
+                      <th>{{ "ASSIGNEE" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstRelatedNotifications?.length > 0">
+                    <tr *ngFor="let item of lstRelatedNotifications">
+                      <td>{{ item.title }}</td>
+                      <td>
+                        {{ item.dueDate | donaryDateFormat: "long" }}
+                      </td>
+                      <td class="status">
+                        <span class="status-{{ item.status }}">{{
+                          item.status
+                          }}</span>
+                      </td>
+                      <td class="notification-td">
+                        {{ item.assignee
+                        }}<span class="open-notification" style="cursor: pointer" (click)="
+                            openNotificationSidebarPopup(item.notificationId)
+                          ">></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="lstRelatedNotifications?.length == 0">
+                    <tr>
+                      <td class="text-center" colspan="5">
+                        {{ "NOACTIVEREMINDER" | translate }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div> -->
+</div>

@@ -1,0 +1,236 @@
+
+<div class="modal-body modal__custom_content filter_modal_popup" ngbAutofocus tabindex="-1">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="row close_btn">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        <div class="card-body">
+        <div *ngIf="!isTotalPanelVisible">
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'REASONNAME'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="reasonName" class="form-control" name="txtreasonName"
+                        id="input-reasonName" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'REASON#'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="reasonNo" class="form-control" name="txtreasonNo"
+                        id="input-reasonNo" />
+                </div>
+            </div>
+            <div class="row filter_row amount_rng">
+                <div class="label-div col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'GOAL'|translate}}
+                    </label>
+                </div>
+                <div class="input-field-group col-4 mb-2">
+                    <input type="number" [(ngModel)]="goalMin" class="form-control" name="txtgoalMin"
+                    id="input-goalMin"  min="0" placeholder="{{'MINVALUE'|translate}}"/>
+                </div> -
+                <div class="input-field-group col-4 mb-2">
+                    <input type="number" [(ngModel)]="goalMax" name="txtgoalMax" class="form-control"
+                    id="input-goalMax"   min="0" placeholder="{{'MAXVALUE'|translate}}"/>
+                </div>
+                <span class="text-danger error-msg" *ngIf="greaterThanValidate">{{'MINVALUEMAXVALUE'|translate}}</span>
+            </div>
+            <div class="row filter_row amount_rng">
+                <div class="label-div col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'PERCENTAGE'|translate}}
+                    </label>
+                </div>
+                <div class="input-field-group col-4 mb-2">
+                    <input type="number" [(ngModel)]="percentageMin" class="form-control" name="txtpercentageMin"
+                    id="input-percentageMin"  min="0" placeholder="{{'GOAL'|translate}}"/>
+                </div> -
+                <div class="input-field-group col-4 mb-2">
+                    <input type="number" [(ngModel)]="percentageMax" name="txtpercentageMax" class="form-control"
+                    id="input-percentageMax"   min="0" placeholder="{{'MAXVALUE'|translate}}"/>
+                </div>
+                <span class="text-danger error-msg" *ngIf="greaterThanValidate">{{'MINVALUEMAXVALUE'|translate}}</span>
+            </div>
+
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'EMAIL'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="email" name="txtEmail" id="input-email" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'HOMEPHONE'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="homePhone" name="txtHomePhoen" id="input-homePhone" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'CELL'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="cell" name="txtCell" id="input-cell" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                    {{'STATUS'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <select class="form-control" [(ngModel)]="status" name="slctStatus" id="input-status">
+                        <option value="">{{'ALL'|translate}}</option>
+                        <option value="Active">{{'ACTIVE'|translate}}</option>
+                        <option value="InActive">{{'INACTIVE'|translate}}</option>
+                        </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'LINKEDCAMPAIGN'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <select class="form-control" [(ngModel)]="linkedCampaignName" name="slctlinkedCampaign" id="input-linkedCampaign">
+                    <option value="" [selected]="true" >{{'SELECT'|translate}}</option>
+                    <option *ngFor="let item of linkedCampaignList" [value]="item.id">{{item.id}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="isTotalPanelVisible">
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label> {{'DONORS'|translate}}:</label>
+                </div>
+                    <div class="input_group col-9 mb-2">
+                        <angular2-multiselect [data]="commonMethodService.donorList"
+                        [(ngModel)]="commonMethodService.selectedDonors"
+                        [settings]="commonMethodService.setDropDownSettings('Select Donor',2,true,false,true)"
+                        [loading]="commonMethodService.loaderSearch"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('donorList')">
+                        <c-badge>
+                            <ng-template let-item="item">
+                                <span style="margin: 0px;">{{item.fullNameJewish}}</span>
+                            </ng-template>
+                        </c-badge>
+                        <c-search>
+                            <ng-template>
+                                <input type="text" [(ngModel)]="commonMethodService.txtQuery"
+                                    (ngModelChange)="commonMethodService.onDonorSearchFieldChange($event)"
+                                    placeholder="{{'WORDS'|translate}}"
+                                    style="border: none;width: 100%; height: 100%;outline: none;">
+                            </ng-template>
+                        </c-search>
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label class="angular2-multiselectDataLabel">{{item.itemName}}</label>
+                            </ng-template>
+                        </c-item>
+                    </angular2-multiselect>
+                    </div>
+            </div>
+
+            <div class="row">
+            <div class="input-group col-3 mb-2">
+            <label>{{'CAMPAIGN'|translate}}:</label>
+            </div>
+            <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlCampaign"
+                        [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                        [data]="commonMethodService.localCampaignList"
+                        [(ngModel)]="commonMethodService.selectedFromCampaignList"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                    {{item.itemName}}
+                                    <span class="heb-dropdown-status">{{item.status}}</span></label>
+                            </ng-template>
+                        </c-item>
+                    </angular2-multiselect>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                <label>{{'LOCATION'|translate}}:</label>
+            </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentLocation"
+                        [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                        [data]="commonMethodService.localLocationList"
+                        [(ngModel)]="commonMethodService.selectedPaymentLocations"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                    </angular2-multiselect>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                <label>{{'COLLECTOR'|translate}}:</label>
+               </div>
+               <div class="input-group col-9 mb-2">
+                   <angular2-multiselect id="ddlCollector"
+                        [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                        [data]="commonMethodService.localCollectorList"
+                        [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                    </angular2-multiselect>
+               </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                <label>{{'SOURCE'|translate}}:</label>
+            </div>
+            <div class="input-group col-9 mb-2">
+                <angular2-multiselect id="ddlSourceType"
+                [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                [data]="commonMethodService.localDeviceTypeList"
+                [(ngModel)]="commonMethodService.selectedPaymentDeviceTypes"
+                (onDeSelectAll)="commonMethodService.onDeSelectAll('deviceTypeList')"
+                >
+            </angular2-multiselect>
+            </div>
+            </div>
+        </div>
+        <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+</div>
+<div class="modal-footer justify-content-between modal__custom_footer">
+    <div class="left_part">
+
+</div>
+    <div class="right_part">
+        <button class="btn btn-primary" (click)="searchReasons()">{{'SEARCH'|translate}}</button>&nbsp;&nbsp;
+        <button class="btn btn-default" (click)="clearFilter()">{{'CLEARALLFILTERS'|translate}}</button>
+    </div>
+</div>

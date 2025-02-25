@@ -1,0 +1,1663 @@
+<!-- <div class="modal-header" style="display: block;">
+    <div class="row">
+        <div class="input-group col-10">
+            <h4 class="modal-title">Advance Search</h4>
+        </div>
+        <div class="input-group col-2">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div> -->
+<div
+  class="modal-body advance_search modal__custom_content filter-ad-search"
+  ngbAutofocus
+  tabindex="-1"
+>
+  <div class="card" style="box-shadow: none !important">
+    <div class="row close_btn">
+    
+      <ng-container *appIsMobile>
+        <h4>Filter</h4>
+      </ng-container>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="closePopup()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div *ngIf="isListPage == false">
+        <div class="row filter_row">
+        
+            <div class="label-group col-3 mb-2">
+              <label for="lblDonor" class="tooltip-donor">
+                {{ "DONOR" | translate }}
+                <h4
+                  class="tooltip-info"
+                  appDataHover
+                  labelText="{{ 'SEARCHFILTER' | translate }}"
+                >
+                  ?
+                </h4>
+              </label>
+            </div>
+            <div class="input-field-group input-field-multiselect col-9 mb-2">
+              <ng-container *appIsWeb>
+                <angular2-multiselect
+                  [data]="commonMethodService.donorList"
+                  [(ngModel)]="commonMethodService.selectedDonors"
+                  [settings]="
+                    commonMethodService.setDropDownSettings(
+                      'Select Donor',
+                      2,
+                      true,
+                      false,
+                      true
+                    )
+                  "
+                  [loading]="commonMethodService.loaderSearch"
+                  (onDeSelectAll)="commonMethodService.onDeSelectAll('donorList')"
+                >
+                  <c-badge>
+                    <ng-template let-item="item">
+                      <span style="margin: 0px">{{ item.displayText }}</span>
+                    </ng-template>
+                  </c-badge>
+                  <c-search>
+                    <ng-template>
+                      <input
+                        type="text"
+                        [(ngModel)]="commonMethodService.txtQuery"
+                        (ngModelChange)="
+                          commonMethodService.onDonorSearchFieldChange($event)
+                        "
+                        placeholder="Minimum of 3 characters"
+                        style="
+                          border: none;
+                          width: 100%;
+                          height: 100%;
+                          outline: none;
+                        "
+                      />
+                    </ng-template>
+                  </c-search>
+                  <c-item>
+                    <ng-template let-item="item">
+                      <label class="angular2-multiselectDataLabel">{{
+                        item.itemName
+                      }}</label>
+                    </ng-template>
+                  </c-item>
+                </angular2-multiselect>
+              </ng-container>
+
+              <ng-container *appIsMobile>
+                <div class="input_group edtpayment_drp">
+                      <input type="text" class="form-control" id="donorText" [(ngModel)]="donor"
+                      (input)="SearchDonor($event)" />
+                  <span *ngIf="nonEditable && removeDonor" class="cancel_icon" (click)="RemoveDonor()">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                  </span>
+
+                  <div class="donor_infolist" (clickOutside)="onClickedOutside()"
+                  *ngIf="commonMethodService.donorList.length != 0 && showBox">
+                      <div class="donor_row" *ngFor="let item of commonMethodService.donorList" (click)="SelectDonor(item.id)">
+                          <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                      </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- <app-donor-dropdown-list [isSearchable]="true"></app-donor-dropdown-list> -->
+            </div>
+        
+
+          
+           
+         
+
+
+        </div>
+        <div class="row filter_row" *ngIf="isPaymentTypeFilterVisible">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "PAYMENTTYPE" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlPaymentType"
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Payment Type',
+                  2,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="commonMethodService.paymentTypeList"
+              [(ngModel)]="commonMethodService.selectedPaymentTypes"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('paymentTypeList')
+              "
+              (onSelectAll)="
+                commonMethodService.onSelectAll('paymentTypeList', $event)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('paymentTypeList', $event)
+                    "
+                    placeholder="Search Payment Type"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="row filter_row">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "SOURCETYPE" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlSourceType"
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Source Type',
+                  2,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="commonMethodService.deviceTypeList"
+              [(ngModel)]="commonMethodService.selectedPaymentDeviceTypes"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('deviceTypeList')
+              "
+              (onSelectAll)="
+                commonMethodService.onSelectAll('deviceTypeList', $event)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('deviceTypeList', $event)
+                    "
+                    placeholder="Select Source Type"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="row filter_row amount_rng">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "AMOUNTRANG" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.minValue"
+              class="form-control"
+              name="txtMinValue"
+              id="input-minvalue"
+              min="0"
+              placeholder="{{ 'MINVALUE' | translate }}"
+            />
+          </div>
+          -
+          <div class="input-field-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.maxValue"
+              name="txtMaxValue"
+              class="form-control"
+              id="input-maxvalue"
+              min="0"
+              placeholder="{{ 'MAXVALUE' | translate }}"
+            />
+          </div>
+          <span class="text-danger error-msg" *ngIf="greaterThanValidate">{{
+            "MINVALUEMAXVALUE" | translate
+          }}</span>
+        </div>
+
+        <!-- For Pledges page -->
+        <!-- Balance Range -->
+        <div
+          class="row filter_row amount_rng"
+          *ngIf="isPledgeStatusFilterVisible"
+        >
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "BALANCERANGE" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.minBalanceValue"
+              class="form-control"
+              name="txtMinValue"
+              id="input-minvalue"
+              min="0"
+              placeholder="{{ 'MINVALUE' | translate }}"
+            />
+          </div>
+          -
+          <div class="input-field-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.maxBalanceValue"
+              name="txtMaxValue"
+              class="form-control"
+              id="input-maxvalue"
+              min="0"
+              placeholder="{{ 'MAXVALUE' | translate }}"
+            />
+          </div>
+          <span
+            class="text-danger error-msg"
+            *ngIf="greaterThanBalanceValidate"
+            >{{ "MAXVALUE" | translate }}</span
+          >
+        </div>
+        <!--  -->
+
+        <div class="row filter_row">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "REASON" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlPaymentReason"  #ReasonTransDropDown
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Payment Reason',
+                  2,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="getListData('Reason')"
+              (onSelect)="onReasonSelect(ReasonTransDropDown)"
+              [(ngModel)]="commonMethodService.selectedPaymentReasons"
+              (onDeSelect)="onDeSelect(ReasonTransDropDown)"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('paymentReasonList')
+              "
+              (onSelectAll)="
+                selectAll('paymentReasonList',$event,ReasonTransDropDown)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('paymentReasonList', $event)
+                    "
+                    placeholder="Select Payment Reason"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+              <c-item>
+                <ng-template let-item="item">
+                  <label
+                    [ngClass]="
+                      contains_heb(item.itemName)
+                        ? 'heb-dropdown-title'
+                        : 'simple-dropdown-title'
+                    "
+                  >
+                    {{ item.itemName }}
+                    <span
+                      [ngClass]="
+                        contains_heb(item.itemName)
+                          ? 'heb-dropdown-num'
+                          : 'simple-dropdown-num'
+                      "
+                      >{{ item.num }}</span
+                    >
+                    <span class="heb-dropdown-status" *ngIf="item.status=='InActive'">{{
+                      item.status
+                    }}</span>
+                    </label
+                  >
+                </ng-template>
+              </c-item>
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="row filter_row">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "COLLECTOR" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlPaymentCollector" #CollectorTransDropDown
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Collector',
+                  2,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="getListData('Collector')"
+              (onSelect)="onCollectorSelect(CollectorTransDropDown)"
+              (onDeSelect)="onDeSelect(CollectorTransDropDown)"
+              [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('paymentCollectorList')
+              "
+              (onSelectAll)="
+                selectAll('paymentCollectorList',$event,CollectorTransDropDown)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('paymentCollectorList', $event)
+                    "
+                    placeholder="Select Collector List"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+              <c-item>
+                <ng-template let-item="item">
+                  <label
+                    [ngClass]="
+                      contains_heb(item.itemName)
+                        ? 'heb-dropdown-title'
+                        : 'simple-dropdown-title'
+                    "
+                  >
+                    {{ item.itemName }}
+                   
+                    <span class="heb-dropdown-status" *ngIf="item.status=='InActive'">{{
+                      item.status
+                    }}</span>
+                    </label
+                  >
+                </ng-template>
+              </c-item>
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="row filter_row">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "LOCATION" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlPaymentLocation" #LocationTransDropDown
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Location',
+                  2,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="getListData('Location')"
+              (onSelect)="onLocationSelect(LocationTransDropDown)"
+              [(ngModel)]="commonMethodService.selectedPaymentLocations"
+              (onDeSelect)="onLocationDeSelect(LocationTransDropDown)"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('paymentLocationList')
+              "
+              (onSelectAll)="
+                selectAll('paymentLocationList',$event,LocationTransDropDown)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('paymentLocationList', $event)
+                    "
+                    placeholder="Select Location List"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+            </angular2-multiselect>
+          </div>
+        </div>
+        <div class="row filter_row">
+          <div class="label-group col-3 mb-2">
+            <label for="lblDonor">
+              {{ "CAMPAIGN" | translate }}
+            </label>
+          </div>
+          <div class="input-field-group input-field-multiselect col-9 mb-2">
+            <angular2-multiselect
+              id="ddlCampaign" #campDropdown
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select Campaign',
+                  1,
+                  false,
+                  false,
+                  true,
+                  true
+                )
+              "
+              [data]="getListData('Campaign')"
+              [(ngModel)]="commonMethodService.selectedFromCampaignList"
+              (onSelect)="onCampaignSelect(campDropdown)"
+              (onDeSelect)="onCampaignDeselect(campDropdown)"
+              (onDeSelectAll)="
+                commonMethodService.onDeSelectAll('CampaignList');
+              "
+              (onSelectAll)="
+                selectAll('CampaignList',$event,campDropdown)
+              "
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('CampaignList', $event)
+                    "
+                    placeholder="Select Campaign List"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+              <c-item>
+                <ng-template let-item="item">
+                  <label
+                    [ngClass]="
+                      contains_heb(item.itemName)
+                        ? 'heb-dropdown-title'
+                        : 'simple-dropdown-title'
+                    "
+                    [for]="item.id"
+                  >
+                    {{ item.itemName }}
+                    <span
+                      [ngClass]="
+                        contains_heb(item.itemName)
+                          ? 'heb-dropdown-num'
+                          : 'simple-dropdown-num'
+                      "
+                      >{{ item.num }}</span
+                    >
+                    <span class="heb-dropdown-status">{{
+                      item.status
+                    }}</span></label
+                  >
+                </ng-template>
+              </c-item>
+            </angular2-multiselect>
+          </div>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isPledgeStatusFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "PLEDGE" | translate }} {{ "STATUS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPledgeStatus"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Pledge Status',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.pledgeStatusList"
+            [(ngModel)]="commonMethodService.selectedPledgeStatus"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('PledgeStatusList')
+            "
+          >
+          <c-search>
+            <ng-template>
+              <input
+                type="text"
+                (keyup)="
+                  commonMethodService.onSearch('PledgeStatusList', $event)
+                "
+                placeholder="Search Pledge Status"
+                style="border: none; width: 100%; height: 100%; outline: none"
+              />
+            </ng-template>
+          </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isPaymentStatusFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "PAYMENTSTATUS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentStatus"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Payment Status',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentStatusList"
+            [(ngModel)]="commonMethodService.selectedPaymentStatus"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('PaymentStatusList')
+            "
+            (onSelectAll)="
+              commonMethodService.onSelectAll('PaymentStatusList', $event)
+            "
+          >
+            <c-search>
+              <ng-template>
+                <input
+                  type="text"
+                  (keyup)="
+                    commonMethodService.onSearch('PaymentStatusList', $event)
+                  "
+                  placeholder="Select Payment Status"
+                  style="border: none; width: 100%; height: 100%; outline: none"
+                />
+              </ng-template>
+            </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isScheduleStatusFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "SCHEDULESTATUS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlScheduleStatus"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Schedule Status',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.scheduleStatusList"
+            [(ngModel)]="commonMethodService.selectedScheduleStatus"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('ScheduleStatusList')
+            "
+          >
+          <c-search>
+            <ng-template>
+              <input
+                type="text"
+                (keyup)="
+                  commonMethodService.onSearch('ScheduleStatusList', $event)
+                "
+                placeholder="Search Schedule Status"
+                style="border: none; width: 100%; height: 100%; outline: none"
+              />
+            </ng-template>
+          </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isSourcDeviceFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "SOURCES" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentDevice"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Source',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentDeviceList"
+            [(ngModel)]="commonMethodService.selectedPaymentDevices"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentDeviceList')
+            "
+            (onSelectAll)="
+              commonMethodService.onSelectAll('paymentDeviceList', $event)
+            "
+          >
+            <c-search>
+              <ng-template>
+                <input
+                  type="text"
+                  (keyup)="
+                    commonMethodService.onSearch('paymentDeviceList', $event)
+                  "
+                  placeholder="Search Sources"
+                  style="border: none; width: 100%; height: 100%; outline: none"
+                />
+              </ng-template>
+            </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isBatchFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "BATCH#" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2 batch-field">
+          <input
+            type="text"
+            [(ngModel)]="batchNum"
+            class="form-control"
+            name="txtBatchNum"
+            id="input-batchnum"
+            [disabled]="isBatchClicked"
+          />
+          <button
+            class="btn"
+            [class.btn-default]="!isBatchClicked"
+            [class.btn-primary]="isBatchClicked"
+            (click)="toggleBatch()"
+          >
+            {{ "UNBATCHED" | translate }}
+          </button>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isDeviceStatusFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "SOURCE" | translate }} {{ "STATUS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlOrderDeviceStatus"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Source Status',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.orderDeviceStatusList"
+            [(ngModel)]="commonMethodService.selectedOrderDeviceStatus"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('orderDeviceStatus')
+            "
+            (onSelectAll)="
+              commonMethodService.onSelectAll('orderDeviceStatus', $event)
+            "
+          >
+            <c-search>
+              <ng-template>
+                <input
+                  type="text"
+                  (keyup)="
+                    commonMethodService.onSearch('orderDeviceStatus', $event)
+                  "
+                  placeholder="Search Source Status"
+                  style="border: none; width: 100%; height: 100%; outline: none"
+                />
+              </ng-template>
+            </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isApprovalFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "APPROVAL" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentApproval"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Payment Approval',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentApprovalsList"
+            [(ngModel)]="commonMethodService.selectedPaymentApprovals"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentApprovalsList')
+            "
+            (onSelectAll)="
+              commonMethodService.onSelectAll('paymentApprovalsList', $event)
+            "
+          >
+            <c-search>
+              <ng-template>
+                <input
+                  type="text"
+                  (keyup)="
+                    commonMethodService.onSearch('paymentApprovalsList', $event)
+                  "
+                  placeholder="Search Approval"
+                  style="border: none; width: 100%; height: 100%; outline: none"
+                />
+              </ng-template>
+            </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isCurrencyFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "CURRENCY" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentApproval"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Currency type',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="commonMethodService.currencyList"
+            [(ngModel)]="commonMethodService.selectedCurrencyList"
+            (onDeSelectAll)="commonMethodService.onDeSelectAll('currencyList')"
+            (onSelectAll)="commonMethodService.onSelectAll('currencyList', $event)"
+          >
+            <c-search>
+              <ng-template>
+                <input
+                  type="text"
+                  (keyup)="
+                    commonMethodService.onSearch('currencyList', $event)
+                  "
+                  placeholder="Search Currency type"
+                  style="border: none; width: 100%; height: 100%; outline: none"
+                />
+              </ng-template>
+            </c-search>
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isScheduleRepeatTypeFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "SCHEDULEREPEATTYPE" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlScheduleRepeatType"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Schedule Repeat Type',
+                2,
+                false,
+                false
+              )
+            "
+            [data]="commonMethodService.scheduleRepatTypeList"
+            [(ngModel)]="commonMethodService.selectedScheduleRepeatTypes"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('scheduleRepatTypeList')
+            "
+          >
+          <c-search>
+            <ng-template>
+              <input
+                type="text"
+                (keyup)="
+                  commonMethodService.onSearch('scheduleRepatTypeList', $event)
+                "
+                placeholder="Search Schedule Repeat Type"
+                style="border: none; width: 100%; height: 100%; outline: none"
+              />
+            </ng-template>
+          </c-search>
+          </angular2-multiselect>
+        </div>
+      </div> 
+      <div class="row filter_row" *ngIf="isScheduleFailedCountFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "FAILEDCOUNT" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlScheduleFailedCount"
+            (onSelect)="onFailedCountSelect($event)"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Failed Count',
+                1,
+                false,
+                false
+              )
+            "
+            [data]="commonMethodService.scheduleFailedCountList"
+            [(ngModel)]="commonMethodService.selectedScheduleFailedCount"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('scheduleFailedCountList')
+            "
+            
+          >
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isFullNameFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "FULLNAME" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            [(ngModel)]="fullName"
+            class="form-control"
+            name="txtFullName"
+            id="input-fullname"
+          />
+        </div>
+      </div>
+
+      <!--
+            <div class="row filter_row" *ngIf="isCityFilterVisible">
+                <div class="label-group col-3 mb-2">
+                    <label for="lblDonor">
+                        City
+                    </label>
+                </div>
+                <div class="input-field-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="city" name="txtCity" id="input-city" />
+                </div>
+            </div>
+            <div class="row filter_row" *ngIf="isStateFilterVisible">
+                <div class="label-group col-3 mb-2">
+                    <label for="lblDonor">
+                        State
+                    </label>
+                </div>
+                <div class="input-field-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="state" name="txtState" id="input-state" />
+                </div>
+            </div>
+            <div class="row filter_row" *ngIf="isZipFilterVisible">
+                <div class="label-group col-3 mb-2">
+                    <label for="lblDonor">
+                        Zip
+                    </label>
+                </div>
+                <div class="input-field-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="zip" name="txtZip" id="input-zip" />
+                </div>
+            </div>
+            -->
+
+      <div class="row filter_row" *ngIf="isCityStateZipVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "DONOR" | translate }} {{ "ADDRESS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2 d-flex justify-content-between">
+          <!-- <angular2-multiselect
+            id="ddlCityStateZip"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Address',
+                2,
+                true,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.cityStateZipList"
+            [(ngModel)]="commonMethodService.selectedCityStateZipList"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('cityStateZipList')
+            "
+          >
+          </angular2-multiselect> -->
+          <!-- city dropdown code started -->
+          <div
+            class="city-dpwn"
+            [ngClass]="isCityDpwDisable ? 'City-dpw-disable' : ''"
+            [ngStyle]="isCityDpwDisable ? { opacity: '0.5' } : null"
+          >
+            <angular2-multiselect
+              id="ddlCity"
+              [settings]="
+                commonMethodService.setDropDownSettings(
+                  'Select City',
+                  2,
+                  true,
+                  false,
+                  true,
+                  true,
+                  '',
+                  isCityDpwDisable
+                )
+              "
+              [data]="commonMethodService.cityList"
+              [(ngModel)]="commonMethodService.selectedCityTypes"
+              (onDeSelectAll)="onDeleteCitys()"
+              (onSelect)="onCitysSelect()"
+              (onDeSelect)="enableCityDpw()"
+            >
+              <c-search>
+                <ng-template>
+                  <input
+                    type="text"
+                    (keyup)="
+                      commonMethodService.onSearch('cityList', $event)
+                    "
+                    placeholder="Select City List"
+                    style="border: none; width: 100%; height: 100%; outline: none"
+                  />
+                </ng-template>
+              </c-search>
+            </angular2-multiselect>
+          </div>
+          <!-- city dropdown code ended -->
+          <!-- zip dropdown code started -->
+        <div *ngIf="isCityStateZipVisible"
+        class="input-field-group input-field-multiselect mb-2 zip-dpwn"
+        [ngClass]="isZipDpwDisable ? 'zip-dpw-disable' : ''"
+        [ngStyle]="isZipDpwDisable ? { opacity: '0.5' } : null"
+      >
+        <angular2-multiselect
+          id="ddlZip"
+          [settings]="
+            commonMethodService.setDropDownSettings(
+              'Select ZIP',
+              2,
+              true,
+              false,
+              true,
+              true,
+              '',
+              isZipDpwDisable
+            )
+          "
+          [data]="commonMethodService.zipList"
+          [(ngModel)]="commonMethodService.selectedZipTypes"
+          (onDeSelectAll)="onDeleteZips()"
+          (onSelect)="onZipsSelect()"
+          (onDeSelect)="enableZipDpw()"
+        >
+          <c-search>
+            <ng-template>
+              <input
+                type="text"
+                (keyup)="
+                  commonMethodService.onSearch('zipList', $event)
+                "
+                placeholder="Search Zip List"
+                style="border: none; width: 100%; height: 100%; outline: none"
+              />
+            </ng-template>
+          </c-search>
+        </angular2-multiselect>
+      </div>
+      <!-- zip dropdown code ended -->
+        </div>
+      </div>
+
+
+      <div class="row filter_row" *ngIf="isStreetFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "STREET" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="street"
+            name="txtStreet"
+            id="input-street"
+          />
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isDefaultLocationFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "DEFAULTLOCATION" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentLocation"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Default Location',
+                2,
+                false,
+                false
+              )
+            "
+            [data]="commonMethodService.paymentLocationList"
+            [(ngModel)]="defaultLocations"
+          >
+          </angular2-multiselect>
+          <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isGroupFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "GROUP" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="group"
+            name="txtGroup"
+            id="input-group"
+          />
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isClassFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "CLASS" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="class"
+            name="txtClass"
+            id="input-class"
+          />
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isNoteFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "NOTE" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="note"
+            name="txtNote"
+            id="input-note"
+          />
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isPhoneFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "PHONE" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="phone"
+            name="txtphone"
+            id="input-phone"
+          />
+        </div>
+      </div>
+      <div class="row filter_row" *ngIf="isEmailFilterVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "EMAIL" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="email"
+            name="txtEmail"
+            id="input-email"
+          />
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isAdvancedFieldVisible">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "ADVANCEDFILED" | translate }}
+          </label>
+        </div>
+        <div class="input-field-group input-field-multiselect col-9 mb-2 filter-advanced-field">
+          <angular2-multiselect
+            id="ddlPaymentLocation"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Add Field',
+                2,
+                false,
+                false,
+                true,
+                true
+              )
+            "
+            [data]="getAdvanceFieldList"
+            [(ngModel)]="selectAdvanceField"
+            (onSelect)="onItemSelect($event)"
+            (onDeSelect)="onItemDeselect($event)"
+            (onDeSelectAll)="onDeselectAll()"
+            (onSelectAll)="onSelectAll()"
+          >
+            <c-badge>
+              <ng-template let-item="item">
+                <span style="margin: 0px">{{ item.displayText }}</span>
+              </ng-template>
+            </c-badge>
+            <c-item>
+              <ng-template let-item="item">
+                <label class="angular2-multiselectDataLabel">{{
+                  item.displayText
+                }}</label>
+              </ng-template>
+            </c-item>
+          </angular2-multiselect>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let item of getAdvanceFieldList">
+        <ng-container *ngIf="item.isDisplayed">
+          <div class="row filter_row">
+            <div class="label-group col-3 mb-2">
+              <label for="lblDonor">
+                {{ item.itemName }}
+              </label>
+            </div>
+            <div class="input-field-group col-9 mb-2">
+              <ng-container *ngIf="item.type == 'text'">
+                <input
+                  type="text"
+                  [name]="item.fieldName"
+                  class="form-control"
+                  [(ngModel)]="item.filtervalue"
+                />
+              </ng-container>
+
+              <ng-container *ngIf="item.type == 'dropdown'">
+                <angular2-multiselect
+                  id="ddlAdvanceField"
+                  [settings]="
+                    commonMethodService.setDropDownSettings(
+                      '',
+                      2,
+                      false,
+                      false,
+                      true
+                    )
+                  "
+                  [data]="item.options"
+                  [(ngModel)]="item.filtervalue"
+                  (onDeSelectAll)="
+                    commonMethodService.onDeSelectAll('AdvanceFieldList')
+                  "
+                >
+                </angular2-multiselect>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <div class="row filter_row" *ngIf="isCreatedDate">
+        <div class="label-group col-3 mb-2">
+          <label for="lblDonor">
+            {{ "CREATEDDATE" | translate }}
+          </label>
+        </div>
+        <div class="col-9 input-field-group mb-2 input-datepicker">
+          <!-- <app-donary-date-picker [isFullView]="false" [minDate]="minDate" [maxDate]='maxDate' [isMinDate]="true" [SelectedDateRange]="createdDateRange"
+                    (emtDatesUpdated)="datesUpdated($event)" [IsDisabled]="isloading"></app-donary-date-picker>
+             -->
+          <input
+            type="text"
+            class="form-control"
+            ngxDaterangepickerMd
+            [(ngModel)]="createdDateRange"
+            [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+            [ranges]="
+              commonMethodService.isHebrew == true
+                ? commonMethodService.hebranges
+                : commonMethodService.ranges
+            "
+            [linkedCalendars]="commonMethodService.linkedCalendars"
+            [opens]="commonMethodService.open"
+            drops="up"
+            emptyWeekColumnClass="disable_column"
+            [locale]="
+              commonMethodService.isHebrew == true
+                ? commonMethodService.heblocale
+                : commonMethodService.locale
+            "
+            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+            [showClearButton]="commonMethodService.showClearButton"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+            [placeholder]="commonMethodService.placeholder"
+            (datesUpdated)="datesUpdated($event)"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i
+                class="far fa-calendar-alt ngx-daterangepicker-action"
+                (click)="CalendarFocus()"
+              ></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row filter_row" *ngIf="isListPage == false">
+        <div class="label-group col-3 mb-2 hidden-mobile">
+          <label for="lblDonor"> {{ "ADDNEW" | translate }}: </label>
+        </div>
+        <div class="input-field-group col-9 mb-2">
+          <div class="dropdown" (clickOutside)="onDrpOutside()">
+            <ng-container *appIsWeb>
+              <button
+                id="dLabel"
+                [disabled]="commonMethodService.isCommonDropDownloading"
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-plus text-center">
+                  <span>
+                    {{ "ADD" | translate }} {{ "FILTER" | translate }}</span
+                  ></i
+                >
+              </button>
+              <ul
+              class="dropdown-menu multi-level"
+            >
+              <li class="dropdown-submenu no-arrow">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('sourceDevice')"
+                  >{{ "SOURCES" | translate }}</a
+                >
+              </li>
+              <li class="dropdown-submenu no-arrow" *ngIf="isBatch">
+                <a class="dropdown-item" (click)="displayFilter('batchNum')">{{
+                  "BATCH#" | translate
+                }}</a>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item">{{ "PAYMENT" | translate }}</a>
+                <ul class="dropdown-menu child-level">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('sourceStatus')"
+                      >{{ "SOURCE" | translate }} {{ "STATUS" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('approval')"
+                      >{{ "APPROVAL" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('currency')"
+                      >{{ "CURRENCY" | translate }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="dropdown-submenu"
+                *ngIf="isScheduleStatusFilterVisible"
+              >
+                <a class="dropdown-item">{{ "SHEDULE" | translate }}</a>
+                <ul class="dropdown-menu child-level">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('scheduleRepeatType')"
+                      >{{ "REPEAT" | translate }} {{ "TYPE" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('scheduleFailedCount')"
+                      >{{ "FAILED" | translate }} {{ "COUNT" | translate }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item">{{ "DONOR" | translate }}</a>
+                <ul class="dropdown-menu child-level">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('fullName')"
+                      >{{ "FULLNAME" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('defaultLocation')"
+                      >{{ "DEFAULTLOCATION" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('group')"
+                      >{{ "GROUP" | translate }}Group</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('class')">{{
+                      "CLASS" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('note')">{{
+                      "NOTE" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('phone')">{{
+                      "PHONE" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('email')">{{
+                      "EMAIL" | translate
+                    }}</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="dropdown-submenu no-arrow">
+                <a class="dropdown-item" (click)="displayFilter('cityStateZip')"
+                  >{{ "DONOR" | translate }} {{ "ADDRESS" | translate }}</a
+                >
+              </li>
+
+              <li class="dropdown-submenu no-arrow">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('advancedField')"
+                  >{{ "ADVANCEDFILED" | translate }}</a
+                >
+              </li>
+              <!-- <li class="dropdown-submenu no-arrow" *ngIf="isCreatedDateFilter">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('createdDate')"
+                  >{{ "CREATEDDATE" | translate }}</a
+                >
+              </li> -->
+            </ul>
+            </ng-container>
+            <ng-container *appIsMobile>
+              <button
+                id="dLabel"
+                [disabled]="commonMethodService.isCommonDropDownloading"
+                class="btn btn-default dropdown-toggle"
+                (click)="isMDrpDwn = !isMDrpDwn"
+              >
+                <i class="fas fa-plus text-center">
+                  <span>
+                    {{ "ADD" | translate }} New Field</span
+                  ></i
+                >
+              </button>
+              <ul
+              class="dropdown-mobile multi-level"
+              *ngIf="isMDrpDwn"
+              (clickOutside)="onClickedDrpOutside()"
+            >
+              <li class="dropdown-submenu no-arrow">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('sourceDevice')"
+                  >{{ "SOURCES" | translate }}</a
+                >
+              </li>
+              <li class="dropdown-submenu no-arrow" *ngIf="isBatch">
+                <a class="dropdown-item" (click)="displayFilter('batchNum')">{{
+                  "BATCH#" | translate
+                }}</a>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item" [ngClass]="[isPaymntDrpDwn ? 'drop-active' : '']" (click)="isDrpDwn('payment')">{{ "PAYMENT" | translate }}</a>
+                <ul class="dropdown-mobile child-level" *ngIf="isPaymntDrpDwn">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('sourceStatus')"
+                      >{{ "SOURCE" | translate }} {{ "STATUS" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('approval')"
+                      >{{ "APPROVAL" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('currency')"
+                      >{{ "CURRENCY" | translate }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="dropdown-submenu"
+                *ngIf="isScheduleStatusFilterVisible"
+              >
+                <a class="dropdown-item" [ngClass]="[isSchdlDrpDwn ? 'drop-active' : '']" (click)="isDrpDwn('schedule')">{{ "SHEDULE" | translate }}</a>
+                <ul class="dropdown-mobile child-level" *ngIf="isSchdlDrpDwn">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('scheduleRepeatType')"
+                      >{{ "REPEAT" | translate }} {{ "TYPE" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('scheduleFailedCount')"
+                      >{{ "FAILED" | translate }} {{ "COUNT" | translate }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item" [ngClass]="[isDnrDrpDwn ? 'drop-active' : '']" (click)="isDrpDwn('donor')">{{ "DONOR" | translate }}</a>
+                <ul class="dropdown-mobile child-level" *ngIf="isDnrDrpDwn">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('fullName')"
+                      >{{ "FULLNAME" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      (click)="displayFilter('defaultLocation')"
+                      >{{ "DEFAULTLOCATION" | translate }}</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('group')"
+                      >{{ "GROUP" | translate }}Group</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('class')">{{
+                      "CLASS" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('note')">{{
+                      "NOTE" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('phone')">{{
+                      "PHONE" | translate
+                    }}</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="displayFilter('email')">{{
+                      "EMAIL" | translate
+                    }}</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="dropdown-submenu no-arrow">
+                <a class="dropdown-item" (click)="displayFilter('cityStateZip')"
+                  >{{ "DONOR" | translate }} {{ "ADDRESS" | translate }}</a
+                >
+              </li>
+
+              <li class="dropdown-submenu no-arrow">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('advancedField')"
+                  >{{ "ADVANCEDFILED" | translate }}</a
+                >
+              </li>
+              <li class="dropdown-submenu no-arrow" *ngIf="isCreatedDateFilter">
+                <a
+                  class="dropdown-item"
+                  (click)="displayFilter('createdDate')"
+                  >{{ "CREATEDDATE" | translate }}</a
+                >
+              </li>
+            </ul>
+            </ng-container>
+         
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+      <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between modal__custom_footer">
+  <div class="left_part hidden-mobile"></div>
+  <div class="right_part">
+    <button class="btn btn-primary" (click)="searchTransactions(false)" *ngIf="this.commonMethodService.isfeatureSetting">
+      {{ "SEARCH" | translate }}</button>
+    <button class="btn btn-primary btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">
+        {{ "UPGRADETOSAVE" | translate }}</button
+      >&nbsp;&nbsp;
+    <button class="btn btn-default" (click)="clearFilter()">
+      {{ "CLEARALLFILTERS" | translate }}
+    </button>
+    <!-- <button type="button" class="btn btn-default" (click)="closePopup()">Close</button> -->
+  </div>
+</div>

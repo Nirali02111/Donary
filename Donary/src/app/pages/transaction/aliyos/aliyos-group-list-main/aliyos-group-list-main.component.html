@@ -1,0 +1,215 @@
+<div class="card batch-page">
+<div class="card-body batches_list__main">
+  <div class="extra__details">
+    <div class="filters__options">
+      <div class="search_opts align-items-center">
+        <div class="input-group search_input mr-4">
+          <input type="text" name="advanceSearch" id="localsearch" class="form-control float-right"
+            placeholder="{{ 'SEARCH' | translate }} {{ 'ALIYOS' | translate }} {{ 'GROUP' | translate }}" (keyup)="search($event.target.value)" />
+        </div>
+        <ng-template #popContent
+        ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+        </ng-template>
+        <div class="input-group date_picker" (click)="openCalendarPopup(p1)" (clickOutside)="onClickedOutsidePopover(p1)" #p1="ngbPopover" container="body" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="aliyosCalender">
+          <input type="text" class="form-control" value=""
+            [placeholder]="EngHebCalPlaceholder" />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-caret-down ngx-daterangepicker-action"></i>
+            </span>
+          </div>
+        </div>
+        <ng-template #popContent2>
+          <div id="popContent2">
+            <app-aliyas-reportdate-popup></app-aliyas-reportdate-popup>
+          </div>
+         </ng-template>
+        <div class="report-dropdown dropdown ml-auto">
+          
+         <div ngbDropdown [autoClose]="false" #myDropdown="ngbDropdown" class="aliyas-campaign-name download-report">
+          <button class="btn btn-primary " type="button" ngbDropdownToggle (click)="openDropdown()" (clickOutside)="closeDropdown()">
+            <i class="material-icons">insert_drive_file</i>{{'DOWNLOAD' | translate}} {{'REPORTS' | translate}}</button>
+          <ul ngbDropdownMenu>
+              <li ngbDropdownItem>
+                  <a  style="cursor: pointer;" (click)="openHebrewPickerPopup(p2)" [ngbPopover]="popContent2" #p2="ngbPopover"  popoverClass="calender-modal advance_search aliyas-calender" [popoverTitle]="popTitle"  [autoClose]="false" container="body" id="paymentTransactionsCalender" (clickOutside)="onClickedOutsidePopover(p2)"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17.869" height="20.421" viewBox="0 0 17.869 20.421">
+                      <path id="Icon_awesome-calendar-alt" data-name="Icon awesome-calendar-alt" d="M0,18.507a1.915,1.915,0,0,0,1.914,1.914h14.04a1.915,1.915,0,0,0,1.914-1.914V7.658H0Zm12.763-7.818a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479Zm0,5.105a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479ZM7.658,10.689a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479Zm0,5.105a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479ZM2.553,10.689a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479Zm0,5.105a.48.48,0,0,1,.479-.479h1.6a.48.48,0,0,1,.479.479v1.6a.48.48,0,0,1-.479.479h-1.6a.48.48,0,0,1-.479-.479Zm13.4-13.242H14.04V.638A.64.64,0,0,0,13.4,0H12.125a.64.64,0,0,0-.638.638V2.553H6.382V.638A.64.64,0,0,0,5.743,0H4.467a.64.64,0,0,0-.638.638V2.553H1.914A1.915,1.915,0,0,0,0,4.467V6.382H17.869V4.467A1.915,1.915,0,0,0,15.954,2.553Z" fill="#7b5bc4"/>
+                    </svg> {{'REPORTBYDATE' | translate}}</a>
+              </li>
+              <li ngbDropdownItem (click)="getDonorReport()" >
+                  <a  style="cursor: pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+                      <path id="Icon_awesome-user-alt" data-name="Icon awesome-user-alt" d="M10.5,11.813A5.906,5.906,0,1,0,4.594,5.906,5.908,5.908,0,0,0,10.5,11.813Zm5.25,1.313H13.49a7.14,7.14,0,0,1-5.98,0H5.25A5.25,5.25,0,0,0,0,18.375v.656A1.969,1.969,0,0,0,1.969,21H19.032A1.969,1.969,0,0,0,21,19.032v-.656A5.25,5.25,0,0,0,15.75,13.125Z" fill="#7b5bc4"/>
+                    </svg> 
+                    {{'REPORTBYDONOR' | translate}}</a>
+              </li>
+          </ul>
+        </div>
+
+        </div>
+      </div>
+      <div class="fields_opts">
+        <div class="dropdown field_nwdsgn tbl_field">
+          <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-tag">
+              <span> {{ "FIELDS" | translate }}</span></i>
+          </button>
+          <ul
+              class="dropdown-menu multi-level field_dropdown"
+              role="menu"
+              aria-labelledby="dropdownMenu"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <li
+                class="dropdown"
+                style="list-style: none"
+                cdkDrag
+                (click)="$event.stopPropagation()"
+                *ngFor="let objcolField of colFields; let i = index"
+              >
+                <div
+                  class="fieldlst_chkbox"
+                  style="padding-left: 50px"
+                  [ngClass]="{ hidefield: objcolField.disabled == true }"
+                >
+                  <input
+                    type="checkbox"
+                    [disabled]="objcolField.disabled"
+                    class="fields_chkbx"
+                    class=""
+                    [(ngModel)]="objcolField.isVisible"
+                    (change)="
+                      setGridColVisibility(
+                        $event,
+                        objcolField.colName,
+                        objcolField.isVisible
+                      )
+                    "
+                    [id]="objcolField.colId"
+                  />
+                  <label class="fields_lbl" [for]="objcolField.colId">{{objcolField.colName | translate}}</label>
+                </div>
+              </li>
+            </ul>
+        </div>
+        <div class="dropdown dropleft extra_opts ">
+          <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span>...</span>
+          </button>
+          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+            <li class="dropdown">
+              <a class="dropdown-item" (click)="downloadExcel()"><i class="fas fa-file-excel"></i> {{ "EXCEL" |
+                translate }}</a>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl_colm_sticky" id="">
+    <div class="modal_custom px-0 table-responsive">
+      <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+        <div class="px-2" style="overflow-y: auto; height: 100%">
+          <table class="table table-striped redesign_table"  [svData]="gridFilterData"
+            #sv="svDataTable"
+            [svRowsOnPage]="25"
+            svSortBy="dateCreated"
+            svSortOrder="asc">
+              <thead>
+                <tr>
+                  <ng-container *ngFor="let objHeader of headerList; let i = index">
+                    <th *ngIf="checkVisibility(objHeader.colName)">
+                    <sv-default-sorter [by]="objHeader.sortName"
+                        >{{ objHeader.colName | translate }}
+                    </sv-default-sorter>
+                  </th>
+               </ng-container>
+              </tr>
+              </thead>
+              <tbody *ngIf="sv.data?.length > 0">
+                  <tr  *ngFor="let item of sv.data; let i = index" tabindex="{{ i }}" class="table-row table-row-{{ i }}">
+
+                  <ng-container *ngFor="let objHeader of headerList">
+                    <ng-container *ngIf="checkVisibility(objHeader.colName)">
+                   
+                    <td *ngIf="objHeader.sortName == 'groupDate'" class="aliyos-date"> 
+                      <span>{{item.groupHebDate}}</span>
+                    </td>
+                    <td class="aliyos-title" *ngIf="objHeader.sortName == 'groupTitle'">
+                      <span>{{item.groupTitle}}</span>
+                    </td>
+                    <td class="aliyos-time" *ngIf="objHeader.sortName == 'createdDate'">
+                      {{item.createdDate | donaryDateFormat: "short"}}
+                    </td>
+                    <td *ngIf="isLoading && objHeader.sortName == 'totalOpen'" class="aliyos-open">
+                      <app-skeleton-loader-component [count]="1"
+                      [theme]="{ width: '70%', height: '40px' }"></app-skeleton-loader-component>
+                    </td>
+                    <td *ngIf="!isLoading && objHeader.sortName == 'totalOpen'" class="aliyos-open">
+                      {{commonMethodService.formatAmount(item.totalOpen)}}
+                    </td>
+                    <td *ngIf="isLoading && objHeader.sortName == 'totalPaid'" class="aliyos-paid">
+                      <app-skeleton-loader-component [count]="1"
+                      [theme]="{ width: '70%', height: '40px' }"></app-skeleton-loader-component>
+                    </td>
+                    <td *ngIf="!isLoading && objHeader.sortName == 'totalPaid'" class="aliyos-paid">
+                      {{commonMethodService.formatAmount(item.totalPaid)}}
+                     </td>
+                    <td *ngIf="isLoading && objHeader.sortName == 'totalAmount'" class="aliyos-amount">
+                      <app-skeleton-loader-component [count]="1"
+                      [theme]="{ width: '70%', height: '40px' }"></app-skeleton-loader-component>
+                    </td>
+                    <td *ngIf="!isLoading && objHeader.sortName == 'totalAmount'" class="aliyos-amount">
+                      <b>{{commonMethodService.formatAmount(item.totalAmount)}}</b>
+                    </td>
+                    </ng-container>
+                  </ng-container>
+                  <td class="custom_action hover__action" *ngIf="!isLoading">
+                    <div class="float__action d-flex">
+                      <span class="add_icon d-flex align-items-center justify-content-center p-2" (click)="openEditAliyosGroupCardPopup(item)" appHoverTooltip
+                      labelText="{{ 'EDIT' | translate }}">
+                        <i class="material-icons">edit</i>
+                      </span>
+                      <span class="add_icon d-flex align-items-center justify-content-center p-2" (click)="downloadAliaGroupReport(item)" appHoverTooltip
+                      labelText="{{ 'DOWNLOAD' | translate }} {{
+                        'REPORT' | translate
+                      }}">
+                        <svg height="16.048" viewBox="0 0 12.036 16.048" width="12.036" xmlns="http://www.w3.org/2000/svg"><path d="M7.021,4.263V0H.752A.75.75,0,0,0,0,.752V15.3a.75.75,0,0,0,.752.752H11.284a.75.75,0,0,0,.752-.752V5.015H7.773A.754.754,0,0,1,7.021,4.263Zm2.006,7.4a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376v-.251a.377.377,0,0,1,.376-.376H8.651a.377.377,0,0,1,.376.376Zm0-2.006a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376V9.4a.377.377,0,0,1,.376-.376H8.651a.377.377,0,0,1,.376.376Zm0-2.257v.251a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376V7.4a.377.377,0,0,1,.376-.376H8.651A.377.377,0,0,1,9.027,7.4Zm3.009-3.576v.191H8.024V0h.191a.752.752,0,0,1,.533.219l3.069,3.072A.75.75,0,0,1,12.036,3.821Z" data-name="Icon awesome-file-alt" fill="#7b5bc4" id="Icon_awesome-file-alt"></path></svg>
+                      </span>
+                    </div>
+                  </td>
+                  </tr>
+              </tbody>
+              <tbody *ngIf="sv.data?.length == 0">
+                <tr>
+                <td colspan="15" style="text-align: center">
+                    {{ "NODATAFOUND" | translate }}
+                </td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="new_tblfoot">
+  <div class="show_entry">  <span class="total_record">{{'SHOWING'  |translate}} <span *ngIf="isFiltered"><strong>{{filterRecord}}</strong> {{'OF'  |translate}} </span> <strong>{{totalRecord}}</strong> {{'RECORDS'  |translate}}</span>
+  <div  class="custom_pagination">
+      <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+      </sv-bootstrap-paginator>
+  </div>
+  </div>
+</div>
+</div>
+<div *ngIf="isloading" class="overlay">
+  <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+</div>

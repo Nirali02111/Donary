@@ -1,0 +1,36 @@
+<form name="form" (ngSubmit)="f.form.valid && uploadFile()" #f="ngForm" ngbAutofocus  tabindex="-1">
+    <div class="modal-header" style="display: block;">
+        <div class="row">
+            <div class="input-group col-5">
+                <h4 class="modal-title">{{'IMPORT'|translate}} {{'PLEDGES'|translate}}</h4>
+            </div>
+            <div class="input-group col-6">
+                &nbsp;
+            </div>
+            <div class="input-group col-1">
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="card" style="box-shadow: none !important;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="input-group col-8 mb-2">
+                        <div class="custom-file">
+                            <input type="file" name="uploadFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                             id="input-uploadFile" class="custom-file-input"
+                                id="importPledgeFile" (change)="onFileChange($event)">
+                            <label class="custom-file-label" for="importPledgeFile">{{uploadedFileName}}</label>
+                        </div>                                             
+                    </div>
+                    <div class="input-group col-4 mb-2">
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE'|translate}}</button>&nbsp;&nbsp;
+        <button class="btn btn-primary" [disabled]="isloading || !uploadedFile">{{'UPLOAD'|translate}}</button>
+    </div>
+</form>

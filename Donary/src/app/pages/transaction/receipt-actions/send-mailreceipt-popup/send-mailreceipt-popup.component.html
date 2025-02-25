@@ -1,0 +1,61 @@
+<div class="modal_custom modal_receipt_mail" ngbAutofocus tabindex="-1">
+  <div class="modal-header-custom modal__custom_header">
+    <h4>{{'SEND' | translate}} {{'MAIL' | translate}} {{'RECEIPT' | translate}}</h4>
+    <span class="close_trigger" (click)="closePopup()" data-dismiss="modal">&times;</span>
+  </div>
+  <div class="modal-content-custom  modal__custom_content">
+    <label>{{"SENDING" | translate}} {{"TO" | translate}}:</label>
+    <address>{{(address || "") + ' ' + (cityStateZip || "")}}</address>
+    <span *ngIf="invalidAddressErr" class="text-danger"><i class="fa fa-info-circle" aria-hidden="true"></i>
+      {{invalidAddressErr}}</span>
+
+    <a class="link-edit" href="javascript:void(0)" appDataHover labelText="{{'EDIT' | translate}}" type="button"
+      (click)="EditDonor()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16.004" height="16" viewBox="0 0 16.004 16">
+        <path id="Icon_awesome-edit" data-name="Icon awesome-edit"
+          d="M14.825,3.2l3.47,3.47a.376.376,0,0,1,0,.531l-8.4,8.4-3.57.4a.748.748,0,0,1-.827-.827l.4-3.57,8.4-8.4A.376.376,0,0,1,14.825,3.2Zm6.232-.881L19.18.446a1.5,1.5,0,0,0-2.123,0L15.695,1.807a.376.376,0,0,0,0,.531l3.47,3.47a.376.376,0,0,0,.531,0l1.362-1.362a1.5,1.5,0,0,0,0-2.123Z"
+          transform="translate(-5.492 -0.007)" fill="currentColor" />
+      </svg>
+      {{("EDIT" | translate) + ' ' + ("ADDRESS" | translate)}}
+    </a>
+
+    @if(isSuggested){
+    <hr />
+    <span class="text-light mb-3"><i class="fa fa-info-circle" aria-hidden="true"></i>
+      Our mailing system found this address. Please select the correct address format.</span>
+    <label for="">PLEASE SELECT THE CORRECT ADDRESS:</label>
+    <div class="form-check p-0">
+      <input (click)="copyAddress()" class="form-check-input" id="check-address" type="checkbox" [(ngModel)]="suggestedAddressChecked">
+      <label class="form-check-label" for="check-address">{{suggestedAddress +' '+ suggestedCityStateZip}}</label>
+    </div>
+    }
+  </div>
+
+
+
+  <div class="modal-custom-footer justify-content-end space-between modal__custom_footer align-items-center">
+    <a href="javascript:void(0)" title="Cancel" class="link-modal" (click)="closePopup()">{{'CANCEL' | translate}}</a>
+    <span class="sending_txt" *ngIf="isDisabled">{{'SENDING' | translate}}...</span>
+
+    <ng-template [ngIf]="suggestedAddress !== '' && isSuggested === false" [ngIfElse]="updateAndSendView">
+      <button class="btn btn-primary update_and_send_btn" [disabled]="isDisabled || isSendDisabled"
+        (click)="updateAndSend()">{{'UPDATE' | translate}} {{'AND' | translate}} {{'SEND' | translate}}</button>
+    </ng-template>
+
+    <ng-template #updateAndSendView>
+      <button class="btn btn-primary" *ngIf="!isGlobalId && !sendAnyway"
+        [disabled]="(isDisabled || isSendDisabled) && !suggestedAddressChecked" (click)="updateAndSend()">{{'SEND' |
+        translate}}</button>
+      <button class="btn btn-primary" *ngIf="!isGlobalId && sendAnyway" [disabled]="isDisabled"
+        (click)="updateAndSend()">Send anyway</button>
+      <button class="btn btn-primary donar-send-payment" *ngIf="isGlobalId" data-toggle="tooltip" appHoverTooltip
+        labelText="{{'ENABLEACTION' | translate}}" [disabled]="isGlobalId" (click)="updateAndSend()">{{'SEND' |
+        translate}}</button>
+    </ng-template>
+
+  </div>
+
+  <div *ngIf="isloading" class="card-overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>

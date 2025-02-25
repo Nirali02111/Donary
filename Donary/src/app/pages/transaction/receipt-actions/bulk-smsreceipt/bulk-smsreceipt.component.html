@@ -1,0 +1,197 @@
+<div class="diglog_modal modal_custom px-0" ngbAutofocus tabindex="-1">
+	<div class="modal_custom_header modal__custom_header">
+		<h4>{{'SMSRECEIPTACTIONS' | translate}}</h4>
+		<div class="filter_section">
+		<div class="filter__by">
+			<label>{{'FILTERBY' | translate}}: {{'SENTSTATUS' | translate}}</label>
+
+			<div class="label-block">
+				<button
+			class="select-label"
+			(click)="betaMenuFilterByStatus($event)"
+			[class.arrowup]="arrowUpFilterByStatus" >
+				{{filterBySendStatusDisplay()}} <span class="arrow"></span>
+			</button>
+			<div class="filter-dropdown filter-input" *ngIf="isBetaOpenFilterByStatus">
+				<ul>
+					<li [class.active]="filterByStatus=='all'" (click)="filterBySendStatus('all')">{{'ALL' | translate}}</li>
+					<li [class.active]="filterByStatus=='sent'" (click)="filterBySendStatus('sent')">{{'SENT' | translate}}</li>
+					<li [class.active]="filterByStatus=='not sent'" (click)="filterBySendStatus('not sent')">{{'NOTSENT' | translate}}</li>
+				</ul>
+			</div>
+			</div>
+		</div>
+
+		<div class="filter__by select-mission">
+			<label>{{'FILTERBY' | translate}} {{'MISSINGDATA' | translate}}:</label>
+			<!-- <select class="selct_box" (change)="filterGridRows($event)" [(ngModel)]="filterBy">
+				<option *ngFor="let x of filterOptions"
+					[value]="x.value"
+					[selected]="x.value === filterBy">
+					{{x.label}}
+				</option>
+			</select> -->
+			<div class="label-block">
+				<button
+			class="select-label"
+			(click)="betaMenuFilterBy($event)"
+			[class.arrowup]="arrowUpFilterBy" >
+				{{filterByMissingDataDisplay}} <span class="arrow"></span>
+			</button>
+			<div class="label-dropdown" *ngIf="isBetaOpenFilterBy">
+				<ul>
+					<li (click)="filterByMissingData(x)" *ngFor="let x of filterOptions">
+						{{x.label}}
+					</li>
+
+				</ul>
+			</div>
+			</div>
+		</div>
+		<button class="dismiss" (click)="closePopup()">&times;</button>
+		</div>
+	</div>
+	<div class="modal-body" style="overflow-y: hidden; height: calc(100vh - 15rem); padding: 0;">
+	  <div class="px-2" style="overflow-y: auto; height: 100%;">
+		<div class="modal_custom_content modal__custom_content">
+			<div class="table_wrapper">
+				<table class="bulk-sms-table" cellpadding="0" cellspacing="0" id="advancereceiptsmstbl" [svData]="gridFilterDataList" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="fullNameJewish" svSortOrder="desc">
+					<thead>
+						<tr>
+							<th style="min-width: 240px;" class="bulk-sms-donor-name-cls bulkrecep-donor-col">
+
+								<sv-default-sorter by="fullNameJewish"> <span>{{'DONORNAME' | translate}}</span></sv-default-sorter>
+							</th>
+							<th  style="min-width: 350px;"  class="bulk-sms-donor-name-cls bulkrecep-reciep-col">
+
+								<sv-default-sorter by="receiptNum"> <span>{{receiptNumColumn}} #</span></sv-default-sorter>
+							</th>
+							<th  style="min-width: 250px;">
+								<div class="d-flex align-items-center">
+								<sv-default-sorter by="phone"><span>Cell Number</span></sv-default-sorter>
+								<div class="label-block">
+									<button
+								class="select-label"
+								(click)="betaMenu($event)"
+        						[class.arrowup]="arrowUp" >
+									Select labels <span class="arrow"></span>
+								</button>
+								<div class="label-dropdown" *ngIf="isBetaOpen">
+									<h4>Select Cell Numbers</h4>
+									<ul>
+										<li *ngFor="let phoneLabel of allPhoneLabelsArray; let i = index">
+											<input #labelCheckboxes type="checkbox" id="{{phoneLabel.labelName}}" class="checkbox" (change)="selectLabels($event,phoneLabel.labelName,i)" [checked]="phoneLabel.isLabelNameChecked"/>
+											<label for="{{phoneLabel.labelName}}">{{phoneLabel.labelName}}</label>
+										</li>
+									</ul>
+								</div>
+								</div>
+								</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody *ngIf="sv.data?.length > 0">
+						<tr *ngFor="let item of sv.data; let i=index">
+							<td class="bulk-sms-donor-name-cls bulkrecep-donor-col">
+								<h5 (click)="openDonorCardPopup(item.accountId)" class="lng_hebrew" class="blueviolet">
+									{{ item.fullNameJewish }}
+
+									<span class="material-icons">edit</span>
+								</h5>
+							</td>
+							<td class="bulk-sms-donor-name-cls bulkrecep-reciep-col">
+								<h5  (click)="openPaymentCardPopup(item.paymentId)"  class="blueviolet">
+									{{ item.receiptNum }}
+								</h5>
+							</td>
+							<td>
+								<ul class="bulk-sms-recipt">
+								<ng-container *ngFor="let phoneLabel of item.phoneLabelArray; let i_Phone=index">
+									<li *ngIf="isLabelNameShowHide(phoneLabel.labelName)" [class.selected]="isCellLabelChecked(item.accountId, phoneLabel.phoneValue,item.receiptNum,phoneLabel.labelName)">
+										<div class="inner-div" *ngIf="phoneLabel.phoneValue">
+											<input #checkboxes type="checkbox" [id]="item.receiptNum +'_'+ i_Phone" class="checkbox" style="display: block;"
+											(change)="selectPhoneNumbers($event,item.accountId,item.paymentId, phoneLabel.phoneValue,item.receiptNum,phoneLabel.labelName)"
+											[checked]="isCellLabelChecked(item.accountId, phoneLabel.phoneValue,item.receiptNum,phoneLabel.labelName)"/>
+											<label [for]="item.receiptNum +'_'+ i_Phone">{{phoneLabel.labelName}}</label>
+
+										</div>
+										<div class="inner-div" *ngIf="!phoneLabel.phoneValue">
+										<span>{{phoneLabel.labelName}}</span>
+										</div>
+										<div class="inner-div">
+											<span class="modal-span" *ngIf="isLabelNameShowHide(phoneLabel.labelName)">{{phoneLabel.phoneValue}}</span>
+											<span class="checked_icon" *ngIf="phoneLabel.smsSent !=null && phoneLabel.smsSent=='1'"></span>
+										</div>
+									</li>
+								</ng-container>
+								</ul>
+							</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	  </div>
+    </div>
+	<div class="modal_custom_footer modal__custom_footer">
+		<div class="new_tblfoot">
+			<div class="show_entry">
+				<span class="total_record">
+					{{'SHOWING' | translate}}
+					<span *ngIf="filterBy !== 'all' || filterByStatus !== 'all'">
+					  	<strong>{{gridFilterDataList.length}}</strong> {{'OF' | translate}}
+					</span>
+
+					<strong>{{dataList.length}}</strong>
+					{{'RECORDS' | translate}}
+				</span>
+			</div>
+
+			<div class="show_entry">
+				<span class="total_record">
+					{{'SELECTED' | translate}}
+					<strong>{{totalSelectedShow()}}</strong>
+					{{'RECORDS' | translate}}
+				</span>
+			</div>
+			<div class="show_entry">
+				<div  class="custom_pagination">
+					<sv-bootstrap-paginator [svTable]="sv"></sv-bootstrap-paginator>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+
+		<button
+			style="width: 169px; margin-right: 1px;"
+			class="btn btn-primary"
+			*ngIf="!isUpdated && this.commonMethodService.isfeatureSetting"
+			[ngClass]="{'btn-primary': selectedAccountList.length !== 0, 'popup-send-mail-btn-disable' : selectedAccountList.length === 0 }"
+			 (click)=" sendMail()"
+		>{{'SENDRECEIPTS' | translate}}</button>
+		<button
+		    style="width: 169px; margin-right: 1px;"
+			class="btn btn-primary btn-core"
+			*ngIf="!this.commonMethodService.isfeatureSetting"
+			(click)="onUpgrade()">{{'UPGRADETOSAVE' | translate}}</button>
+
+		<button
+			style="width: 169px; margin-right: 1px;"
+			class="btn btn-primary"
+			*ngIf="isUpdated"
+			[ngClass]="{'btn-primary': selectedAccountList.length !== 0, 'popup-send-mail-btn-disable' : selectedAccountList.length === 0 }"
+			 (click)=" sendMail()"
+		>{{'UPDATE' | translate}} {{'AND' | translate}} {{'SENDRECEIPTS' | translate}}</button>
+	</div>
+	<div class="proccesing_reciept" *ngIf="isloading">
+		<div class="proccesing_card_inside">
+			<h6>{{'SENDINGRECEIPTSTO' | translate}} {{sendingTotalDonors}} {{'DONORS' | translate}}</h6>
+			<div class="loader_img">
+				<img src="/assets/img/loader.svg" alt="loader" />
+			</div>
+			<button class="btn-link" (click)="stopProccessing()">{{'CANCEL' | translate}}</button>
+		</div>
+	</div>
+</div>

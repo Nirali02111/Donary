@@ -1,0 +1,180 @@
+<div class="diglog_modal modal_custom px-0" ngbAutofocus  tabindex="-1">
+	<div class="modal_custom_header modal__custom_header">
+		<h4>Email Receipt Actions</h4>
+		<div class="filter_section">
+		<div class="filter__by">
+			<label>{{'FILTERBY' | translate}}: {{'SENTSTATUS' | translate}}</label>
+			<select class="selct_box" (change)="filterGridRows($event)" [(ngModel)]="filterByStatus">
+				<option *ngFor="let x of filterStatusOptions"
+					[value]="x.value"
+					[selected]="x.value === filterByStatus">
+					{{x.label}}
+				</option>
+			</select>
+		</div>
+		<div class="filter__by">
+			<label>{{'FILTERBY' | translate}}:</label>
+			<select class="selct_box" (change)="filterGridRows($event)" [(ngModel)]="filterBy">
+				<option *ngFor="let x of filterOptions"
+					[value]="x.value"
+					[selected]="x.value === filterBy">
+					{{x.label}}
+				</option>
+			</select>
+		</div>
+		<button class="dismiss" (click)="closePopup()">&times;</button>
+	</div>
+	</div>
+	<div class="modal-body p-0" style="overflow-y: hidden; height: calc(100vh - 15rem);">
+	  	<div class="px-2" style="overflow-y: auto; height: 100%;">
+			<div class="modal_custom_content modal__custom_content">
+				<div class="table_wrapper">
+					<table class="bulk-email-table" cellpadding="0" cellspacing="0" id="advancereceipttbl" [svData]="gridFilterDataList" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="fullNameJewish" svSortOrder="desc">
+						<thead>
+							<tr>
+								<th style="min-width: 240px;" class="bulk-sms-donor-name-cls bulkrecep-donor-col">
+									<!-- <input type="checkbox" name="selectAllName" (change)="selectName($event,'selectAll',null, [],null)"> -->
+									<sv-default-sorter by="fullNameJewish"> <span>{{'DONORNAME' | translate}}</span></sv-default-sorter>
+								</th>
+								<th  style="min-width: 350px;"  class="bulk-sms-donor-name-cls bulkrecep-reciep-col">
+									<sv-default-sorter by="receiptNum"> <span>{{'RECEIPT' | translate}}</span></sv-default-sorter>
+								</th>
+								<th style="min-width: 250px;">
+									<div class="d-flex align-items-center">
+										<sv-default-sorter by="email"><span>{{'EMAILADDRESS' | translate}}</span></sv-default-sorter>
+										<div class="label-block">
+											<button
+										class="select-label"
+										(click)="betaMenuEmail($event)"
+										[class.arrowup]="arrowUpEmail" >
+											Select labels <span class="arrow"></span>
+										</button>
+										<div class="label-dropdown" *ngIf="isBetaOpenEmail">
+											<h4>Select Email Address</h4>
+											<ul>
+												<li *ngFor="let emailLabel of allEmailLabelsArray; let i = index">
+													<input type="checkbox" id="{{emailLabel.labelName}}_email" class="checkbox" (change)="selectEmailLabels($event,emailLabel.labelName,i)" [checked]="emailLabel.isLabelNameChecked"/>
+													<label for="{{emailLabel.labelName}}_email">{{emailLabel.labelName}}</label>
+												</li>
+											</ul>
+										</div>
+										</div>
+										</div>
+
+								</th>
+							</tr>
+						</thead>
+						<tbody *ngIf="sv.data?.length > 0">
+							<tr *ngFor="let item of sv.data; let i=index">
+								<td class="bulk-email-donor-name-td-cls bulkrecep-donor-col">
+									<!-- <input #namecheckboxes type="checkbox"
+										name="singlecheck"
+										(change)="selectReceipt($event,'singlecheck',item.accountId,item.paymentId,item.emails, item.receiptNum)"
+									    [checked]="checkReceiptIsSelectOrNot(item.receiptNum)"
+										[attr.data-accId]="item.accountId"
+										[disabled]="checkDonorIsDisable(item.accountId)"
+									> -->
+									<div class="d-flex align-items-center justify-content-between">
+										<h5 (click)="openDonorCardPopup(item.accountId)" class="lng_hebrew" class="blueviolet">
+											{{ item.fullNameJewish }}
+										</h5>
+										<span (click)="openDonorCardPopup(item.accountId)" class="edit text-info">  <i class="material-icons">edit</i></span>
+									</div>
+								</td>
+								<td class="bulk-sms-donor-name-cls bulkrecep-reciep-col">
+									<h5  (click)="openPaymentCardPopup(item.paymentId)"  class="blueviolet">
+										#{{ item.receiptNum }}
+									</h5>
+								</td>
+
+								<td class="bulk-email-column-td-cls">
+									<ul class="bulk-sms-recipt">
+										<ng-container *ngFor="let emailLabel of item.emailLabelArray">
+										<li *ngIf="isLabelNameShowHide(emailLabel.labelName)" [class.selected]="isLabelChecked(item.accountId, emailLabel.emailValue,item.receiptNum,emailLabel.labelName)">
+											<div class="inner-div" *ngIf="emailLabel.emailValue">
+												<input  type="checkbox" [id]="emailLabel.labelName +'_'+item.receiptNum" class="checkbox" style="display: block;"
+												[checked]="isLabelChecked(item.accountId, emailLabel.emailValue,item.receiptNum,emailLabel.labelName)"
+												(change)="selectEmailLabel($event,item.accountId,item.paymentId,emailLabel.emailValue,item.receiptNum,emailLabel.labelName)"
+												/>
+												<label [for]="emailLabel.labelName +'_'+item.receiptNum">{{emailLabel.labelName}}</label>
+
+											</div>
+											<div class="inner-div" *ngIf="!emailLabel.emailValue">
+												<span>{{emailLabel.labelName}}</span>
+											</div>
+											<div class="inner-div">
+												<span class="modal-span">{{emailLabel.emailValue}}</span>
+												<span class="checked_icon" *ngIf="emailLabel.emailSent !=null && emailLabel.emailSent=='1'"></span>
+											</div>
+										</li>
+									</ng-container>
+										</ul>
+
+								</td>
+							</tr>
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+		</div>
+    </div>
+	<div class="modal_custom_footer modal__custom_footer">
+		<div class="new_tblfoot">
+			<div class="show_entry">
+				<span class="total_record">
+					{{'SHOWING' | translate}}
+					<span *ngIf="gridFilterDataList.length !== dataList.length">
+						<strong>{{gridFilterDataList.length}}</strong> {{'OF' | translate}}
+				  	</span>
+					<strong>{{dataList.length}}</strong>
+					{{'RECORDS' | translate}}
+				</span>
+			</div>
+			<div class="show_entry">
+				<span class="total_record">
+					{{'SELECTED' | translate}}
+					<strong>{{totalSelectedShow()}}</strong>
+					{{'RECORDS' | translate}}
+				</span>
+
+			</div>
+			<div class="show_entry">
+				<div  class="custom_pagination">
+					<sv-bootstrap-paginator [svTable]="sv"></sv-bootstrap-paginator>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+		<button
+			style="width: 210px; margin-right: 1px;"
+			class="btn btn-primary"
+			*ngIf="!isUpdated && this.commonMethodService.isfeatureSetting"
+			[ngClass]="{'btn-primary': selectedAccountList.length !== 0, 'popup-send-mail-btn-disable' : selectedAccountList.length === 0 }"
+			(click)=" sendMail()"
+		>{{'SENDRECEIPTS' | translate}}</button>
+		<button
+		    style="width: 210px; margin-right: 1px;"
+			class="btn btn-primary btn-core"
+			*ngIf="!this.commonMethodService.isfeatureSetting"
+			(click)="onUpgrade()"
+		>{{'UPGRADETOSAVE' | translate}}</button>
+		<button
+			style="width: 210px; margin-right: 1px;"
+			class="btn btn-primary"
+			*ngIf="isUpdated"
+			[ngClass]="{'btn-primary': selectedAccountList.length !== 0, 'popup-send-mail-btn-disable' : selectedAccountList.length === 0 }"
+			(click)=" sendMail()"
+		>{{'UPDATE' | translate}} {{'AND' | translate}} {{'SENDRECEIPTS' | translate}}</button>
+	</div>
+	<div class="proccesing_reciept" *ngIf="isloading">
+		<div class="proccesing_card_inside">
+			<h6> {{'SENDINGRECEIPTSTO' | translate}} {{sendingTotalDonors}} {{'DONORS' | translate}}</h6>
+			<div class="loader_img">
+				<img src="/assets/img/loader.svg" alt="loader" />
+			</div>
+			<button class="btn-link" (click)="stopProccessing()">{{'CANCEL' | translate}}</button>
+		</div>
+	</div>
+</div>

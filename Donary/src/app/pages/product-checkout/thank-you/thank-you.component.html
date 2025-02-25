@@ -1,0 +1,170 @@
+<div class="checkout-main-wrap">
+    <div class="checkout-container">
+        <div class="checkout-wrap-left">
+            <div class="checkout-top">
+                <div class="checkout-content">
+                    <h1>{{'THANK'  |translate}} {{firstName}}!</h1>
+                    <span>{{'ORDER#'  |translate}} {{orderId}}</span>
+                    <p>{{'RECEIVEDYOURORDER'  |translate}}</p>
+                </div>
+            </div>
+            <div class="checkout-mid">
+                <div class="checkout-content">
+                    <span class="customer-label">{{'CUSTINFO'  |translate}}</span>
+                    <p>{{clientName}}</p>
+                    <p>{{Address}}, {{city}}, {{state}} {{zip}}</p>
+                    <p>{{phone}}</p>
+                    <p>{{email}}</p>
+                    <span class="payment-label">{{'PAYMENTMETHOD'  |translate}}</span>
+                    <p>{{'VISAENDING'  |translate}} {{cardending}}</p>
+                </div>
+            </div>
+            <div class="checkout-bottom">
+                <div class="checkout-content">
+                    <ul>
+                        <li *ngFor="let item of products ; let i = index">                           
+                            <div class="checkout-item">
+                                <img src="https://donarystorage.blob.core.windows.net/website/donary-drm.png" alt="product" *ngIf="item.ProductName=='DRM'">
+                                <img src="https://donarystorage.blob.core.windows.net/website/donary-mobile.png" alt="product" *ngIf="item.ProductName=='Donary Mobile'">
+                                <img src="https://donarystorage.blob.core.windows.net/website/donary-pocket.png" alt="product" *ngIf="item.ProductName=='Donary Pocket'">
+                            </div>
+                        </li>                       
+                    </ul>
+                </div>
+            </div>
+            <div class="checkout-footer">
+                <div class="footer-left">
+                    <p>{{'NEEDHELP'  |translate}} <a href="#">{{'CONTACTUS'  |translate}}</a></p>
+                </div>
+                <div class="footer-right">
+                    <button class="btn btn-primary" (click)="ContinueShopping()">
+                        <ng-container *ngIf="needFullyRegister">{{'CONTINUEFULLYREGISTER'  |translate}}</ng-container>
+                        <ng-container *ngIf="!needFullyRegister">{{'CONTINUESHOPPING'  |translate}}</ng-container>                        
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-wrap-right">
+            <div class="checkout-summary-wrap">
+                <div class="checkout-summary-section">
+                    <div class="container">
+                        <form>
+                            <div class="d-flex flex-wrap">
+                                
+                                <div class="summary-section">
+                                    <h3 class="cart-title">{{'SUMMARY'  |translate}}</h3>
+                        
+                                    <div class="summary-inner">
+                                        <div class="summary-division checkout-plan">
+                                            <div class="row summary-wrapper">
+                                                <div class="col-5 summary-left-part">
+                                                    <div>
+                                                        <h4 class="cart-wrapper-title">{{'MONTHLYTOTAL'  |translate}} :</h4>
+                                                        <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'MONTHLYPLAN'  |translate}}</h6>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-7 summary-right-part">
+                                                    <div>
+                                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(monthlyTotalAmount)}}</h5>
+                                                        <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{monthlyNextCharge}}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="row summary-wrapper">
+                                                <div class="col-5 summary-left-part">
+                                                    <div>
+                                                        <h4 class="cart-wrapper-title">{{'ANNUALTOTAL'  |translate}} :</h4>
+                                                        <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'ANNUALLICENSE'  |translate}}</h6>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-7 summary-right-part">
+                                                    <div>
+                                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(yearlyTotalAmount)}}</h5>
+                                                        <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{yearlyNextCharge}}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                        
+                                            <div class="row summary-wrapper">
+                                                <div class="col-5 summary-left-part">
+                                                    <div>
+                                                        <h4 class="cart-wrapper-title">{{'DEVICES'  |translate}} :</h4>
+                                                        <h6 class="summary-text">{{'ONETIMEFREE'  |translate}}</h6>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-7 summary-right-part">
+                                                    <div>
+                                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(deviceTotalAmount)}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+              
+                                        </div>
+                        
+                        
+                                        <div class="summary-division checkout-total" *ngIf="!IsSelfPickup">
+                                            <!-- <div class="row summary-wrapper">
+                                                <div class="col-7 summary-left-part">
+                                                    <div>
+                                                        <h4 class="cart-wrapper-title">Tax:</h4>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-5 summary-right-part">
+                                                    <div>
+                                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(taxTotalAmount)}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                            
+                            
+                                            <div class="row summary-wrapper">
+                                                <div class="col-7 summary-left-part">
+                                                    <div>
+                                                        <h4 class="cart-wrapper-title">{{'SHIPPING'  |translate}} :</h4>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-5 summary-right-part">
+                                                    <div>
+                                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(shippingAmount)}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="summary-division border-0">
+                            
+                                            <div class="row summary-wrapper">
+                                                <div class="col-7 summary-left-part">
+                                                    <div>
+                                                        <h4 class="subtotal-title">{{'SUBTOTAL'  |translate}} :</h4>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-5 summary-right-part">
+                                                    <div>
+                                                        <h5 class="subtotal-prize">{{commonMethodService.formatAmount(subTotalAmount)}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                
+                    </div>
+                </div>
+                <div *ngIf="isloading" class="overlay">                
+                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>

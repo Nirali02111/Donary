@@ -1,0 +1,298 @@
+<div class="page__wrapper cart-page header-product">
+    <app-product-header></app-product-header>
+<div class="cart-summary-section">
+
+    <div class="container">
+
+       <div class="d-flex flex-wrap">
+           <div class="cart-section">
+               <h3 class="cart-title">{{'CART'  |translate}} <span class="cart-title">({{checkOutList.length}} items)</span></h3>
+                <!-- Product list start -->
+                    <ng-container *ngFor="let cartItem of checkOutList">
+                        <ng-template  [ngTemplateOutlet]="SelectedProductTemp" [ngTemplateOutletContext]="{item: cartItem}"></ng-template>
+                    </ng-container>
+                <!-- Product list end -->
+           </div>
+
+           <div class="summary-section">
+               <h3 class="cart-title">{{'SUMMARY'  |translate}}</h3>
+
+               <div class="summary-inner">
+                   <div class="summary-division-wrap">
+                   <div class="row summary-wrapper">
+                       <div class="col-5 summary-left-part">
+                           <div>
+                               <h4 class="cart-wrapper-title">{{'MONTHLYTOTAL'  |translate}} :</h4>
+                               <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'MONTHLYPLAN'  |translate}}</h6>
+                           </div>
+                       </div>
+
+                       <div class="col-7 summary-right-part">
+                           <div>
+                               <h5 class="cart-prize">{{commonMethod.formatAmount(monthlyTotalAmount)}}</h5>
+                               <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{monthlyNextCharge}}</h6>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row summary-wrapper">
+                       <div class="col-5 summary-left-part">
+                           <div>
+                               <h4 class="cart-wrapper-title">{{'YEARLYTOTAL'  |translate}} :</h4>
+                               <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'YEARLYLICENSE'  |translate}}</h6>
+                           </div>
+                       </div>
+
+                       <div class="col-7 summary-right-part">
+                           <div>
+                               <h5 class="cart-prize">{{commonMethod.formatAmount(yearlyTotalAmount)}}</h5>
+                               <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{yearlyNextCharge}}</h6>
+                           </div>
+                       </div>
+                   </div>
+
+
+                   <div class="row summary-wrapper">
+                       <div class="col-5 summary-left-part">
+                           <div>
+                               <h4 class="cart-wrapper-title">{{'DEVICES'  |translate}} :</h4>
+                               <h6 class="summary-text">{{'ONETIMEFREE'  |translate}}</h6>
+                           </div>
+                       </div>
+
+                       <div class="col-7 summary-right-part">
+                           <div>
+                               <h5 class="cart-prize">{{commonMethod.formatAmount(deviceTotalAmount)}}</h5>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row summary-wrapper">
+                       <div class="apply-promo-wrap" *ngIf="!encryptedPromoCodeId">
+                        <h4 class="cart-wrapper-title promo-code">{{'ADDPROMOCODE'  |translate}} :</h4>
+                           <div class="apply-promo-code">
+                              <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
+                              <input type="text"  class="form-control enter-code" placeholder="{{'ENTERCODEOPTIONAL'  |translate}}" name="txtpromoCode"  [(ngModel)]="promoCode">
+                              <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;" (click)="onAddPromoCode($event)">{{'APPLY'  |translate}}</span></h5>
+                           </div>
+                       </div>
+                       <!--  -->
+                       <div class="apply-promo-wrap" *ngIf="encryptedPromoCodeId">
+                        <div class="promo-code-left">
+                     <h4 class="cart-wrapper-title promo-code">{{'PROMOCODE'  |translate}} :</h4>
+                     <span class="promo-code-description">{{description}}</span>
+                     </div>
+                        <div class="apply-promo-code">
+                           <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
+                           <input type="text"  class="form-control enter-code code-text-disabled" style="opacity:0.5;"  name="txt_promoCode" id="txtpromoCode" [(ngModel)]="promoCode" disabled/>
+                           <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;"(click)="onRemovePromoCode()">{{'REMOVE'  |translate}}</span></h5>
+                        </div>
+                    </div>
+                   </div>
+               </div>
+
+
+               <div class="summary-division">
+                   <div class="row summary-wrapper">
+                       <div class="col-7 summary-left-part">
+                           <div>
+                               <!-- <h4 class="cart-wrapper-title">Tax:</h4> -->
+                               <a href="https://donarystorage.blob.core.windows.net/donaryimag/nys_st-119-1.pdf" target="_blank" class="cart-wrapper-link" title="exempt form">{{'FILLOUTTAXTEXEMPT'  |translate}}</a>
+                           </div>
+                       </div>
+
+                       <div class="col-5 summary-right-part">
+                           <div>
+                               <!-- <h5 class="cart-prize">{{commonMethod.formatAmount(taxTotalAmount)}}</h5> -->
+                           </div>
+                       </div>
+                       <div class="form-group cart-file-input" x-data="{ fileName: '' }">
+                        <div class="input-group shadow">
+                          <span class="input-group-text px-2 text-muted"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                          <input type="text"  class="form-control form-control-lg" placeholder="{{'UPLOADFILE'  |translate}}" x-model="fileName" value="{{fileOutTaxExemptForm_Name}}">
+                          <label class="btn-primary">{{'BROWSE'  |translate}}
+                            <!-- <input type="file" name="doc_file" id="doc_file" (change)="incomingfile($event)"> -->
+                            <input type="file" name="doc_file" id="doc_file" (change)="commonMethod.incomingfile($event);incomingfileName($event)">
+                          </label>
+                        </div>
+                      </div>
+                   </div>
+
+
+                   <!-- <div class="row summary-wrapper">
+                       <div class="col-7 summary-left-part">
+                           <div>
+                               <h4 class="cart-wrapper-title">Shipping:</h4>
+                           </div>
+                       </div>
+
+                       <div class="col-5 summary-right-part">
+                           <div>
+                               <h5 class="cart-prize">$20.00</h5>
+                           </div>
+                       </div>
+                   </div> -->
+               </div>
+
+               <div class="summary-division border-0">
+                    <ng-container *ngIf="!canDisplayPickup()">
+                        <div class="option-ship-tracking" >
+                            <div class="option-item">
+                                <input type="radio" id="shipping" name="radio-group" value="false" checked (change)="changePickupStatus('false')">
+                                <label for="shipping">{{'SHIPPING'  |translate}}:</label>
+                                <h4 class="ship-price">{{commonMethod.formatAmount(shippingAmount)}}</h4>
+                            </div>
+                            <div class="option-item freepickup-item">
+                                <input type="radio" id="freepick" name="radio-group" value="true" (change)="changePickupStatus('true')">
+                                <label for="freepick">{{'FREEPICKUP'  |translate}}</label>
+                                <p>{{'ADDRESS'  |translate}}</p>
+                            </div>
+                        </div>
+                    </ng-container>
+
+
+                   <div class="row summary-wrapper">
+                       <div class="col-7 summary-left-part">
+                           <div>
+                               <h4 class="subtotal-title">{{'SUBTOTAL'  |translate}} :</h4>
+                           </div>
+                       </div>
+                       <div class="col-5 summary-right-part">
+                           <div>
+                               <h5 class="subtotal-prize">{{commonMethod.formatAmount(subTotalAmount)}}</h5>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+
+
+
+                   <!-- <div class="checkout-wrapper">
+                       <a href="" class="checkout-button" title="proceed to checkout">Proceed to Checkout</a>
+                   </div> -->
+
+                   <div>
+                       <!-- <a href="" class="checkout-button" title="login to proceed" [routerLink]="['/productandplans/register']">Login to Proceed</a> -->
+                       <!-- <a href="" class="checkout-button" title="login to proceed" [routerLink]="['/checkout']">Login to Proceed</a> -->
+                       <!-- <a href="" class="checkout-button" title="login to proceed" [routerLink]="['/']" [queryParams]="{returnUrl:'/checkout'}">Login to Proceed</a> -->
+
+
+                       <a href="" class="checkout-button" title="login to proceed" (click)="loginToProceed($event)">{{'LOGINTOPROCEED'  |translate}}</a>
+
+
+                   </div>
+
+                   <div class="summary-border mt-3">
+                       {{'OR'  |translate}}
+                   </div>
+
+                   <div class="mt-3">
+                       <!-- <a href="" class="sign-up-button" title="sign up" [routerLink]="['/productandplans/sign-up']">Sign up</a> -->
+
+                       <a href="" class="sign-up-button" title="sign up" (click)="signUpToProceed($event)">{{'SIGNUP'  |translate}}</a>
+
+
+                   </div>
+               </div>
+           </div>
+       </div>
+       </div>
+   </div>
+
+   </div>
+
+
+<ng-template #SelectedProductTemp let-item="item">
+    <div class="cart-wrapper">
+        <div class="row cart-wrapper-content">
+            <div class="col-3">
+
+                <ng-container *ngIf="item.product.productImage;else defaultProductImage">
+                    <img [src]="item.product.productImage" alt="product-img" title="product-img" />
+                </ng-container>
+                <ng-template #defaultProductImage>
+                    <img src="assets/dist/img/product/product-img.png" alt="product-img" title="product-img" />
+                </ng-template>
+            </div>
+
+            <div class="col-9 row cart-wrapper-border">
+
+            <div class="col-4">
+                <h4 class="cart-wrapper-title">{{item.product.productName}} {{item.product.productNote}}</h4>
+            </div>
+
+            <div class="col-4 qty-col">
+                <div class="input-group quantity-button">
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" (click)="DecreaseProduct(item.product.productId)">
+                              <span class="glyphicon glyphicon-minus">-</span>
+                            </button>
+                        </span>
+
+                        <input type="number" id="quantity" name="quantity" class="form-control input-number quantity-number" min="1" [(ngModel)]="item.productCount" (change)="onChangeProductCount($event, item.product.productId)" >
+
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" (click)="IncreaseProduct(item.product.productId)">
+                                <span class="glyphicon glyphicon-plus">+</span>
+                            </button>
+                        </span>
+                    </div>
+            </div>
+
+            <div class="col-4 text-right pr-0">
+                <h5 class="cart-prize">{{commonMethod.formatAmount(item.product.price)}}</h5>
+                <h6 class="cart-wrapper-text">{{item.product.saleType}}</h6>
+            </div>
+            </div>
+        </div>
+
+        <!-- Plans List start -->
+        <ng-container *ngFor="let productPlan of item.productPlans; let i = index">
+            <ng-template  [ngTemplateOutlet]="SelectedProductPlanTemp" [ngTemplateOutletContext]="{item: productPlan, product: item.product, index : i}"></ng-template>
+        </ng-container>
+        <!-- Plans List end -->
+    </div>
+</ng-template>
+
+
+<ng-template #SelectedProductPlanTemp let-item="item" let-product="product" let-index="index">
+    <div class="row cart-wrapper-content">
+
+        <div class="col-3 remove-cart-item">
+            <a *ngIf="index === 0" (click)="onRemoveFromList($event, product)">{{'REMOVE'  |translate}}</a>
+        </div>
+        <div class="col-9 row cart-wrapper-border">
+
+            <div class="col-4">
+                <h4 class="cart-wrapper-title">{{item.planName}}</h4>
+                <a href="" class="cart-wrapper-link" title="change plan" [routerLink]="['/productandplans', product.productId]">{{'CHANGEPLAN'  |translate}}</a>
+            </div>
+
+            <div class="col-4 qty-col">
+                <div class="input-group quantity-button" [@swingTrigger]="needToAnimate(item, product)" [ngStyle]="{'border-color': needToAnimateRedBorder(item, product) ? '#ee3d3d' : '#D8D8D8'}">
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" (click)="DecreaseUserInPlan(product.productId,item.planId)">
+                            <span class="glyphicon glyphicon-minus">-</span>
+                        </button>
+                    </span>
+
+                    <input type="number" id="quantity" name="quantity" class="form-control input-number quantity-number" min="1" [(ngModel)]="item.user" (change)="onChangeUserInPlan($event, product.productId, item.planId)">
+
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" (click)="IncreaseUserInPlan(product.productId, item.planId)">
+                            <span class="glyphicon glyphicon-plus">+</span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-4 text-right pr-0">
+                <h5 class="cart-prize">{{commonMethod.formatAmount(item.price)}}</h5>
+                <h6 class="cart-wrapper-text">{{item.recurringType}}</h6>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div *ngIf="isLoading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>

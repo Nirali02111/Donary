@@ -1,0 +1,1325 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" ngbAutofocus tabindex="-1">
+  <section class="content donor-page">
+    <div class="container-fluid">
+      <div class="card">
+        <div *ngIf="isloading" class="overlay">
+          <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-body">
+          <div class="filters__options">
+            <div class="search_opts searchdonor_opts">
+              <div class="colm searcg_txt">
+                <input type="text" name="advanceSearch" id="searchText" class="form-control float-right"
+                  placeholder="{{ 'SEARCHDONORS' | translate }}" (keyup)="search($event.target.value)" />
+                <ng-container *appIsMobile>
+                  <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default btn-filter">
+                    <i class="filter-icon"><img src="/assets/dist/img/filter-icon.svg" /></i>
+                    <span class="filter_count" *ngIf="filtercount != 0">{{
+                      filtercount
+                      }}</span>
+                  </button>
+                </ng-container>
+              </div>
+
+              <ng-container *appIsWeb>
+                <div class="colm">
+                  <div class="filter_field">
+                    <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+                      <span class="filter_count" *ngIf="filtercount != 0">{{
+                        filtercount
+                        }}</span>
+                      <span class="filter_text">{{ "FILTER" | translate }}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <ng-template [ngIf]="isTotalPanelVisible">
+                  <div class="subby_dropdown">
+                    <span>{{ "SUMBY" | translate }}:</span>
+                    <div class="custo_selct">
+                      <angular2-multiselect id="ddlCardType" [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          1,
+                          false,
+                          true,
+                          false
+                        )
+                      " [data]="cardFilter" (onSelect)="cardTypeChange(cardType)" [(ngModel)]="cardType">
+                        <c-item>
+                          <ng-template let-item="item">
+                            <label>{{ item.itemName }}</label>
+                            <span class="count_span">({{ item.counts }})</span>
+                          </ng-template>
+                        </c-item>
+                      </angular2-multiselect>
+                    </div>
+                  </div>
+                  <div class="sort_sumcard">
+                    <span class="sorting_icon"></span>
+                    <div class="custo_selct sort_drpdown">
+                      <angular2-multiselect id="ddlCardType" [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          1,
+                          false,
+                          true,
+                          true
+                        )
+                      " [data]="sortFilter" (onSelect)="changeSortType(sortType)" [(ngModel)]="sortType">
+                      </angular2-multiselect>
+                    </div>
+                  </div>
+
+
+
+                  <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                      [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                  </ng-template>
+                  <div class="input-group dnr-datepicker-container date_picker"
+                    (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"
+                    popoverClass="calender-modal" [ngbPopover]="popContent" [popoverTitle]="popTitle"
+                    [autoClose]="false"
+                    placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                    (click)="openCalendarPopup()" id="listDynamicsCalender">
+                    <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- Calendar code ended -->
+                </ng-template>
+              </ng-container>
+            </div>
+            <div class="right_colms">
+              <div class="refresh-div d-flex align-items-center">
+                <span class="refresh-icon" (click)="RefreshDonorList()" style="cursor:pointer;">
+                  <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g id="timeline" />
+                    <g id="navigation" />
+                    <g id="align_center" />
+                    <g id="align_left_1_" />
+                    <g id="align_left" />
+                    <g id="more" />
+                    <g id="share" />
+                    <g id="music" />
+                    <g id="camera" />
+                    <g id="print" />
+                    <g id="wifi_1_" />
+                    <g id="setting" />
+                    <g id="composed" />
+                    <g id="password" />
+                    <g id="list" />
+                    <g id="voice" />
+                    <g id="open_folder" />
+                    <g id="refresh">
+                      <path
+                        d="m19.6025 12.6348c-.5586-.085-1.0547.2979-1.1348.8438-.2012 1.3711-.834 2.6221-1.8301 3.6182-2.5352 2.5352-6.6572 2.5332-9.1914 0-2.5337-2.5342-2.5337-6.6577 0-9.1914.9531-.9526 2.1563-1.5737 3.5029-1.7998.5791-.1099 1.2017-.1289 1.8477-.0557.887.1021 1.7126.3964 2.466.8285l-1.3019.2223c-.5439.0933-.9102.6099-.8164 1.1543.083.4873.5059.8315.9844.8315.0557 0 .1123-.0044.1699-.0142l3.4902-.5967c.2607-.0449.4941-.1914.6475-.4082.1533-.2163.2139-.4849.1689-.7466l-.5977-3.4897c-.0918-.5439-.6016-.9082-1.1543-.8169-.5439.0933-.9102.6104-.8164 1.1548l.1573.9185c-.9679-.543-2.0356-.8943-3.17-1.0249-.8496-.0967-1.6738-.0698-2.4282.0747-1.7368.291-3.3149 1.105-4.564 2.354-3.3135 3.3135-3.3135 8.7051 0 12.0195 1.6567 1.6572 3.8335 2.4854 6.0098 2.4854 2.1768 0 4.3525-.8281 6.0098-2.4854 1.3018-1.3018 2.1299-2.9414 2.3945-4.7412.0802-.5469-.2978-1.0548-.8437-1.1348z" />
+                    </g>
+                    <g id="link" />
+                    <g id="attach" />
+                    <g id="email" />
+                    <g id="bookmark" />
+                    <g id="folder" />
+                    <g id="file" />
+                    <g id="notification" />
+                    <g id="galery" />
+                    <g id="delete_1_" />
+                    <g id="update" />
+                    <g id="upload" />
+                    <g id="download" />
+                    <g id="menu" />
+                    <g id="down" />
+                    <g id="up" />
+                    <g id="backward" />
+                    <g id="forward" />
+                    <g id="zoom_out" />
+                    <g id="zoom_in" />
+                    <g id="search" />
+                    <g id="home" />
+                    <g id="user" />
+                    <g id="guide" />
+                  </svg>
+                </span>
+                <div class="refresh-desc">
+                  <h6>{{"REFRESHLIST" | translate}}</h6>
+                  <p>{{ "LASTSYNCED" | translate }}
+                    {{
+                    pageSyncService.lastSyncListTime | donaryDateFormat: "long-medium"
+                    }}</p>
+                </div>
+              </div>
+              <ng-container *appIsWeb>
+                <ng-template [ngIf]="isTotalPanelVisible">
+                  <div class="loct_showall">
+                    <label class="switch">
+                      <input type="checkbox" [checked]="isTotalPanelShowAll" (change)="OnCheckboxChange($event)" />
+                      <span class="slider round"></span>
+                    </label>
+                    <span class="show_all">{{ "SHOWONLYACTIVE" | translate }}
+                      {{ "DONATIONS" | translate }}</span>
+                  </div>
+                </ng-template>
+
+                <div class="total_btn colm" *ngIf="showTotalPanelPermission">
+                  <button class="btn btn-primary" (click)="TogglePanel(isTotalPanelVisible)">
+                    {{ panelTitle | translate }}
+                  </button>
+                </div>
+                <div class="colm tbl_field">
+                  <div class="dropdown">
+                    <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-tag">
+                        <span> {{ "FIELDS" | translate }}</span></i>
+                    </button>
+                    <div>
+                      <div class="field_dropdown dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <!-- <h2>Pending</h2> -->
+                        <div *ngFor="let group of colFields">
+                          <ng-template [ngIf]="group.isTotalPanel">
+                            <h3 [ngClass]="group.class">
+                              {{ group.title }}
+                            </h3>
+                            <div class="example-list" cdkDropList class="field_ul field_scroll"
+                              [cdkDropListData]="group.items" (cdkDropListDropped)="dropGroupItem($event)">
+
+                              <div class="example-box" *ngFor="let i of group.items" class="example-box" cdkDrag
+                                cdkDragBoundary=".field_dropdown" (click)="$event.stopPropagation()">
+                                <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                          {{ i.colName  }} -->
+                                <div class="fieldlst_chkbox" style="padding-left: 50px">
+
+                                  <span *ngIf="group.id != 2">
+                                    <input type="checkbox" class="fields_chkbx" class="" [(ngModel)]="i.isVisible"
+                                      (change)="
+                            setGridColVisibility(
+                              $event,
+                              i.colName,
+                              i.isVisible
+                            )
+                          " [id]="i.colId" />
+                                    <label class="fields_lbl" [for]="i.colId">{{
+                                      fieldsShortName(i.colName) | translate
+                                      }}</label>
+                                  </span>
+                                  <span *ngIf="group.id == 2">
+                                    <input type="checkbox" class="fields_chkbx" class="" [(ngModel)]="i.isVisible"
+                                      (change)="
+                            setGridAdvancedColVisibility(
+                              i.colId
+                            )
+                          " [id]="i.colId" />
+                                    <label class="fields_lbl" [for]="i.colId">{{
+                                      i.colName
+                                      }}</label>
+
+                                  </span>
+                                  <!-- <input
+                            type="checkbox"
+                            class="fields_chkbx"
+                            class=""
+                            [(ngModel)]="i.isVisible"
+                            (change)="
+                              setGridColVisibility(
+                                $event,
+                                i.colName,
+                                i.isVisible
+                              )
+                            "
+                            [id]="i.colId"
+                          />
+                          <label class="fields_lbl" [for]="i.colId">{{
+                            fieldsShortName(i.colName) | translate
+                          }}</label> -->
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div
+                    cdkDropList
+                    [cdkDropListData]="colFields"
+                    class="field_dropdown dropdown-menu multi-level"
+                    role="menu"
+                    aria-labelledby="dropdownMenu"
+                  >
+                    <div
+
+                      *ngFor="let group of colFields"
+                      cdkDrag
+                      [cdkDragData]="group"
+                    > -->
+
+
+                    <!-- <div
+                    id="all-type"
+                    cdkDropList
+                    [cdkDropListData]="colFields"
+                    (cdkDropListDropped)="dropGroupItem($event)"
+                    [cdkDropListConnectedTo]="droplistVal"
+                    (cdkDragEntered)="onDragEntered($event)"
+                            (cdkDragStarted)="onDragStarted($event)"
+                    class="field_dropdown dropdown-menu multi-level"
+                    role="menu"
+                    aria-labelledby="dropdownMenu"
+                  >
+                    <div
+                      cdkDropListGroup
+                      *ngFor="let group of colFields"
+                      cdkDrag
+                      [cdkDragData]="group"
+                    >
+
+                      <ng-template [ngIf]="group.isTotalPanel">
+                        <h3 [ngClass]="group.class">
+                          {{ group.title | translate }}
+                        </h3> -->
+
+                    <!--
+                          both together
+                        -->
+                    <!-- <div cdkDropList
+                        [cdkDropListData]="colFields"
+                        (cdkDropListDropped)="dropGroup($event)">
+                          <div cdkDropListGroup class="example-container"
+                          *ngFor="let group of colFields"
+                          cdkDrag [cdkDragData]="group">
+                            <h2>{{group.title}}</h2>
+                            <div cdkDropList class="example-list"
+                            id={{group.id}}
+                            [cdkDropListData]="group.items"
+                            (cdkDropListDropped)="dropGroupItem($event)"
+                            [cdkDropListConnectedTo]="getConnectedList()">
+                              <div class="example-box"
+                              *ngFor="let it of group.items"
+                              cdkDrag [cdkDragData]="it">
+                                {{it.colName}}
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+
+
+                    <!-- Not an Advanced Field -->
+                    <!-- <ng-container *ngIf="group.id != 2">
+                          <ul
+                          #toDoList="cdkDropList"
+                            cdkDropList
+                            class="field_ul"
+                            id="{{ group.id }}"
+                            [cdkDropListConnectedTo]="[]"
+                            [cdkDropListData]="group.items"
+                            (cdkDropListDropped)="dropGroupItem($event)"
+                            role="menu"
+                            aria-labelledby="dropdownMenu"
+                          >
+                            <li
+                              class="example-box"
+                              *ngFor="let item of group.items"
+                              cdkDrag
+
+                              [cdkDragData]="item"
+                              class="dropdown"
+                              style="list-style: none"
+                            >
+                              <div
+                                class="fieldlst_chkbox"
+                                style="padding-left: 50px"
+                              >
+                                <input
+                                  type="checkbox"
+                                  class="fields_chkbx"
+                                  class=""
+                                  [(ngModel)]="item.isVisible"
+                                  (change)="
+                                    setGridColVisibility(
+                                      $event,
+                                      item.colName,
+                                      item.isVisible
+                                    )
+                                  "
+                                  [id]="item.colId"
+                                />
+                                <label class="fields_lbl" [for]="item.colId">{{
+                                  fieldsShortName(item.colName) | translate
+                                }}</label>
+                              </div>
+                            </li>
+                          </ul>
+                        </ng-container> -->
+
+                    <!-- <div >
+
+
+                          <div
+                            class="field-box-group-content"
+                            cdkDropList
+                            [id]="group.id"
+                            [cdkDropListData]="group.items"
+
+                            (cdkDropListDropped)="dropGroupItem($event)"
+                            [cdkDropListConnectedTo]="droplistVal"
+                            (cdkDragEntered)="onDragEntered($event)"
+                            (cdkDragStarted)="onDragStarted($event)"
+                          >
+                            <div
+                              class="field-box"
+                              *ngFor="let i of group.items"
+                              cdkDrag
+                              [cdkDragData]="i"
+                            >
+                              {{ i.colName }}
+                            </div>
+                          </div>
+                        </div> -->
+
+                    <!-- <div cdkDropListGroup>
+                          <div class="example-container">
+                            <h2>Pending</h2>
+
+                            <div
+                              class="example-list"
+                              cdkDropList
+                              [cdkDropListData]="pending"
+                              (cdkDropListDropped)="drop($event)"
+                              (cdkDropListEntered)="onDropListEntered($event)"
+                              (cdkDropListExited)="onDropListExited($event)"
+                            >
+                              <div
+                                class="example-box"
+                                *ngFor="let item of pending"
+                                cdkDrag
+                                (cdkDragEntered)="onDragEntered($event)"
+                                (CdkDragMoved)="onMoved($event)"
+                                (cdkDragExited)="onDragExited($event)"
+                              >
+                                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                                {{ item }}
+                              </div>
+                            </div>
+                          </div> -->
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- an Advanced Field -->
+                    <!-- <ng-container *ngIf="group.id == 2">
+                          <ul
+                          #doneList="cdkDropList"
+                            cdkDropList
+                            class="field_ul"
+                            id="{{ group.id }}"
+                            [cdkDropListConnectedTo]="[toDoList]"
+                            [cdkDropListData]="group.items"
+                            (cdkDropListDropped)="dropGroupItem($event)"
+                            role="menu"
+                            aria-labelledby="dropdownMenu"
+                          >
+                            <li
+                              class="example-box"
+                              *ngFor="let item of group.items"
+                              cdkDrag
+                              (click)="$event.stopPropagation()"
+                              [cdkDragData]="item"
+                              class="dropdown"
+                              style="list-style: none"
+                            >
+                              <div
+                                class="fieldlst_chkbox"
+                                style="padding-left: 50px"
+                              >
+                                <input
+                                  type="checkbox"
+                                  class="fields_chkbx"
+                                  class=""
+                                  [(ngModel)]="item.isVisible"
+                                  (change)="
+                                    setGridAdvancedColVisibility(
+                                      $event,
+                                      item.colId
+                                    )
+                                  "
+                                  [id]="item.colId"
+                                />
+                                <label class="fields_lbl" [for]="item.colId">{{
+                                  item.colName
+                                }}</label>
+                              </div>
+                            </li>
+                          </ul>
+                        </ng-container> -->
+                    <!-- ///if not working for grp, then add ngIf and two times div -->
+                    <!-- <div *ngIf="group.id == 2" class="field-box">
+                          <div class="field-box-group-header">
+                            {{ group.name }}
+                          </div>
+
+                          <div
+                            class="field-box-group-content"
+                            cdkDropList
+                            [id]="group.id"
+                            [cdkDropListData]="group.items"
+
+                            (cdkDropListDropped)="dropGroupItem($event)"
+                            [cdkDropListConnectedTo]="droplistVal"
+                          >
+                            <div
+                              class="field-box"
+                              *ngFor="let i of group.items"
+                              cdkDrag
+                              [cdkDragData]="i"
+                            >
+                              {{ i.colName }}
+                            </div>
+                          </div>
+                        </div> -->
+
+
+
+
+
+
+                    <!-- </ng-template>
+
+                    </div>
+                  </div> -->
+                  </div>
+                </div>
+
+                <div class="mobile-options">
+                  <div class="colm extra_opts">
+                    <div class="dropdown dropleft">
+                      <button type="button" appHoverTooltip labelText="{{ 'MOREACTIONS' | translate }}"
+                        class="btn btn-default" id="actionButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" (click)="onClickMoreActions()">
+                        <span>...</span>
+                      </button>
+                      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" id="moreActions">
+                        <li class="dropdown">
+                          <button id="importDonorButton" class="dropdown-item dropdown-toggle"><i
+                              class="fas fa-file-import"></i>
+                            {{ "IMPORT" | translate }}
+                          </button>
+                          <ul id="import_opts">
+                            <li>
+                              <a class="dropdown-item" data-toggle="modal" data-target="#import-data-donar"
+                                (click)="toggleDonorImports()">
+                                {{ "IMPORTDONORS" | translate }}
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" (click)="importToken()">
+                                {{ "IMPORTTOKENS" | translate }}
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                        <hr class="seprator" />
+                        <li class="dropdown">
+                          <a class="dropdown-item"
+                            (click)="gridFilterData != null && gridFilterData.length > 0 && downloadExcel()"
+                            [ngClass]="{'opacity-50':gridFilterData == null || gridFilterData.length == 0}"><i
+                              class="fas fa-file-excel"></i>
+                            {{ "EXCEL" | translate }}</a>
+                        </li>
+                        <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
+                        <li class="dropdown">
+                          <a class="dropdown-item" (click)="mergeDonor()"><span class="merge_icon">
+                              {{ "MERGE" | translate }}</span></a>
+                        </li>
+                        <li class="dropdown">
+                          <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i>
+                            {{ "SAVELAYOUT" | translate }}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <ng-container *appIsMobile>
+            <ng-template [ngIf]="isTotalPanelVisible">
+              <div class="summary-block align-items-center justify-content-between">
+                <h4>Summary</h4>
+                <div class="subby_dropdown">
+                  <span>{{ "SUMBY" | translate }}:</span>
+                  <div class="custo_selct">
+                    <angular2-multiselect id="ddlCardType" [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          1,
+                          false,
+                          true,
+                          false
+                        )
+                      " [data]="cardFilter" (onSelect)="cardTypeChange(cardType)" [(ngModel)]="cardType">
+                      <c-item>
+                        <ng-template let-item="item">
+                          <label>{{ item.itemName }}</label>
+                          <span class="count_span">({{ item.counts }})</span>
+                        </ng-template>
+                      </c-item>
+                    </angular2-multiselect>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+          <ng-template [ngIf]="isTotalPanelVisible">
+            <div class="row">
+              <div class="col-12">
+                <!-- chip cards with slider -->
+                <ngx-slick class="carousel sumcard-wrapper" #slickModal="slick-modal" [config]="slideConfig">
+                  <ng-container *ngFor="let item of paymentTypeChipData; let i = index">
+                    <ng-container *ngIf="i % 6 == 0">
+                      <div ngxSlickItem class="slide">
+                        <div class="row parent_cardchip">
+                          <div *ngIf="i + 0 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 0]
+                              }"></ng-template>
+                          </div>
+                          <div *ngIf="i + 1 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 1]
+                              }"></ng-template>
+                          </div>
+                          <div *ngIf="i + 2 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 2]
+                              }"></ng-template>
+                          </div>
+                          <div *ngIf="i + 3 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 3]
+                              }"></ng-template>
+                          </div>
+                          <div *ngIf="i + 4 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 4]
+                              }"></ng-template>
+                          </div>
+                          <div *ngIf="i + 5 < paymentTypeChipData.length">
+                            <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                                item: paymentTypeChipData[i + 5]
+                              }"></ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ngx-slick>
+              </div>
+            </div>
+          </ng-template>
+          <ng-container *appIsMobile>
+            <div class="filters__options flex-nowrap">
+              <div class="right_colms">
+                <div class="sort-filter-icon">
+                  <img src="/assets/dist/img/sort-filter-icon.png" alt="" />
+                </div>
+              </div>
+              <div class="mobile-options">
+                <div class="sort_sumcard">
+                  <span class="sorting_icon"></span>
+                  <div class="custo_selct sort_drpdown">
+                    <angular2-multiselect id="ddlCardType" [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          1,
+                          false,
+                          true,
+                          true
+                        )
+                      " [data]="sortFilter" (onSelect)="changeSortType(sortType)" [(ngModel)]="sortType">
+                    </angular2-multiselect>
+                  </div>
+                </div>
+                <div class="colm extra_opts">
+                  <div class="dropdown dropleft">
+                    <button type="button" appHoverTooltip labelText="{{ 'MOREACTIONS' | translate }}"
+                      class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      id="actionButton" (click)="onClickMoreActions()">
+                      <span>...</span>
+                    </button>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                      <li class="dropdown">
+                        <button class="dropdown-item dropdown-toggle" id="importDonorButton"><i
+                            class="fas fa-file-import"></i>
+                          {{ "IMPORT" | translate }}
+                          <ul id="import_opts">
+                            <li>
+                              <a class="dropdown-item" data-toggle="modal" data-target="#import-data-donar">
+                                {{ "IMPORTDONORS" | translate }}
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" (click)="importToken()">
+                                {{ "IMPORTTOKENS" | translate }}
+                              </a>
+                            </li>
+                          </ul>
+                        </button>
+                      </li>
+                      <hr class="seprator" />
+                      <li class="dropdown">
+                        <a class="dropdown-item"
+                          (click)="gridFilterData != null && gridFilterData.length > 0 && downloadExcel()"
+                          [ngClass]="{'opacity-50':gridFilterData == null ||gridFilterData.length == 0 }"><i
+                            class="fas fa-file-excel"></i>
+                          {{ "EXCEL" | translate }}</a>
+                      </li>
+                      <li class="dropdown">
+                        <a class="dropdown-item" (click)="mergeDonor()"><span class="merge_icon">
+                            {{ "MERGE" | translate }}</span></a>
+                      </li>
+                      <li class="dropdown">
+                        <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i>
+                          {{ "SAVELAYOUT" | translate }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="row action_list">
+            <span class="action_lbl" *ngIf="isSelected || isCustomReport">{{ "ACTIONS" | translate }}:</span>
+            <div class="custom_action">
+              <!-- <span class="transaction_icon" data-toggle="tooltip" t-title="New Transaction" (click)="AdvanceTransaction()"></span> -->
+              <span class="icn_pledge" data-toggle="tooltip" (click)="AdvanceTransaction()" *ngIf="isSelected"
+                appHoverTooltip labelText="Bulk Transaction"></span>
+              <span class="icn_report" data-toggle="tooltip" (click)="OpenBulkStatementPopup()" *ngIf="isSelected"
+                appHoverTooltip labelText="{{ 'BULKSTATEMENT' | translate }}"></span>
+              <span class="material-icons donar-inactive" data-toggle="tooltip" (click)="onBulkInActiveDonor()"
+                *ngIf="isSelected" appHoverTooltip labelText="{{ 'BULKINACTIVEDONOR' | translate }}"><img
+                  src="/assets/dist/img/icon-inactive-donor.svg" alt="" /></span>
+              <span class="icn_labels" data-toggle="tooltip" (click)="onBulkCustomReport()" *ngIf="isCustomReport"
+                appHoverTooltip labelText="{{ 'GENERATEREPORT' | translate }}"></span>
+              <span class="icn_add_labels dropdown-toggle" id="dropdownMenuButton" *ngIf="isSelected"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" appHoverTooltip
+                labelText="{{ 'ADDTAG' | translate }}"></span>
+              <div class="badge_wrapper action-dropdown-wrap">
+                <div class="dropdown-menu tabg_dropdown" aria-labelledby="dropdownMenuButton">
+                  <div class="search_box">
+                    <input type="text" placeholder="{{ 'SEARCHTAG' | translate }}" class="form-control" />
+                  </div>
+
+                  <ul>
+                    <ng-container *ngFor="let itemTag of newDonorTagList">
+                      <li (click)="BulkTagAction(itemTag.tagId, itemTag.tagName)" [ngClass]="
+                          commonMethodService.getTagTextColor(itemTag.tagColor)
+                        ">
+                        <span class="bg-badge" [ngClass]="
+                            commonMethodService.getTagBackgroundColor(
+                              itemTag.tagColor
+                            )
+                          "></span>
+                        <span class="text">{{
+                          tagService.formatTagName(itemTag.tagName)
+                          }}</span>
+                      </li>
+                    </ng-container>
+                  </ul>
+                  <hr />
+                  <button type="button" class="add-new-tag" (click)="AddNewTag()">
+                    <i class="fa fa-plus"></i> {{ "ADDNEWTAG" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-container *appIsWeb>
+            <div class="tbl_colm_sticky table-column-fixed" [ngClass]="{ open_panel: isTotalPanelVisible == true }"
+              id="donor_div">
+              <div class="modal_custom px-0 table-responsive transaction__table">
+                <div id="donorList" style="overflow-y: hidden; height: calc(100vh - 15rem)">
+                  <div class="px-2" id="scrollDonorList" style="overflow-y: auto; height: 100%">
+                    <table class="table-striped child-div redesign_table table-resizable" [svData]="gridFilterData"
+                      #sv="svDataTable" [svRowsOnPage]="25">
+                      <thead>
+                        <tr>
+                          <th>
+
+                            <div class="select-popup" *ngIf="isSelectPopupShow" (clickOutside)="selectPopupClose()">
+                              <ul>
+                                <li>
+                                  <input type="radio" name="select" id="select-page"
+                                    (change)="selectThisPage($event)" />
+                                  <label for="select-page">Select this page</label>
+                                  <span class="select-count">{{displayThisPageCount}}</span>
+                                </li>
+                                <li>
+                                  <input type="radio" name="select" id="select-all"
+                                    (change)="selectRecord($event, 'selectAll', null)" />
+                                  <label for="select-all">Select all</label>
+                                  <span class="select-count">{{gridFilterData.length}}</span>
+                                </li>
+                              </ul>
+                            </div>
+
+                            <input type="checkbox" appHoverTooltip labelText="{{ 'SELECT' | translate }}"
+                              name="selectAll" id="select_all" [checked]="isBulkCheckbox"
+                              (change)="selectPopupOpen($event)" />
+                            <label for="select_all" class="custom-checkbox"></label>
+                          </th>
+
+                          <ng-container *ngFor="let groupHeader of colFields; let i = index">
+                            <!-- Not an Advanced -->
+                            <ng-container *ngIf="groupHeader.id != 2">
+                              <ng-container *ngFor="let objHeader of groupHeader.items;let i = index">
+
+                                <ng-container *ngIf="checkVisibility(objHeader.colName)">
+                                  <th resizable [ngClass]="getTableTdClassName(objHeader)">
+                                    <ng-container *ngIf="objHeader.colName == 'FULLNAME'">
+                                      <ng-template [ngTemplateOutlet]="thContent"
+                                        [ngTemplateOutletContext]="{ objHeader: objHeader }"></ng-template>
+                                    </ng-container>
+                                    <ng-container *ngIf="objHeader.colName != 'FULLNAME'">
+                                      <sv-default-sorter [by]="objHeader.sortName" [order]="objHeader.sortOrder"
+                                        (updateSortOrder)="updateSort($event,0)">{{ objHeader.colName | translate
+                                        }}</sv-default-sorter>
+                                    </ng-container>
+                                  </th>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                            <!-- Not an Advanced -->
+
+                            <!-- an Advanced -->
+                            <ng-container *ngIf="groupHeader.id == 2">
+                              <ng-container *ngFor="let objHeader of groupHeader.items;let i = index">
+                                <ng-container
+                                  *ngIf="checkIsAdvanceFieldColId(objHeader.colId) && checkGridAdvancedColVisibility(objHeader.colId)">
+                                  <th resizable (click)="advancedSort(objHeader.sortName)"
+                                    [ngClass]="getTableTdClassName(objHeader)">
+                                    <sv-default-sorter [by]="objHeader.sortName" [order]="objHeader.sortOrder"
+                                      (updateSortOrder)="updateSort($event,1)">{{ objHeader.colName
+                                      }}</sv-default-sorter>
+                                  </th>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="checkIsNormalFieldColId(objHeader.colId) && checkVisibility(objHeader.colName)">
+                                  <th resizable [ngClass]="getTableTdClassName(objHeader)">
+                                    <ng-container *ngIf="objHeader.colName == 'FULLNAME'">
+                                      <ng-template [ngTemplateOutlet]="thContent"
+                                        [ngTemplateOutletContext]="{ objHeader: objHeader }"></ng-template>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="objHeader.colName != 'FULLNAME'">
+                                      <sv-default-sorter [by]="objHeader.sortName" [order]="objHeader.sortOrder"
+                                        (updateSortOrder)="updateSort($event,1)">{{ objHeader.colName | translate
+                                        }}</sv-default-sorter>
+                                    </ng-container>
+                                  </th>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                            <!-- an Advanced -->
+                          </ng-container>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="sv.data?.length > 0">
+                        <tr *ngFor="let item of sv.data; let i = index" tabindex="{{ i }}"
+                          class="table-row table-row-{{ i }}">
+                          <td>
+                            <input #checkboxes id="{{ item.accountId }} " type="checkbox" name="singlecheck" (change)="
+                                selectRecord(
+                                  $event,
+                                  'singlecheck',
+                                  item.accountId
+                                )
+                              " [checked]="checkselectRecord(item.accountId)" />
+                            <label for="{{ item.accountId }}" class="custom-checkbox"></label>
+                            <span class="tooltip-custom">{{
+                              "SELECT" | translate
+                              }}</span>
+                          </td>
+                          <ng-container *ngFor="let groupHeader of colFields">
+                            <!-- Not an Advanced -->
+                            <ng-container *ngIf="groupHeader.id != 2">
+                              <ng-container *ngFor="let objHeader of groupHeader.items">
+                                <ng-container *ngIf="checkVisibility(objHeader.colName)">
+
+                                  <ng-template [ngTemplateOutlet]="rowTdTmp"
+                                    [ngTemplateOutletContext]="{ item: item, objHeader: objHeader }"></ng-template>
+
+                                  <!-- Advanced Fields start-->
+                                  <ng-container
+                                    *ngIf="checkIsAdvanceFieldColId(objHeader.colId) &&  checkGridAdvancedColVisibilityIfMove(objHeader.colId)">
+                                    <td> {{ viewOfAdvanceFieldValue(objHeader.colName,item) }} </td>
+                                  </ng-container>
+                                  <!-- Advanced Fields end -->
+
+                                  <ng-template [ngIf]="isTotalPanelVisible">
+                                    <td *ngIf="objHeader.sortName == 'payments'"
+                                      class="total_panel_tbl_td donor-td-cls payment-sticky-cls">
+                                      {{
+                                      commonMethodService.formatAmount(
+                                      item.payments
+                                      )
+                                      }}
+                                    </td>
+                                    <td *ngIf="
+                                        objHeader.sortName == 'paymentsCount'
+                                      " class="total_panel_tbl_td">
+                                      {{ item.paymentsCount }}
+                                    </td>
+                                    <td *ngIf="
+                                        objHeader.sortName == 'openPledges'
+                                      " class="total_panel_tbl_td donor-td-cls pledge-sticky-cls">
+                                      {{
+                                      commonMethodService.formatAmount(
+                                      item.openPledges
+                                      )
+                                      }}
+                                    </td>
+                                    <td *ngIf="
+                                        objHeader.sortName == 'pledgesCount'
+                                      " class="total_panel_tbl_td">
+                                      {{ item.pledgesCount }}
+                                    </td>
+                                    <td *ngIf="objHeader.sortName == 'scheduled'"
+                                      class="total_panel_tbl_td donor-td-cls schedule-sticky-cls">
+                                      {{
+                                      commonMethodService.formatAmount(
+                                      item.scheduled
+                                      )
+                                      }}
+                                    </td>
+                                    <td *ngIf="
+                                        objHeader.sortName == 'schedulesCount'
+                                      " class="total_panel_tbl_td">
+                                      {{ item.schedulesCount }}
+                                    </td>
+                                    <td *ngIf="objHeader.sortName == 'raised'"
+                                      class="total_panel_tbl_td donor-td-cls total-sticky-cls">
+                                      {{
+                                      commonMethodService.formatAmount(
+                                      item.raised
+                                      )
+                                      }}
+                                    </td>
+                                  </ng-template>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                            <!-- Not an Advanced -->
+
+                            <!-- an Advanced -->
+                            <ng-container *ngIf="groupHeader.id == 2">
+                              <ng-container *ngFor="let objHeader of groupHeader.items">
+                                <!-- Advanced Fields start-->
+                                <ng-container
+                                  *ngIf="checkIsAdvanceFieldColId(objHeader.colId) && checkGridAdvancedColVisibility(objHeader.colId)">
+                                  <td> {{ viewOfAdvanceFieldValue(objHeader.colName, item) }}</td>
+                                </ng-container>
+                                <!-- Advanced Fields end -->
+
+                                <ng-container
+                                  *ngIf="checkIsNormalFieldColId(objHeader.colId) && checkVisibility(objHeader.colName)">
+                                  <ng-template [ngTemplateOutlet]="rowTdTmp"
+                                    [ngTemplateOutletContext]="{ item: item, objHeader: objHeader }"></ng-template>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+
+                          <td class="custom_action hover__action">
+                            <div class="float__action">
+                              <span class="add_icon" data-toggle="tooltip" (click)="
+                                  makeTransactionPopup(
+                                    item.fullNameJewish,
+                                    item.fullName,
+                                    item.accountId
+                                  )
+                                " appHoverTooltip labelText="{{ 'ADD' | translate }} {{
+                                  'TRANSACTION' | translate
+                                }}" style="color: #6d55a5; cursor: pointer"><i class="fa fa-plus"
+                                  aria-hidden="true"></i></span>
+                              <span (click)="editDonor(item.accountId)" class="icn_edit" data-toggle="tooltip"
+                                appHoverTooltip labelText="{{ 'EDIT' | translate }}"
+                                style="color: #6d55a5; cursor: pointer"><i class="fas fa-edit"></i></span>
+
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody *ngIf="sv.data?.length == 0">
+                        <tr>
+                          <td colspan="13" style="text-align: center">
+                            {{ "NODATAFOUND" | translate }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="new_tblfoot">
+              <div class="show_entry">
+                <span class="total_record">{{ "SHOWING" | translate }}
+                  <span *ngIf="isFiltered"><strong>{{ filterRecord }}</strong> {{ "OF" | translate }}
+                  </span>
+                  <strong>{{ totalRecord }}</strong>
+                  {{ "RECORDS" | translate }}</span>
+                <div class="custom_pagination">
+                  <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+                  </sv-bootstrap-paginator>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *appIsMobile>
+            <!-- Mobile listing dynamic data code started  -->
+            <div class="payment-listing" [class.panel-listing]="isTotalPanelVisible">
+              <ul>
+                <li (click)="openDonorCardPopup(item.accountId)" *ngFor="let item of gridFilterData">
+                  <div class="panel-data">
+                    <div class="d-flex justify-content-between">
+                      <h4 *ngIf="
+                          item.fullNameJewish != null || item.fullName != null
+                        " class="left-content donor-name">
+                        <span class="lng_hebrew hebrew_font">{{
+                          item.fullNameJewish
+                          }}</span><br />
+                        <span>{{ item.fullName }}</span>
+                      </h4>
+                      <span class="right-content donor-amt">#{{ item.accountId }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="left-content donor-time">
+                        <p class="donor-location">
+                          {{ item.address }} {{ item.cityStateZip }}
+                        </p>
+                        <p class="donor-location">
+                          <span [innerHTML]="
+                              item.emailLabels3 != 'null: null'
+                                ? item.emailLabels3
+                                : ' '
+                            "></span>
+                        </p>
+                      </div>
+                      <div class="right-content">
+                        <p class="donor-phoneNumbers">
+                          <span [innerHTML]="
+                              item.phoneLabels2 != 'null: null'
+                                ? item.phoneLabels2
+                                : ' '
+                            "></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="total-panel">
+                    <div class="panel-list d-flex justify-content-between align-items-center">
+                      <span class="panel-label">PAYMENTS:</span>
+                      <span class="panel-amt">{{commonMethodService.formatAmount(item.payments)}}</span>
+                    </div>
+                    <div class="panel-list d-flex justify-content-between align-items-center">
+                      <span class="panel-label">OPEN PLEDGES:</span>
+                      <span class="panel-amt">{{commonMethodService.formatAmount(item.openPledges)}}</span>
+                    </div>
+                    <div class="panel-list d-flex justify-content-between align-items-center">
+                      <span class="panel-label">SCHEDULED:</span>
+                      <span class="panel-amt">{{commonMethodService.formatAmount(item.scheduled)}}</span>
+                    </div>
+                    <div class="panel-list d-flex justify-content-between align-items-center">
+                      <span class="panel-label">TOTAL:</span>
+                      <span class="panel-amt panel-total">{{commonMethodService.formatAmount(item.payments +
+                        item.openPledges + item.scheduled)}}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <!-- <div class="payment-overlay" *ngIf="paymentActionVisible"></div> -->
+              <div class="end-list">You've reach the end of the list</div>
+            </div>
+            <!-- Mobile listing dynamic data code ended -->
+          </ng-container>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<ng-template #chipCardTemp let-item="item">
+  <div class="col-3" *ngIf="item">
+    <div [class]="item.paymentTypeChipCSSClass" [ngClass]="{ active: selectedItem === item }"
+      (click)="selectedItem = item" (click)="GetPaymentChipType(item)">
+      <div class="info-box-content">
+        <div class="row">
+          <div class="col-12 top_value">
+            <span class="info-box-text" [title]="item.paymentType">{{
+              item.name
+              }}</span>
+            <span class="info-box-count">({{ item.count }})</span>
+          </div>
+          <div class="col-12 bottom_value">
+            <span class="info-box-number" *ngIf="item.total != null">{{
+              commonMethodService.formatAmount(item.total)
+              }}</span>
+          </div>
+          <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span> -->
+        </div>
+      </div>
+      <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
+                <div class="cards filter-boxes-wrap">
+                    <ul>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Payments</p>
+                                        <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Open Pledges</p>
+                                        <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="filter-payment-type-box">
+                                <a>
+                                    <span class="data">
+                                        <p>Schedules</p>
+                                        <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
+                                    </span>
+                                    <span class="right-arrow action_btn"></span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>  -->
+    </div>
+  </div>
+</ng-template>
+<!-- The Modal -->
+<div class="modal fade import-doc" id="import-data-donar">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header ui-draggable-handle">
+        <h4 class="modal-title text-white">{{ "IMPORTDONORS" | translate }}</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="reseteFile();toggleDonorImports()">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="import-doc-body">
+          <div id="other" class="file-drop-area border-0 {{ changeText }}" draggable="true"
+            (dragstart)="changeText = 'is-active'" (drag)="changeText = 'is-active'"
+            (dragover)="changeText = 'is-active'" (drop)="changeText = 'is-active'" (dragend)="changeText = ''">
+            <div id="NotReadyToUpload" class="file-not-ready">
+              <span class="file-msg text-center"><i class="cloud-upload"></i>{{ "DRAGFILEUPLOAD" | translate }}</span>
+              <label class="file-devider">{{ "OR" | translate }}</label>
+              <input class="file-input" type="file" name="doc_file" id="doc_file" (change)="incomingfile($event)"
+                placeholder="{{ 'UPLOADFILE' | translate }}" accept=".xlsx" />
+              <span class="fake-btn">{{ "CHOOSEFILE" | translate }}</span>
+            </div>
+            <div id="readyToUpload" class="file-ready" style="display: none">
+              <span class="file-msg file-msg text-center"><i class="cloud-upload"></i>
+                {{ "FILEREADY" | translate }}</span>
+              <div class="label-download">
+                <button class="download-excel-tem">{{ fileName }}</button>
+              </div>
+            </div>
+          </div>
+          <div class="label-download">
+            <button (click)="downloadExcelTemplate($event)" class="download-excel-tem">
+              <i class="xls-file"></i> {{ "DOWNLOADEXCEL" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-default" (click)="reseteFile()">
+          {{ "CANCEL" | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="uploadExcelTemplate()">
+          {{ "UPLOAD" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #thContent let-objHeader="objHeader">
+  <span class="fullname_sort" (click)="Sort()" style="cursor: pointer">{{ objHeader.colName | translate }}</span>
+  <ng-container *ngIf="showSortArrow">
+    <span class="tabs-icon-left" style="cursor: pointer">
+      <ng-container *ngIf="strSort == 'desc'">
+        <i class="glyphicon glyphicon-triangle-top fa fa-sort-up" style="cursor: pointer" (click)="Sort()"></i>
+      </ng-container>
+      <ng-container *ngIf="strSort == 'asc'">
+        <i class="glyphicon glyphicon-triangle-bottom fa fa-sort-down" style="cursor: pointer" (click)="Sort()"></i>
+      </ng-container>
+    </span>
+  </ng-container>
+</ng-template>
+
+
+
+<ng-template #rowTdTmp let-objHeader="objHeader" let-item="item">
+
+  <ng-container *ngIf="objHeader.sortName == 'accountNum'">
+    <td>{{ item.accountNum }}</td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'fullName'">
+    <td (click)="openDonorCardPopup(item.accountId)">
+      <span class="lng_hebrew hebrew_font">{{ item.fullNameJewish}}</span>
+      <br />
+      <span style="color: #6d55a5; cursor: pointer">{{ item.fullName }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'fullNameEng'">
+    <td (click)="openDonorCardPopup(item.accountId)">
+      <span style="color: #6d55a5; cursor: pointer">{{ item.fullName }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'fullNameJewish'">
+    <td (click)="openDonorCardPopup(item.accountId)">
+      <span class="lng_hebrew hebrew_font">{{ item.fullNameJewish}}</span>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'family'">
+    <td class="lng_hebrew">
+      <span class="field_value">
+        <span class="father_lbl 123" *ngIf="item.father != null">:בן</span>
+        <span>{{ item.father }}</span>
+      </span>
+      <span class="field_value">
+        <span class="father_lbl" *ngIf="item.fatherInLaw != null">:חתן </span>
+        <span>{{ item.fatherInLaw }}</span>
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'phoneLabels'">
+    <td class="phonelabel_td">
+      <span [innerHTML]=" item.phoneLabels2 != 'null: null' ? item.phoneLabels2 : ' '"></span>
+    </td>
+  </ng-container>
+
+
+  <ng-container *ngIf="objHeader.sortName == 'address'">
+    <td>
+      {{ item.address }}
+      <br />
+      {{ item.cityStateZip }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'emailLabels'">
+    <td>
+      <span [innerHTML]=" item.emailLabels2 != 'null: null' ? item.emailLabels2 : ' '"></span>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'cityStateZip'">
+    <td> {{ item.cityStateZip }}</td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'note'">
+    <td> {{ item.note }}</td>
+  </ng-container>
+
+
+  <ng-container *ngIf="objHeader.sortName == 'father'">
+    <td> {{ item.father }}</td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'fatherInLaw'">
+    <td>
+      {{ item.fatherInLaw }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'tagNames'">
+    <td [innerHTML]="item.tagFormat"></td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'title'">
+    <td> {{ item.title }}</td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'firstName'">
+    <td>
+      {{ item.firstName }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'lastName'">
+    <td>
+      {{ item.lastName }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'titleJewish'">
+    <td>
+      {{ item.titleJewish }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'firstNameJewish'">
+    <td>
+      {{ item.firstNameJewish }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'lastNameJewish'">
+    <td>
+      {{ item.lastNameJewish }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="objHeader.sortName == 'suffixJewish'">
+    <td>
+      {{ item.suffixJewish }}
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="showLabelsInGrid(objHeader)">
+    <td class="lalala-hohoho">
+      {{ getDyanamicLabelValue(objHeader, item) }}
+    </td>
+  </ng-container>
+</ng-template>

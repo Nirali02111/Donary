@@ -1,0 +1,12 @@
+<button class="close" (click)="closePopup()">&times;</button>
+<div class="field-group">
+    <label>{{'ADJUSTMENTAMOUNT' | translate}}</label>
+    <input type="text"  [(ngModel)]="amount" (keypress)="commonMethodService.numberAndMinusOnly($event)"/>
+</div>
+<div class="field-group">
+    <label>{{'NOTE' | translate}}</label>
+    <input type="text"  [(ngModel)]="note"/>
+</div>
+<div class="action-button">
+    <button class="btn btn-primary" (click)="SaveChargeTrans()">{{'SAVE' | translate}}</button>
+</div>

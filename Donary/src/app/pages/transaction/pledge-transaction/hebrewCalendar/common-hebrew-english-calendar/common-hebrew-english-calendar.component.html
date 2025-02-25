@@ -1,0 +1,48 @@
+<ng-container *appIsMobile>
+	<div class="date-range">
+		<h4>
+			Date range
+		</h4>
+		<span class="material-icons">close</span>
+	</div>
+</ng-container>
+<div class="calender-switch" *ngIf="!isOneDate">
+	<input type="radio" name="calender" id="eng" [checked]="isEngCal" (change)="switchCalendar($event)" />
+	<label for="eng">Eng</label>
+	<input type="radio" name="calender" id="heb" [checked]="!isEngCal" (change)="switchCalendar($event)" />
+	<label for="heb">{{'HEB' |
+		translate}}</label>
+</div>
+<div class="calender-switch calender-single-month" *ngIf="isOneDate">
+	<input type="radio" name="calender" id="eng" [checked]="isEngCal" (change)="switchCalendar($event)" />
+	<label for="eng">Eng</label>
+	<input type="radio" name="calender" id="heb" [checked]="!isEngCal" (change)="switchCalendar($event)" />
+	<label for="HEB">{{'CLEAR' |
+		translate}}</label>
+</div>
+<div *ngIf="isEngCal" [class.calender-single-month]="isOneDate">
+	<app-english-calendar (clearForAllTime)="isClearClick = $event" [isSchedule]="isSchedule"
+		[selectedDateRange]="selectedDateRange" [class_id]="class_id" [isOneDate]="isOneDate"
+		(valueChange)="onValueChange($event)" [pageName]="pageName"></app-english-calendar>
+</div>
+<div *ngIf="!isEngCal" [class.calender-single-month]="isOneDate">
+	<app-hebrew-calendar [selectedDateRange]="selectedDateRange" [isSchedule]="isSchedule" [class_hid]="class_hid"
+		[isOneDate]="isOneDate" [pageName]="pageName"></app-hebrew-calendar>
+</div>
+<div class="calender-btn" [class.calender-single-btns]="isOneDate" *ngIf="this.commonMethodService.isfeatureSetting">
+
+	@if (false) {
+	<button class="btn btn-default clear btn-sm m-1 float-start" id="id_Clear" (click)="onClear()">{{'CLEAR' |
+		translate}} <svg height="30" viewBox="0 -5 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+			<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+		</svg></button>
+	}
+	<button class="btn btn-apply btn-sm m-1 float-start" [disabled]="isdisabled" (click)="onApply()">{{'APPLY' |
+		translate}}</button>
+</div>
+<!-- button for update code started -->
+<div class="calender-btn" [class.calender-single-btns]="isOneDate" *ngIf="!this.commonMethodService.isfeatureSetting">
+	<button class="btn btn-apply btn-sm m-1 float-start btn-core" (click)="onUpgrade()">{{'UPGRADETOSAVE' |
+		translate}}</button>
+</div>
+<!-- button for update code ended -->

@@ -1,0 +1,192 @@
+<div class="white_box">
+<div class="form-section">
+  <h4 class="headline">Branding Setup</h4>
+  <div class="form-group">
+      <label>ORGANIZATION LOGO: <span class="small-text">(JPG, PNG Format) <i
+                  class="fas fa-question-circle" [ngbTooltip]="orgLogo"></i>
+          </span></label>
+      <div class="cstm_selct_file {{setCls}}">
+          <div class="cstm_selct_file_content" *ngIf="!imageUrl">
+              <button class="selct_file">Select file</button>
+              <p>Select a file or drag here</p>
+              <input class="file-input" type="file" name="doc_file" id="org_file"
+                  (change)="getBase64String($event,1)" placeholder="Upload file"
+                  accept=".png,.JPG">
+
+          </div>
+          <div class="preview-imageUrl input-drag-drop" *ngIf="imageUrl">
+             <section *ngIf="fromDbImg_1"> <img src={{imageUrl}} /></section>
+             <section *ngIf="!fromDbImg_1">
+          </section>
+          </div>
+          </div>
+          <div *ngIf="!imageUrl" class="div-size-organation-logo"><span class="size-organation-logo org-file-size-item"> Height 384 PX and Width 415 PX</span></div>
+  <div class="thumb-info-item">
+  <div *ngIf="!fromDbImg_1 || imageUrl" class="div-size-organation-logo"><span class="size-organation-logo org-file-size-item"> Height 384 PX and Width 415 PX</span></div>
+  <div class="file-action" *ngIf="imageUrl">
+          <button class="btn btn-red" (click)="deleteUploadedImage($event,1)">
+            <span class="material-icons">delete</span>
+          </button>
+  </div>
+</div>
+  </div>
+
+      <div *ngIf="!fromDbImg_1" class="cropp-action">
+       <button (click)="zoomOut($event,1)" class="mr-4 btn btn-success zoom-btn">Zoom <span class="material-icons">
+          zoom_out
+          </span></button>
+  <button (click)="zoomIn($event,1)"class="mr-2 btn btn-success">Zoom <span class="material-icons">
+      zoom_in
+      </span></button>
+  </div>
+  <ng-template #orgLogo>
+      <img src="/assets/dist/img/organization-tooltips.png">
+  </ng-template>
+  <div class="form-group img-donate-banner">
+      <label>DONATE BANNER:<span class="small-text"> (JPG, PNG Format) <i
+                  class="fas fa-question-circle" [ngbTooltip]="donateBanner"></i></span>
+      </label>
+      <div class="cstm_selct_file {{setCls2}}">
+          <div class="cstm_selct_file_content" *ngIf="!imageUrl2">
+              <button class="selct_file">SELECT FILE</button>
+              <p>or drag and drop files here</p>
+              <input class="file-input" type="file" name="doc_file" id="banner_file"
+                  (change)="getBase64String($event,2)" placeholder="Upload file"
+                  accept=".png,.JPG">
+          </div>
+          <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl2">
+            <section *ngIf="fromDbImg_2">  <img src={{imageUrl2}} id="resizer-demo"  /></section>
+             <section *ngIf="!fromDbImg_2">
+          </section>
+          </div>
+      </div>
+      <div *ngIf="!imageUrl2" class="div-size-organation-logo"><span class="size-donate-banner org-file-size-item"> Height 535 PX and Width 1030 PX</span></div>
+      <div class="thumb-info-item">
+      <div *ngIf="!fromDbImg_2 || imageUrl2" class="div-size-organation-logo"><span class="size-donate-banner org-file-size-item"> Height 535 PX and Width 1030 PX</span></div>
+      <div class="file-action" *ngIf="imageUrl2">
+          <button class="btn btn-red" (click)="deleteUploadedImage($event,2)">
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </div>
+      </div>
+      <div *ngIf="!fromDbImg_2" class="cropp-action">
+       <button (click)="zoomOut($event,2)" class="mr-4 btn btn-success zoom-btn">Zoom <span class="material-icons">
+          zoom_out
+          </span></button>
+  <button (click)="zoomIn($event,2)"class="mr-2 btn btn-success">Zoom <span class="material-icons">
+      zoom_in
+      </span></button>
+  </div>
+  <!--new added-->
+  <ng-template #donateBanner>
+      <img src="/assets/dist/img/donate-banner.png">
+  </ng-template>
+  <div class="form-group">
+      <label>ORG LETTERHEADS:<span class="small-text"> (JPG, PNG Format) <i
+                  class="fas fa-question-circle" [ngbTooltip]="orgLetter"></i></span>
+      </label>
+      <div class="cstm_selct_file {{setCls2}}">
+          <div class="cstm_selct_file_content" *ngIf="!imageUrl3">
+              <button class="selct_file">SELECT FILE</button>
+              <p>or drag and drop files here</p>
+              <input class="file-input" type="file" name="doc_file" id="banner_file"
+                  (change)="getBase64String($event,4)" placeholder="Upload file"
+                  accept=".png,.JPG">
+          </div>
+          <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl3">
+             <section *ngIf="fromDbImg_4"> <img src={{imageUrl3}} /></section>
+             <section *ngIf="!fromDbImg_4">
+          </section>
+          </div>
+      </div>
+      <div *ngIf="!imageUrl3" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> Height 215 PX and Width 1010 PX</span></div>
+  <div class="thumb-info-item">
+  <div *ngIf="!fromDbImg_4 || imageUrl3" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> Height 215 PX and Width 1010 PX</span></div>
+      <div class="file-action" *ngIf="imageUrl3">
+          <button class="btn btn-red" (click)="deleteUploadedImage($event,4)">
+            <span class="material-icons">delete</span>
+          </button>
+      </div>
+  </div>
+  </div>
+
+
+  <div *ngIf="!fromDbImg_4" class="cropp-action">
+       <button (click)="zoomOut($event,4)" class="mr-4 btn btn-success zoom-btn">Zoom <span class="material-icons">
+          zoom_out
+          </span></button>
+  <button (click)="zoomIn($event,4)"class="mr-2 btn btn-success">Zoom <span class="material-icons">
+      zoom_in
+      </span></button>
+  </div>
+  <!--new end-->
+  <!-- start SHUL KIOSK MAIN IMAGE -->
+  <ng-template #orgLetter>
+      <img src="/assets/dist/img/org-letterheads.png">
+  </ng-template>
+  <div class="form-group">
+      <label>SHUL KIOSK MAIN IMAGE:<span class="small-text"> (JPG, PNG Format) <i
+                  class="fas fa-question-circle" [ngbTooltip]="tipContent"></i></span>
+      </label>
+      <div class="cstm_selct_file {{setCls2}}">
+          <div class="cstm_selct_file_content" *ngIf="!imageUrl5">
+              <button class="selct_file">SELECT FILE</button>
+              <p>or drag and drop files here</p>
+              <input class="file-input" type="file" name="doc_file" id="banner_file"
+                  (change)="getBase64String($event,5)" placeholder="Upload file"
+                  accept=".png,.JPG">
+          </div>
+          <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl5">
+             <section *ngIf="fromDbImg_5"> <img src={{imageUrl5}} /></section>
+             <section *ngIf="!fromDbImg_5">
+          </section>
+          </div>
+      </div>
+      <div *ngIf="!imageUrl5" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> Height 290 PX and Width 800 PX</span></div>
+  <div class="thumb-info-item">
+  <div *ngIf="!fromDbImg_5 || imageUrl5" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> Height 290 PX and Width 800 PX</span></div>
+      <div class="file-action" *ngIf="imageUrl5">
+          <button class="btn btn-red" (click)="deleteUploadedImage($event,5)">
+            <span class="material-icons">delete</span>
+          </button>
+      </div>
+  </div>
+  </div>
+
+
+  <div *ngIf="!fromDbImg_5" class="cropp-action">
+       <button (click)="zoomOut($event,5)" class="mr-4 btn btn-success zoom-btn">Zoom <span class="material-icons">
+          zoom_out
+          </span></button>
+  <button (click)="zoomIn($event,5)"class="mr-2 btn btn-success">Zoom <span class="material-icons">
+      zoom_in
+      </span></button>
+  </div>
+
+  <!-- end SHUL KIOSK MAIN IMAGE -->
+  <ng-template #tipContent>
+      <img src="/assets/dist/img/shul-banner.png">
+  </ng-template>
+
+  <div class="form-group record_group_sec">
+      <div class="row">
+          <div class="col-sm-6 inline_colm" *ngIf="!isAudioFileSelected">
+              <label>
+                  Upload File <br> <span class="text">(WAV Format)</span>
+              </label>
+              <button class="selct_file" id="btn_select_audio" *ngIf="!isAudioFileSelected">SELECT FILE</button>
+              <input class="file-input" type="file" name="doc_file" id="aud_file"
+                  (change)="getBase64String($event,3)" placeholder="Upload file"
+                  accept=".WAV" *ngIf="!isAudioFileSelected">
+          </div>
+
+          <div class="col-sm-12 inline_colm reg-audio-wrap">
+              <span id="lbl_select_audio" class="select-audio-name" *ngIf="isAudioFileSelected">{{audioFileName}}</span>
+              <audio #myAudio controls class="controls-audio"  style="height: 30px; width: 500px;display: none;"></audio>
+              <span class="delete_btn controls-audio"  style="display: none;"> <i class="fa fa-trash"></i></span>
+          </div>
+      </div>
+  </div>
+</div>
+</div>

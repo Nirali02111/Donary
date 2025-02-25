@@ -1,0 +1,618 @@
+<div class="content-wrapper">
+	<div class="add_new_button trans_add">
+		<app-add-new-dropdown></app-add-new-dropdown>
+	</div>
+	<div class="dashboard_wrapper">
+		<div class="welcome-heading hidden-desktop">
+			<span>Welcome</span>
+			<h1>{{fullName}}</h1>
+		</div>
+		<div class="col_main_left">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="card">
+						<ng-container *ngIf="getRecentloader">
+							<div class="top_header">
+								<div class="title_col">
+									<p>{{'TOTALRECENT' | translate}}</p>
+									<app-skeleton-loader-component [theme]="{ width: '200%', height: '80%' }">
+										<h4> {{ commonMethodService.formatAmount(totalRecentPayments) }}</h4>
+									</app-skeleton-loader-component>
+								</div>
+								<ng-template #popContent><app-common-hebrew-english-calendar [pageName]="RecentPageName"
+										[data]="selectedDateRange"
+										[isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+								</ng-template>
+								<!-- Recent calendar code started -->
+								<div class="b_tn alltime_filter">
+									<div class="input-group date_picker" (clickOutside)="onClickedOutsidePopover(p1)"
+										popoverClass="calender-modal" #p1="ngbPopover" [ngbPopover]="popContent"
+										[popoverTitle]="popTitle" [autoClose]="false"
+										placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+										id="recentDynamicsCalender" (click)="openRecentCalendarPopup(p1)">
+										<input type="text" class="alltime_filter_btn" value=""
+											[placeholder]="EngHebCalPlaceholderRecent" />
+									</div>
+								</div>
+							</div>
+							<div class="data_content">
+								<div class="left_part left_small">
+									<div class="content_colm">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'PAYMENTS' | translate}} ({{paymentsCount}})</p>
+											</app-skeleton-loader-component>
+											<div></div>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }">
+												<h6>{{ commonMethodService.formatAmount(payments) }}</h6>
+											</app-skeleton-loader-component>
+										</div>
+									</div>
+									<div class="content_colm">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'PLEDGES' | translate}} ({{pledgesCount}})</p>
+											</app-skeleton-loader-component>
+											<div></div>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }"> {{
+												commonMethodService.formatAmount(pledges)
+												}}</app-skeleton-loader-component>
+										</div>
+									</div>
+								</div>
+
+								<div class="left_part right_part">
+									<div class="content_colm">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'SCHEDULEDPAYMENTS' | translate}} ({{schedulePaymentsCount}})</p>
+											</app-skeleton-loader-component>
+											<div></div>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }"> {{
+												commonMethodService.formatAmount(schedulePayments)
+												}}</app-skeleton-loader-component>
+										</div>
+										<div class="col_right">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p class="view_btn" (click)="RedirectTransLink('schedulepayment')">
+													{{'VIEW' | translate}}</p>
+											</app-skeleton-loader-component>
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p [ngClass]="scheduleGrwClass">{{scheduleGrowthPercentage}}%</p>
+											</app-skeleton-loader-component>
+										</div>
+									</div>
+									<div class="content_colm">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'CANCELLEDPAYMENTS' | translate}} ({{canceledPaymentsCount}})</p>
+											</app-skeleton-loader-component>
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'PAYMENTAPPLIEDPLEDGE' | translate}} ({{pledgePaymentsCount}})</p>
+											</app-skeleton-loader-component>
+										</div>
+										<div class="col_right">
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }">
+												<p class="amount link_arrow">{{
+													commonMethodService.formatAmount(canceledPayments) }}</p>
+											</app-skeleton-loader-component>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }">
+												<p class="amount link_arrow">{{
+													commonMethodService.formatAmount(pledgePayments) }}</p>
+											</app-skeleton-loader-component>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="!getRecentloader">
+
+							<div class="top_header">
+								<div class="title_col">
+									<p>{{'TOTALRECENT' | translate}}</p>
+									<h4> {{ commonMethodService.formatAmount(totalRecentPayments) }}</h4>
+								</div>
+
+								<ng-template #popContent><app-common-hebrew-english-calendar [pageName]="RecentPageName"
+										[data]="selectedDateRange"
+										[isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+								</ng-template>
+								<!-- Recent calendar code started -->
+								<div class="b_tn alltime_filter">
+									<div class="input-group date_picker" (clickOutside)="onClickedOutsidePopover(p1)"
+										popoverClass="calender-modal" #p1="ngbPopover" [ngbPopover]="popContent"
+										[popoverTitle]="popTitle" [autoClose]="false"
+										placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+										id="recentDynamicsCalender" (click)="openRecentCalendarPopup(p1)">
+										<input type="text" class="alltime_filter_btn" value=""
+											[placeholder]="EngHebCalPlaceholderRecent == 'Last 30 Days' ? (EngHebCalPlaceholderRecent | join_and_uppercase | translate) : EngHebCalPlaceholderRecent " />
+									</div>
+								</div>
+
+							</div>
+
+							<div class="data_content">
+								<div class="left_part left_small">
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'PAYMENTS' | translate}} ({{paymentsCount}})</p>
+											<h6>{{ commonMethodService.formatAmount(payments) }}</h6>
+										</div>
+										<div class="col_right">
+											<p class="view_btn" (click)="RedirectTransLink('payment')">{{'VIEW' |
+												translate}}</p>
+											<p [ngClass]="paymentGrwClass">{{paymentGrowthPercentage}}%</p>
+										</div>
+									</div>
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'PLEDGES' | translate}} ({{pledgesCount}})</p>
+											<h6>{{ commonMethodService.formatAmount(pledges) }}</h6>
+										</div>
+										<div class="col_right">
+											<p class="view_btn" (click)="RedirectTransLink('pledge')">{{'VIEW' |
+												translate}}</p>
+											<p [ngClass]="pledgeGrwClass">{{pledgesGrowthPercentage}}%</p>
+										</div>
+									</div>
+								</div>
+
+								<div class="left_part right_part">
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'SCHEDULEDPAYMENTS' | translate}} ({{schedulePaymentsCount}})</p>
+											<h6>{{ commonMethodService.formatAmount(schedulePayments) }}</h6>
+										</div>
+										<div class="col_right">
+											<p class="view_btn" (click)="RedirectTransLink('schedulepayment')">{{'VIEW'
+												| translate}}</p>
+											<p [ngClass]="scheduleGrwClass">{{scheduleGrowthPercentage}}%</p>
+										</div>
+									</div>
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'CANCELLEDPAYMENTS' | translate}} ({{canceledPaymentsCount}})</p>
+											<p>{{'PAYMENTAPPLIEDPLEDGE' | translate}} ({{pledgePaymentsCount}})</p>
+										</div>
+										<div class="col_right">
+											<p class="amount link_arrow">{{
+												commonMethodService.formatAmount(canceledPayments) }}</p>
+											<p class="amount link_arrow">{{
+												commonMethodService.formatAmount(pledgePayments) }}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="card right_card">
+
+						<ng-container *ngIf="getUpcomingLoader">
+							<div class="top_header">
+								<div class="title_col">
+									<p class="text-head-light">{{'TOTALUPCOMING' | translate}}</p>
+									<app-skeleton-loader-component
+										[theme]="{ width: '200%', height: '80%' }"></app-skeleton-loader-component>
+								</div>
+
+								<!-- Upcoming calendar code ended -->
+							</div>
+							<div class="data_content">
+								<div class="left_part">
+									<div class="content_colm min-height-85">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'PENDINGPAYMENTS' | translate}} ({{upcomingPaymentsCount}})</p>
+											</app-skeleton-loader-component>
+											<br>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }">
+												<h6>{{ commonMethodService.formatAmount(upcomingPayments) }}</h6>
+											</app-skeleton-loader-component>
+										</div>
+
+									</div>
+									<div class="content_colm min-height-85">
+										<div class="col_left">
+											<app-skeleton-loader-component [theme]="{ width: '30%', height: '40%' }">
+												<p>{{'PENDINGPLEDGES' | translate}} ({{upcomingPledgesCount}})</p>
+											</app-skeleton-loader-component>
+											<br>
+											<app-skeleton-loader-component [theme]="{ width: '34%', height: '40%' }">
+												<h6>{{ commonMethodService.formatAmount(upcomingPledges) }}</h6>
+											</app-skeleton-loader-component>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="!getUpcomingLoader">
+							<div class="top_header">
+								<div class="title_col">
+									<p>{{'TOTALUPCOMING' | translate}}</p>
+									<h4>{{ commonMethodService.formatAmount(totalUpcoming) }}</h4>
+								</div>
+								<ng-template #popContent2><app-common-hebrew-english-calendar
+										[pageName]="UpcomingPageName" [data]="selectedUpcomingDateRange"
+										[isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+								</ng-template>
+								<div class="b_tn alltime_filter">
+									<div class="input-group date_picker" (click)="openUpcomingCalendarPopup(p2)"
+										(clickOutside)="onClickedOutsidePopover(p2)" popoverClass="calender-modal"
+										#p2="ngbPopover" [ngbPopover]="popContent2" [popoverTitle]="popTitle"
+										[autoClose]="false"
+										placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+										id="upcomingDynamicsCalender">
+										<input type="text" class="alltime_filter_btn" value=""
+											[placeholder]="EngHebCalPlaceholderUpcoming" />
+									</div>
+								</div>
+								<!-- Upcoming calendar code ended -->
+							</div>
+							<div class="data_content">
+								<div class="left_part">
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'PENDINGPAYMENTS' | translate}} ({{upcomingPaymentsCount}})</p>
+											<h6>{{ commonMethodService.formatAmount(upcomingPayments) }}</h6>
+										</div>
+										<div class="col_right">
+											<p class="view_btn" (click)="RedirectUpcomingTransLink('schedulepayment')">
+												{{'VIEW' | translate}}</p>
+										</div>
+									</div>
+									<div class="content_colm">
+										<div class="col_left">
+											<p>{{'PENDINGPLEDGES' | translate}} ({{upcomingPledgesCount}})</p>
+											<h6>{{ commonMethodService.formatAmount(upcomingPledges) }}</h6>
+										</div>
+										<div class="col_right">
+											<p class="view_btn" (click)="RedirectUpcomingTransLink('schedulepledge')">
+												{{'VIEW' | translate}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+			<div class="card payment-card">
+				<ng-container *ngIf="getPaymentLoader">
+					<div class="row">
+						<div class="col-sm-8">
+							<div class="title_col">
+								<p class="text-head-light">{{'RECENTPAYMENT' | translate}}:</p>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '20px' }">
+									<span>
+										{{ recentDateRange.startDate | donaryDateFormat: "short" }} - {{
+										recentDateRange.endDate | donaryDateFormat: "short" }}
+									</span></app-skeleton-loader-component>
+
+								<div class="payment-timezone hidden-desktop">
+									<ng-select bindLabel="itemName" bindValue="id" [(ngModel)]="paymentPeriod"
+										name="paymentPeriod" [searchable]="false" [items]="dateOptionList"
+										(change)="changePeriod($event)" [selectOnTab]="true">
+									</ng-select>
+								</div>
+							</div>
+							<app-skeleton-loader-component [theme]="{ width: '100%', height: '350px' }">
+							</app-skeleton-loader-component>
+						</div>
+
+						<div class="col-sm-4">
+
+							<div style="height: 109px;"></div>
+							<div class="d-inline-block">
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+									width="267.998" height="267.994" viewBox="0 0 267.998 267.994">
+									<g id="Group_2870" data-name="Group 2870" transform="translate(-1139.371 -591.006)">
+										<path id="Subtraction_74" data-name="Subtraction 74"
+											d="M17472.506,22863a131.5,131.5,0,0,1-26.3-2.65,129.777,129.777,0,0,1-46.662-19.639,130.912,130.912,0,0,1-47.283-57.416,129.917,129.917,0,0,1-7.605-24.5,131.812,131.812,0,0,1,0-52.6,129.787,129.787,0,0,1,19.639-46.66,130.922,130.922,0,0,1,57.416-47.281,129.769,129.769,0,0,1,24.5-7.6,131.354,131.354,0,0,1,26.3-2.652c.168,0,.332,0,.5,0V22733H17603a131.257,131.257,0,0,1-2.736,26.213,129.731,129.731,0,0,1-19.715,46.49,130.858,130.858,0,0,1-57.359,47.088,129.759,129.759,0,0,1-24.445,7.57A131.285,131.285,0,0,1,17472.506,22863Z"
+											transform="translate(-16202.633 -22004)" fill="url(#linear-gradient)" />
+										<path id="Intersection_1" data-name="Intersection 1"
+											d="M17473.006,22732v-129.994a129.5,129.5,0,0,1,129,129.5c0,.168,0,.33,0,.5Z"
+											transform="translate(-16194.633 -22011)" fill="url(#linear-gradient)" />
+									</g>
+
+
+
+									<linearGradient id="linear-gradient">
+										<stop offset="0.599964" stop-color="#eff1f6" stop-opacity="1">
+											<animate attributeName="offset" values="-2; -2; 1" keyTimes="0; 0.25; 1"
+												dur="2s" repeatCount="indefinite"></animate>
+										</stop>
+										<stop offset="1.59996" stop-color="rgba(255,255,255,0.6)" stop-opacity="1">
+											<animate attributeName="offset" values="-1; -1; 2" keyTimes="0; 0.25; 1"
+												dur="2s" repeatCount="indefinite"></animate>
+										</stop>
+										<stop offset="2.59996" stop-color="#eff1f6" stop-opacity="1">
+											<animate attributeName="offset" values="0; 0; 3" keyTimes="0; 0.25; 1"
+												dur="2s" repeatCount="indefinite"></animate>
+										</stop>
+									</linearGradient>
+								</svg>
+
+
+
+							</div>
+
+						</div>
+						<!-- <div class="col-sm-4">
+					<div class="payment-timezone hidden-mobile">
+						<ng-template #popContent3 
+						><app-common-hebrew-english-calendar [pageName]="TotalRecentPageName" [data]="recentDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+						</ng-template>
+						<div class="input-group date_picker" (click)="openTotalRecentCalendarPopup(p3)" (clickOutside)="onClickedOutsidePopover(p3)" popoverClass="calender-modal" #p3="ngbPopover" [ngbPopover]="popContent3"  [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="totalRecentDynamicsCalender">
+							<input type="text" class="alltime_filter_btn" value="" [placeholder]="EngHebCalPlaceholderTotalRecent" />
+						</div>
+
+					</div>-->
+					</div>
+				</ng-container>
+				<ng-container *ngIf="!getPaymentLoader">
+					<div class="row">
+						<div class="col-sm-8">
+							<div class="title_col">
+								<p>{{'RECENTPAYMENT' | translate}}:</p>
+								<span>{{ recentDateRange.startDate | donaryDateFormat: "short" }} - {{
+									recentDateRange.endDate | donaryDateFormat: "short" }}</span>
+
+								<div class="payment-timezone hidden-desktop">
+									<ng-select bindLabel="itemName" bindValue="id" [(ngModel)]="paymentPeriod"
+										name="paymentPeriod" [searchable]="false" [items]="dateOptionList"
+										(change)="changePeriod($event)" [selectOnTab]="true">
+									</ng-select>
+								</div>
+							</div>
+							<div id="chart-pie1" class="payment-bar"></div>
+						</div>
+						<div class="col-sm-4">
+							<div class="payment-timezone hidden-mobile">
+								<ng-template #popContent3><app-common-hebrew-english-calendar
+										[pageName]="TotalRecentPageName" [data]="selectedDateRange"
+										[isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+								</ng-template>
+								<div class="input-group date_picker" (click)="openTotalRecentCalendarPopup(p3)"
+									(clickOutside)="onClickedOutsidePopover(p3)" popoverClass="calender-modal"
+									#p3="ngbPopover" [ngbPopover]="popContent3" [popoverTitle]="popTitle"
+									[autoClose]="false"
+									placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+									id="totalRecentDynamicsCalender">
+									<input type="text" class="alltime_filter_btn" value=""
+										[placeholder]="EngHebCalPlaceholderTotalRecent" />
+								</div>
+
+							</div>
+
+							<div class="chart-area">
+								<div class="payment-type">
+									<ng-select [items]="paymentTypes" bindLabel="name"
+										placeholder="{{'PAYMENTTYPES' | translate}}"
+										(change)="changePaymentType($event)" [(ngModel)]="selectedPaymentType">
+									</ng-select>
+								</div>
+								<span class="text-danger pie_error">{{pieError}}</span>
+								<div class="" id="chart-pie"></div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+		<div class="col_right_sidebar">
+			<div class="card">
+
+				<ng-container *ngIf="listloader">
+					<div class="data-total-list empty-space">
+						<h5 class="card-title text-head-light">Total lists</h5>
+						<ul>
+
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '24px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+							</li>
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '25px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+
+							</li>
+
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '25px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+
+							</li>
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '25px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+
+							</li>
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '25px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+							</li>
+							<li>
+								<app-skeleton-loader-component [theme]="{ width: '175px', height: '25px' }"><span
+										class="name">{{'DONORS'|translate}}:</span></app-skeleton-loader-component>
+								<app-skeleton-loader-component [theme]="{ width: '70px', height: '25px' }"> <span
+										class="link_arrow count_text"
+										(click)="RedirectListLink('donor')">{{donors}}</span></app-skeleton-loader-component>
+
+							</li>
+						</ul>
+					</div>
+					<div class="data-reminder">
+						<div class="slideout-tab">
+							<div class="reminder-title">
+								<h5 class="text-uppercase text-head-light">{{'REMINDERS'|translate}}</h5>
+								<button class="reminder-action" (click)="goToRemindersTab()"></button>
+							</div>
+							<ul>
+								<ul>
+									<li>
+										<div class="reminder-item-top">
+											<app-skeleton-loader-component
+												[theme]="{ width: '105px', height: '20px' }"><span
+													class="title-reminder">123</span></app-skeleton-loader-component>
+
+										</div>
+										<div class="reminder-item-bottom">
+											<app-skeleton-loader-component [theme]="{ width: '145px', height: '20px' }">
+												<span>345</span></app-skeleton-loader-component>
+										</div>
+									</li>
+									<li>
+										<div class="reminder-item-top">
+											<app-skeleton-loader-component
+												[theme]="{ width: '105px', height: '20px' }"><span
+													class="title-reminder">123</span></app-skeleton-loader-component>
+
+										</div>
+										<div class="reminder-item-bottom">
+											<app-skeleton-loader-component [theme]="{ width: '145px', height: '20px' }">
+												<span>345</span></app-skeleton-loader-component>
+										</div>
+									</li>
+									<li>
+										<div class="reminder-item-top">
+											<app-skeleton-loader-component
+												[theme]="{ width: '105px', height: '20px' }"><span
+													class="title-reminder">123</span></app-skeleton-loader-component>
+
+										</div>
+										<div class="reminder-item-bottom">
+											<app-skeleton-loader-component [theme]="{ width: '145px', height: '20px' }">
+												<span>345</span></app-skeleton-loader-component>
+										</div>
+									</li>
+									<li>
+										<div class="reminder-item-top">
+											<app-skeleton-loader-component
+												[theme]="{ width: '105px', height: '20px' }"><span
+													class="title-reminder">123</span></app-skeleton-loader-component>
+
+										</div>
+										<div class="reminder-item-bottom">
+											<app-skeleton-loader-component [theme]="{ width: '145px', height: '20px' }">
+												<span>345</span></app-skeleton-loader-component>
+										</div>
+									</li>
+								</ul>
+							</ul>
+						</div>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="!listloader">
+					<div class="data-total-list">
+						<h5 class="card-title">Total lists</h5>
+						<ul>
+							<li>
+								<span class="name">{{'DONORS'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('donor')">{{donors}}</span>
+							</li>
+							<li>
+								<span class="name">{{'LOCATIONS'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('location')">{{locations}}</span>
+							</li>
+							<li>
+								<span class="name">{{'COLLECTORS'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('collector')">{{collectors}}</span>
+							</li>
+							<li>
+								<span class="name">{{'CAMPAIGNS'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('campaign')">{{campaigns}}</span>
+							</li>
+							<li>
+								<span class="name">{{'REASONS'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('reason')">{{reasons}}</span>
+							</li>
+							<li>
+								<span class="name">{{'SOURCES'|translate}}:</span>
+								<span class="link_arrow count_text"
+									(click)="RedirectListLink('device')">{{devices}}</span>
+							</li>
+						</ul>
+					</div>
+					<div class="data-reminder">
+						<div class="slideout-tab">
+							<div class="reminder-title">
+								<h5 class="text-uppercase">{{'REMINDERS'|translate}}</h5>
+								<button class="reminder-action" (click)="goToRemindersTab()"></button>
+							</div>
+							<ul>
+								<ul>
+
+									<ng-container *ngIf="isRemainderData">
+										<div class="content_colm">
+											<div class="col_left py-3 mw-100"
+												style="display: flex; justify-content: center; align-items: center; height: 100%;">
+												<small>NO REMINDER FOUND</small>
+											</div>
+										</div>
+									</ng-container>
+									<li *ngFor="let item of notificationList">
+										<div class="reminder-item-top">
+											<span class="title-reminder">{{item.title}}</span>
+											<span>
+												<p>{{item.dueDateTime| donaryDateFormat: "long" }}</p><button
+													class="reminder-action"
+													(click)="RedirectNotificationLink(item)"></button>
+											</span>
+										</div>
+										<div class="reminder-item-bottom">
+											<span>{{item.donorFullNameJewish}}</span>
+										</div>
+									</li>
+								</ul>
+							</ul>
+						</div>
+					</div>
+				</ng-container>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<ng-template #upgradePopup let-modal>
+	<div class="modal-body pt-4 pl-4 pr-4 pb-0 text-center">
+		<button class="dismiss modal-close border-0 bg-transparent opacity-50" (click)="modal.close()">&times;</button>
+		<p class="mb-4">
+			<img src="/assets/dist/img/icon-send.svg" alt="" />
+		</p>
+		<p class="mb-3">Your upgrade request has been received. </p>
+		<p class="mb-0">Our sales team will reach out to you to assist you with the upgrade.</p>
+	</div>
+	<div class="modal-footer d-flex justify-content-center align-items-center border-0 p-3">
+		<button class="btn btn-default" (click)="modal.close()">{{'OK' | translate}}</button>
+	</div>
+</ng-template>

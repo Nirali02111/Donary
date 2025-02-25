@@ -1,0 +1,792 @@
+<div class="create_reason popup-dropdown" id="create_collector" [ngClass]="commonMethodService.isHebrew?'create_reason_rtl':''" style="display:block" ngbAutofocus tabindex="-1">
+	<div class="modal-header modal__custom_header">
+		<h4>{{title}}</h4>
+		<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
+	</div>
+    <form  name="donorInfoForm" (ngSubmit)="f.form.valid && SaveCollectorInfo()" #f="ngForm" >
+        <div class="reason_wrap">
+            <div class="inside_wrap modal__custom_content">
+                <div class="form-group-block search-global-donor">
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"> <div class="block_label"> <a class="li_tab active" id="donorinfo" data-toggle="tab" href="#editdonorInfo" role="tab"></a>{{'SEARCHDONORS' |translate}}:</div></app-skeleton-loader-component>
+              <div class="block_inputs">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }"> <a class="li_tab active" id="donorinfo" data-toggle="tab" href="#editdonorInfo" role="tab"></a>
+                <div class="form-group">
+                  <div class="colm colm-12">
+                    <input type="text" class="input-text" [(ngModel)]="globalDonor" (keyup)="EnterDonor($event)" name="txtglobalDonor" id="globalDonorText" />
+                    <button class="search_btn hover_tooltip" *ngIf="isSearchDisable"  data-toggle="tooltip" appHoverTooltip labelText="{{'CHARACTERTOOLTIP' | translate}}" type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>
+			          	  <button class="search_btn hover_tooltip" *ngIf="!isSearchDisable"  data-toggle="tooltip"  type="button"  (click)="SearchGlobalDonor()">{{'SEARCH'|translate}}</button>
+                  </div>
+                  <div *ngIf="commonMethodService.donorList.length == 0 && noResult && !commonMethodService.loaderSearch" class="row">
+                    <div  class="val-error">{{'NORESULTFOUND' |translate}}</div>
+                </div>
+                  <div class="donor_infolist" (clickOutside)="onClickedOutside()"  *ngIf="commonMethodService.donorList.length != 0 && showGlobalDonor">
+                    <div *ngFor="let item of commonMethodService.donorList" >
+                      <div class="donor_row"  (click)="SelectGlobalDonor(item.id)">
+                        <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                      </div>
+                    </div>
+                  </div>
+                </div></app-skeleton-loader-component>
+              </div>
+            </div>
+            <div class="form-group-block">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+              <div class="block_label">
+                {{'ACCOUNT#'|translate}}:
+              </div></app-skeleton-loader-component>
+            <div class="block_inputs">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }">
+                <div class="form-group">
+                  <div class="colm colm-12">
+                <input type="text" autofocus  class="form-control {{isSetBorderCls}}" class="input-text" [ngClass]="{ 'is-invalid': f.submitted && txtAccountNum.invalid }"  id="txtAccountNum" [(ngModel)]="accountNum"   #txtAccountNum="ngModel" name="txtAccountNum"  (keyup)="duplicateAccNumber($event)"/>
+                <span *ngIf="isDuplicateAccNumber" class="account-duplicate" style="color: red;font-style: italic;">{{'DUPLICATEACCOUNT' |translate}}</span>
+              </div>
+              </div></app-skeleton-loader-component>
+              </div>
+            </div>
+
+            <div class="form-group-block edit-donor-top-wrap row-yiddish-name">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"><div class="block_label">{{'YIDDISHNAME'|translate}}:</div></app-skeleton-loader-component>
+              <div class="block_inputs">
+                <!-- <div class="form-group">
+                  <div class="colm colm-12">
+                    <input type="text" class="input-text" [ngClass]="[nameJewishReq ? 'error-field' : '']" (keyup)="ValidCollectorKeyPress($event,'namejewish')" (keypress)="commonMethodService.HebrewOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtFullNameJewish.invalid }"  id="txtFullNameJewish" [(ngModel)]="fullNameJewish"   #txtFullNameJewish="ngModel" name="txtFullNameJewish" />
+
+                    <div *ngIf="nameJewishReq" class="row text-danger">
+                      <div  class="val-error">Yiddish Name is required</div>
+                    </div>
+
+                  </div>
+                </div> -->
+                @if(isloading){
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '200px', height: '30px' }"></app-skeleton-loader-component>
+                  <span  [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '200px', height: '30px' }"></app-skeleton-loader-component>
+                  </span>
+                }
+                @else {
+
+                  <div class="form-group">
+                     <div class="colm colm-12">
+                      <input type="text" class="form-control lng_hebrew" placeholder="לעצטע נאמען" (keypress)="commonMethodService.HebrewOnly($event)"   id="txtLastNameJewish" [(ngModel)]="lastNameJewish"    #txtLastNameJewish="ngModel" name="txtLastNameJewish" />
+                    </div>
+                  </div>
+  
+                 
+                  <div class="form-group">
+                    <div class="colm colm-12">
+                      <div class="colm colm-12">
+                        <input type="text" class="form-control lng_hebrew" placeholder="ערשטע נאמען" (keyup)="ValidCollectorKeyPress($event,'namejewish')" [ngClass]="[nameJewishReq ? 'error-field' : '']" (keypress)="commonMethodService.HebrewOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtFirstNameJewish.invalid }"  id="txtFirstNameJewish" [(ngModel)]="firstNameJewish"    #txtFirstNameJewish="ngModel" name="txtFirstNameJewish" />
+                      </div>
+                      <div *ngIf="nameJewishReq" class="row text-danger">
+                        <div  class="val-error">{{'YIDDISHREQUIRED' |translate}}</div>
+                    </div>
+                      </div>
+                  </div>
+                }
+               </div>
+            </div>
+            <div class="form-group-block edit-donor-top-wrap row-yiddish-title">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"> <div class="block_label">{{'YIDDISHTITLE'|translate}}:</div></app-skeleton-loader-component>
+              <div class="block_inputs row-yiddish-name">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <div class="form-group">
+                  <input type="text" class="form-control lng_hebrew" placeholder='הי"ו' (keyup)="ValidCollectorKeyPress($event,'suffixJewish')" (keypress)="commonMethodService.HebrewOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtSuffixJewish.invalid }"  id="txtSuffixJewish" [(ngModel)]="suffixJewish"    #txtSuffixJewish="ngModel" name="txtSuffixJewish" />
+                </div>
+              </app-skeleton-loader-component>
+               <span [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <div class="form-group">
+                  <input type="text" class="form-control lng_hebrew" placeholder="מו''ה" (keyup)="ValidCollectorKeyPress($event,'titleJewish')" (keypress)="commonMethodService.HebrewOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtTitleJewish.invalid }"  id="txtTitleJewish" [(ngModel)]="titleJewish"    #txtTitleJewish="ngModel" name="txtTitleJewish" />
+                </div></app-skeleton-loader-component>
+               </span>
+               
+              </div>
+            </div>
+            <div class="form-group-block edit-donor-top-wrap row-english-name">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"><div class="block_label">{{'ENGLISHNAME'|translate}}:</div></app-skeleton-loader-component>
+              <div class="block_inputs">
+                <!-- <div class="form-group">
+                  <div class="colm colm-12">
+                    <input type="text" class="input-text" [ngClass]="[nameReq ? 'error-field' : '']" id="txtFullName" (keyup)="ValidCollectorKeyPress($event,'name')" (keypress)="commonMethodService.EnglishOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtFullName.invalid }" [(ngModel)]="fullName"    #txtFullName="ngModel" name="txtFullName"  />
+
+                    <div *ngIf="nameReq" class="row text-danger">
+                      <div  class="val-error">English Name is required</div>
+                    </div>
+
+                  </div>
+                </div> -->
+                @if(isloading){
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '130px', height: '30px' }"></app-skeleton-loader-component>
+                  <span [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '130px', height: '30px' }"></app-skeleton-loader-component>
+                  </span>
+                  <span [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '130px', height: '30px' }"></app-skeleton-loader-component>
+                  </span>
+                }@else {
+                  <div class="form-group">
+                    <div class="colm colm-12">
+                     <input type="text" class="form-control" placeholder="{{'MR'|translate}}" id="txtTitleEnglish" [(ngModel)]="titleEnglish"    #txtTitleEnglish="ngModel" name="txtTitleEnglish" />
+                   </div>
+  
+                 </div>
+                 <div class="form-group">
+                   <div class="colm colm-12">
+                     <div class="colm colm-12">
+                       <input type="text" class="form-control" placeholder="{{'FIRSTNAME'|translate}}" [ngClass]="[nameReq ? 'error-field' : '']" (keyup)="ValidCollectorKeyPress($event,'name')"  [ngClass]="{ 'is-invalid': f.submitted && txtFirstNameEnglish.invalid }"  id="txtFirstNameEnglish" [(ngModel)]="firstNameEnglish"    #txtFirstNameEnglish="ngModel" name="txtFirstNameEnglish" />
+                     </div>
+                     <div *ngIf="nameReq" class="row text-danger">
+                       <div  class="val-error">{{'ENGLISHREQUIRED'|translate}}</div>
+                   </div>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <div class="colm colm-12">
+                       <input type="text" class="form-control" placeholder="{{'LASTNAME'|translate}}" (keyup)="ValidCollectorKeyPress($event,'Lastnameenglish')"   id="txtLastNameEnglish" [(ngModel)]="lastNameEnglish"    #txtLastNameEnglish="ngModel" name="txtLastNameEnglish" />
+                     </div>
+                     </div>
+                }
+               
+              </div>
+            </div>
+            <div class="modal-devider">
+              <h4>{{'ADDRESS'|translate}}</h4>
+              </div>
+            <div class="form-group-block" (clickOutside)="onClickedOutsidePrimary()">
+              <section class="form-group-block-section" *ngFor="let address of donorAddresses; let i = index;">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <div class="block_label">
+                  <span class="arrow_trigger" *ngIf="address.addressLabel !=getDefaultLabels().Home" (click)="OpenHomeAddressPopup(i)">
+                    @if(!isloading){
+                  
+                      <i class="fa fa-chevron-down"></i>
+                    }
+                  </span>
+                   {{address.addressLabel}}:<br>
+                 @if(!isloading){
+
+                   <span *ngIf="address.isDefault && address.addressLabel" class="read-only-text">{{'PRIMARY'|translate}}</span>
+                 }
+
+                  <div class="dropdown-menu custom-radio-btn" [id]="'id_HomeAddressDwn_'+i" *ngIf="address.addressLabel !=getDefaultLabels().Home">
+                    <ul>
+                      
+                      <li *ngFor="let dyAddressLabel of addressLabelArray;let index = index;" >
+                        <label [for]="'address_'+index" [ngClass]="isAddressLabelExist(dyAddressLabel.labelName)">
+
+                          <input
+                                type="radio"
+                                [id]="'address_'+index"
+                                [name]="'dyAddressLabel_Rdo_'+i"
+                                [value]="dyAddressLabel.labelName"
+                                [checked]="address.addressLabel==dyAddressLabel.labelName"
+                                (change)="changeAddressLabel($event,dyAddressLabel.labelName,addressIndexI)"
+                              />
+                              <span> <i>{{dyAddressLabel.labelName}}</i></span>
+                        </label>
+                        <div
+                        class="edit-btn"
+                        (click)="editLableDyn($event, dyAddressLabel);dyAddressLabel.editVisable=true;"
+                      >
+                        <i class="fa fa-pencil"></i>
+                      </div>
+                      <ng-container *ngIf="dyAddressLabel.editVisable">
+                        <li>
+                          <div class="input_editAdd">
+                          <input
+                              class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                              id="editLabelData"
+                              maxlength="15"
+                              placeholder=""
+                              type="text"
+                              name="editLabelData"
+                              [(ngModel)]="selectedLabel"
+                              (keyup)="removeLableError()"
+                            />
+                            <div
+                              class="saveInput" [class.edit-label-Btn-disable]="isEditLabelBtnDisable"
+                              (click)="saveNewAddressLabel($event,dyAddressLabel.labelID)"
+                            >
+                              Save
+                            </div>
+
+                        </div>
+                        <span class="error"
+                        *ngIf="isListLabelExist"
+                        >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                        </li>
+                      </ng-container>
+                      </li>
+                      <ng-container *ngIf="addNewLabel">
+                        <li>
+                          <span class="input_editAdd"
+                            ><input
+                              class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                              id="editLabelData"
+                              maxlength="15"
+                              placeholder=""
+                              type="text"
+                              name="editLabelData"
+                              [(ngModel)]="selectedLabel"
+                              (keyup)="removeLableError()"
+                            />
+                            <div
+                              class="saveInput"
+                              (click)="saveNewAddressLabel($event)"
+                            >
+                              Save
+                            </div>
+                          </span>
+                          <span
+                          *ngIf="isListLabelExist"
+                          class="error"
+                          >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                        </li>
+                      </ng-container>
+                  <li class="addLabelBtn">
+                    <div (click)="addNewPhoneLabel($event)">
+                      <i class="fa fa-plus"></i> Add label
+                    </div>
+                  </li>
+                  <li class="custom-checkbox-btn">
+                          <label [for]="'primaryA_'+ i">
+                            <input
+                              type="checkbox"
+                              [id]="'primaryA_'+ i"
+                              value=""
+                              [checked]="address.isDefault"
+                              class=""
+                              (click)="primryAddress($event, i)"
+                            />
+                            <span
+                              ><i>{{ "MAKEPRIMARY" | translate }}</i></span
+                            >
+                          </label>
+                        </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </app-skeleton-loader-component>
+              <div class="block_inputs">
+                 @if(isloading){
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }"></app-skeleton-loader-component>
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }"></app-skeleton-loader-component>
+                  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }"></app-skeleton-loader-component>
+
+                 }@else {
+                   <div class="form-group">
+                     
+                     <div class="colm colm-12">
+                       <input type="text" class="form-control" placeholder="{{'ADDRESSNAMETITLE'|translate}}" name="txtcareOf_{{i}}"  [(ngModel)]="address.careOf" >
+                     </div>
+                   </div>
+                   <div class="form-group primary_address">
+   
+                     <div class="colm colm-6 br-0">
+                       <input type="text" class="form-control" placeholder="{{'STREETADDRESS'|translate}}"
+                       name="txtStreet_{{i}}"  [(ngModel)]="address.streetAddress"
+                                                appAddressAutocomplete
+                                       (onAddressChange)="onAddressChange($event,i)"
+                                     [class.error-field]="address.isLabelErrorMessage"  />
+                              <div class="row text-danger" *ngIf="address.isLabelErrorMessage">
+                                  <div class="val-error">
+                                      Label is required
+                                  </div>
+                              </div>
+                     </div>
+   
+                     <div class="colm colm-3">
+                       <input type="text" class="form-control" placeholder="{{'APT'|translate}}" name="txtUnit_{{i}}"  [(ngModel)]="address.unit"/>
+                     </div>
+                   </div>
+                   <div class="form-group primary_address with_add_btn">
+                     <div class="colm colm-4 br-0">
+                       <input type="text" class="form-control" placeholder="{{'CITY'|translate}}"  name="txtCity_{{i}}"  [(ngModel)]="address.city"    />
+                     </div>
+                     <div class="colm colm-2 br-0">
+                     <select  class="form-control" name="txtState_{{i}}"   [(ngModel)]="address.state">
+                       <option value=null [selected]="true" >{{'STATE'|translate}}</option>
+                       <option *ngFor="let initial of commonMethodService.stateList" [value]="initial.id">{{initial.id}}</option>
+                     </select>
+                     </div>
+                     <div class="colm colm-3 zip-input">
+                       <input type="text" class="form-control " placeholder="{{'ZIP'|translate}}" name="txtZip_{{i}}"  [(ngModel)]="address.zip"/>
+                     </div>
+                     @if(!isloading){
+                  
+                       <button type="button"  class="delete_btn"  *ngIf="i>=1" (click)="removeDonorAddress(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                     }
+   
+                   </div>
+                 }
+
+
+
+              </div>
+            </section>
+
+                <div class="colm colm-12 add_btn_default dynamic-add-btn">
+                  <button type="button" class="btn" (click)="addDonorAddress()">
+                    @if(!isloading){
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                  
+                      <span>{{'ADDADDRESS'|translate}}</span>
+                    }
+                  </button>
+                </div>
+            </div>
+            <div class="modal-devider">
+              <h4>{{'PHONE'|translate}}</h4>
+              </div>
+             
+
+            <div class="form-group-block" (clickOutside)="onClickedOutsideHomePhone()" *ngFor="let phone of homephone; let i = index;">
+
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <span class="arrow_trigger" *ngIf="phone.phoneLabel !=getDefaultLabels().Home" (click)="OpenHomePhonePopup(i)">
+                  @if(!isloading){
+                    
+                    <i class="fa fa-chevron-down"></i>
+                  }
+                </span>
+              <div class="block_label">{{phone.phoneLabel}}:<br>
+
+                <div class="dropdown-menu custom-radio-btn"  id="id_HomePhoneDwn_{{i}}" *ngIf="phone.phoneLabel !=getDefaultLabels().Home">
+                  <ul>
+                    <li *ngFor="let dyPhoneLabel of phoneLabelArray;let index = index;" >
+                       
+                      <label for="{{dyPhoneLabel.labelName+index}}" [ngClass]="isLabelExist(dyPhoneLabel.labelName)">
+                        <input
+                              type="radio"
+                              id="{{dyPhoneLabel.labelName+index}}"
+                              name="dyPhoneLabel_Rdo_{{index}}"
+                              [value]="dyPhoneLabel.labelName"
+                              [checked]="phone.phoneLabel==dyPhoneLabel.labelName"
+                              (change)="changePhoneLabel($event,dyPhoneLabel.labelName,homephoneIndexI)"
+                            />
+                            <span> <i>{{dyPhoneLabel.labelName}}</i></span>
+                      </label>
+                      <div
+                      class="edit-btn"
+                      (click)="editLableDyn($event, dyPhoneLabel);dyPhoneLabel.editVisable=true;"
+                    >
+                      <i class="fa fa-pencil"></i>
+                    </div>
+                    <ng-container *ngIf="dyPhoneLabel.editVisable">
+                      <li>
+                        <div class="input_editAdd">
+                        <input
+                            class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                            id="editLabelData"
+                            maxlength="15"
+                            placeholder=""
+                            type="text"
+                            name="editLabelData"
+                            [(ngModel)]="selectedLabel"
+                            (keyup)="removeLableError()"
+                          />
+                          <div
+                            class="saveInput" [ngClass]="isEditLabelBtnDisable ?'edit-label-Btn-disable': ''"
+                            (click)="saveNewPhoneLabel($event,dyPhoneLabel.labelID)"
+                          >
+                            Save
+                          </div>
+
+                      </div>
+                      <span class="error"
+                      *ngIf="isListLabelExist"
+                      >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                      </li>
+                    </ng-container>
+                    </li>
+                    <ng-container *ngIf="addNewLabel">
+                          <li>
+                            <span class="input_editAdd"
+                              ><input
+                                class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                                id="editLabelData"
+                                maxlength="15"
+                                placeholder=""
+                                type="text"
+                                name="editLabelData"
+                                [(ngModel)]="selectedLabel"
+                                (keyup)="removeLableError()"
+                              />
+                              <div
+                                class="saveInput"
+                                (click)="saveNewPhoneLabel($event)"
+                              >
+                                Save
+                              </div>
+                            </span>
+                            <span
+                            *ngIf="isListLabelExist"
+                            class="error"
+                            >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                          </li>
+                        </ng-container>
+                    <li class="addLabelBtn">
+                      <div (click)="addNewPhoneLabel($event)">
+                        <i class="fa fa-plus"></i> Add label
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </div></app-skeleton-loader-component>
+
+
+              <div class="block_inputs">
+                <div class="form-group with_add_btn mb-0">
+                  <section>
+                  <div class="colm colm-number colm-12">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }">
+                    <div class="d-flex align-items-stretch">
+                      <div class="dropdown">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{phone.selectedFlag}}></i>{{phone.dailingCode}}</a>
+                        <div class="dropdown-menu">
+                         
+                          <div class="form-check" *ngFor="let country of countries">
+                            <input type="radio" [name]="phone.phoneLabel+'country'" class="form-check-input d-none" 
+                            [id]="phone.phoneLabel+country.countryCodeID" [value]="phone.phoneLabel+country.countryCodeID"  
+                             [(ngModel)]="phone.selectedCountry" 
+                            (change)="onCountryChange(country.countryCodeID,country.dialingCode,phone.phoneLabel,country.countryCode,false)">
+                            <label class="form-check-label" [for]="phone.phoneLabel+country.countryCodeID">
+                              <i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} 
+                              <span>{{ country.dialingCode }}</span>
+                            </label>		
+                          </div>
+                   
+                        </div>
+                      </div>
+                      <input type="text" class="form-control phone-field" name="txtHomePhone_{{i}}"  [(ngModel)]="phone.phoneNumber" #txtHomePhone="ngModel"
+                        [class.error-field]="txtHomePhone.invalid"
+                        [validation]="true"
+                        mask="(000) 000-000099999"
+                      />
+                    </div>
+                    <div class="row text-danger" *ngIf="txtHomePhone.invalid">
+                      <div class="val-error">{{'PHONEINVALID'|translate}}</div>
+                    </div>
+                  </app-skeleton-loader-component>
+                  </div>
+                  @if(!isloading){
+                  
+                    <button type="button"  class="delete_btn"  *ngIf="i>=1" (click)="removeHomePhone(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                  }
+                </section>
+
+                </div>
+              </div>
+            </div>
+         
+      
+
+            <div class="form-group-block"  *ngFor="let phone of cellphone; let i = index;">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <span class="arrow_trigger" *ngIf="phone.phoneLabel !=getDefaultLabels().Cell" (click)="OpenCellPhonePopup(i)">
+                  @if(!isloading){
+                    
+                    <i class="fa fa-chevron-down"></i>
+                  }
+                </span>
+              <div class="block_label">{{phone.phoneLabel}}:<br>
+                <div class="dropdown-menu custom-radio-btn"  id="id_CellPhoneDwn_{{i}}" *ngIf="phone.phoneLabel !=getDefaultLabels().Cell">
+                  <ul>
+                    <li *ngFor="let dyPhoneLabel of phoneLabelArray;let index = index;" >
+                      <label for="{{dyPhoneLabel.labelName + index + i}}" [ngClass]="isLabelExist(dyPhoneLabel.labelName)">
+                        <input
+                              type="radio"
+                              id="{{dyPhoneLabel.labelName + index + i}}"
+                              name="dyPhoneLabel_rdo_{{index}}"
+                              [value]="dyPhoneLabel.labelName"
+                              [checked]="dyPhoneLabel.labelName==phone.phoneLabel"
+                              (change)="changeCellLabel($event,dyPhoneLabel.labelName,cellphoneIndexI)"
+                            />
+                            <span> <i>{{dyPhoneLabel.labelName}}</i></span>
+                      </label>
+                      <div
+                      class="edit-btn"
+                      (click)="editLableDyn($event, dyPhoneLabel);dyPhoneLabel.editVisable=true;"
+                    >
+                      <i class="fa fa-pencil"></i>
+                    </div>
+                    <ng-container *ngIf="dyPhoneLabel.editVisable">
+                      <li>
+                        <div class="input_editAdd">
+                        <input
+                            class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                            id="editLabelData"
+                            maxlength="15"
+                            placeholder=""
+                            type="text"
+                            name="editLabelData"
+                            [(ngModel)]="selectedLabel"
+                            (keyup)="removeLableError()"
+                          />
+                          <div
+                            class="saveInput" [ngClass]="isEditLabelBtnDisable ?'edit-label-Btn-disable': ''"
+                            (click)="saveNewPhoneLabel($event,dyPhoneLabel.labelID)"
+                          >
+                            Save
+                          </div>
+
+                      </div>
+                      <span class="error"
+                      *ngIf="isListLabelExist"
+                      >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                      </li>
+                    </ng-container>
+                    </li>
+                    <ng-container *ngIf="addNewLabel">
+                          <li>
+                            <span class="input_editAdd"
+                              ><input
+                                class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                                id="editLabelData"
+                                maxlength="15"
+                                placeholder=""
+                                type="text"
+                                name="editLabelData"
+                                [(ngModel)]="selectedLabel"
+                                (keyup)="removeLableError()"
+                              />
+                              <div
+                                class="saveInput"
+                                (click)="saveNewPhoneLabel($event)"
+                              >
+                                Save
+                              </div>
+                            </span>
+                            <span
+                            *ngIf="isListLabelExist"
+                            class="error"
+                            >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                          </li>
+                        </ng-container>
+                    <li class="addLabelBtn">
+                      <div (click)="addNewPhoneLabel($event)">
+                        <i class="fa fa-plus"></i> Add label
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+
+              </div></app-skeleton-loader-component>
+              <div class="block_inputs">
+                <div class="form-group with_add_btn mb-0">
+                  <section>
+                  <div class="colm colm-number colm-12">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }">
+                     <div class="d-flex align-items-stretch">
+                          <div class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" [class.disabled]="phone.isdisabled" [ngStyle]="{'opacity': phone.isdisabled ? '0.5' : '1'}"  data-toggle="dropdown" aria-expanded="false"><i class={{phone.selectedFlag}}></i>{{phone.dailingCode}}</a>
+                            <ng-container *ngIf="phone.phoneLabel != ''">
+                              <div class="dropdown-menu">
+                                <div class="form-check" *ngFor="let country of countries">
+                                  <input type="radio" [name]="phone.phoneLabel + 'country'" class="form-check-input d-none" [id]="phone.phoneLabel + country.countryCodeID" [value]="phone.phoneLabel + country.countryCodeID"  [(ngModel)]="phone.selectedCountry" (change)="onCountryChange(country.countryCodeID, country.dialingCode, phone.phoneLabel, country.countryCode, true)">
+                                  <label class="form-check-label" [for]="phone.phoneLabel + country.countryCodeID"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>
+                              </div>	
+                              </div>
+                            </ng-container>
+                          </div>
+                        <input type="text" class="form-control phone-field"
+                            name="txtCellPhone_{{i}}"
+                            [(ngModel)]="phone.phoneNumber"
+                            #txtCellPhone="ngModel"
+
+                            [class.error-field]="txtCellPhone.touched && txtCellPhone.invalid || phone.isLabelErrorMessage"
+                            [validation]="true"
+                            mask="(000) 000-000099999"
+                        />
+                      </div>
+                    <div class="row text-danger" *ngIf="txtCellPhone.invalid">
+                      <div class="val-error">{{'PHONEINVALID'|translate}}</div>
+                    </div>
+
+                        <div
+                          class="row text-danger"
+                          *ngIf="phone.isLabelErrorMessage"
+                        >
+                          <div class="val-error">
+                            Label is required
+                          </div>
+                        </div>
+                      </app-skeleton-loader-component>
+                  </div>
+                  @if(!isloading){
+                  
+                    <button type="button" class="delete_btn" *ngIf="i>=1" (click)="removeCellPhone(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                  }
+                </section>
+                </div>
+              </div>
+            </div>
+            <div class="add_btn_default  btn-default-ml">
+              <button type="button" class="btn"  (click)="addCellPhone()">
+                @if(!isloading){    
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <span>{{'ADDPHONE'|translate}}</span>
+                }
+              </button>
+            </div>
+          
+            <div class="modal-devider">
+              <h4>{{'EMAIL'|translate}}</h4>
+              </div>
+            <div class="form-group-block"  *ngFor="let emailaddress of email; let i = index;">
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                <span class="arrow_trigger" *ngIf="emailaddress.emailLabel !=getDefaultLabels().Email" (click)="OpenEmailPopup(i)">
+                  @if(!isloading){
+                    
+                    <i class="fa fa-chevron-down"></i>
+                  }
+                </span>
+              <div class="block_label">
+                {{emailaddress.emailLabel}}: <br>
+
+
+                <div class="dropdown-menu custom-radio-btn"  [id]="'id_isEmailOpenDwn_'+i" *ngIf="emailaddress.emailLabel !=getDefaultLabels().Email">
+                  <ul>
+                    <li *ngFor="let dyEmailLabel of emailLabelArray;let index = index;" >
+                      <label [for]="dyEmailLabel.labelName+index" [ngClass]="isEmailLabelExist(dyEmailLabel.labelName)">
+                        <input
+                              type="radio"
+                              [id]="dyEmailLabel.labelName+index"
+                              [name]="'dyEmailLabel_Rdo_'+i"
+                              [value]="dyEmailLabel.labelName"
+                              [checked]="emailaddress.emailLabel==dyEmailLabel.labelName"
+                              (change)="changeEmailLabel($event,dyEmailLabel.labelName,emailIndexI)"
+                            />
+                            <span> <i>{{dyEmailLabel.labelName}}</i></span>
+                      </label>
+                      <div
+                      class="edit-btn"
+                      (click)="editLableDyn($event, dyEmailLabel);dyEmailLabel.editVisable=true;"
+                    >
+                      <i class="fa fa-pencil"></i>
+                    </div>
+                    <ng-container *ngIf="dyEmailLabel.editVisable">
+                      <li>
+                        <div class="input_editAdd">
+                        <input
+                            class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                            id="editLabelData"
+                            maxlength="15"
+                            placeholder=""
+                            type="text"
+                            name="editLabelData"
+                            [(ngModel)]="selectedLabel"
+                            (keyup)="removeLableError()"
+                          />
+                          <div
+                            class="saveInput" [ngClass]="isEditLabelBtnDisable ?'edit-label-Btn-disable': ''"
+                            (click)="saveNewEmailLabel($event,dyEmailLabel.labelID)"
+                          >
+                            Save
+                          </div>
+
+                      </div>
+                      <span class="error"
+                      *ngIf="isListLabelExist"
+                      >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                      </li>
+                    </ng-container>
+                    </li>
+                    <ng-container *ngIf="addNewLabel">
+                          <li>
+                            <span class="input_editAdd"
+                              ><input
+                                class="type_text label-error" [ngStyle]="{'border-color': (isListLabelExist) ? '#ff0404' : 'null'}"
+                                id="editLabelData"
+                                maxlength="15"
+                                placeholder=""
+                                type="text"
+                                name="editLabelData"
+                                [(ngModel)]="selectedLabel"
+                                (keyup)="removeLableError()"
+                              />
+                              <div
+                                class="saveInput"
+                                (click)="saveNewEmailLabel($event)"
+                              >
+                                Save
+                              </div>
+                            </span>
+                            <span
+                            *ngIf="isListLabelExist"
+                            class="error"
+                            >{{'DUPLICATE' | translate}} {{'LABEL' | translate}}</span>
+                          </li>
+                        </ng-container>
+                    <li class="addLabelBtn">
+                      <div (click)="addNewPhoneLabel($event)">
+                        <i class="fa fa-plus"></i> Add label
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </div></app-skeleton-loader-component>
+              @if(isloading){
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '420px', height: '30px' }"></app-skeleton-loader-component>
+              }@else {
+
+                <div class="block_inputs">
+                  <div class="form-group with_add_btn mb-0">
+                    <section>
+                    <div class="colm colm-12">
+                      <input type="email" class="form-control" [class.error-field]="emailaddress.invalid || emailaddress.isLabelErrorMessage"  name="txtEmailAddress_{{i}}" (focusout)="ValidDonorKeyPress($event,'email')"  [(ngModel)]="emailaddress.emailAddress"  #txtEmailAddress="ngModel"  />
+                      <div *ngIf ="emailaddress.invalid" class="row text-danger">
+                        <div  class="val-error">{{'EMAILINVALID'|translate}}</div>
+                      </div>
+                      <div
+                            class="row text-danger"
+                            *ngIf="emailaddress.isLabelErrorMessage"
+                          >
+                            <div class="val-error">
+                              Label is required
+                            </div>
+                          </div>
+                    </div>
+                    @if(!isloading){
+                    
+                      <button type="button"  class="delete_btn" *ngIf="i>=1" (click)="removeEmailAddress(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    }
+  
+                  </section>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="add_btn_default btn-default-ml">
+              <button type="button" class="btn"  (click)="addEmailAddress()">
+                @if(!isloading){
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+
+                  <span>{{'ADD EMAIL ADDRESS'|translate}}</span>
+                }
+              </button>
+            </div>
+
+                </div>
+          <div class="btn_info modal__custom_footer">
+            <div class="left_part">
+                <button class="btn btn-remove" type="button" (click)="deleteCollector()" *ngIf="isEditMode">{{'DELETE'|translate}}</button>
+            </div>
+            <div class="right_part">
+                <button class="btn btn-primary btn-for-disable" [disabled]="!formValid || !f.form.valid" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
+                <button class="btn btn-primary btn-for-disable btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+            </div>
+        </div>
+        </div>
+      </form>
+<div *ngIf="commonMethodService.loaderSearch" class="card-overlay" >
+	<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+</div>
+
+

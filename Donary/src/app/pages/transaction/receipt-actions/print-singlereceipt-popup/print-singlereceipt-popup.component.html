@@ -1,0 +1,16 @@
+ <div class="modal_custom" ngbAutofocus tabindex="-1">
+    <div class="modal-header-custom modal__custom_header">
+      <h4>{{'PRINT' | translate}} {{'RECEIPT' | translate}}  </h4>
+      <span class="close_trigger" (click)="closePopup()" data-dismiss="modal"
+        >&times;</span>
+    </div>
+    <div class="modal-content-custom modal__custom_content print_receipt" style="height: 500px;" >      
+        <iframe [src]='fileName' width="700px" height="550px" *ngIf="showContent"></iframe> 
+        <div *ngIf="isloading" class="overlay">                
+          <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+      </div>      
+    </div>   
+     
+  </div> 
+
+  

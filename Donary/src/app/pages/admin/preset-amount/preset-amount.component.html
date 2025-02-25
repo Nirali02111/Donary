@@ -1,0 +1,197 @@
+<div class="container-fluid admin-register p-0" #scrollContainer>
+    <div class="card">
+        <div class="card-body pt-0 tab-api adminSeats-tab adminSetting-tab">
+            <div class="tabs__wrap focusme-section1">
+                @if (isDevEnv) {
+                <ul class="nav nav-tabs" >
+                    <li>
+                        <a data-toggle="tab" class="active" href="#general">General</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#drm">DRM</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#mobile">Mobile</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#pocket">Pocket</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#donate">Donate+</a>
+                    </li>
+                </ul>
+                <div class="setting-search header--buttons">
+                    <input type="text" name="setting" class="form-control" placeholder="Search Setting" />
+                </div>
+            }
+                <div class="tab-content tab_draggable">
+                    <div class="tab-pane active" id="general">
+                        <div class="setting-block d-flex align-items-start">
+                            <ul class="setting-menu list-unstyled m-0">
+                                <li [class.active]="activeSection === 'section1'" class="active"
+                                    (click)="onSectionChange('focusme-section1')">
+                                    <a>{{'PRESETAMO' | translate}}</a>
+                                </li>
+                                
+                                <li [class.active]="activeSection === 'section2'"
+                                    (click)="onSectionChange('focusme-section2')">
+                                    <a>{{'SEND' | translate}} {{'AUTOMATIC' | translate}} {{'EMAIL' | translate}}</a>
+                                </li>
+
+                                <li [class.active]="activeSection === 'section3'"
+                                    (click)="onSectionChange('focusme-section3')">
+                                    <a>{{'CUSTOMIZEMSG' | translate}}</a>
+                                </li>
+                            </ul>
+                            <div class="setting-content">
+                                <div class="preset-amt" id="section1">
+                                    <h4 class="headline">{{'PRESETAMO' | translate}}</h4>
+                                    <p class="sub-headline">{{'CUSTOMIZEPRESENT' | translate}}</p>
+                                    <div class="preset-form">
+                                        <div class="row-preset-data" *ngFor="let item of presetAmounts;let j=index">
+                                            <label>{{'PRESET' | translate}} {{j+1}}:</label>
+                                            <div class="preset-amount-left">
+                                                <input class="form-control" type="number" placeholder="0.00"
+                                                    (focusout)="convertDecimal(j)" [(ngModel)]="item.amount"
+                                                    name="amount_{{j+1}}" (keyup)="presetAmoutUpdateChanges()" />
+                                                <span [ngClass]="commonMethodService.currencyClass"></span>
+                                            </div>
+                                            <div class="preset-amount-right">
+                                                <input class="form-control" placeholder="{{'ENTERTITLE' | translate}}"
+                                                    type="text" [(ngModel)]="item.text" name="text_{{j+1}}"
+                                                    (keyup)="presetAmoutUpdateChanges()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="setting-seprator"></div>
+                                <div class="automatic-call-block focusme-section2" id="section2" >
+                                    <h4 class="headline">{{'SEND' | translate}} {{'AUTOMATIC' | translate}} {{'EMAIL' |
+                                        translate}}</h4>
+                                    <p class="sub-headline">{{'EMAILNOTIFICATION' | translate}}</p>
+                                    <ul class="automatic-call">
+                                        <ng-container *ngFor="let item of settingsArray">
+                                            <li class="switcher-block" data-toggle="tooltip" appHoverTooltip
+                                                [labelText]="this.hasNonUSD ?'This cannot be turned on because you process payments in countries with legal receipt requirements': null"
+                                                *ngIf="item.settingName=='DisableAutomaticPaymentReceiptEmail'">
+                                                <input type="checkbox" name="automatic-call" id="Payment-receipts"
+                                                    [disabled]="this.hasNonUSD"
+                                                    [checked]="item.settingsValue=='false' || item.settingsValue=='False' " class="d-none"
+                                                    (change)="onSendAutomatic($event,item)" />
+                                                <label for="Payment-receipts">
+                                                    {{'PAYMENT' | translate}} {{'RECEIPT' | translate}}
+                                                    <span class="switch"></span>
+                                                </label>
+                                            </li>
+                                            <li class="switcher-block"
+                                                *ngIf="item.settingName=='DisableAutomaticPledgeReceiptEmail'">
+                                                <input type="checkbox" name="automatic-call" id="pledge-bills"
+                                                    class="d-none" (change)="onSendAutomatic($event,item)"
+                                                    [checked]="item.settingsValue=='false'|| item.settingsValue=='False'" />
+                                                <label for="pledge-bills">
+                                                    {{'PLEDGE' | translate}} {{'BILLS' | translate}}
+                                                    <span class="switch"></span>
+                                                </label>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                                <div class="setting-seprator"></div>
+                                <div class="automatic-call-block focusme-section3" id="section3">
+                                    <h4 class="headline">{{'CUSTOMIZEMSG' | translate}}</h4>
+                                    <p class="sub-headline">{{'CUSTOMIZERECEIPTS' | translate}}</p>
+                                    <ng-container *ngFor="let item of settingsArray;let i=index">
+                                        <div class="message-block"
+                                            *ngIf="item.settingName !='DisableAutomaticPledgeReceiptEmail' && item.settingName !='DisableAutomaticPaymentReceiptEmail'">
+                                            <div class="message-head d-flex align-items-center justify-content-between">
+                                                <h5>{{item.displayName}}
+                                                    <span class="ms-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12.482"
+                                                            height="12.482" viewBox="0 0 12.482 12.482">
+                                                            <path id="Icon_ionic-md-help-circle"
+                                                                data-name="Icon ionic-md-help-circle"
+                                                                d="M9.616,3.375a6.241,6.241,0,1,0,6.241,6.241A6.244,6.244,0,0,0,9.616,3.375Zm.63,9.992H8.986v-1.26h1.26Zm-.006-1.89H8.992c0-2.01,1.872-1.866,1.872-3.115A1.254,1.254,0,0,0,9.616,7.111,1.266,1.266,0,0,0,8.368,8.356H7.12a2.5,2.5,0,0,1,4.993,0C12.113,9.919,10.24,10.1,10.24,11.477Z"
+                                                                transform="translate(-3.375 -3.375)" fill="#d0d0d0" />
+                                                        </svg>
+                                                    </span>
+                                                </h5>
+                                                <ng-select bindValue="variableName" class="message-select"
+                                                    [id]="item.settingId" [items]="messageVariableList[i]"
+                                                    (change)="onMessageVariable($event,i)" [(ngModel)]="selectedItemId"
+                                                    [clearable]="false" placeholder="Insert field value">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        {{ '{'+item.variableName+'}' }}
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                            <div class="message-box">
+
+                                                <span [id]="item.settingId+'_'" class="form-control textarea-div"
+                                                    contenteditable="true" #editableDiv (blur)="onInput($event,i)"
+                                                    (click)="onClickDiv($event,item.settingId)"
+                                                    (keyup.backspace)="onBackspace($event,item,i)"
+                                                    [innerHTML]="item.settingsValue" type="text"
+                                                    (keyup)="messegeBoxInput($event,i)">
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                            </div>
+                            <div class="actions_buttons d-flex align-items-center justify-content-end"
+                                [class.loading]="isloading" *ngIf="isChangedValue || isChangedValuePresetAmounts">
+                                <button class="btn btn-cancel mr-3" (click)="onDiscardChanges()">Cancel</button>
+                                <button class="btn btn-primary btn-preset" (click)="updateChagesSave()"
+                                    *ngIf="this.commonMethodService.isfeatureSetting"><span>{{'SAVECHANGES' |
+                                        translate}}</span></button>
+                                <button class="btn btn-primary btn-preset btn-core" (click)="onUpgrade()"
+                                    *ngIf="!this.commonMethodService.isfeatureSetting"><span>{{'UPGRADETOSAVE' |
+                                        translate}}</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    @if (isDevEnv) {
+                    <div class="tab-pane" id="drm">
+                        DRM
+                    </div>
+                    <div class="tab-pane" id="mobile">
+                        Mobile
+                    </div>
+                    <div class="tab-pane" id="pocket">
+                        Pocket
+                    </div>
+                    <div class="tab-pane" id="donate">
+                        Donate
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="container admin-register preset-amt" *ngIf="!isDevEnv">
+    <div class="white_box">
+        <h4 class="headline">{{'PRESETAMOUNT' | translate}}</h4>
+        <p>{{'CUSTOMIZEPRESENT' | translate}}</p>
+        <div class="preset-form">
+            <div class="row-preset-data" *ngFor="let item of presetAmounts;let j=index">
+                <label>{{'PRESET' | translate}} {{j+1}}:</label>
+                <div class="preset-amount-left">
+                    <input class="form-control" type="number" placeholder="0.00" (focusout)="convertDecimal(j)"
+                        [(ngModel)]="item.amount" name="amount_{{j+1}}" />
+                    <span [ngClass]="commonMethodService.currencyClass"></span>
+                </div>
+                <div class="preset-amount-right">
+                    <input class="form-control" placeholder="{{'ENTERTITLE' | translate}}" type="text"
+                        [(ngModel)]="item.text" name="text_{{j+1}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions_buttons" [ngClass]="isloading? 'loading' : ''">
+        <button class="btn btn-primary btn-preset" (click)="SavePresetAmount()"><span>{{'SAVE' |
+                translate}}</span></button>
+    </div>
+</div> -->

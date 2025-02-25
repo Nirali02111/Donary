@@ -1,0 +1,119 @@
+<div class="content-wrapper" ngbAutofocus tabindex="-1">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="filters__options page-user">
+                        <div class="search_opts  searchdonor_opts">
+                            <div class="colm searcg_txt">
+                                <input type="text" name="advanceSearch" id="searchUsers" class="form-control float-right" placeholder="{{'SEARCH'|translate}} {{'USERS'|translate}}"  (keyup)="search($event.target.value)">
+                            </div>
+                        </div>
+
+                        <div class="right_colms">
+                            <div class="colm tbl_field">
+                                <div class="dropdown">
+                                        <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-tag"> <span> {{'FIELDS'|translate}}</span></i>
+                                        </button>
+
+                                        <div cdkDropList [cdkDropListData]="colFields" class="field_dropdown dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                            <div cdkDropListGroup  *ngFor="let group of colFields" cdkDrag [cdkDragData]="group">
+                                                <ng-template [ngIf]="group.isTotalPanel">
+                                                    <h3 [ngClass]="group.class">{{group.title}}</h3>
+                                                    <ul cdkDropList  class="field_ul" id={{group.id}} [cdkDropListData]="group.items"  (cdkDropListDropped)="dropGroupItem($event)" role="menu" aria-labelledby="dropdownMenu">
+                                                        <li class="example-box" *ngFor="let item of group.items" cdkDrag (click)="$event.stopPropagation();" [cdkDragData]="item" class="dropdown" style="list-style:none;">
+                                                            <div class="fieldlst_chkbox" style="padding-left: 50px;" >
+                                                                <input type="checkbox"  class="fields_chkbx" class="" [(ngModel)]="item.isVisible"
+                                                                (change)="setGridColVisibility($event,item.colName,item.isVisible)" [id]="item.colId">
+                                                                <label  class="fields_lbl" [for]="item.colId">{{item.colName}}</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="colm extra_opts">
+                                <div class="dropdown dropleft">
+                                    <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <span>...</span>
+                                    </button>
+                                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                        <li class="dropdown">
+                                            <a class="dropdown-item"><i class="fa fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                                        </li>
+                                        <hr class="seprator" />
+                                        <li class="dropdown"><a class="dropdown-item" (click)="downloadExcel()"><i class="fa fa-file-excel" ></i> {{'EXCEL'|translate}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tbl_colm_sticky"  id="user_div">
+                        <div class="modal_custom px-0 table-responsive transaction__table table-column-fixed">
+                         <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                            <div class="px-2" id="userListScroll" style="overflow-y: auto; height: 100%;">
+                                <table class="table-striped  redesign_table table-resizable" [svData]="gridFilterData" #sv="svDataTable" [svRowsOnPage]="25" svSortBy="userId" svSortOrder="asc">
+                                    <thead>
+                                        <tr>
+                                            <ng-container *ngFor="let groupHeader of colFields; let i=index" >
+                                                <ng-container *ngFor="let objHeader of groupHeader.items; let i=index" >
+                                                    <th resizable  *ngIf="checkGridColVisibility(objHeader.colName)" [ngClass]="getTableTdClassName(objHeader)" >
+                                                        <sv-default-sorter  [by]="objHeader.sortName" >{{objHeader.colName}}
+                                                    </sv-default-sorter>
+                                                </th>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tr>
+                                    </thead>
+                                    <tbody  *ngIf="sv.data?.length > 0">
+                                            <tr *ngFor="let item of sv.data; let i=index" tabindex={{i}} class="table-row table-row-{{i}}">
+                                                <ng-container  *ngFor="let groupHeader of colFields;">
+                                                    <ng-container  *ngFor="let objHeader of groupHeader.items;">
+                                                        <ng-container *ngIf="checkGridColVisibility(objHeader.colName)">
+
+                                                            <td *ngIf="objHeader.sortName=='firstname'" >{{item.firstname}}</td>
+                                                            <td *ngIf="objHeader.sortName=='lastname'" >{{item.lastname}}</td>
+                                                            <td *ngIf="objHeader.sortName=='email'" style="color:#7b5bc4;cursor:pointer;"  (click)="editUser(item.userId)">{{item.email}}</td>
+                                                            <td *ngIf="objHeader.sortName=='phone'" >{{item.phone}}</td>
+                                                            <td *ngIf="objHeader.sortName=='title'" >{{item.title}}</td>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </tr>
+                                    </tbody>
+                                    <tbody *ngIf="sv.data?.length == 0">
+                                            <tr>
+                                                <td colspan="16" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="new_tblfoot">
+                    <div class="show_entry">
+                        <span class="total_record">{{'SHOWING'|translate}} <span *ngIf="isFiltered"><strong>{{filterRecord}}</strong> {{'OF'|translate}} </span> <strong>{{totalRecord}}</strong> {{'RECORDS'|translate}}</span>
+                        <div  class="custom_pagination">
+                            <sv-bootstrap-paginator [svTable]="sv"   [rowsOnPageSet]="[25, 50, 100]">
+                            </sv-bootstrap-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isloading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+            </div>
+        </div>
+    </section>
+</div>

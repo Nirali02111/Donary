@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+  <g id="bxs-coin-stack" transform="translate(-8 -4)">
+    <path id="Path_1862" data-name="Path 1862" d="M16.5,12.5c4.225,0,8.5-1.46,8.5-4.25S20.725,4,16.5,4,8,5.46,8,8.25,12.276,12.5,16.5,12.5Z" fill="#fff"/>
+    <path id="Path_1863" data-name="Path 1863" d="M8,18.125c0,2.79,4.276,4.25,8.5,4.25s8.5-1.46,8.5-4.25V16c0,2.79-4.275,4.25-8.5,4.25S8,18.79,8,16Z" transform="translate(0 -5.625)" fill="#fff"/>
+    <path id="Path_1864" data-name="Path 1864" d="M8,26.125c0,2.79,4.276,4.25,8.5,4.25s8.5-1.46,8.5-4.25V24c0,2.79-4.275,4.25-8.5,4.25S8,26.79,8,24Z" transform="translate(0 -9.375)" fill="#fff"/>
+  </g>
+</svg>

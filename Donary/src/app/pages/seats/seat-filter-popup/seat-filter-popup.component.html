@@ -1,0 +1,170 @@
+<div class="filter_modal_popup" ngbAutofocus tabindex="-1">
+    <div class="modal-body modal__custom_content">
+        <div class="card" style="box-shadow: none !important;">
+            <div class="row close_btn">
+                <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body">
+            <div class="row" *ngIf="false">
+                    <div class="label-group col-4 mb-2">
+                        <label class="text-uppercase" for="lblDonor">
+                            {{'SEASON' | translate}} :
+                        </label>
+                    </div>
+                    <div class="input-field-group col-8 mb-2">
+                        <div class="dropdown">
+                            <angular2-multiselect id="ddlSeason"
+                                [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                [data]="commonMethodService.localCampaignList"
+                                [(ngModel)]="selectedSeason"
+                                (onDeSelectAll)="onDeSelectAll('selectedSeason')">
+                                <c-item>
+                                    <ng-template let-item="item">
+                                        <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                            {{item.itemName}}
+                                            <span class="heb-dropdown-status">{{item.status}}</span></label>
+                                    </ng-template>
+                                </c-item>
+                            </angular2-multiselect>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="label-group col-4 mb-2">
+                        <label class="text-uppercase" for="lblDonor">
+                            {{'SECTION' | translate}} :
+                        </label>
+                    </div>
+                    <div class="input-field-group col-8 mb-2">
+                        <div class="dropdown">
+                            <angular2-multiselect id="ddlSection"
+                                [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                                [data]="sectionList"
+                                [(ngModel)]="selectedSection"
+                                (onDeSelectAll)="onDeSelectAll('selectedSection')">
+                            </angular2-multiselect>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'LOCATION' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlLocation"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="locationList"
+                            [(ngModel)]="selectedLocation"
+                            (onDeSelectAll)="onDeSelectAll('selectedLocation')">
+                        </angular2-multiselect>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'ROW' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlRow"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="rowList"
+                            [(ngModel)]="selectedRow"
+                            (onDeSelectAll)="onDeSelectAll('selectedRow')">
+                        </angular2-multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'SEAT#' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlSeat"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="seatList"
+                            [(ngModel)]="selectedSeat"
+                            (onDeSelectAll)="onDeSelectAll('selectedSeat')">
+                        </angular2-multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'AISLE' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlAisle"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="aisleList"
+                            [(ngModel)]="selectedAisle"
+                            (onDeSelectAll)="onDeSelectAll('selectedAisle')">
+                        </angular2-multiselect>
+                        </div>
+                    </div>
+                </div>
+                <div class="row price-filter-fields">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'SEATPRICE' | translate}} :</label>
+                    </div>
+                    <div class="input-field-group row col-8 mb-2">
+                        <div class="input-group col-5 mb-2">
+                            <input type="number" [(ngModel)]="selectedSeatPrice.minValue" class="form-control" name="txtMinValue"
+                            id="input-minvalue"  min="0" placeholder="{{'MINVALUE' | translate}}"/>
+                        </div>
+                        <div class="input-group col-1 mb-2">-</div>
+                        <div class="input-group col-5 mb-2">
+                            <input type="number" [(ngModel)]="selectedSeatPrice.maxValue" name="txtMaxValue" class="form-control"
+                            id="input-maxvalue"   min="0" placeholder="{{'MAXVALUE' | translate}}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'SEEATSTATUS' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlSeatPrice"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="seatStatusList"
+                            [(ngModel)]="selectedSeatStatus"
+                            (onDeSelectAll)="onDeSelectAll('selectedSeatStatus')">
+                        </angular2-multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label class="text-uppercase">{{'PAYMENTSTATUS' | translate}} :</label>
+                </div>
+                    <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+                        <angular2-multiselect id="ddlSeatPrice"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="paymentStatusList"
+                            [(ngModel)]="selectedPaymentStatus"
+                            (onDeSelectAll)="onDeSelectAll('selectedPaymentStatus')">
+                        </angular2-multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div *ngIf="isloading" class="overlay">
+                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between modal__custom_footer">
+        <div class="left_part"></div>
+        <div class="right_part">
+            <button class="btn btn-primary" (click)="searchSeats()">{{'SEARCH' | translate}} </button>&nbsp;&nbsp;
+            <button class="btn btn-default" (click)="clearFilter()">{{'CLEARALLFILTERS' | translate}}</button>
+        </div>
+    </div>
+</div>

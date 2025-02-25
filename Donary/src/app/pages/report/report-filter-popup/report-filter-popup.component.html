@@ -1,0 +1,506 @@
+<div
+  class="modal-header data-set-header-wrap"
+  style="display: block"
+  ngbAutofocus
+  tabindex="-1"
+>
+  <div class="row">
+    <div class="input-group col-11">
+      <h4 class="modal-title">{{ headerTitle }}</h4>
+    </div>
+    <div class="input-group col-1">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="closePopup()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="modal-body data-set-wrap" id="transaction_type">
+  <div class="card" style="box-shadow: none !important">
+    <div class="data-set-top">
+      <div class="row">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'COLUMNNAME'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <input
+            type="text"
+            [(ngModel)]="columnName"
+            class="form-control"
+            name="txtColumnName"
+            id="input-columnname"
+          />
+        </div>
+      </div>
+
+      <div class="row transtype-drpdown">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'TRANSECTIONTYPE'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <select
+            class="select_option"
+            [(ngModel)]="transactionType"
+            #TransactionTypeSelect
+            (change)="transactionTypeChange(TransactionTypeSelect.value)"
+          >
+            <option  [value]="1">{{'PAYMENT'  |translate}}</option>
+            <option  [value]="2">{{'PLEDGES'  |translate}}</option>
+            <option  [value]="4">{{'SHEDULEPAYMENTS'  |translate}}</option>
+            <option  [value]="5">{{'SCHEDULEPLEDGES'  |translate}}</option>
+            <option  [value]="6">{{'TOTAL'  |translate}}</option> 
+            <option  [value]="0">{{'COMPARE'  |translate}}</option>     
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngIf="isTotal">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'TOTALDETAILS'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlTotal"
+            [settings]="
+              commonMethodService.setDropDownSettings('Select', 2, false, false)
+            "
+            [data]="totalDropdown"
+            [(ngModel)]="selectedTotalDropdown"
+            (onDeSelect)="DeSelectItem($event)"
+            (onDeSelectAll)="DeSelectAllTotal($event)"
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckPaymentType"
+            (change)="OnCheckBoxChange($event, 'PaymentType')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="isPayment">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'PAYMENTTYPE'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentType"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Payment Type',
+                2,
+                false,
+                false
+              )
+            "
+            [data]="commonMethodService.paymentTypeList"
+            [(ngModel)]="commonMethodService.selectedPaymentTypes"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentTypeList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckPaymentType"
+            (change)="OnCheckBoxChange($event, 'PaymentType')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row data-amount-range" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor" *ngIf="!isTotal"> {{'AMOUNTRANGE'  |translate}} : </label>
+          <label for="lblDonor" *ngIf="isTotal"> {{'TOTALRANGE'  |translate}} : </label>
+        </div>
+        <div class="input-group col-4 mb-2">
+          <input
+            type="number"
+            [(ngModel)]="commonMethodService.minValue"
+            class="form-control"
+            name="txtMinValue"
+            id="input-minvalue"
+            min="0"
+            placeholder="{{'MINVALUE'  |translate}}"
+          />
+        </div>
+        -
+        <div class="input-group col-4 mb-2">
+          <input
+            type="number"
+            [(ngModel)]="commonMethodService.maxValue"
+            name="txtMaxValue"
+            class="form-control"
+            id="input-maxvalue"
+            min="0"
+            placeholder="{{'MAXVALUE'  |translate}}"
+          />
+        </div>
+        <span class="text-danger error-msg" *ngIf="greaterThanValidate"
+          >{{'MINVALUEMAXVALUE'  |translate}}</span
+        >
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckAmtRange"
+            (change)="OnCheckBoxChange($event, 'AmountRange')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+
+      <ng-container *ngIf="isPledge">
+        <div class="row data-amount-range" *ngIf="!isCompare">
+          <div class="input-group col-3 mb-2">
+            <label for="lblDonor"> {{'BALANCERANGE'  |translate}} : </label>
+          </div>
+          <div class="input-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.minBalanceValue"
+              class="form-control"
+              name="txtMinValue"
+              id="input-minvalue"
+              min="0"
+              placeholder="{{'MINVALUE'  |translate}}"
+            />
+          </div>
+          -
+          <div class="input-group col-4 mb-2">
+            <input
+              type="number"
+              [(ngModel)]="commonMethodService.maxBalanceValue"
+              name="txtMaxValue"
+              class="form-control"
+              id="input-maxvalue"
+              min="0"
+              placeholder="{{'MAXVALUE'  |translate}}"
+            />
+          </div>
+          <span class="text-danger error-msg" *ngIf="greaterThanBalanceValidate"
+            >{{'MINVALUEMAXVALUE'  |translate}}</span
+          >
+          <div class="data-set-exclude">
+            <input
+              type="checkbox"
+              id="chckBalRange"
+              (change)="OnCheckBoxChange($event, 'BalanceRange')"
+            />
+            <label></label
+            ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row data-set-calander-left" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'DATE'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2 date-field">
+          <!-- <app-donary-date-picker
+            [isFullView]="false"
+            [SelectedDateRange]="selectedDateRange"
+            (emtDatesUpdated)="datesUpdated($event)"
+          ></app-donary-date-picker> -->
+
+        <!-- Calendar code started -->
+        <ng-template #popContent 
+        ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+        </ng-template>
+        <div class="input-group dnr-dateicker-container date_picker" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle" container="body"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="reportDynamicsCalender">
+          <input type="text" class="form-control" value=""
+            [placeholder]="EngHebCalPlaceholder" />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+            </span>
+          </div>
+        </div>
+        <!-- Calendar code ended -->
+        
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckDate"
+            (change)="OnCheckBoxChange($event, 'Date')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'REASON'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentReason"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Payment Reason',
+                2,
+                false,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentReasonList"
+            [(ngModel)]="commonMethodService.selectedPaymentReasons"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentReasonList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckReason"
+            (change)="OnCheckBoxChange($event, 'Reason')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'COLLECTOR'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentCollector"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Collector',
+                2,
+                false,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentCollectorList"
+            [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentCollectorList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckCollector"
+            (change)="OnCheckBoxChange($event, 'Collector')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'LOCATION'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlPaymentLocation"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Location',
+                2,
+                false,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.paymentLocationList"
+            [(ngModel)]="commonMethodService.selectedPaymentLocations"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('paymentLocationList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckLocation"
+            (change)="OnCheckBoxChange($event, 'Location')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!isCompare">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'CAMPAIGN'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlCampaign"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Campaign',
+                2,
+                false,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.CampaignList"
+            [(ngModel)]="commonMethodService.selectedFromCampaignList"
+            (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')"
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckCampaign"
+            (change)="OnCheckBoxChange($event, 'Campaign')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <!-- <div class="row" *ngIf="isPayment" >
+                        <div class="input-group col-3 mb-2">
+                            <label for="lblDonor">
+                                Payment Status:
+                            </label>
+                        </div>
+                        <div class="input-group col-9 mb-2">
+                            <angular2-multiselect id="ddlPaymentStatus"
+                                [settings]="commonMethodService.setDropDownSettings('Select Payment Status',2,false,false)"
+                                [data]="commonMethodService.paymentStatusList"
+                                [(ngModel)]="commonMethodService.selectedPaymentStatus"
+                                (onDeSelectAll)="commonMethodService.onDeSelectAll('PaymentStatusList')">
+                            </angular2-multiselect>
+                        </div>
+                        <div class="data-set-exclude"><input type="checkbox" id="chckPaymentStatus" (change)="OnCheckBoxChange($event,'PaymentStatus')"><label></label><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span></div>
+                    </div> -->
+      <div class="row" *ngIf="isSchedule">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'SCHEDULESTATUS'  |translate}} : </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <angular2-multiselect
+            id="ddlScheduleStatus"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Schedule Status',
+                2,
+                false,
+                false
+              )
+            "
+            [data]="commonMethodService.scheduleStatusList"
+            [(ngModel)]="commonMethodService.selectedScheduleStatus"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('ScheduleStatusList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckScheduleStatus"
+            (change)="OnCheckBoxChange($event, 'PaymentStatus')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="isPledge">
+        <div class="input-group col-3 mb-2">
+          <label for="lblDonor"> {{'AMOUTTYPE'  |translate}} </label>
+        </div>
+        <div class="input-group col-9 mb-2">
+          <!-- <select class="form-control" [(ngModel)]="amountType" name="slctAmount" id="input-amount">
+                                <option value="-1">All</option>
+                                <option value="1">Paid</option>
+                                <option value="2">Balance</option>
+                                </select> -->
+          <angular2-multiselect
+            id="ddlAmountType"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                'Select Amount Type',
+                2,
+                false,
+                false,
+                false,
+                true
+              )
+            "
+            [data]="commonMethodService.amountTypeList"
+            [(ngModel)]="commonMethodService.selectedAmountType"
+            (onDeSelectAll)="
+              commonMethodService.onDeSelectAll('AmountTypeList')
+            "
+          >
+          </angular2-multiselect>
+        </div>
+        <div class="data-set-exclude">
+          <input
+            type="checkbox"
+            id="chckAmtType"
+            (change)="OnCheckBoxChange($event, 'AmountType')"
+          /><label></label
+          ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
+        </div>
+      </div>
+      <div class="row" *ngIf="isCompare">
+        <div class="input-group col-8 mb-2">
+          <label for="lblDonor"> {{'SELECTCOLUMNCOMPARE'  |translate}}: </label>
+        </div>
+      </div>
+      <div class="row" *ngIf="isCompare">
+        <div class="input-group col-6 mb-2">
+          <select class="form-control" [(ngModel)]="compareColumn1">
+            <option value="-1">--{{'SELECT'  |translate}}--</option>
+            <option
+              *ngFor="let columnName of columnNameList"
+              value="{{ columnName.id }}"
+            >
+              {{ columnName.name }}
+            </option>
+          </select>
+        </div>
+        <div class="input-group col-6 mb-2">
+          <select class="form-control" [(ngModel)]="compareColumn2">
+            <option value="-1">--{{'SELECT'  |translate}}--</option>
+            <option
+              *ngFor="let columnName of columnNameList"
+              value="{{ columnName.id }}"
+            >
+              {{ columnName.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+      <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between data-set-modal">
+  <div class="left_part">
+    <button class="btn btn-primary" style="float: left" (click)="clearFilter()">
+      {{ "CLEARALLFILTERS" | translate }}
+    </button>
+  </div>
+  <div class="right_part">
+    <button class="btn btn-primary addSection" (click)="searchReportData()">
+      {{ buttonName }}
+    </button>
+  </div>
+</div>
+<div class="modal_backdore"></div>

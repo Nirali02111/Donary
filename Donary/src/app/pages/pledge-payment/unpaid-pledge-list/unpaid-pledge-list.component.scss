@@ -1,0 +1,417 @@
+.main-header.navbar.donary-pay-header{
+    background: #EAE9EF 0% 0% no-repeat padding-box !important;
+    margin-left: 0px !important;
+}
+.main-header .brand-link{
+    padding: 0px;
+}
+
+.main-header .brand-link .brand-image{
+    padding: 0px;
+    max-height: 40px;
+}
+
+.donary-pay-header {
+    padding: 14px 0px;
+}
+
+.top-info--section {
+    padding:40px 0px 10px;
+
+    .pledge-search {
+        border-top: 1px #ddd solid;
+        padding-top: 20px;
+        margin-top: 14px;
+        align-items: center;
+
+        h3 {
+            text-align: left;
+            font: normal normal 900 22px/30px Avenir;
+            letter-spacing: 0px;
+            color: #6D56A5;
+            margin-right: 20px;
+        }
+
+        .form-control{
+            width: 326px;
+            height: 46px;
+            background: #ECECEF 0% 0% no-repeat padding-box;
+            border-radius: 5px;
+            text-align: left;
+            font: normal normal normal 18px/25px Avenir;
+            letter-spacing: 0px;
+            color: #B3AEBB;
+            padding-left: 20px;
+        }
+    }
+
+    .customlabel {
+        text-align: left;
+        font: normal normal 900 19px/26px Avenir;
+        letter-spacing: 0px;
+        color: #434246;
+        margin-bottom: 4px;
+
+        &.lng_hebrew{
+            text-align: left;
+            font: normal normal bold 23px/27px FbShefa;
+            letter-spacing: 0px;
+            color: #434246;
+            margin-bottom: 0;
+        }
+    }
+
+    p {
+        text-align: left;
+        font: normal normal 500 17px/23px Avenir;
+        letter-spacing: 0px;
+        color: #434246;
+    }
+ 
+
+    .lbl--text {
+        text-align: left;
+        font: normal normal 500 16px/23px Avenir;
+        letter-spacing: 0px;
+        color: #85838B;
+        float: left;
+        width: 80px;
+        margin-right: 20px;
+    }
+    .txt--value {
+        float: left;
+    }
+
+    .card--section {
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 7px 18px #3528521f;
+        border-radius: 8px;
+        padding: 24px;
+        text-align: center;
+    
+       &.pay_total {
+           h4 {
+                text-align: center;
+                font: normal normal 500 16px/22px Avenir;
+                letter-spacing: 0px;
+                color: #434246;
+                text-transform: uppercase;
+                margin-bottom: 0;
+           }
+           .totol_amount {
+                font: normal normal 900 25px/34px Avenir;
+                letter-spacing: 0px;
+                color: #434246;
+                margin: 10px 0px 20px;
+            }
+            .btn--pay {
+                text-align: center;
+                font: normal normal 900 16px/25px Avenir;
+                letter-spacing: 0px;
+                color: #FFFFFF;
+            }
+        }    
+    }
+
+}
+
+.pay-pledge--table {
+    thead th {
+        background: #505050 0% 0% no-repeat padding-box;
+        text-align: left;
+        font: normal normal 900 14px/20px Avenir;
+        letter-spacing: 0px;
+        color: #E8E8E8;
+        padding: 12px 30px;
+
+        &:first-child{
+            padding-left: 30px;
+        }
+    }
+    tbody{
+        td {
+            font: normal normal 500 14px/25px Avenir;
+            letter-spacing: 0px;
+            color: #434246;
+            padding: 12px 30px;
+
+            &:first-child{
+                padding-left: 12px;
+            }
+            
+            .form-control {
+                height: 38px;
+                background: #ECECEF 0% 0% no-repeat padding-box;
+                border-radius: 5px;
+                width: 110px;
+                text-align: right;
+                font: normal normal 500 14px/25px Avenir;
+                letter-spacing: 0px;
+                color: #434246;
+            }
+            i{
+                color: #CCC0E6;
+            }
+
+            &.campaign-name {
+                text-align: left;
+                font: normal normal bold 18px/27px FbShefa !important;
+                letter-spacing: 0px;
+                color: #434246;
+                width: 320px;
+            }
+        }
+    }
+    tr:hover{
+        background-color: #F1EDFA !important;
+
+        .form-control{
+            background: #dccff7;
+        }
+    }
+}
+
+
+
+
+.pay-wrapper {
+    background: #fafafa;
+}
+
+.pay-pledge--table .text-right .form-control {
+    float: right;
+}
+
+.custom--checkbox .checkbox-label:before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border: 2px solid #7B5BC4;
+    position: absolute;
+    left: 7px;
+    top: -3px;
+    background: #fff;
+    border-radius: 2px;
+    content: "";
+}
+
+.custom--checkbox input[type=checkbox]:checked +  .checkbox-label:after {
+    content: '';
+    width: 5px;
+    height: 8px;
+    border:2px solid #7B5BC4;
+    position: absolute;
+    left: 12px;
+    top: -1px;
+    border-top: 0;
+    border-left: 0;
+  
+    transition: 0.1s;
+
+    opacity: 1;
+    transform: rotate(
+    45deg
+    ) scale(1);
+
+}
+
+
+
+
+.custom--checkbox .checkbox-label {
+    position: relative;
+}
+
+
+.custom--checkbox input.custom-checkbox {
+    position: absolute;
+    opacity: 0;   
+    cursor: pointer;
+    width: 32px;
+    height: 29px;
+}
+
+.pledge-search .search--input {
+    position: relative;
+}
+.pledge-search .right--arrow-icon img {
+    height: 12px;
+    position: absolute;
+    top: 17px;
+    right: 15px;
+}
+
+span.pay_text {
+    text-align: left;
+    font: normal normal normal 29px/42px Avenir;
+    letter-spacing: -1.53px;
+    color: #6D56A4;
+}
+
+.top-info--section .col--left {
+    padding-right: 40px;
+}
+
+.billfrom_img {
+    margin-right: 14px;
+}
+
+.bill-to {display: flex;}
+
+
+.for-mobile-only{display: none;}
+.pay-wrapper .pledge-search {margin-left: 0;margin-right: 0;}
+
+.pledge-search .select-all label:after {
+    content: '';
+    width: 5px;
+    height: 8px;
+    border: 2px solid #7B5BC4;
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    border-top: 0;
+    border-left: 0;
+    transition: 0.1s;
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+    opacity: 0;
+}
+.pledge-search .select-all label:before {
+    width: 19px;
+    height: 19px;
+    border: 2px solid #c6bfbf;
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    background: #fff;
+    border-radius: 2px;
+    content: "";
+}
+.pledge-search .select-all label {
+    position: relative;
+}
+.pledge-search .select-all input:checked + label:after {
+    opacity: 1;
+}
+.pledge-search .select-all {
+    display: none;
+}
+.pledge-search .search--input .select-all {
+    border-bottom: 0;
+}
+.pay-pledge--table tr td.pay-description{font: italic normal 600 15px/20px FbShefa !important;min-width: 220px;}
+
+
+@media screen and (max-width: 991px) {
+  .pay-wrapper .bill-to{flex-wrap: wrap;}
+.donary-pay-header {
+    position: relative !important;
+    float: none !important;
+}
+}
+
+@media screen and (max-width: 767px) {
+.for-mobile-only{display: block !important;}
+.pay-page-wrapper .col--right{display: none;} 
+.top-info--section>.row {width: 100%;display: block;margin-right: 0;margin-left: 0;}
+.pay-page-wrapper .col--left{padding-right: 0;max-width: 100%;width: 100%; padding-left: 0;}
+.donary-pay-header .container {justify-content: center;}
+.donary-pay-header .navbar-nav {display: block !important;}
+.pay-wrapper .pledge-search {margin-right: auto !important;margin-left: auto !important;width: 100%;max-width: 570px;padding-top: 10px;margin-top: 15px; padding-left: 20px; padding-right: 20px; border: 0;}
+.pay-wrapper .for-mobile-only {width: 100%;display: block;max-width: 100%;padding: 0 20px;margin-top: 0px;}
+.pay-wrapper .for-mobile-only .pay_total.card {display: flex;flex-wrap: wrap;flex-direction: unset;}
+.pay-wrapper .for-mobile-only .pay_total.card h4 {flex: 0 0 30%;width: 100%;max-width: 30%;margin: 0;text-transform: uppercase;font-size: 18px;line-height: normal;display: flex;align-items: center;}
+.pay-wrapper .for-mobile-only .pay_total.card .totol_amount {flex: 0 0 70%;width: 100%;max-width: 70%;text-align: right;font-size: 28px;font-weight: 600;}
+.pay-wrapper .for-mobile-only .pay_total.card .btn--pay {width: 100%;padding: 10px 14px;}
+.pay-top-wrap .top-info--section {padding-top: 0px;}
+.pay-wrapper .pledge-search h3 {flex: 0 0 100%;margin-right: 0 !important;color: #434246;}
+.pay-wrapper .pledge-search .search--input {flex: 0 0 100%;}
+.pay-wrapper .pledge-search .search--input .form-control {width: 100% !important;}
+.pay-page-wrapper .pay-top-wrap{width: 100%;max-width: 100%;padding-left: 0;padding-right: 0;}
+.pay-page-wrapper .pay-address-wrap {margin-right: 0;margin-left: 0;}
+.pay-address-wrap .bill-from {width: 100%;max-width: 100%;flex: 0 0 100%;background: #eae9ef;text-align: center;}
+.pay-address-wrap .bill-from .lbl--text {display: none;}
+.pay-address-wrap .bill-from .txt--value {width: 100%;display: block !important;padding-top: 15px;}
+.pay-address-wrap .bill-from .data_content h4,
+.pay-address-wrap .bill-from .data_content p {text-align: center !important;}
+.pay-address-wrap .bill-from .data_content p {margin-bottom: 55px;}
+.pay-wrapper .bill-to .lbl--text {width: 100% !important;max-width: 520px;margin: 0 auto !important;float: none;}
+.pay-wrapper .bill-to{flex-wrap: wrap;width: 100%;display: block;max-width: 100%;flex: 0 0 100%;border-radius: 15px;background: #fff;margin-top: -30px;padding: 0 30px;padding-top: 30px;}
+.pay-wrapper .bill-to .txt--value {width: 100%;max-width: 520px;float: none !important;margin: 0 auto !important;border-bottom:1px solid #ddd; padding-bottom: 15px;}
+
+.pay-pledge--table table thead {display: none;}
+.table-pay-responsive, .table-pay-responsive tr, .table-pay-responsive td, .table-pay-responsive tbody, .table-pay-responsive thead{display: block; position: relative;}
+.pay-pledge--table .table-pay-responsive tbody tr td:first-child {position: absolute;left: -36px;}
+.pay-pledge--table .table-pay-responsive tbody tr td {padding: 0 !important;width: 100% !important;padding-left: 30px !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-total,
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paid,
+.pay-pledge--table .table-pay-responsive tbody tr td.remaining_amount,
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow{position: absolute;top: 0;right: 0;max-width: 45%;font-size: 16px !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paid {top: 26px;}
+.pay-pledge--table .table-pay-responsive tbody tr td.remaining_amount {top: 55px;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow {top: 90px;}
+.pay-pledge--table .table-pay-responsive tr {min-height: 140px; margin-bottom: 12px; background: transparent !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td:before {content: attr(data-title);text-align: left;position: absolute;left: 0;font-weight: 600;font-size: 14px;color: #cecece;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow:before {color: #434246 !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow .form-control {width: 100px !important;color: #7B5BC4 !important;font-size: 18px !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td.custom--checkbox label:before {border: 2px solid #c6bfbf !important; width: 19px !important; height: 19px !important;}
+.pay-pledge--table tr td .hebrew_lang,
+.pay-pledge--table tr td{font-size: 14px; line-height: normal;}
+.pay-wrapper{background: #fff;}
+.custom--checkbox input.custom-checkbox {left: 40px;top: 9px; z-index: 1;}
+.table-pay-responsive td.custom--checkbox .checkbox-label:after{left: 14px !important; top: 1px !important;}
+.table-pay-responsive tfoot {display: block;}
+.table-pay-responsive tr td.campaign-name {display: none !important;padding-left: 15px;}
+.pay-pledge--table .table-pay-responsive tr td.custom--checkbox {position: absolute !important;left: -31px;top: 0;padding-left: 0 !important;}
+.campaign-name-for-mobile {display: block !important;padding-left: 30px; padding-top: 3px;font-weight: 600;}
+.pay-pledge--table .table-pay-responsive td.amount-number:after {content: '#';position: absolute;left: 20px;}
+.pay-pledge--table .table-pay-responsive td.amount-number {left: 9px !important;color: #cecece !important;top: -3px;}
+.pay-pledge--table .table-pay-responsive .hebrew_lang{font-weight: normal;}
+.pledge-search .select-all {display: block;}
+.pay-address-wrap .billfrom_img{margin:0 auto;}
+.pledge-search-box {max-width: 90%; width: 100%;}
+.custom--checkbox.select-all {max-width: 10%;width: 100%;}
+.pay-wrapper .pledge-search .search--input {flex: 0 0 100%; display: flex; justify-content: space-between; padding-left: 12px;padding-left: 8px;max-width: 525px;}
+
+}
+
+@media screen and (max-width: 575px) {
+    .pay-wrapper .bill-to .lbl--text {    max-width: 100%;}
+    .pay-wrapper .bill-to .txt--value{max-width: 100%;}
+    .pay-wrapper .bill-to{padding: 0 20px;padding-top: 20px;}
+    .table-pay-responsive, .table-pay-responsive tr, .table-pay-responsive td, .table-pay-responsive tbody, .table-pay-responsive thead{padding-left: 10px; padding-right: 7px;}
+    .pay-wrapper .pledge-search .search--input{padding-left: 12px;}
+}
+@media screen and (max-width: 480px) {
+.pay-wrapper .pledge-search h3{font-size: 16px;}
+.pay-wrapper .for-mobile-only .pay_total.card h4{flex: 0 0 40%; max-width: 40%;}
+.pay-wrapper .for-mobile-only .pay_total.card .totol_amount{flex: 0 0 60%;max-width: 60%;}
+.donary-pay-header .brand-link .pay_text {font: normal normal normal 22px/32px Avenir;}
+.donary-pay-header .brand-link .brand-image {max-height: 30px !important;margin-right: 0.2rem;}
+.pay-address-wrap .bill-from .txt--value .data_content .customlabel {font-size: 18px;}
+.pay-address-wrap .bill-from .data_content p{font-size: 14px;}
+.pay-wrapper .bill-to .txt--value .lng_hebdrew, .pay-wrapper .bill-to .txt--value .customlabel {font-size: 16px; margin-bottom: 0; line-height: normal;}
+.pay-wrapper .bill-to .txt--value p {font-size: 14px;}
+.paypledge_footer footer.main-footer {padding-left: 0;padding-right: 0;}
+.paypledge_footer footer.main-footer .copyright--text p {font-size: 12px;}
+.paypledge_footer footer.main-footer .copyright--text {width: 100%;display: block;}
+.paypledge_footer .main-footer .version--text {margin-top: 5px;}
+.paypledge_footer footer.main-footer  .container {flex-wrap: wrap;}
+.paypledge_footer footer.main-footer {padding-left: 0;padding-right: 0;}
+.pay-pledge--table .table-pay-responsive tbody tr td:before{font-size: 12px;}
+.pay-pledge--table .table-pay-responsive tbody tr td:first-child {left: -22px;}
+.pay-pledge--table .table-pay-responsive tbody tr td{padding-left: 13px !important; font-size: 14px !important; max-width: 50%;} 
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-total,
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paid,
+.pay-pledge--table .table-pay-responsive tbody tr td.remaining_amount,
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow{max-width: 48%; font-size: 14px !important;}
+.pay-pledge--table .table-pay-responsive tbody tr td.pay-paynow .form-control{width: 60px !important; padding: 5px 4px; height: 30px;}
+.pay-wrapper .pledge-search h3{flex: 0 0 45%;}
+.custom--checkbox input.custom-checkbox{left: 25px;}
+.campaign-name-for-mobile{padding-left: 12px;max-width: 125px;line-height: normal;word-break: break-all;}
+.pay-pledge--table .table-pay-responsive td.amount-number:after{left: 4px;}
+.pay-pledge--table .table-pay-responsive tr td.custom--checkbox{left: -25px;}
+.pay-wrapper .pledge-search .search--input{padding-left: 0px;}
+.custom--checkbox.select-all{max-width: 12%;}
+}

@@ -1,0 +1,280 @@
+<div class="product-details-page header-product">
+    <app-product-header></app-product-header>
+
+    <section class="donor-relation">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <ng-container *ngIf="productDetail?.productImage;else defaultProductImage">
+                        <img [src]="productDetail.productImage" alt="product-img" title="product-img" class="product-img" />
+                    </ng-container>
+                    <ng-template #defaultProductImage>
+                        <img src="assets/dist/img/product/product-img.png" alt="product-img" title="product-img" class="product-img" />
+                    </ng-template>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="donor-relation-title">
+                        <h1>{{productDetail?.productName}} {{productDetail?.productNote}}</h1>
+                    </div>
+
+                    <!-- <div class="donor-relation-price">${{productDetail?.price * productCount}}</div> -->
+
+                    <div class="donor-relation-price">${{productDetail?.price}}</div>
+
+                    <div class="donor-relation-date">
+                       <!-- <h5>{{productDetail?.saleType}}</h5>-->
+                       <h5>{{productDetail?.productName.trim()=="DRM"?"Annual Software License Fee":productDetail?.saleType}}</h5>
+                    </div>
+
+                    <div class="donor-relation-text">
+                       <!-- <p>
+                            No more wait I can’t see you. Portal’s Smart Camera automatically adjusts to stay with the action. Get all the best combination of the features you know and new improvements you'll love.
+                        </p>-->
+                        <p *ngIf="productDetail?.productName=='Donary Mobile'">
+                        {{'DONARYMOBILE'  |translate}}
+                        </p>
+                        <p *ngIf="productDetail?.productName=='Donary Pocket'">
+                        {{'DONARYPOCKET'  |translate}}
+                        </p>
+                        <p *ngIf="productDetail?.productName.trim()=='DRM'">
+                        {{'DOONARYRELATION'  |translate}}
+                        </p>
+                    </div>
+
+                    <div class="donor-relation-list" [innerHtml]="productDetail?.features"></div>
+
+                    <h4 class="qty-title">{{'DEVICES'  |translate}}</h4>
+                    <div class="quantity-button" [class.hasZeroCount]="productCount == 0" [class.swingAnimate]="swingAnimate">
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" (click)="DecreaseProduct()">
+                                <span class="glyphicon glyphicon-minus">-</span>
+                            </button>
+                        </span>
+
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number quantity-number" min="0" [(ngModel)]="productCount" (change)="onChangeProductCount($event)" />
+
+                        <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" (click)="IncreaseProduct()">
+                                <span class="glyphicon glyphicon-plus">+</span>
+                            </button>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--------donor relation end------->
+
+    <!---------donor page start--------->
+
+    <section class="donor-page tab-content" id="tab-1">
+        <div class="container">
+            <div class="donor-page-container">
+                <div class="donor-header text-center">
+                    <h1>{{'CHOOSEYOURPLAN'  |translate}}</h1>
+                </div>
+
+                <!-- Plans list -->
+                <div class="row donor-page-division">
+                    <ng-container *ngFor="let planItem of planList">
+                        <ng-template  [ngTemplateOutlet]="ProductPlanTemp" [ngTemplateOutletContext]="{item: planItem}"></ng-template>
+                    </ng-container>
+                </div>
+                <!-- Plans list -->
+
+                <div class="select-plan-division row">
+                    <ng-container *ngIf="isProductAddedToCart();else defaultEmptyCart">
+                        <div class="col-md-4 select-plan">
+                            <ng-container *ngIf="productCount != 0">
+                                <h6>{{'SELECTEDPRODUCT'  |translate}} :</h6>
+                                <div class="d-flex">
+                                    <div class="select-plan-device">
+                                        <h4>{{productDetail?.productName}} - ${{productDetail?.price}}</h4>
+                                    </div>
+                                    <div class="quantity-text">
+                                        <h4>{{'QTY'  |translate}} : {{productCount}}</h4>
+                                    </div>
+                                    <div class="close-icon" (click)="onUnSelectProduct()">
+                                        <span>
+                                            <i class="fa fa-times"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-md-5 row select-plan">
+                            <ng-container *ngIf="productCount != 0">
+                                <div class="col-md-9">
+                                    <h6>{{'SELECTEDPLAN'  |translate}} :</h6>
+                                    <!-- Plans list -->
+                                    <ng-container *ngFor="let planItem of planList">
+                                        <ng-container *ngIf="isPlanAddedToCart(planItem.planId) && planItem.user != 0">
+                                            <ng-template  [ngTemplateOutlet]="SelectedProductPlanTemp" [ngTemplateOutletContext]="{item: planItem}"></ng-template>
+                                        </ng-container>
+                                    </ng-container>
+                                    <!-- Plans list -->
+                                </div>
+
+                                <div class="col-md-3 select-plan-inner">
+                                    <h6>{{'SUBTOTAL'  |translate}} :</h6>
+                                    <h4>{{getTotalCount()}}</h4>
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </ng-container>
+
+
+                    <!-- Default Pre-selected footer -->
+                    <ng-template #defaultEmptyCart>
+                        <ng-container *ngIf="defaultFooter">
+                            <div class="col-md-4 select-plan">
+                                <ng-container *ngIf="productCount != 0">
+                                    <h6>{{'SELECTEDPRODUCT'  |translate}} :</h6>
+                                    <div class="d-flex">
+                                        <div class="select-plan-device">
+                                            <h4>{{productDetail?.productName}} - ${{productDetail?.price}}</h4>
+                                        </div>
+                                        <div class="quantity-text">
+                                            <h4>{{'QTY'  |translate}} : {{productCount}}</h4>
+                                        </div>
+                                        <div class="close-icon" (click)="onHideDefaultFooter()">
+                                            <span>
+                                                <i class="fa fa-times"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-5 row select-plan">
+                                <ng-container *ngIf="productCount != 0">
+                                    <div class="col-md-9">
+                                        <h6>{{'SELECTEDPLAN'  |translate}} :</h6>
+                                        <!-- Standard list -->
+                                        <ng-container *ngFor="let planItem of planList">
+                                            <ng-container *ngIf="planItem.user != 0">
+                                                <ng-template  [ngTemplateOutlet]="SelectedProductPlanTemp" [ngTemplateOutletContext]="{item: planItem}"></ng-template>
+                                            </ng-container>
+                                        </ng-container>
+                                        <!-- Standard list -->
+                                    </div>
+
+                                    <div class="col-md-3 select-plan-inner">
+                                        <h6>{{'SUBTOTAL'  |translate}} :</h6>
+                                        <h4>{{getDefaultTotalCount()}}</h4>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </ng-template>
+                    <!-- Default Pre-selected footer -->
+
+                    <div class="col-3 select-plan add-to-checkout">
+                        <div class="add-to-cart" >
+                            <a href="" (click)="onClickAddToCart($event)">{{'ADDPRODUCT'  |translate}}</a>
+                        </div>
+                        <!-- <div class="checkout">
+                            <a href="" [routerLink]="['/productandplans/cart']">View Cart</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-------donor page end---------->
+
+    <!-------donor link start---------->
+
+    <section class="donor-links">
+        <div class="container">
+            <ul class="donor-tabs">
+                <li class="tab-link"><a href="#tab-1">{{'SPECIFICATIONS'  |translate}}</a></li>
+                <li class="tab-link"><a href="#tab-2">{{'FEATURES'  |translate}}</a></li>
+                <li class="tab-link"><a href="#tab-3">{{'REVIEWS'  |translate}}</a></li>
+                <li class="tab-link"><a href="#tab-4">{{'HOWITWORKS'  |translate}}</a></li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+
+
+<ng-template #ProductPlanTemp let-item="item">
+    <div class="col-md-4">
+        <div class="donor-plan-wrapper">
+            <div class="d-flex align-items-center justify-content-between donor-plan">
+                <div>
+                    <h3>{{item.planName}}</h3>
+                </div>
+
+                <div>
+                    <!-- <h4>${{item.price * item.user}}/{{item.recurringType}}</h4> -->
+                    <h4>${{item.price}}/{{item.recurringType}}</h4>
+                </div>
+            </div>
+
+            <div class="donor--info" [innerHTML]="item.features">
+            </div>
+
+            <div class="d-flex align-items-center plans-item-bottom">
+                <div class="users-title">
+                    <h4 class="text-uppercase">{{'USERS'  |translate}}USERS:</h4>
+                </div>
+
+                <div class="input-group quantity-button product-details-page-plans" [class.swingAnimate]="needToAnimate()"  [class.hasZeroCount]="isAllPlansEmptyUser()">
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" (click)="DecreaseUserInPlan(item.planId)">
+                            <span class="glyphicon glyphicon-minus">-</span>
+                        </button>
+                    </span>
+
+                    <input type="number" id="quantity" name="quantity" class="form-control input-number quantity-number" min="1"  [(ngModel)]="item.user" (change)="onChangePlanCount($event, item.planId)" />
+
+                    <span class="input-group-btn">
+                        <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" (click)="IncreaseUserInPlan(item.planId)">
+                            <span class="glyphicon glyphicon-plus">+</span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #SelectedProductPlanTemp let-item="item">
+    <div class="d-flex select-device-inner">
+        <div class="select-plan-device">
+            <h4>{{item.planName}} - ${{item.price}}/{{'MO'  |translate}}</h4>
+        </div>
+        <div class="quantity-text">
+            <h4>{{'QTY'  |translate}} : {{item.user}}</h4>
+        </div>
+
+        <ng-container *ngIf="defaultFooter">
+            <div class="close-icon" (click)="onHideDefaultFooterPlan(item.planId)">
+                <span>
+                    <i class="fa fa-times"></i>
+                </span>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!defaultFooter">
+            <div class="close-icon" (click)="onUnSelectPlan(item.planId)">
+                <span>
+                    <i class="fa fa-times"></i>
+                </span>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+
+<div *ngIf="isLoading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>

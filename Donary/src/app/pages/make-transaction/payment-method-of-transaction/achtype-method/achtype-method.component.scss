@@ -1,0 +1,13 @@
+.icon-personal::before {
+    content: "\f007";
+    /* Add the personal icon here */
+    font-family: FontAwesome;
+    margin-right: 5px;
+}
+
+.icon-business::before {
+    content: "\f0b1";
+    /* Add the business icon here */
+    font-family: FontAwesome;
+    margin-right: 5px;
+}

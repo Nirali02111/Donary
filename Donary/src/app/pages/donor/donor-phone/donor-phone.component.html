@@ -1,0 +1,63 @@
+<!-- Donor Phone List -->
+<div class="modal_wrap" style="display: block;" ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header">
+    <h3>{{'PHONE'|translate}} {{'LIST'|translate}}</h3>
+    <button class="close" (click)="closePopup()">&times;</button>
+    </div>
+    <div class="modal_content modal__custom_content">
+        <i class="fas fa-plus-circle fa-lg" (click)="addDonorPhonePopup()" style="color: #6D55A5;float:right;"></i>                
+            <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="table-responsive transaction__table">
+                        <table class="table table-striped" [svData]="gridFilterData" #sv="svDataTable"
+                            [svRowsOnPage]="25" svSortBy="phoneLabel" svSortOrder="asc">
+                            <thead>
+                                <tr>
+
+                                    <th >
+                                        <sv-default-sorter by="phoneLabel">{{'PHONE'|translate}} {{'LABEL'|translate}}
+                                        </sv-default-sorter>
+                                    </th>
+                                    <th>
+                                        <sv-default-sorter by="phoneNumber">{{'PHONENUMBER'|translate}}
+                                        </sv-default-sorter>
+                                    </th>                                                                       
+                                  <th>{{'ACTIONS'|translate}}</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="sv.data?.length > 0">
+                                <tr *ngFor="let item of sv.data; let i=index">
+                                    <td>{{ item.phoneLabel }}</td>
+                                    <td>{{ item.phoneNumber  }}</td>                                                                                                               
+                                    <td>
+                                         <a (click)="editDonorPhone(item.phoneID)"  style="color: #6D55A5;cursor: pointer;"><i class="fas fa-edit"></i></a> | 
+                                        <a (click)="deleteDonorPhone(item.phoneID)"  style="color: #6D55A5;cursor: pointer;"><i class="fas fa-trash"></i></a> 
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="sv.data?.length == 0">
+                                <tr>
+                                    <td colspan="15" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="15" style="border-left: none !important;border-right: none !important;">
+                                        <sv-bootstrap-paginator  [rowsOnPageSet]="[25, 50, 100]">
+                                        </sv-bootstrap-paginator>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div *ngIf="isloading" class="card-overlay" >
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>    
+</div>
+    <!--  Donor Phone List -->

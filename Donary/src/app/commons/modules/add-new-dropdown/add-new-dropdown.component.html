@@ -1,0 +1,63 @@
+<div class="d-flex align-items-center gap-3">
+  <div class="position-relative">
+    @if (allButtonPermission) {
+      <button class="btn btn-primary donor_add d-flex justify-content-center align-items-center" type="button"
+      data-toggle="dropdown" aria-haspopup="true" NgbAutoFocus tabindex="-1" aria-expanded="false"
+       (click)="onButtonClick($event)" [ngClass]="isClose == true ? '' : 'window-open'">
+      <img src="/assets/dist/img/icon-plus.svg" alt="Plus" width="" height=""><span>{{ "CREATE" | translate }}</span><i
+        aria-hidden="true" class="fa fa-caret-down"></i>
+    </button>
+    } 
+
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" [ngClass]="getCustomCss()">
+      @if (makeTransactionPermission) {
+        <li>
+          <a class="dropdown-item" style="cursor: pointer"
+            (click)="makeTransactionPopup()"><span class="transaction_icon">{{ "TRANSACTIONS" | translate }}</span></a>
+        </li>
+      }
+
+    @if (newDonorPermission) {
+      <li>
+        <a class="dropdown-item" style="cursor: pointer" (click)="openSaveDonorPopup()"><span
+            class="donor_icon">{{ "DONORS" | translate }}</span></a>
+      </li>
+    }
+    @if (newReasonPermission) {
+      <li>
+        <a class="dropdown-item" style="cursor: pointer"
+          (click)="openSaveReasonPopup()"><span class="reason_icon">{{ "REASONS" | translate }}</span></a>
+      </li>
+    }
+
+    @if (newCampaignPermission) {
+      <li>
+        <a class="dropdown-item" style="cursor: pointer"
+          (click)="openSaveCampaignPopup()"><span class="campaign_icon">{{ "CAMPAIGNS" | translate }}</span></a>
+      </li>
+    }
+    @if (newLocationPermission) {
+      <li>
+        <a class="dropdown-item" style="cursor: pointer"
+          (click)="openSaveLocationPopup()"><span class="location_icon">{{ "LOCATIONS" | translate }}</span></a>
+      </li>
+    }
+
+    @if (newCollectorPermission) {
+      <li>
+        <a class="dropdown-item" style="cursor: pointer"
+          (click)="openSaveCollectorPopup()"><span class="collector_icon">{{ "COLLECTORS" | translate }}</span></a>
+      </li>
+    }
+    </ul>
+  </div>
+
+  <!-- <button class="scroll-top" *ngIf="showButton" (click)="scrollToTop()"><span class="material-icons">arrow_upward</span></button> -->
+  <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+  <div id="btn-transaction" class="position-relative">
+    <a href="javascript:void(0)" class="btn btn-primary btn-transaction" (click)="isNewTransactionPopupsRelease ? openSelectTransactionPopup() : makeTransactionPopup()">
+      {{ "NEWTRANSACTION" | translate }}
+    </a>
+  </div>
+</div>

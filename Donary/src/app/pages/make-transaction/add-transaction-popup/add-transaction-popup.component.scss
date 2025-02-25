@@ -1,0 +1,36 @@
+#amount10 span:focus {
+  outline: 4px dashed darkorange !important;
+}
+
+
+
+
+
+
+
+
+.icon-personal::before {
+  content: "\f007";
+  /* Add the personal icon here */
+  font-family: FontAwesome;
+  margin-right: 5px;
+}
+
+.icon-business::before {
+  content: "\f0b1";
+  /* Add the business icon here */
+  font-family: FontAwesome;
+  margin-right: 5px;
+}
+
+.modal-recept {
+  opacity: 1;
+  visibility: visible;
+  width: fit-content;
+  margin-top: 30px;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

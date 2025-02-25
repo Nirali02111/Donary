@@ -1,0 +1,503 @@
+<div class="card reports_page" ngbAutofocus tabindex="-1">
+  <div class="card-body">
+    <!-- Date range and advanced filter options -->
+    <div
+      class="filters__options"
+      [ngClass]="[isSelectedSavedQuery ? 'query--selected' : '']"
+    >
+      <div class="search_opts">
+        <!-- <div class="input-group search_input">
+                <input type="text" name="advanceSearch" class="form-control float-right" placeholder="Search" (keyup)="search($event.target.value)">
+            </div> -->
+        <!-- Card Type Drop Down -->
+        <!-- <div class="query_name">
+                <input type="text" name="queryName" class="form-control float-right" placeholder="Query Name">
+               </div>
+               <div class="save_query">
+                <button type="button"  class="btn btn-default">Save Query </button>
+               </div>                       -->
+
+        <div id="div_report_search" class="colm searcg_txt report_search">
+          <!-- <input type="text" name="advanceSearch" class="form-control float-right" placeholder="Search"  (keyup)="search($event.target.value)">    -->
+          <input
+            type="text"
+            name="advanceSearch"
+            id="id_advanceSearch"
+            class="form-control float-right"
+            placeholder="{{ 'SEARCH' | translate }}"
+            (keyup)="searchNew($event.target.value, $event)"
+          />
+        </div>
+
+        <label class="lbl_queryname" *ngIf="hasDonor">{{ queryName }}</label>
+
+        <span class="one_twoline" *ngIf="hasDonor" (click)="SwitchLines()"
+          ><img src="assets/dist/img/sorting_icon.png"
+        /></span>
+
+        <div class="btns__actions">
+          <div
+            class="save_button"
+            *ngIf="hasDonor && !isProdEnv"
+            (click)="onSaveQueryClick()"
+          ></div>
+          <div
+            class="delete_button"
+            *ngIf="hasDonor"
+            (click)="DeleteDonorQuery()"
+          ></div>
+        </div>
+      </div>
+      <div class="fields_opts">
+        <div class="new_query" [ngClass]="{btn_new_query_prod: isProdEnv}">
+          <button
+            type="button"
+            class="btn_newquery"
+            (click)="OpenNewQueryPopup()"
+          >
+            <i class="fa fa-plus" aria-hidden="true"></i> New Query
+          </button>
+        </div>
+
+        <ng-container *ngIf="savedQuearyList.length !== 0 && !isProdEnv; else noSavedQQuery">
+          <div class="dropdown saved-query-list">
+            <button
+              type="button"
+              class="btn_savequery"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Saved Query <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </button>
+            <ul
+              class="dropdown-menu multi-level"
+              role="menu"
+              aria-labelledby="dropdownMenu"
+            >
+              <ng-container *ngFor="let item of savedQuearyList">
+                <li class="dropdown-item">
+                  <div class="save-query-name">
+                    <a
+                      class="dropdown-item"
+                      (click)="onSelectSavedQueryNew(item.reportQueryId)"
+                    >
+                      {{ item.queryName }}
+                    </a>
+                  </div>
+                  <div
+                    class="query-btn modal-custom-footer space-between modal__custom_footer testclass"
+                  >
+                    <span>
+                      <i
+                        class="fa fa-trash"
+                        (click)="deleteSavedQuery(item.reportQueryId)"
+                      ></i
+                    ></span>
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </ng-container>
+
+        <ng-template #noSavedQQuery *ngIf="!isProdEnv">
+          <button type="button" class="btn_savequery" disabled>
+            Saved Query <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </button>
+        </ng-template>
+
+        <div class="dropdown dropleft extra_opts">
+          <button
+            type="button"
+            t-title="More actions"
+            class="btn btn-default"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span>...</span>
+          </button>
+          <ul
+            class="dropdown-menu multi-level"
+            role="menu"
+            aria-labelledby="dropdownMenu"
+          >
+            <li class="dropdown">
+              <a
+                class="dropdown-item"
+                *ngIf="newQueryAdded"
+                (click)="DownloadExcel()"
+                ><i class="fas fa-file-excel"></i> {{ "EXCEL" | translate }}</a
+              >
+              <a class="dropdown-item" *ngIf="!newQueryAdded"
+                ><i class="fas fa-file-excel"></i> {{ "EXCEL" | translate }}</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="rprt_custom_action">
+      <span class="action_lbl" *ngIf="isSelected"
+        >{{ "ACTIONS" | translate }}:</span
+      >
+      <div class="custom_action" *ngIf="isSelected">
+        <span
+          class="icn_labels"
+          data-toggle="tooltip"
+          (click)="onBulkCustomReport()"
+          t-title="Generate report"
+        ></span>
+      </div>
+    </div>
+    <div class="reports_main report_new_tbl table-new-query">
+      <div class="reports_adon">
+        <div class="card__action">
+          <div class="card__adon">
+            <div class="table_wrapper" id="main_table">
+              <div class="all-reporttbl" id="queryReportScroll">
+                <div class="donor_table">
+                  <table
+                    class="table table-striped column-{{
+                      displayFields.length
+                    }}"
+                    *ngIf="hasDonor"
+                    [svRowsOnPage]="pageSize"
+                    [svData]="gridFilterData"
+                    #sv="svDataTable"
+                  >
+                    <!-- class="table table-striped" -->
+                    <tr
+                      class="thead-tr first-name"
+                      style="background-color: transparent"
+                    >
+                      <th>
+                        <input
+                          type="checkbox"
+                          t-title="Select"
+                          name="selectAll"
+                          id="select_all"
+                          (change)="selectRecord($event, 'selectAll', null)"
+                        />
+                        <label for="select_all" class="custom-checkbox"></label>
+                      </th>
+                      <th
+                        *ngFor="let item of displayFields; let i = index"
+                        class="col-{{ item.itemName }}"
+                      >
+                        <!-- <th *ngFor="let item of displayFields; let i=index" [ngClass]="displayFields.length==1 ? 'column-one' : '' "> -->
+                        <div class="title_header">
+                          <!-- <sv-default-sorter by="fullName"> -->
+                          <span class="col-bckground"
+                            >{{ fieldHeaderFullName(item) }}
+                          </span>
+                          <span class="tabs-icon-left">
+                            <i
+                              class="fa fa-angle-up"
+                              style="cursor: pointer"
+                              (click)="Sort('desc')"
+                            ></i>
+                            <i
+                              class="fa fa-angle-down"
+                              style="cursor: pointer"
+                              (click)="Sort('asc')"
+                            ></i>
+                          </span>
+
+                          <!-- <i class="fa fa-angle-up" style="cursor: pointer;" (click)="Sort('desc')"></i>
+                                                     <i class="fa fa-angle-down" style="cursor: pointer;" (click)="Sort('asc')"></i> -->
+                          <!-- <i class="fa fa-edit" (click)="OpenDonorFilterPopup(false)" style="color:white;cursor: pointer;"></i>
+                                                    </div>
+                                                    <div class="grandtotal_space">
+                                                        &nbsp;
+                                                    </div> -->
+                          <!-- </sv-default-sorter> -->
+                        </div>
+                      </th>
+                      <th>
+                        <span class="tabs-icon-right">
+                          <i
+                            class="fa fa-edit"
+                            (click)="OpenEditQueryPopup()"
+                          ></i>
+                          <i
+                            class="fa fa-trash"
+                            *ngIf="hasDonor"
+                            (click)="DeleteDonorQuery()"
+                          ></i>
+                        </span>
+                      </th>
+                    </tr>
+                    <tbody *ngIf="sv.data?.length > 0">
+                      <tr class="tbody_header empty_space_header">
+                        <td colspan="3">
+                          <table>
+                            <tr>
+                              <th>&nbsp;</th>
+                              <th>&nbsp;</th>
+                              <th>&nbsp;</th>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <!--  <tr *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : 'twoline_height']" >    -->
+                      <tr
+                        *ngFor="let item of sv.data; let i = index"
+                        tabindex="{{ i }}"
+                        class="table-row table-row-{{ i }}"
+                        [ngClass]="[
+                          oneline
+                            ? 'oneline_height'
+                            : displayFields.length > 7
+                            ? 'threeline_height'
+                            : 'twoline_height'
+                        ]"
+                      >
+                        <td>
+                          <input
+                            #checkboxes
+                            id="{{ item.accountId }} "
+                            type="checkbox"
+                            name="singlecheck"
+                            (change)="
+                              selectRecord(
+                                $event,
+                                'singlecheck',
+                                item.accountId
+                              )
+                            "
+                            [checked]="checkselectRecord(item.accountId)"
+                          />
+                          <label
+                            for="{{ item.accountId }}"
+                            class="custom-checkbox"
+                          ></label>
+                        </td>
+                        <td *ngFor="let val of item.fieldArray; let j = index">
+                          <ng-template
+                            [ngIf]="val && val.indexOf(':') > -1"
+                            [ngIfElse]="showlist"
+                          >
+                            <span class="field_value"
+                              ><span
+                                class="father_lbl"
+                                *ngIf="val && val.split(':')[0] != ''"
+                                >:בן </span
+                              ><span>{{ val && val.split(":")[0] }}</span></span
+                            >
+                            <p class="field_value" *ngIf="!oneline">
+                              <span
+                                class="father_lbl"
+                                *ngIf="val && val.split(':')[1] != ''"
+                                >:חתן</span
+                              ><span>{{ val && val.split(":")[1] }}</span>
+                            </p>
+                          </ng-template>
+                          <ng-template #showlist>
+                            <span
+                              [attr.data-hover]="val"
+                              [ngClass]="
+                                displayFields[j].itemName == 'Location'
+                                  ? 'field-location'
+                                  : ''
+                              "
+                              class="field_value"
+                              [ngClass]="
+                                (item.accountId &&
+                                  displayFields[j].itemName ==
+                                    'Full Name Jewish') ||
+                                displayFields[j].itemName == 'Full Name'
+                                  ? 'donar-name-clickable'
+                                  : ''
+                              "
+                              (click)="
+                                displayFields[j].itemName ==
+                                  'Full Name Jewish' ||
+                                displayFields[j].itemName == 'Full Name'
+                                  ? openDonorCardPopup(item.accountId)
+                                  : ''
+                              "
+                              title="{{
+                                displayFields[j].itemName == 'Location'
+                                  ? ''
+                                  : val && val.split(',')[0]
+                              }}"
+                              [ngStyle]="{
+                                cursor:
+                                  displayFields[j].itemName ==
+                                    'Full Name Jewish' ||
+                                  displayFields[j].itemName == 'Full Name'
+                                    ? 'pointer'
+                                    : 'default'
+                              }"
+                              >{{
+                                displayFields[j].itemName == "Location"
+                                  ? ""
+                                  : val && val.split(",")[0]
+                              }}
+                              <span
+                                *ngIf="displayFields[j].itemName == 'Location'"
+                                class="location-span"
+                                >{{ val }}</span
+                              ></span
+                            >
+                            <p
+                              class="field_value"
+                              [ngClass]="
+                                (item.accountId &&
+                                  displayFields[j].itemName ==
+                                    'Full Name Jewish') ||
+                                displayFields[j].itemName == 'Full Name'
+                                  ? 'donar-name-clickable'
+                                  : ''
+                              "
+                              *ngIf="!oneline"
+                              title="{{ val && val.split(',')[1] }}"
+                              (click)="
+                                displayFields[j].itemName ==
+                                  'Full Name Jewish' ||
+                                displayFields[j].itemName == 'Full Name'
+                                  ? openDonorCardPopup(item.accountId)
+                                  : ''
+                              "
+                              [ngStyle]="{
+                                cursor:
+                                  displayFields[j].itemName ==
+                                    'Full Name Jewish' ||
+                                  displayFields[j].itemName == 'Full Name'
+                                    ? 'pointer'
+                                    : 'default'
+                              }"
+                            >
+                              {{
+                                displayFields[j].itemName == "Location"
+                                  ? ""
+                                  : val && val.split(",")[1]
+                              }}
+                            </p>
+                          </ng-template>
+                        </td>
+                        <!-- start code for showing tag fields-->
+                        <td *ngFor="let val of tagArray; let j = index">
+                          <ng-container
+                            *ngIf="!val && !item.tagName; else showTags"
+                          >
+                          </ng-container>
+
+                          <ng-template #showTags>
+                            <div *ngIf="val.tagName.includes(item.tagNames)">
+                              <p class="field_value">
+                                <span>YES</span>
+                              </p>
+                            </div>
+                            <div *ngIf="!val.tagName.includes(item.tagNames)">
+                              <p class="field_value">
+                                <span>NO</span>
+                              </p>
+                            </div>
+                          </ng-template>
+                        </td>
+                        <!-- end code for showing tag fields -->
+                      </tr>
+                    </tbody>
+                    <!-- changes start -->
+                    <tbody *ngIf="sv.data?.length == 0">
+                      <tr>
+                        <!-- <td *ngFor="let item of displayFields; let i=index"></td> -->
+                        <td
+                          [attr.colspan]="displayFields.length"
+                          class="no-data-found"
+                        >
+                          No data found
+                        </td>
+                      </tr>
+                    </tbody>
+                    <!-- changes end -->
+                  </table>
+                </div>
+                <div #dvParent cdkDropList class="d-flex payment_pledge_col">
+                  <ng-container #container> </ng-container>
+                </div>
+                <div class="query_btns">
+                  <div
+                    class="addon_button"
+                    *ngIf="hasDonor"
+                    (click)="OpenSearchFilter()"
+                  ></div>
+                  <!-- <div class="save_button" *ngIf="hasDonor"></div>
+                                <div class="delete_button" *ngIf="hasDonor" (click)="DeleteDonorQuery()"></div> -->
+                  <div
+                    class="addon_button"
+                    style="display: none"
+                    *ngIf="!hasDonor"
+                  ></div>
+                </div>
+              </div>
+              <div class="custom_rprt_pagination pagination_design">
+                <div class="totl_record">
+                  <span class="total_record"
+                    >Showing
+                    <span *ngIf="isFiltered"
+                      ><strong>{{ filterRecord }}</strong> of
+                    </span>
+                    <strong>{{ totalRecord }}</strong> records</span
+                  >
+                </div>
+                <div class="show_enteries">
+                  <span class="show_entrylbl">Showing Entries:</span>
+                  <span
+                    class="show_entryval active"
+                    id="25"
+                    (click)="PageSizeChange(25)"
+                    >25</span
+                  >
+                  <span
+                    class="show_entryval"
+                    id="50"
+                    (click)="PageSizeChange(50)"
+                    >50</span
+                  >
+                  <span
+                    class="show_entryval"
+                    id="100"
+                    (click)="PageSizeChange(100)"
+                    >100</span
+                  >
+                </div>
+                <jw-pagination
+                  [items]="gridCount"
+                  [pageSize]="pageSize"
+                  (changePage)="onChangePage($event)"
+                ></jw-pagination>
+              </div>
+            </div>
+            <div *ngIf="isdatasetLoading" class="overlay dataset-report-loader">
+              <div class="report-loader"></div>
+            </div>
+          </div>
+
+          <!-- <div class="compare_button" *ngIf="hasDonor" (click)="OpenComparePopup()"> Compare</div> -->
+        </div>
+      </div>
+
+      <!-- <div class="card__action">
+                    <div class="card__adon">
+                    Insert here new section on click
+                    </div>
+                    <div class="addon_button">
+                    <span class="icon icon_plus">
+
+                    </span>
+                    </div>
+                    </div> -->
+    </div>
+  </div>
+  <div *ngIf="isloading" class="overlay generate-report-loader">
+    <div class="report-loader"></div>
+    <span *ngIf="isloadingSavedQuery">Generating Query</span>
+    <button *ngIf="isloadingSavedQuery && isRunLoader" (click)="stopRun()">
+      <span class="icon-close">X</span> Clear
+    </button>
+  </div>
+</div>

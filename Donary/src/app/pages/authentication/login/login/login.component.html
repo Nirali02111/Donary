@@ -1,0 +1,118 @@
+<div class="hold-transition login-page">
+  <div class="login-box row no-gutters justify-content-center">
+    <div class="col-sm-6">
+      <div class="card mb-0 h-100">
+        <div class="card-body login-card-body">
+          <p class="login-box-msg"><img src="/assets/dist/img/donary-drm-logo.svg" class="main_logo"></p>
+          <div id="login_div">
+            <h1 class="mb-5">Please <span>Sign In</span></h1>
+          <div id="Div_gError" class="google-login-signup" style="display: none;">
+            There isn't an Donary account associated <div style="margin-right: 5px;">with <span class="mail-info"><span id="googleEmailId"></span></span> <a routerLink="/productandplans">Sign Up</a></div>
+          </div>
+          <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm">
+            <div class="row">
+                <div class="input-group col-12 mb-3">
+
+                <input type="text" class="form-control" [(ngModel)]="user.email" #email="ngModel" name="email"
+                  id="input-email" placeholder="User name" [ngClass]="[email.touched && email.invalid ? 'error-field' : '']"
+                  required autofocus />
+                  <i class="icon-user"></i>
+                <div *ngIf="f.submitted && email.invalid" class="input-group col-12">
+                  <span class="error invalid-feedback" style="display: block;">User name is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="row password_txtbx">
+              <div class="input-group col-12 mb-3">
+
+                <input [type]="passwordType" class="form-control" id="passwordId" [(ngModel)]="user.password" #password="ngModel"
+                  name="password"  placeholder="Password" [ngClass]="[ password.touched && password.invalid  ?'error-field' : '']"
+                  [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required />
+                  <i class="icon-lock"></i>
+                <div *ngIf="f.submitted && password.invalid" class="input-group col-12">
+                  <span class="error invalid-feedback" style="display: block;">Password is required</span>
+                </div>
+              </div>
+              <div class="password-action-wrap">
+                <i class="icon-eye {{setClass}}" (click)="ShowPassword()"></i>
+              </div>
+            </div>
+            <div class="forgot__password"><a href="#" (click)="onforgotpassword()">Forgot Password?</a></div>
+            <div class="row info__text">
+            </div>
+
+          <div class="btn-wrapper">
+            <button [disabled]="isloading"  class="btn btn-primary btn-block btnsignin">
+              <span *ngIf="!isloading">Sign In</span>
+              <div class="loader" *ngIf="isloading">
+                <img src="assets/dist/img/rolling-loader.svg" alt="" />
+            </div>
+            </button>
+
+          </div>
+        </form>
+        <div class="loginwith-google-newl"  id="googleButton">
+
+
+        </div>
+        <div class="loader-white fetching-mail-id" style="display: none;">
+          <img src="assets/dist/img/rolling-loader-color.svg" alt="" />
+        </div>
+        <div class="signup-text">
+          Don't have an account?<a href="/productandplans" class="signup-link">Sign Up</a>
+        </div>
+        </div>
+      <div id="Forgot_div" class="forgot-password-mainwrap" style="display: none;">
+        <div class="">
+          <h1>Password <span>Reset</span></h1>
+          <p class="login-desc">Enter your email and a reset link will be sent to you.</p>
+      </div>
+  <form action="recover-password.html"  class="reset-pass-form"name="forgotform" (ngSubmit)="ff.form.valid && getSendForgotPasswordEmail(ff)" #ff="ngForm">
+      <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="Email" [(ngModel)]="txtForgotEmail" #forgotEmail="ngModel" name="forgotEmail"
+          id="input-forgot-email" [ngClass]="[forgotEmail.touched && forgotEmail.invalid ? 'error-field' : '']"
+          required [pattern]="emailPattern">
+              <div class="login-icon">
+                  <span class="far fa-envelope"></span>
+              </div>
+              <div *ngIf="ff.submitted && forgotEmail.invalid" class="input-group col-12">
+                <span class="error invalid-feedback" style="display: block;"> {{forgotEmail.errors.pattern ? "Email not valid." :"Email is required."}}</span>
+              </div>
+
+      </div>
+      <div class="row">
+          <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block" *ngIf="!isloadingForgot" (click)="getSendForgotPasswordEmail(ff)">
+                Send Reset Link
+              </button>
+              <div class="loader" *ngIf="isloadingForgot">
+                <img src="assets/dist/img/rolling-loader.svg" alt="" />
+              </div>
+
+              <div class="signup-text">
+                Back to <a href="#" (click)="onloginDiv()" style="color: #7b5bc4!important;">Sign In</a>
+            </div>
+          </div>
+
+
+      </div>
+
+  </form>
+      </div>
+      <div class="email-confirmation" id="email-confirmation" *ngIf="isCheckEmailPage">
+        <h1>Check Your  <span>Mail</span></h1>
+        <p class="login-desc">We have sent a password recover instructions to your email.</p>
+        <button class="btn btn-primary btn-block" type="button" (click)="openEmail()">Open Email</button>
+        <p class="signup-text">Did not receive the email? Check your spam filter, or <button class="another-mail-action" (click)="anotherEmail();isCheckEmailPage=false;">try another email address</button></p>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6" *ngIf="!isCheckEmailPage">
+      <div class="login-img h-100 d-flex align-items-end justify-content-center">
+        <img src="/assets/dist/img/donary-login.png" alt="Login" />
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.switcher-block[t-title]:hover::after {
+    line-height: 20px;
+    left: initial;
+    right: calc(100% + 10px);
+    top: 50%;
+    bottom: initial;
+    transform: translateY(-50%);
+    width: 220px;
+    text-wrap: wrap;
+    text-align: center;
+    padding: 5px 10px;
+}

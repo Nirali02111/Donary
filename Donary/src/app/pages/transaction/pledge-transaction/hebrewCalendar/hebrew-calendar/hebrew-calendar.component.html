@@ -1,0 +1,89 @@
+<div class="jewish-calendar jewish-calendar-heb">
+	<div class="left-calendar-menu" *ngIf="!isOneDate">
+<div>
+	<button class="btn-menus active" id="id_today_h" (click)="onToday($event)">Today</button>
+    <button class="btn-menus" id="id_thisweek_h" (click)="onThisWeek($event)">This Week</button>
+	<button class="btn-menus" id="id_Last7days_h" (click)="onLast7days($event)">Last 7 days</button>
+	<button class="btn-menus" id="id_ThisMonth_h" (click)="onThisMonth($event)">This Month</button>
+	<button class="btn-menus" id="id_LastMonth_h" (click)="onLastMonth($event,-1)">Last Month</button>
+	<button class="btn-menus" id="id_NextMonth_h" (click)="onNextMonth($event,1)">Next Month</button>
+	<button class="btn-menus" id="id_ThisYear_h" (click)="onThisYear($event)">This Year</button>
+	<button class="btn-menus" id="id_LastYear_h" (click)="onLastYear($event,-1)">Last Year</button>
+	<button class="btn-menus" id="id_NextYear_h" (click)="onNextYear($event,1)">Next Year</button>
+	<button class="btn-menus" id="id_CustomRange_h" (click)="onCustomRange($event)">Custom Range</button>
+	@if ((pageName != 'RecentDashboard' && pageName != 'TotalRecentDashboard' && pageName != 'UpcomingDashboard' && pageName != 'Dashboard')) {
+		<button class="btn-menus" id="id_AllTime_h" (click)="onAllTime($event)">All Time</button>
+		}
+</div>
+	</div>
+	<div class="jewish-datepicker">
+		<div class="datepicker-arrow">
+			<div class="datepicker-arrow-inner">
+				<span class="arrow-left" (click)="onNavigateToYear(1)"><img src="/assets/dist/img/arrow-left.svg" alt="Arrow" /></span>
+				<span class="arrow-left" (click)="onNavigateToMonth(1)"><img src="/assets/dist/img/arrow-left-single.svg" alt="Arrow" /></span>
+			</div>
+			<div class="datepicker-arrow-inner">
+				<span class="arrow-right" (click)="onNavigateToMonth(-1)"><img src="/assets/dist/img/arrow-right-single.svg" alt="Arrow" /></span>
+				<span class="arrow-right" (click)="onNavigateToYear(-1)"><img src="/assets/dist/img/arrow-right.svg" alt="Arrow" /></span>
+			</div>
+		</div>
+
+		<ngb-datepicker
+			class="hebrew rtl"
+			#dp
+			[(ngModel)]="model"
+			[displayMonths]="monthNum"
+			[firstDayOfWeek]="7"
+			[dayTemplate]="dt"
+			[dayTemplateData]="dayTemplateData"
+			[firstDayOfWeek]="7"
+			(dateSelect)="onDateSelection($event)"
+			navigation="none"
+			[minDate]="minDate"
+		>
+		</ngb-datepicker>
+
+		<ng-template #dt let-date let-data="data" let-selected="selected" let-currentMonth="currentMonth" let-focused="focused">
+			@if (isOneDate) {
+				<div 
+			    	class="hebrew-day" 
+					[class.range]="isOneDateRange(date)"
+					class="custom-day"
+					[class.strikethrough]="isPastDate(date)"
+					(mouseenter)="hoveredDate = date"
+					(mouseleave)="hoveredDate = null">
+						<div class="gregorian-num">{{ data.gregorian.day + '/' + (data.gregorian.month) }}</div>
+						<div class="hebrew-num">{{ i18n.getDayNumerals(date) }}</div>
+				</div>
+			} @else {
+				<div 
+			    	class="hebrew-day" 
+			    	[class.outside]="date.month !== currentMonth" 
+			    	[class.selected]="selected" 		
+			    	class="custom-day"
+					[class.focused]="focused"
+					[class.range]="isRange(date)"
+					[class.faded]="isHovered(date) || isInside(date)"
+					(mouseenter)="hoveredDate = date"
+					(mouseleave)="hoveredDate = null">
+						<div class="gregorian-num">{{ data.gregorian.day + '/' + (data.gregorian.month) }}</div>
+						<div class="hebrew-num">{{ i18n.getDayNumerals(date) }}</div>
+				
+				</div>
+			}
+		</ng-template>
+
+		@if (isOneDate) {
+			<div class="start-date">
+				<span>{{ 'CALENDAR.DATE' | translate }}</span>
+				<input type="text" id="heb_startDate" [formControl]="fromDateControl"  value="{{displayFromHebDate(fromDate)}}">
+			</div>
+		} @else {
+			<div>
+				<div class="start-date">{{ 'CALENDAR.START_DATE' | translate }}<input type="text"  id="heb_startDate" [formControl]="fromDateControl"  value="{{displayFromHebDate(fromDate)}}"></div>
+				<div class="end-date">{{ 'CALENDAR.END_DATE' | translate }}<input type="text" id="heb_endDate" [formControl]="toDateControl"  value="{{displayToHebDate(toDate)}}"></div>
+				<div class="d-flex justify-content-between p-2"></div>
+			</div>
+		}
+	</div>
+</div>

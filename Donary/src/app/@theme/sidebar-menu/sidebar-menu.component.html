@@ -1,0 +1,292 @@
+<!-- Main Sidebar Container -->
+<div class="main-sidebar sidebar-dark-primary elevation-4" style="position: fixed; height: 100%">
+  <!-- Brand Logo -->
+  <a [routerLink]="dashboardPage_Url" class="brand-link">
+    <img src="assets/img/DonaryLogo.png" alt="AdminLTE Logo" class="brand-image" style="margin-left: 25%" />
+    <img src="assets/dist/img/logo-donory-core-white.svg" alt="AdminLTE Logo" class="brand-image-core"
+      style="margin-left: 25%" />
+    <img class="donary_icon" src="assets/dist/img/donary_icon.svg" alt="Donary Logo" />
+    <span class="brand-text">DRM</span>
+  </a>
+  <div class="toggle_btn">
+    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <button class="btn btn-primary btn-add-new hidden-desktop" (click)="openDropdown()">
+      <span class="material-icons">add</span> {{ "ADD" | translate }}
+      {{ "NEW" | translate }}
+    </button>
+    <!-- Sidebar Menu -->
+    <div class="mt-2">
+      <ng-container *appIsMobile>
+        <ul class="nav nav-pills nav-sidebar flex-column">
+          <li class="nav-item">
+            <a [routerLink]="dashboardPage_Url" class="nav-link" (click)="onDashboardClick()">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>{{ "DASHBOARD" | translate }}</p>
+            </a>
+          </li>
+          <ng-template [ngTemplateOutlet]="businessUserOption"></ng-template>
+        </ul>
+      </ng-container>
+      <ng-container *appIsWeb>
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+          <li [ngClass]="setLIMenuClass(menu)" *ngFor="let menu of sideMenuItems">
+            <span *ngIf="menu.isSeperator && menu.permission">
+              {{ menu.label | translate }}
+            </span>
+            <!-- Main menu Without sub menu -->
+            <a *ngIf="!menu.isSeperator && menu.route && menu.permission" [routerLink]="menu.route"
+              [ngClass]="[menu.active ? 'nav-link active' : 'nav-link']">
+              <i [ngClass]="menu.iconClasses" [hidden]="menu.label === 'Finance'"></i>
+              <i *ngIf="menu.label === 'Finance'" class="nav-icon  d-inline-block">
+                <img src="assets/img/icon-finance.svg" alt="Finance" />
+              </i>
+              <p>
+                {{ menu.label | translate }}
+                 <span class="alertCount" *ngIf="menu.label === 'NOTIFICATIONS' && alertCount > 0">{{alertCount}}</span>
+                 @if (isProdEnv && menu.label === "Finance") {
+                <span class="coming-soon">{{'COMMINGSOON' | translate}} </span>
+                 }
+              </p>
+            </a>
+
+
+
+            <!-- Main menu with sub menu -->
+            <a *ngIf="!menu.isSeperator && !menu.route" [ngClass]="[menu.active ? 'nav-link active' : 'nav-link']">
+              <i [ngClass]="menu.iconClasses"></i>
+              <p>
+                {{ menu.label | translate }}
+                <i *ngIf="menu.children && menu.children.length > 0" class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <!-- sub menu -->
+            <ul class="nav nav-treeview" *ngIf="menu.children && menu.children.length > 0">
+              <li class="nav-item" *ngFor="let child of menu.children">
+                <a *ngIf="child.route != ''" [routerLink]="[child.route]" href="#"
+                  [ngClass]="[child.selected ? 'nav-link active' : 'nav-link']">
+                  <i [ngClass]="child.iconClass"></i>
+                  <p>{{ child.label | translate }}</p>
+                </a>
+                <a *ngIf="child.route == ''" [ngClass]="[child.selected ? 'nav-link active' : 'nav-link']">
+                  <i [ngClass]="child.iconClass"></i>
+                  <p>{{ child.label | translate }}</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </ng-container>
+
+    </div>
+    <ng-container *appIsWeb>
+      <div class="user-panel mt-3 pb-3 mb-3">
+        <div class="d-flex align-items-center align-items-center">
+          <div class="image">
+            <img src="assets/img/avatar5.png" class="img-circle elevation-2" alt="User Image" />
+          </div>
+          <div class="info">
+            <a class="d-block" style="cursor: pointer">{{ fullName }}</a>
+            <a class="d-block" aria-sort="cursor:pointer">{{ organisationName }}</a>
+            <a class="d-block" aria-sort="cursor:pointer">{{ eventName }}</a>
+          </div>
+        </div>
+        <div class="donate_24 dashboar">
+          <div class="donate_detail" style="cursor: pointer;">
+            <a [attr.href]="'//' + donateExt" target="blank"><img class="donate_24_img"
+                src="/assets/dist/img/icon-donate-24.svg" height="18px"></a>
+          </div>
+          <div class="donate_ext">#{{donateExtensionNum}}</div>
+        </div>
+      </div>
+
+    </ng-container>
+    <footer class="main-footer">
+      <div class="copyright">
+        Copyright &copy; {{ currentYear }}
+        <a href="https://donary.com/">donary.com</a>. All rights reserved.
+      </div>
+      <div class="version_test">
+        <b>DRM {{ "VERSION" | translate }}</b> {{ version }}
+      </div>
+    </footer>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</div>
+
+<ng-template #businessUserOption>
+  <ng-template [ngTemplateOutlet]="listMenu"></ng-template>
+  <ng-template [ngTemplateOutlet]="transacionMenu"></ng-template>
+  <ng-template [ngTemplateOutlet]="reportMenu"></ng-template>
+  <ng-template [ngTemplateOutlet]="notificationMenu"></ng-template>
+  <ng-template [ngTemplateOutlet]="adminMenu"></ng-template>
+</ng-template>
+<ng-template #listMenu>
+  <li class="nav-item" [class.menuitem-active]="showMenus.listMenu">
+    <a href="javascript:void(0);" class="nav-link" (click)="$event.preventDefault(); toggleNavbar('listMenu')">
+      <i class="nav-icon fas fa-list"></i>
+      <p>{{ "LISTS" | translate }}</p>
+      <span class="dropdown-arrow" [class.down]="showMenus.listMenu" (click)="toggleNavbar('listMenu')"></span>
+    </a>
+    <ng-container *ngIf="showMenus.listMenu">
+      <ul class="sub-menu">
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('donor', $event)">{{
+            "DONORS" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('reason', $event)">{{
+            "REASONS" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('campaign', $event)">{{
+            "CAMPAIGNS" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('location', $event)">
+            {{ "LOCATIONS" | translate }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('collector', $event)">{{ "COLLECTORS" | translate }}
+          </a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('device', $event)">{{
+            "SOURCES" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectListLink('seats', $event)">{{
+            "SEATS" | translate
+            }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-template>
+<ng-template #transacionMenu>
+  <li class="nav-item" [class.menuitem-active]="showMenus.transacionMenu">
+    <a href="javascript:void(0);" class="nav-link" (click)="$event.preventDefault(); toggleNavbar('transacionMenu')">
+      <i class="nav-icon fas fa-clipboard-list"></i>
+      <p>{{ "TRANSACTIONS" | translate }}</p>
+    </a>
+    <span class="dropdown-arrow" [class.down]="showMenus.transacionMenu"
+      (click)="toggleNavbar('transacionMenu')"></span>
+    <ng-container *ngIf="showMenus.transacionMenu">
+      <ul class="sub-menu">
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectTransLink('payment', $event)">{{
+            "PAYMENTS" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectTransLink('pledge', $event)">{{
+            "PLEDGES" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectTransLink('schedulepayment', $event)">{{
+            "SCHEDULES" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectTransLink('batch', $event)">{{
+            "BATCHES" | translate
+            }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-template>
+<ng-template #reportMenu>
+  <li class="nav-item" [class.menuitem-active]="showMenus.reportMenu">
+    <a href="javascript:void(0);" class="nav-link" (click)="$event.preventDefault(); toggleNavbar('reportMenu')">
+      <i class="nav-icon fas fa-file"></i>
+      <p>{{ "REPORT" | translate }}</p>
+      <span class="dropdown-arrow" [class.down]="showMenus.reportMenu" (click)="toggleNavbar('reportMenu')"></span>
+    </a>
+    <ng-container *ngIf="showMenus.reportMenu">
+      <ul class="sub-menu">
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectReportLink('queryreport')">{{
+            "QUERYREPORT" | translate
+            }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectReportLink('customreport')">{{
+            "CUSTOMREPORT" | translate
+            }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-template>
+<ng-template #notificationMenu>
+  <li class="nav-item" [class.menuitem-active]="showMenus.notificationMenu">
+    <a href="javascript:void(0);" class="nav-link" (click)="$event.preventDefault(); toggleNavbar('notificationMenu')">
+      <i class="nav-icon fas fa-bell"></i>
+      <p>{{ "NOTIFICATIONS" | translate }}</p>
+      <span class="dropdown-arrow" [class.down]="showMenus.notificationMenu"
+        (click)="toggleNavbar('notificationMenu')"></span>
+    </a>
+    <ng-container *ngIf="showMenus.notificationMenu">
+      <ul class="sub-menu">
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectNotificationLink('reminder')">{{
+            "REMINDERS" | translate
+            }}</a>
+
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a (click)="RedirectNotificationLink('alert')">{{
+            "ALERT" | translate
+            }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-template>
+<ng-template #adminMenu>
+  <li class="nav-item" [class.menuitem-active]="showMenus.adminMenu">
+    <a href="javascript:void(0);" class="nav-link" (click)="$event.preventDefault(); toggleNavbar('adminMenu')">
+      <i class="nav-icon fas fa-user"></i>
+      <p>{{ "ADMIN" | translate }}</p>
+      <span class="dropdown-arrow" [class.down]="showMenus.adminMenu" (click)="toggleNavbar('adminMenu')"></span>
+    </a>
+    <ng-container *ngIf="showMenus.adminMenu">
+      <ul class="sub-menu">
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "PROFILE" | translate }} </a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "USER" | translate }} </a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "BRANDING" | translate }} </a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "SEATS" | translate }} API keys</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "MINYANIM" | translate }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "SEATS" | translate }}</a>
+        </li>
+        <li [routerLinkActive]="'menuitem-active'" [routerLinkActiveOptions]="{ exact: true }">
+          <a href="">{{ "PRESETAMOUNT" | translate }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-template>

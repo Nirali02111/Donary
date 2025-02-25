@@ -1,0 +1,39 @@
+<app-product-header></app-product-header>
+
+<div class="register__form_wrapper">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="left__colm col-sm-4">
+                <div class="inside-content">
+                    <h3 class="heading">{{'REGISTRATIONFORM'  |translate}}</h3>
+                    <p>{{'FILLOUTFORM'  |translate}}</p>
+
+                    <ul>
+                        <li>{{'NOMOREWAIT'  |translate}}</li>
+                        <li>{{'DETBESTCOMBINATION'  |translate}}</li>
+                    </ul>
+                    <div class="already_signin">
+                        <h6>{{'ALREADYREGISTER'  |translate}}</h6>
+                        <a href="#" class="link_text">{{'SIGNIN'  |translate}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right_colm col-sm-7">
+                <!-- form-->
+                <app-organization-details-form-group [formGroup]="registractionForm" [isregister]="true" [isloading]="isloading" (submited)="onRegister($event)"></app-organization-details-form-group>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<ng-template #feedbackError let-item="item">
+    <div class="row text-danger">
+        <!-- <div *ngIf="item.errors?.required"  class="val-error">field is required</div> -->
+        <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID'  |translate}}</div>
+        <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID'  |translate}}</div>
+    </div>
+</ng-template>

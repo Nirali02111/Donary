@@ -1,0 +1,539 @@
+<div class="cards11 notification__sidebar" [ngClass]="[cardNotification ? 'open_panel' : '']" NgbAutoFocus tabindex="-1">
+    <div class="table_content">
+        <div class="card-body">
+            <div class="extra__details">
+            <!-- Date range and advanced filter options -->
+            <div class="filters__options notification_page">
+                <div class="search_opts">
+                <div class="input-group search_input">
+                    <input  type="text" name="advanceSearch" id="localsearch" class="form-control float-right" placeholder="{{'SEARCHREMINDERS'  |translate}}" (keyup)="notificationSearch($event.target.value)">
+                </div>
+                <!-- Card Type Drop Down -->
+
+                <div class="input-group dnr-datepicker-container date_picker" *appIsWeb>
+                    <!-- <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+                        [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                        [ranges]="commonMethodService.ranges" [linkedCalendars]="commonMethodService.linkedCalendars"
+                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                        [showClearButton]="commonMethodService.showClearButton"
+                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                        placeholder="All Time"  />
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                        </span>
+                    </div> -->
+                    <!-- <input
+							  type="text"
+							  class="alltime_filter_btn"
+							  ngxDaterangepickerMd
+							  #upcomingCalendar
+							  [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+							  [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+							  [ranges]="commonMethodService.upcomingranges"
+							  [linkedCalendars]="commonMethodService.linkedCalendars"
+							  [opens]="commonMethodService.open"
+							  [drops]="commonMethodService.drop"
+							  [(ngModel)]="selectedUpcomingDateRange"
+							  [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+							  (datesUpdated)="datesUpcomingUpdated($event)"
+							  (rangeClicked)="upcomingRangeClicked($event)"
+							  id="upcomingcalendar"
+                              [showClearButton]="commonMethodService.showClearButton"
+                              [placeholder]="commonMethodService.placeholder"
+                              autocomplete="off"
+							/> -->
+                         <!-- Calendar code started -->
+                         <ng-template #popContent 
+                         ><app-common-hebrew-english-calendar [pageName]="PageName2" [data]="selectedUpcomingDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                         </ng-template>
+                        <div (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent" popoverClass="calender-modal" #p1="ngbPopover" [closePopoverOnClickOutside]="p1"   [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom"  id="dynamicsCalender">
+                            <input type="text" class="form-control" value=""
+                            [placeholder]="EngHebCalPlaceholder" />
+                        </div>
+                        <!-- Calendar code ended -->   
+                </div>
+                <div class="input-group date_picker" id="datehebwrapper" (click)="openHebrewCalendarPopup()" id="dynamicsCalender" *appIsMobile>
+                    <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+                      </span>
+                    </div>
+                  </div>
+                <div class="input-group filter_field" >
+                    <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default">
+                        <ng-container *appIsMobile>
+                            <img src="/assets/dist/img/icon-filter.svg" alt="filter" />
+                          </ng-container>
+                        <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                        <span class="filter_text">{{'FILTER'|translate}}</span>
+                    </button>
+                </div>
+                </div>
+                
+                <div class="fields_opts">
+                        <button type="button" class="btn new-btn btn-default"(click)="AddReminderPopup()"><i class="fa fa-plus"></i> {{'NEW'  |translate}}</button>
+                        <ng-container *appIsWeb>
+                        <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn dot-btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <span>...</span>
+                        </button>
+                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                            <li class="dropdown">
+                                <a class="dropdown-item"><i class="fas fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                            </li>
+                            <hr class="seprator" />
+                        <li class="dropdown"><a class="dropdown-item"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                        <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> {{'PRINT'  |translate}}</a></li>
+                        </ul>
+                        </ng-container>
+                    </div>
+                
+                    <ng-container *appIsMobile>
+                        <div class="filters__options flex-nowrap mb-0">
+                          <div class="right_colms">
+                            <div class="sort-filter-icon">
+                              <img src="/assets/dist/img/sort-filter-icon.png" alt="" />
+                            </div>
+                          </div>
+                          <div class="mobile-options">
+                            <div class="sort_sumcard">
+                              <span class="sorting_icon"></span>
+                              <div class="custo_selct sort_drpdown" (click)="openHebrewCalendarPopup()">
+                                <angular2-multiselect
+                                  id="ddlCardType"
+                                  [settings]="
+                                    commonMethodService.setDropDownSettings(
+                                      '',
+                                      1,
+                                      false,
+                                      true,
+                                      true
+                                    )
+                                  "
+                                >
+                                </angular2-multiselect>
+                              </div>
+                            </div>
+                            <div class="colm extra_opts">
+                              <div class="dropdown dropleft">
+                                <button
+                                  type="button"
+                                  appHoverTooltip
+                                  labelText="{{ 'MOREACTIONS' | translate }}"
+                                  class="btn btn-default"
+                                  data-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false"
+                                >
+                                  <span>...</span>
+                                </button>
+                                <ul
+                                  class="dropdown-menu multi-level"
+                                  role="menu"
+                                  aria-labelledby="dropdownMenu"
+                                >
+                                <li class="dropdown">
+                                    <a class="dropdown-item"><i class="fas fa-file-import"></i> {{'IMPORT'|translate}}</a>
+                                </li>
+                                <li class="dropdown"><a class="dropdown-item"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
+                                <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> {{'PRINT'  |translate}}</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+            </div>
+            <div class="tbl_colm_sticky"  id="reminder_div">
+                <div class="modal_custom px-0 table-responsive transaction__table">
+                <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                    <div class="table-alert px-2" id="notificationScroll" style="overflow-y: auto; height: 100%;">
+                                <table class="table table-striped redesign_table" [svData]="gridFilterData" #sv="svDataTable" [svRowsOnPage]="25"  svSortOrder="asc">
+                                    <ng-container *appIsWeb>
+                                        <thead>
+                                            <tr>
+                                                <th>{{'TYPE'  |translate}}</th>
+                                                <th>{{'TITLE'  |translate}}</th>
+                                                <th>{{'DUEDATE'  |translate}}</th>
+                                                <th>{{'STATUS'  |translate}}</th>
+                                                <th>{{'ASSIGNEE'  |translate}}</th>
+                                                <th>{{'ATTACHED'  |translate}}</th>
+                                            </tr>
+                                        </thead>
+                                    </ng-container>
+                                    <tbody  *ngIf="sv.data?.length > 0">
+
+                                        <tr  *ngFor="let item of sv.data;  let i=index" tabindex={{i}} (click)="getNotification(item)" style="cursor: pointer;">
+                                            <ng-container *appIsWeb><td><span>{{item.assigneeType}}</span></td></ng-container>
+                                            <!-- <td [ngClass]="{'lng_hebrew': isHebrew_lng(item.title)}">{{item.title}}</td> -->
+                                            <td class="reminder-title">{{item.title}}</td>
+                                            <td class="reminder-date">{{item.dueDateTime| donaryDateFormat: "long" }} </td>
+                                            <td class="reminder-status"><span [ngClass]="getStatusClass(item.statusId)">{{item.status}}</span></td>
+                                            <td class="reminder-assignee">{{item.assignee}}</td>
+                                            <!-- <td>{{item.recordType}}</td> -->
+                                            <td class="reminder-attached">
+                                                <div class="notification-attached">
+                                                    <ng-container *appIsMobile>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512.092 512.092" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="M312.453 199.601a116.167 116.167 0 0 0-20.053-16.128 119.472 119.472 0 0 0-64.427-18.859 118.952 118.952 0 0 0-84.48 34.987L34.949 308.23a119.466 119.466 0 0 0-34.91 84.318c-.042 65.98 53.41 119.501 119.39 119.543a118.7 118.7 0 0 0 84.395-34.816l89.6-89.6a8.534 8.534 0 0 0-6.059-14.592h-3.413a143.626 143.626 0 0 1-54.613-10.581 8.533 8.533 0 0 0-9.301 1.877l-64.427 64.512c-20.006 20.006-52.442 20.006-72.448 0-20.006-20.006-20.006-52.442 0-72.448l108.971-108.885c19.99-19.965 52.373-19.965 72.363 0 13.472 12.679 34.486 12.679 47.957 0a34.134 34.134 0 0 0 9.899-21.675 34.137 34.137 0 0 0-9.9-26.282z" fill="#b8b8b8" opacity="1" data-original="#000000" class=""></path><path d="M477.061 34.993c-46.657-46.657-122.303-46.657-168.96 0l-89.515 89.429a8.533 8.533 0 0 0-1.792 9.387 8.532 8.532 0 0 0 8.021 5.205h3.157a143.357 143.357 0 0 1 54.528 10.667 8.533 8.533 0 0 0 9.301-1.877l64.256-64.171c20.006-20.006 52.442-20.006 72.448 0 20.006 20.006 20.006 52.442 0 72.448l-80.043 79.957-.683.768-27.989 27.819c-19.99 19.965-52.373 19.965-72.363 0-13.472-12.679-34.486-12.679-47.957 0a34.139 34.139 0 0 0-9.899 21.845 34.137 34.137 0 0 0 9.899 26.283 118.447 118.447 0 0 0 34.133 23.893c1.792.853 3.584 1.536 5.376 2.304 1.792.768 3.669 1.365 5.461 2.048a67.799 67.799 0 0 0 5.461 1.792l5.035 1.365c3.413.853 6.827 1.536 10.325 2.133 4.214.626 8.458 1.025 12.715 1.195H284.461l5.12-.597c1.877-.085 3.84-.512 6.059-.512h2.901l5.888-.853 2.731-.512 4.949-1.024h.939a119.456 119.456 0 0 0 55.381-31.403l108.629-108.629c46.66-46.657 46.66-122.303.003-168.96z" fill="#b8b8b8" opacity="1" data-original="#000000" class=""></path></g></svg>
+                                                    </ng-container>
+                                                <div class="attached-left">
+                                            <label>{{item.recordType?item.recordType:'DONOR'}}:</label>
+                                            </div>
+                                            <div class="attached-right">
+                                                <span class="attached-fullname">{{item.fullNameJewish == null?item.fullName:item.fullNameJewish}}</span>
+
+                                                <span class="attached-amount">{{item.amount? commonMethodService.formatAmount(item.amount):item.amount}}</span>
+                                                </div>
+                                        </div></td>
+                                            <!-- <td><input type="checkbox" name="singlecheck"/></td> -->
+
+                                            <!-- <ng-container  *ngFor="let groupHeader of colFields;">
+                                                <ng-container  *ngFor="let objHeader of groupHeader.items;">                                                         -->
+                                                <!-- </ng-container>
+                                            </ng-container> -->
+
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="sv.data?.length == 0">
+                                        <tr>
+                                            <td colspan="21" style="text-align: center;">{{'NODATAFOUND'  |translate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="new_tblfoot">
+                <div class="show_entry">  <span class="total_record">{{'SHOWING'  |translate}} <span *ngIf="isFiltered"><strong>{{filterRecord}}</strong> {{'OF'  |translate}} </span> <strong>{{totalRecord}}</strong> {{'RECORDS'  |translate}}</span>
+                <div  class="custom_pagination">
+                    <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+                    </sv-bootstrap-paginator>
+                </div>
+                </div>
+        </div>
+
+        </div>
+    </div>
+
+  <div class="notification_sidemenu"  *ngIf="cardNotification">
+        <div class="status_bar_top">
+            <div class="status-bar-left">
+                <ng-container *appIsMobile>
+                    <h4>{{"REMINDERS" | translate}}</h4>
+                </ng-container>
+                <div class="status_label active {{status_labelClass}}">{{statusLabel}}</div>
+                <ng-container *appIsMobile>
+                    <span class="notification-action" [class.active]="notificationAction" (click)="notificationAction = !notificationAction">...</span>
+                </ng-container>
+                <div class="status_actions" [class.active]="notificationAction">
+                    <div class="mark_complete {{setclsClickedComplete}}"
+                    [ngClass]="statusId=='1' ? 'status-active' : '' " (click)="onMarkCompleted(3)">
+                        <!-- Mark Complete -->
+                        <ng-container *appIsMobile>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 128 128" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(1.0000000000000007,0,0,1.0000000000000007,-2.842170943040401e-14,-4.263256414560601e-14)"><circle cx="64" cy="64" r="64" fill="#7b5bc4" opacity="1" data-original="#3db39e" class=""></circle><path fill="#ffffff" d="M117.6 29.1 61 87.7l.1 6.3h2.6L125 44.6c-1.8-5.5-4.3-10.8-7.4-15.5z" opacity="0.03137254901960784" data-original="#37a18e" class=""></path><path fill="#ffffff" d="m126.8 26.3-11.3-11.2c-1.5-1.5-4-1.5-5.6 0L61.6 65 40.7 44.4c-1.5-1.5-4-1.5-5.6 0l-10 9.9c-1.5 1.5-1.5 4 0 5.5l33.4 33.1c.9.9 2.1 1.2 3.3 1.1 1.2.1 2.4-.2 3.3-1.1l61.7-61c1.5-1.6 1.5-4.1 0-5.6z" opacity="1" data-original="#f2f1ef" class=""></path><path fill="#e6e5e3" d="m65.1 92.9 61.7-61c1.5-1.5 1.5-4 0-5.5l-1.8-1.7-63.3 62.2-35-34.1-1.5 1.5c-1.5 1.5-1.5 4 0 5.5l33.4 33.1c.9.9 2.1 1.2 3.3 1.1 1.1.1 2.3-.2 3.2-1.1z" opacity="1" data-original="#e6e5e3" class=""></path></g></svg>
+                        </ng-container>
+                        {{btnTitleMarkComplete}}
+                    </div>
+                    <div class="delete_icon {{setclsClickedDelete}}">
+                        <i class="fa fa-trash" aria-hidden="true" (click)="onDeleteStatus(4)"></i>
+                        <ng-container *appIsMobile>Delete</ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="status-bar-right">
+                <span><button class="dismiss" (click)="CloseNotificationCard()">×</button></span>
+            </div>
+        </div>
+
+        <div class="recurring-block" *ngIf="scheduleStatus!='Canceled' && recurringType!=null && isRecurringId">
+
+            <div class="recurring-label"><span class="icon"><svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160H336c-17.7 0-32 14.3-32 32s14.3 32 32 32H463.5c0 0 0 0 0 0h.4c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v51.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1V448c0 17.7 14.3 32 32 32s32-14.3 32-32V396.9l17.6 17.5 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352H176c17.7 0 32-14.3 32-32s-14.3-32-32-32H48.4c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg></span>{{'RECURRING'  |translate}} {{repeatName}}</div>
+            <div class="recurring-input"><span class="recurring-input" style="cursor: pointer;" (click)="SaveEndRecurring()">{{'ENDRECURRING'  |translate}}</span></div>
+
+        </div>
+        <div class="title-note-wrap">
+            <div class="title-note-inside">
+                <div class="form-group">
+                    <label class="title">{{'TITLE'  |translate}} :</label>
+                    <input type="text" (change)="SaveNoteTitle()" [(ngModel)]="title" name="title" placeholder="{{'TITLE'  |translate}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="title">{{'Note'  |translate}} :</label>
+                    <textarea (change)="SaveNoteTitle()" [(ngModel)]="note" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="duedate-assigne-wrap"  (focusin)="ChangeDate()" >
+            <div class="date lable__text">
+                <label class="lbl__text">{{'DUEDATE'  |translate}} :</label>
+                <div class="duedate-right">
+                <h5 class="lbl__value" (click)="ChangeDate()" *ngIf="isDateLabel">{{dueDate}}</h5>
+                <!-- <input type="text" *ngIf="!isDateLabel" class="form-control"
+                                #calendarsearch
+                                ngxDaterangepickerMd
+                                    [singleDatePicker]="true"
+                                    [(ngModel)]="selectedDateRange"
+                                    autoUpdateInput="false"
+                                    [timePicker]="true"
+                                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                    [opens]="commonMethodService.open"
+                                    [drops]="commonMethodService.drop"
+                                    [showClearButton]="commonMethodService.showClearButton"
+                                    (datesUpdated)="datesUpdated($event)"
+                                    [keepCalendarOpeningWithRange]="true"
+                                /> -->
+                 <!-- Calendar code started -->
+                 <ng-template #popContent 
+                 ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isSidebarOnedate"></app-common-hebrew-english-calendar>
+                 </ng-template>
+                <div [ngbPopover]="popContent" (click)="openCalendarPopup(pl1)" container="body" #pl1="ngbPopover"  popoverClass="calender-modal" [popoverTitle]="popTitle" [closePopoverOnClickOutside]="pl1"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dueDateDynamicsCalender">
+                    <input type="text" class="form-control" value="" [placeholder]="EngPlaceholder" />
+                </div>
+                <!-- Calendar code ended -->                
+                </div>
+            </div>
+            <div class="assignee lable__text" (focusin)="AssigneeClick()" >
+                <label class="lbl__text">{{'ASSIGNEE'  |translate}} :</label>
+                <div class="asignee-right">
+                <h5 class="lbl__value" (click)="AssigneeClick()" *ngIf="!changeHtml">{{assignee}} </h5>
+                <div class="input_col"   *ngIf="changeHtml">
+                    <angular2-multiselect  id="ddlAssignee"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="assigneeList"
+                    (onSelect)="SelectAssignee($event)"
+                    [(ngModel)]="assigneeId"
+                    name="ddlassignList">
+                </angular2-multiselect>
+                <div class="toggel-switch-loader" *ngIf="isAssigneeloader">
+                    <div class="loader_img">
+                      <img src="/assets/img/loader.svg" alt="loader" />
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="linked-donar-wrap">
+        <ng-container *ngIf="alertInfo?.length > 0">
+            <div class="linked-donor-row">
+                <h6>ALERT SOURCE:</h6>
+            </div>
+            <div class="pledge__card linked-donor">
+                <div class="alert-block d-flex align-items-start">
+                <ng-container *ngFor="let item of alertInfo">
+                    <div class="alert-left" >
+                        <span class="alert-date">{{item.attachedCreatedDate | donaryDateFormat: "long"}}</span>
+                        <h5 class="alert-subject">{{item.alertSubject}}</h5>
+                        <p class="alert-message">{{item.alertMessage}}</p>
+                    </div>
+                     <button class="btn btn-update h-auto text-capitalize p-1" (click)="openPopup(item.actions)">{{item.actions}}</button> 
+                </ng-container>
+                </div>
+            </div>
+        </ng-container>
+            <div class="linked-donor-row">
+                <h6>{{'LINKEDDONOR'  |translate}} :</h6>
+                <span><button class="change_donor"  *ngIf="!isLinkedDonorCard && !isAttachedTrans " (click)="RemoveLinkedDonor()">Change Donor</button></span>
+                <div class="input_col" (clickOutside)="onClickedOutside()" *ngIf="isLinkedDonorCard" >
+                    <input type="text" class="form-control" id="donorText" name="donor" [(ngModel)]="donor"
+                        [readonly]="nonEditable" (keyup)="SearchDonor($event)" />
+                    <span *ngIf="nonEditable" class="cancel_icon"  (click)="RemoveDonor()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                    <button class="search_btn hover_tooltip search_icon" *ngIf="isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable"  data-toggle="tooltip" appHoverTooltip labelText="{{'CHARACTER2TOOLTIP' | translate}}" type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="search_btn hover_tooltip search_icon"  data-toggle="tooltip"  type="button"  *ngIf="!isSearchDisable && !commonMethodService.isLoaderNewTrans && !nonEditable" (click)="SearchGlobalDonor()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="toggel-switch-loader" *ngIf="isloader || commonMethodService.isLoaderNewTrans">
+                        <div class="loader_img">
+                          <img src="/assets/img/loader.svg" alt="loader" />
+                        </div>
+                      </div>
+                      <div class="donor_infolist"   *ngIf="commonMethodService.donorList.length > 0 && showBox" >
+                        <div class="donor_row" *ngFor="let item of commonMethodService.donorList"
+                            (click)="SelectDonor(item.id)">
+                            <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="pledge__card linked-donor" *ngIf="!isLinkedDonorCard" (click)="linkDonorPopup(linkDonorId
+        )">
+            <div class="linked-donor-inside">
+                <div class="linked-donor-top">
+                    <!-- <div class="p">
+                        <span class="lng_hebrew">{{defaultLocationNameJewish}}</span>
+                    </div> -->
+                    <div class="name_col">
+                        <div class="left">
+                            <div class="donor-name-left">
+                                <h3>{{fullName}}</h3>
+                                <h3 class="lng_hebrew">{{fullNameJewish}}</h3>
+                                <!-- <h4>{{father!=null?father+"/":""}} {{fatherInLaw}}</h4>                             -->
+                            </div>
+                            <div class="donor-name-right">
+                                <ul>
+                                    <li>
+                                        <label>{{father}}</label>
+                                        <span class="lng_hebrew">: בן</span>
+                                    </li>
+                                    <li>
+                                        <label>{{fatherInLaw }}</label>
+                                        <span class="lng_hebrew">: חתן</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="amounts_colms donor-amount">
+                        <div class="t-col">
+                            <span class="lbl__text text-capitalize">{{'PHONE'  |translate}} :</span>
+                            <!--<span class="lbl__value">{{phoneNumber}}</span>-->
+                            <span class="lbl__value">{{phone_linkDonar}}</span>
+                        </div>
+                        <div class="t-col">
+                            <span class="lbl__text text-capitalize">{{'ADDRESS'  |translate}} :</span>
+                            <span class="lbl__value">{{address_linkDonar}}</span>
+                        </div>
+                        <div class="t-col">
+                        <span class="lbl__text text-capitalize">{{'EMAIL'  |translate}} :</span>
+                        <span class="lbl__value">{{email_linkDonar}} </span>
+                            <!--<span class="text">{{accountNum}} </span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="linked-donor-bottom">
+                </div>
+            </div>
+        </div>
+
+        <div class="attached-to-wrap" *ngIf="linkDonor">
+        <h6>{{transactionTypeTxt}}:</h6>
+        <div class="select-pledge"  [ngClass]="[recordId!=null ? 'attach_to' : '']">
+            <input type="text" class="form-control" name="transactionType" [(ngModel)]="transactionType"  [readonly]="true" (click)="inputFocus($event);openPaymentListCardPopup()" />
+            <span *ngIf="showPaymentBox" class="cancel_icon" (click)=" RemoveLinkedTransaction()" >
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+        </div>
+        </div>
+        <div class="pledge__card"  *ngIf="!isAttachedTrans">
+            <span><button class="dismiss" *ngIf="isAttachedTransX" (click)="RemoveLinkedTransaction()" >x</button></span>
+            <div class="pledge-card-row">
+                <div class="pledge-card-left">
+                    <div class="p">
+                        <span class="text">{{paymentDate| donaryDateFormat: 'name'}}</span>
+                        <span class="lng_hebrew">{{paymentDateJewish}}</span>
+                    </div>
+                </div>
+                <div class="pledge-card-right">
+                    <div class="name_col">
+                        <!-- <div class="left">
+                            <h3>{{donorFullName}}</h3>
+                            <h3 class="lng_hebrew">{{donorFullNameJewish}} </h3>
+                        </div> -->
+                        <div class="right">
+                            <p [ngClass]="status_class">{{status}}</p>
+                            <h6 *ngIf="transactionType!='Pledge'"><span class="card__icon" [ngClass]="paymenttype_icn"></span> {{ commonMethodService.formatAmount(amount)}}</h6>
+                            <h6 *ngIf="transactionType=='Pledge'"><span  class="Pledge-text" style="color:#7b5bc4">PLEDGE</span> {{ commonMethodService.formatAmount(amount)}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="amounts_colms">
+                <div class="t-col">
+                    <span class="lbl__text text-capitalize">{{'CAMPAIGN'  |translate}} :</span>
+                    <span class="lbl__value">{{campaignName}}</span>
+                </div>
+                <div class="t-col">
+                    <span class="lbl__text text-capitalize">{{'LOCATION'  |translate}} :</span>
+                    <span class="lbl__value">{{locationName}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="note_desc">
+            <div class="lbl__text">
+                {{'NOTE'  |translate}} :
+            </div>
+            <p>{{note}} </p>
+        </div>
+
+        <div class="inputs__data">
+            <ul class="note-dropdown">
+                <li class="field_email">
+                    <div class="custom__checkbox">
+
+                        <input type="checkbox" id="email-l" (change)="emailCheckbox($event)" class="cstm_checkbox" [(ngModel)]="notifyEmail"/>
+                         <label for="email-l">{{'EMAIL'  |translate}} :</label>
+                    </div>
+                    <div class="dropdown-notification">
+                        <input type="text" id="assigneeEmailId" class="form-control" [(ngModel)]="assigneeEmail"/>
+                    </div>
+                </li>
+                <li class="field_text">
+                    <div class="custom__checkbox">
+
+                        <input type="checkbox" id="text-l" (change)="smsCheckbox($event)"  class="cstm_checkbox"  [(ngModel)]="notifySMS"/>
+                        <label for="text-l">{{'TEXT'  |translate}} :</label>
+                    </div>
+                    <div class="dropdown-notification">
+                        <input type="text" id="assigneePhoneId" class="form-control" [(ngModel)]="assigneePhone"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="other__data">
+            <div class="inline__data task-by-wrap">
+                <div class="taks-label">
+                    <span class="lbl__text">{{'TASKBY'  |translate}} :</span>
+                    <!--<span class="lbl__value lng_hebrew">{{assignee}}</span>-->
+                    <span class="lbl__value lng_hebrew">{{userCreatedName}}</span>
+                </div>
+                <span class="lbl__value-createdate">{{createdDate | donaryDateFormat: 'name-long'}}</span>
+            </div>
+            <!-- <div class="inline__data">
+                <span class="lbl__text">DATE CREATED:</span>
+                <span class="lbl__value">{{createdDate}}</span>
+            </div> -->
+        </div>
+        <div class="comment_sect" *ngFor="let item of notificationComments">
+            <div class="comment-top">
+            <div class="inline__data">
+                <span class="lbl__text">{{'NOTEBY'  |translate}} :</span>
+                <span class="lbl__value lng_hebrew">{{item.userCreated}}</span>
+            </div>
+            <div class="comment-date">
+                <!-- <span class="lbl__value-createdate">{{item.createdDate | donaryDateFormat: 'name-long'}}</span> -->
+                <span class="lbl__value-createdate">{{item.createdDate | donaryDateFormat: 'name-long'}}</span>
+            </div>
+            </div>
+            <div class="comment_line">
+             <span class="lbl__value lng_hebrew" [innerHTML]="item.comment"></span>
+            </div>
+        </div>
+    <div class="ckeditor_sect">
+       <!-- <ckeditor [editor]="Editor"
+         [config]="{ toolbar: [ [ 'Bold' ],[ 'Italic' ],
+         [ 'Link' ],[ 'BulletedList' ] ,[ 'NumberedList' ]],placeholder: 'Write a note...' }">
+         </ckeditor>-->
+      <ckeditor  *ngIf="isBrowser"  [(ngModel)]="txtCommands" [editor]="Editor" (ready)="onReady($event)" [config]="{ toolbar: [  'Bold', 'Italic', 'Underline',
+         'Link' ,'NumberedList', 'BulletedList'],placeholder: 'Write a note...' }"> </ckeditor>
+        <button class="comment_btn" type="button" (click)="saveComments()">{{'COMMENT'  |translate}}</button>
+    </div>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,86 @@
+<div class="newtags_pop dropdown_pop" ngbAutofocus tabindex="-1">
+  <div class="headbar">
+      <h4>{{'ADDFAMILYMEMBER'|translate}}</h4>
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+  </div>
+
+  <div class="modal_body_content">
+      <div class="form-group">
+          <div class="col-8 custom-col-8" *ngIf="(familyMemberType!='אב' || familyType!='Family') && (familyMemberType!='חמיו'|| familyType!='Family') ">
+              <div class="input-text">
+                  <label class="lbl-text">{{'NAME'|translate}}:</label>
+                  <input
+                  type="text"
+                  class="form-control"
+                  id="familyText"
+                  [(ngModel)]="familyMemberId"
+                  name="txtFamilyMember"
+                  (keyup)="SearchFamilyMember($event)"
+                  [readonly]="nonFamilyMemberEditable"
+                />
+                <span *ngIf="nonFamilyMemberEditable" class="cancel_icon" (click)="RemoveFamilyMember()"><i class="fa fa-times" aria-hidden="true"></i></span>
+                  <div class="input_group father_drp">
+                    <button class="search_btn" type="button" *ngIf="displayFamilySearchIcon" (click)="SearchGlobalFamilyMember()">{{'SEARCH'|translate}}</button>
+                  <label class="switch global_list_togle" *ngIf="!nonFamilyMemberEditable" data-toggle="tooltip" t-title="Turn on switch to include search in Global List, you need to press enter or click on the search icon">
+                    <input type="checkbox"  class="global_chck" id="globalfamilylist" (change)="OnGlobalFamilyCheckboxChange($event)">
+                    <span class="slider round" ></span>
+                  </label>
+                  <div class="donor_infolist" (clickOutside)="onClickedOutside()"  *ngIf="commonMethodService.donorList.length != 0 && showFamilyBox">
+                    <div class="donor_row" *ngFor="let item of commonMethodService.donorList" (click)="SelectFamilyMember(item.id)">
+                      <app-donor-list-template [donorObj]="item"></app-donor-list-template>
+                    </div>
+                  </div>
+                  <div class="donor_infolist" (clickOutside)="onClickedOutside()"  *ngIf="commonMethodService.donorList.length == 0 && showFamilyBox">
+                    <button type="button" (click)="OpenCreateDonorPopup()"><i class="fa fa-plus"></i> {{'ADDDONOR'|translate}}</button>
+                  </div>
+                  </div>
+                  <span class="text-danger" *ngIf="noFamilyMember">Please select or add a donor to saved</span>
+              </div>
+          </div>
+          <div class="col-8 custom-col-8" *ngIf="familyType=='Family' &&(familyMemberType=='אב' || familyMemberType=='חמיו')">
+            <div class="input-text">
+                <label class="lbl-text">{{'NAME'|translate}}:</label>
+                <input
+                type="text"
+                class="form-control"
+                id="familyText"
+                [(ngModel)]="familyMemberId"
+                name="txtFamilyMember"
+                (keyup)="SearchFamilyMember($event)"
+                [readonly]="nonFamilyMemberEditable"
+              />
+              <span *ngIf="nonFamilyMemberEditable" class="cancel_icon" (click)="RemoveFamilyMember()"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </div>
+            <div class="donor_infolist" (clickOutside)="onClickedOutside()"  *ngIf="commonMethodService.donorList.length == 0 && showFamilyBox">
+              <button type="button" (click)="OpenCreateDonorPopup()"><i class="fa fa-plus"></i> {{'ADDDONOR'|translate}}</button>
+            </div>
+            <span class="text-danger" *ngIf="noFamilyMember">Name required</span>
+            </div>
+          <div class="col-4 custom-col-4">
+            <div class="input-text">
+              <label class="lbl-text">{{'TYPE'|translate}}:</label>
+            <ng-select bindLabel="itemName" bindValue="id"[(ngModel)]="familyMemberType"
+						name="familyType" [searchable]="false" (change)="changeMemberType($event)" [items]="familyTypeDrp"  [selectOnTab]="true">
+					</ng-select>
+          <span class="text-danger" *ngIf="noFamilyMemberType">Select Member Type</span>
+          </div>
+          </div>
+      </div>
+
+  </div>
+
+  <div class="actions_wrapper edit-tags-action">
+      <div class="right_btns">
+          <button class="btn btn-secondary" (click)="closePopup()"> {{'CANCEL'|translate}}</button>
+          <button class="btn btn-primary" (click)="onSave()"> {{'SAVE'|translate}}</button>
+      </div>
+  </div>
+
+  <div *ngIf="isloading" class="overlay">
+      <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+  <div *ngIf="commonMethodService.loaderSearch" class="card-overlay" >
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+
+</div>

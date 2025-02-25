@@ -1,0 +1,354 @@
+.modal-header.modal__custom_header.pledgepay-popup {
+    background: #605481 0% 0% no-repeat padding-box;
+    border-radius: 10px 10px 0px 0px; 
+    text-align: center;
+    justify-content: center;
+    margin: -1px;
+}
+.modal-header.pledgepay-popup {
+    h4.modal-title {
+        text-align: center;
+        font: normal normal 900 19px/27px Avenir;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+    }
+    button.close {
+        font-size: 19px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+   
+}
+
+.pledgepay-popup {   
+
+    .lbl--text {
+        text-align: left;
+        font: normal normal 900 14px/19px Avenir;
+        letter-spacing: 0px;
+        color: #434246;
+        text-transform: uppercase;
+        width: 100%;
+    }
+    .input-text{
+        width: 100%;
+    }
+    .form-control {
+        background: #FAFAFA 0% 0% no-repeat padding-box;
+        border: 1px solid #BAB3C9;
+        border-radius: 4px;
+        height: 42px;
+        
+    }
+}
+.pledgepay-popup.payment-modal-pay .email-row .input-text{border: 0 !important;}
+.pledgepay-popup.payment-modal-pay .email-row .input-text .form-control{
+    border: 1px solid #BAB3C9 !important;
+}
+.pledgepay-popup.payment-modal-pay .email-row .input-text .form-control.is-invalid{border-color: #dc3545 !important;}
+.payment-modal-pay .email-row .form-control:focus,
+.pledgepay-popup.payment-modal-pay .email-row .input-text .form-control:focus,
+.pledgepay-popup .form-control:focus{
+    border-color: #7b5bc4 !important;
+}
+.input-text.is-focused {
+    border-color: #7b5bc4 !important;
+}
+
+.pledgepay-popup.payment-modal-pay .email-row .input-text{border: 0;}
+
+
+.pledgepay-popup .note-row textarea.form-control {
+    height: 90px;
+}
+
+.pledgepay-popup-ft button.btn.btn-primary {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 4px;
+    height: auto;
+    display: block;
+    width: 100%;
+}
+
+.pledgepay-popup-ft .btn-wrapper {
+    width: 100%;
+}
+.pledgepay-popup-ft button.btn.btn-primary span {
+    height: 48px;
+    display: block;
+    line-height: 48px;
+}
+
+.pledgepay-popup .total {
+    text-align: center;
+    font: normal normal 900 25px/34px Avenir;
+    letter-spacing: 0px;
+    color: #434246;
+    margin-bottom: 10px;
+}
+
+.pledgepay-popup hr {
+    border-top-color: #6F6F6F;
+}
+.pay-total_row{
+        justify-content: space-between;
+        border-bottom: 1px #6F6F6F solid;
+        margin-bottom: 20px;
+        align-items: flex-start;
+    .h4 {
+        text-align: center;
+        font: normal normal 500 16px/22px Avenir;
+        letter-spacing: 0px;
+        color: #434246;
+        text-transform: uppercase;
+    }
+
+}
+
+.payment-modal-pay .cards-icons img {
+    height: auto;
+    max-width: 320px;
+}
+.payment-modal-pay .scheduled-payment-switch {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    border-top: 1px solid #8e8989;
+    padding-top: 10px;
+    margin-bottom: 20px;
+}
+.payment-modal-pay .scheduled-payment-switch  .schedule-payment-switch {
+    display: flex;
+    align-items: center;
+}
+.payment-modal-pay .scheduled-payment-switch .schedule-payment-switch label.switch {
+    margin: 0;
+    order: 1;
+    margin-left: 10px;
+    height: 25px;
+}    
+    .payment-modal-pay .scheduled-payment-switch .schedule-payment-switch label.switch  .slider.round {
+        height: 14px;
+    width: 38px;}
+
+.payment-modal-pay .scheduled-payment-switch .switch .slider.round:before {
+    height: 20px;
+    width: 20px;
+    left: 0px;
+    bottom: -2px;
+    box-shadow: #767676 0px 3px 4px 0px;
+}
+.payment-modal-pay .scheduled-payment-switch .switch input:checked + .slider:before {
+    -webkit-transform: translateX(19px);
+    -ms-transform: translateX(19px);
+    transform: translateX(19px);
+}
+.card_inut-box {   
+    .input-text {
+        background: #FAFAFA 0% 0% no-repeat padding-box;
+        border: 1px solid #BAB3C9;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+    }
+    .cc-icon {
+        padding: 0 10px;
+        img {
+            width: 28px;
+        }
+    }
+    .form-control {
+        border: 0 !important;
+        background: none;
+        text-align: left;
+        
+    }
+    select.form-control{
+        padding: 0px 0 0 2px;
+        &.month-slct{
+            width: 70px;
+            padding-left: 8px;
+        }
+    }
+    
+
+}
+
+
+
+.pledge_payment .lbl-text {
+    text-align: left;
+    font: normal normal 900 14px/19px Avenir;
+    letter-spacing: 0px;
+    color: #434246;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.modal.pledge_payment{
+    left: 0px !important;
+    right: 0px !important;
+}
+.pledge_payment .modal-header.pledgepay-popup {
+    background: #fff !important;
+    border-bottom: 0;
+}
+.for-mobile-only {
+    display: none;
+}
+.card-payment-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.scheduled-payment-switch .switch-label {
+    font: normal normal 600 14px/19px Avenir;
+    margin-left: 4px;
+    position: relative;
+    top:3px;
+    text-transform: uppercase;
+}
+.count-fre-start-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 0px;
+    border-bottom: 2px solid #c2bebe;
+    padding-bottom:20px;
+}
+.count-fre-start-row label {
+    margin-bottom: 5px;
+    letter-spacing: 0px;
+    color: #434246;
+    text-transform: uppercase;
+    width: 100%;
+    font: normal normal 900 14px/19px Avenir;
+}
+
+.count-fre-start-row .box-col {
+    max-width: 24.6%;
+    width: 100%;
+}
+.count-fre-start-row .box-col.box-count {
+    max-width: 10%;
+  }
+  .count-fre-start-row .box-col.box-start-date {
+    max-width: 22%;
+}
+.count-fre-start-row .box-col.box-start-date .input_group .searchbar .form-control {
+    text-align: right;
+}
+.count-fre-start-row .box-col.box-start-date .input_group .icon {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+}
+.count-fre-start-row .box-col.box-start-date .input_group {
+    position: relative;
+}
+.count-fre-start-row .box-col.box-amount-day {
+    max-width: 36%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 23px;
+    padding-left: 10px;
+}
+.count-fre-start-row .box-col.box-amount-day>label {
+    font-weight: 500;
+    text-transform: none;
+    font-size: 16px;
+}
+.count-fre-start-row .box-col.box-amount-day .amount-box {
+    font-size: 20px;
+    font-weight: 600;
+}
+.payment-modal-pay .card_inut-box  .cvv-col {
+    padding-right: 0;
+}
+.payment-modal-pay .card_inut-box .card-number {
+    padding-left: 0;
+}
+.payment-modal-pay .card_inut-box {
+    margin: 0;
+    margin-bottom: 10px;
+}
+.payment-modal-pay .card_inut-box .cvv-col {
+    margin-bottom: 0 !important;
+}
+.payment-modal-pay .card_inut-box .cvv-col .lbl-text {
+    text-align: left;
+    font: normal normal 900 14px/19px Avenir;
+    letter-spacing: 0px;
+    color: #434246;
+    text-transform: uppercase;
+    width: 100%;
+}
+.payment-modal-pay .card {
+    margin-bottom: 0;
+}
+
+.modal-body.pledgepay-popup {
+    padding: 0;
+}
+@media screen and (max-width: 767px) {
+    .modal-header.modal__custom_header.pledgepay-popup{background: #eae9ef 0% 0% no-repeat padding-box;    padding: 0;padding-bottom: 20px;}
+    .modal.pledge_payment {left: 0 !important;right: 0 !important;}
+    .modal-header.modal__custom_header.pledgepay-popup .modal-title {display: none;}
+    .modal-header.modal__custom_header.pledgepay-popup .close:before {
+        content: '';
+        width: 13px;
+        height: 13px;
+        border: 2px solid #cccdce;
+        display: block;
+        transform: rotate(45deg);
+        border-top: 0;
+        border-right: 0;
+    }
+    .modal-header.modal__custom_header.pledgepay-popup .close {
+        right: auto;
+        left: 0;
+        top: 22px !important;
+        color: rgba(0, 0, 0, 0);
+    }
+    .pledgepay-popup {
+        background: #fff;
+        border-radius: 18px;
+        margin-top: -15px;
+        padding: 25px 30px;
+        max-height: 59vh;
+    }   
+    .pledgepay-popup .card-body {padding: 0;}
+    .pledgepay-popup .card_inut-box .exp-date,
+    .pledgepay-popup .card_inut-box .cvv-col {max-width: 40%;flex: 0 0 40%;}
+    .pledgepay-popup .card_inut-box .exp-date, .pledgepay-popup .card_inut-box .cvv-col {margin-bottom: 0 !important;margin-top: 0px;flex: 0 0 50%;max-width: 50%;}
+    .pledgepay-popup .card_inut-box .cvv-col {margin-top: 0px !important;}
+    .pledgepay-popup .card-body .cards-icons img {margin-top: 0;}
+    .pledgepay-popup .card-body .cards-icons {margin-top: 10px;}
+    .pledgepay-popup .card-body .email-row {margin-top: 20px;border-top: 1px solid #aaaaaa;padding-top: 10px;margin-left: 0;margin-right: 0;}
+    .pledgepay-popup .card-body .email-row  .input-group {padding-right: 0;padding-left: 0;}
+    .for-mobile-only{display: block;}
+    .pledgepay-popup .brand-link .brand-image {max-width: 80px;}
+    .pledgepay-popup .brand-link  .pay_text {font-size: 18px;}
+    .pledgepay-popup .brand-link {line-height: 1.2;}
+    .pledgepay-popup .pay-total_row {margin-right: 0;margin-left: 0;}
+    .modal-footer.pledgepay-popup-ft {padding: 20px 30px;}
+}
+
+@media screen and (max-width: 575px){
+.pledgepay-popup .card_inut-box .cvv-col,
+.pledgepay-popup .card_inut-box .exp-date{margin-top: 15px !important;}
+}
+
+@media screen and (max-width: 480px){
+    .pledgepay-popup .row.card_inut-box {margin: 0;}
+    .pledgepay-popup  .cards-icons {padding: 0 7px;}
+    .pledgepay-popup .card-body .email-row{margin-left: 5px;margin-right: 5px;}
+    .pledgepay-popup .pay-total_row {margin-right: 7px !important;margin-left: 5px !important; padding-bottom: 10px;}
+    .pledgepay-popup .pay-total_row  .h4 {margin-top: 5px;}
+    .pledgepay-popup .pay-total_row .total{margin-bottom: 0;}
+    .pledgepay-popup .note-row {margin-left: 0;margin-right: 0;}
+}

@@ -1,0 +1,1208 @@
+<div class="card" ngbAutofocus tabindex="-1">
+  <div class="card-body">
+    <div class="extra__details">
+      <!-- Date range and advanced filter options -->
+      <div class="filters__options">
+        <div class="search_opts flex-fill pr-2">
+          <div class="input-group search_input">
+            <input type="text" name="advanceSearch" id="localsearch" class="form-control float-right"
+              placeholder="{{ 'SEARCHPAYMENT' | translate }}" (keyup)="search($event.target.value, $event)" />
+          </div>
+
+          <div class="input-group filter_field">
+            <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default">
+
+              <img src="/assets/dist/img/icon-filter.svg" alt="filter" class="hidden-desktop" />
+              <span class="filter_count" *ngIf="filtercount != 0">{{
+                filtercount
+                }}</span>
+              <span class="filter_text">{{ "FILTER" | translate }}</span>
+            </button>
+          </div>
+
+          <!-- Card Type Drop Down -->
+          <ng-container *appIsWeb>
+            <div class="subby_dropdown">
+              <span>{{ "SUMBY" | translate }}:</span>
+              <div class="custo_selct">
+                <angular2-multiselect id="ddlCardType" [settings]="
+                    commonMethodService.setDropDownSettings(
+                      '',
+                      1,
+                      false,
+                      true,
+                      false
+                    )
+                  " [data]="cardFilter" (onSelect)="cardTypeChange(cardType)" [(ngModel)]="cardType">
+                  <c-item>
+                    <ng-template let-item="item">
+                      <label>{{ item.itemName }}</label>
+                      <span class="count_span">({{ item.counts }})</span>
+                    </ng-template>
+                  </c-item>
+                </angular2-multiselect>
+              </div>
+            </div>
+            <div class="sort_sumcard">
+              <span class="sorting_icon"></span>
+              <div class="custo_selct sort_drpdown">
+                <angular2-multiselect id="ddlCardType" [settings]="
+                    commonMethodService.setDropDownSettings(
+                      '',
+                      1,
+                      false,
+                      true,
+                      true
+                    )
+                  " [data]="sortFilter" (onSelect)="changeSortType(sortType)" [(ngModel)]="sortType">
+                </angular2-multiselect>
+              </div>
+            </div>
+          </ng-container>
+
+
+          <div class="input-group date_picker" [ngbPopover]="popContent" #p1="ngbPopover" popoverClass="calender-modal"
+            [popoverTitle]="popTitle" [autoClose]="false"
+            placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+            id="paymentTransactionsCalender" (clickOutside)="onClickedOutsidePopover(p1)" container="body"
+            (click)="openHebrewCalendarPopup()">
+            <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+              </span>
+            </div>
+            <div>
+
+            </div>
+            <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar></ng-template>
+          </div>
+          <div class="input-group date_picker" id="dynamicsCalender" *ngIf="false">
+            <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange" [ranges]="
+                commonMethodService.isHebrew == true
+                  ? commonMethodService.hebranges
+                  : commonMethodService.ranges
+              " [linkedCalendars]="commonMethodService.linkedCalendars" [showRangeLabelOnInput]="
+                commonMethodService.showRangeLabelOnInput
+              " />
+
+            <div class="input-group-append" (click)="calenderModal()">
+              <span class="input-group-text">
+                <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+              </span>
+            </div>
+
+          </div>
+        </div>
+        <div class="refresh-div d-flex align-items-center">
+          <span class="refresh-icon" (click)="RefreshList()" style="cursor:pointer;">
+            <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <g id="timeline" />
+              <g id="navigation" />
+              <g id="align_center" />
+              <g id="align_left_1_" />
+              <g id="align_left" />
+              <g id="more" />
+              <g id="share" />
+              <g id="music" />
+              <g id="camera" />
+              <g id="print" />
+              <g id="wifi_1_" />
+              <g id="setting" />
+              <g id="composed" />
+              <g id="password" />
+              <g id="list" />
+              <g id="voice" />
+              <g id="open_folder" />
+              <g id="refresh">
+                <path
+                  d="m19.6025 12.6348c-.5586-.085-1.0547.2979-1.1348.8438-.2012 1.3711-.834 2.6221-1.8301 3.6182-2.5352 2.5352-6.6572 2.5332-9.1914 0-2.5337-2.5342-2.5337-6.6577 0-9.1914.9531-.9526 2.1563-1.5737 3.5029-1.7998.5791-.1099 1.2017-.1289 1.8477-.0557.887.1021 1.7126.3964 2.466.8285l-1.3019.2223c-.5439.0933-.9102.6099-.8164 1.1543.083.4873.5059.8315.9844.8315.0557 0 .1123-.0044.1699-.0142l3.4902-.5967c.2607-.0449.4941-.1914.6475-.4082.1533-.2163.2139-.4849.1689-.7466l-.5977-3.4897c-.0918-.5439-.6016-.9082-1.1543-.8169-.5439.0933-.9102.6104-.8164 1.1548l.1573.9185c-.9679-.543-2.0356-.8943-3.17-1.0249-.8496-.0967-1.6738-.0698-2.4282.0747-1.7368.291-3.3149 1.105-4.564 2.354-3.3135 3.3135-3.3135 8.7051 0 12.0195 1.6567 1.6572 3.8335 2.4854 6.0098 2.4854 2.1768 0 4.3525-.8281 6.0098-2.4854 1.3018-1.3018 2.1299-2.9414 2.3945-4.7412.0802-.5469-.2978-1.0548-.8437-1.1348z" />
+              </g>
+              <g id="link" />
+              <g id="attach" />
+              <g id="email" />
+              <g id="bookmark" />
+              <g id="folder" />
+              <g id="file" />
+              <g id="notification" />
+              <g id="galery" />
+              <g id="delete_1_" />
+              <g id="update" />
+              <g id="upload" />
+              <g id="download" />
+              <g id="menu" />
+              <g id="down" />
+              <g id="up" />
+              <g id="backward" />
+              <g id="forward" />
+              <g id="zoom_out" />
+              <g id="zoom_in" />
+              <g id="search" />
+              <g id="home" />
+              <g id="user" />
+              <g id="guide" />
+            </svg>
+          </span>
+          <div class="refresh-desc">
+            <h6>{{"REFRESHLIST" | translate}}</h6>
+            <p>{{ "LASTSYNCED" | translate }}
+              {{
+              pageSyncService.lastSyncPaymentTime
+              | donaryDateFormat : "long-medium"
+              }}</p>
+          </div>
+        </div>
+        <div class="fields_opts">
+          <ng-container *appIsWeb>
+            <div class="dropdown tbl_field">
+              <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-tag">
+                  <span> {{ "FIELDS" | translate }}</span></i>
+              </button>
+
+              <div>
+                <div class="field_dropdown dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                  <!-- <h2>Pending</h2> -->
+                  <div *ngFor="let group of colFields">
+                    <ng-template [ngIf]="group.isTotalPanel">
+                      <h3 [ngClass]="group.class"> {{ group.title }}</h3>
+
+                      <div cdkDropList class="field_ul field_scroll" [cdkDropListData]="group.items"
+                        (cdkDropListDropped)="dropGroupItem($event)">
+
+                        <div class="example-box" *ngFor="let i of group.items" class="example-box" cdkDrag
+                          cdkDragBoundary=".field_dropdown" (click)="$event.stopPropagation()"
+                          [cdkDragDisabled]="i.disabled">
+
+                          <div class="fieldlst_chkbox" style="padding-left: 50px">
+                            <span *ngIf="group.id != 2">
+                              <input type="checkbox" class="fields_chkbx" class="" [(ngModel)]="i.isVisible" (change)="
+                        setGridColVisibility(
+                          $event,
+                          i.colName,
+                          i.isVisible
+                        )
+                      " [id]="i.colId" />
+
+                              <label class="fields_lbl" [for]="i.colId">{{ i.colName | translate }}</label>
+                            </span>
+                            <span *ngIf="group.id == 2">
+                              <input type="checkbox" class="fields_chkbx" class="" [(ngModel)]="i.isVisible" (change)="
+                        setGridAdvancedColVisibility(
+                          i.colId
+                        )
+                      " [id]="i.colId" />
+                              <label class="fields_lbl" [for]="i.colId">{{
+                                i.colName
+                                }}</label>
+
+                            </span>
+
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown dropleft extra_opts ">
+              <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>...</span>
+              </button>
+              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <li class="dropdown">
+                  <a class="dropdown-item" data-toggle="modal" data-target="#import-data-payment"><i
+                      class="fas fa-file-import"></i>
+                    {{ "IMPORT" | translate }}</a>
+                </li>
+                <hr class="seprator" />
+                <li class="dropdown">
+                  <a class="dropdown-item"
+                    [ngClass]="{'opacity-50':gridFilterData == null ||gridFilterData.length == 0 }"
+                    (click)="gridFilterData != null && gridFilterData.length > 0 && getPaymentTransactionExcelData()"><i
+                      class="fas fa-file-excel"></i> {{ "EXCEL" |
+                    translate }}</a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate
+                    }}</a>
+                </li>
+
+
+              </ul>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <ng-container *appIsMobile>
+        <div class="summary-block align-items-center justify-content-between">
+          <h4>Summary</h4>
+          <div class="subby_dropdown">
+            <span>{{ "SUMBY" | translate }}:</span>
+            <div class="custo_selct">
+              <angular2-multiselect id="ddlCardType" [settings]="
+                  commonMethodService.setDropDownSettings(
+                    '',
+                    1,
+                    false,
+                    true,
+                    false
+                  )
+                " [data]="cardFilter" (onSelect)="cardTypeChange(cardType)" [(ngModel)]="cardType">
+                <c-item>
+                  <ng-template let-item="item">
+                    <label>{{ item.itemName }}</label>
+                    <span class="count_span">({{ item.counts }})</span>
+                  </ng-template>
+                </c-item>
+              </angular2-multiselect>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- Card Type Chip -->
+      <div class="cards--parent-row" [class.show-count]="cardType[0].itemName == 'Campaign'">
+        <span class="not-proccessed-count hover_tooltip mr-2 sumby_tooltip" *ngIf="cardType[0].itemName == 'Campaign'"
+          appHoverTooltip
+          labelText="This campaigns are not including data from their sub campaign, to see full report please go to the campaign card">
+          <i class=" fa fa-exclamation-circle text-danger"></i></span>
+        <ngx-slick class="carousel sumcard-wrapper" #slickModal="slick-modal" [config]="slideConfig">
+          <ng-container *ngFor="let item of paymentTypeChipData; let i = index">
+            <p>{{ item }}</p>
+            <ng-container *ngIf="i % 6 == 0">
+              <div ngxSlickItem class="slide">
+                <div class="row parent_cardchip">
+                  <div *ngIf="i + 0 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 0]
+                    }">
+                    </ng-template>
+                  </div>
+                  <div *ngIf="i + 1 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 1]
+                    }">
+                    </ng-template>
+                  </div>
+                  <div *ngIf="i + 2 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 2]
+                    }">
+                    </ng-template>
+                  </div>
+                  <div *ngIf="i + 3 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 3]
+                    }">
+                    </ng-template>
+                  </div>
+                  <div *ngIf="i + 4 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 4]
+                    }">
+                    </ng-template>
+                  </div>
+                  <div *ngIf="i + 5 < paymentTypeChipData.length">
+                    <ng-template [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{
+                      item: paymentTypeChipData[i + 5]
+                    }">
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ngx-slick>
+      </div>
+
+      <ng-container *appIsMobile>
+        <!-- chip cards with slider -->
+        <div class="filters__options">
+          <div class="fields_opts">
+            <button class="btn-listing" (click)="OpenBulkSelectPopup()">
+              <img src="/assets/dist/img/icon-list.svg" alt="List" />
+            </button>
+
+            <div class="sort_sumcard">
+              <span class="sorting_icon"></span>
+              <div class="custo_selct sort_drpdown">
+                <angular2-multiselect id="ddlCardType" [settings]="
+                    commonMethodService.setDropDownSettings(
+                      '',
+                      1,
+                      false,
+                      true,
+                      true
+                    )
+                  " [data]="sortFilter" (onSelect)="changeSortType(sortType)" [(ngModel)]="sortType">
+                </angular2-multiselect>
+              </div>
+            </div>
+            <div class="dropdown dropleft extra_opts">
+              <button type="button" appHoverTooltip labelText="{{'MOREACTIONS' | translate}}" class="btn btn-default"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>...</span>
+              </button>
+              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <li class="dropdown">
+                  <a class="dropdown-item" data-toggle="modal" data-target="#import-data-payment"><i
+                      class="fa fa-file-import"></i>
+                    {{ "IMPORT" | translate }}</a>
+                </li>
+                <hr class="seprator" />
+                <li class="dropdown">
+                  <a class="dropdown-item" (click)="getPaymentTransactionExcelData()"><i class="fa fa-file-excel"></i>
+                    {{ "EXCEL" | translate }}</a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate
+                    }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <div class="row action_list">
+      <span class="action_lbl" *ngIf="isSelected"><span>{{ paymentsSelectedCount }}</span>{{ " Payments Selected (" }}
+        {{ commonMethodService.formatAmount(paymentsSelectedAmount) }}
+        {{ ")" }}</span>
+      <span class="action_lbl" *ngIf="isSelected">{{ "ACTIONS" | translate }}:
+      </span>
+      <div class="custom_action" *ngIf="isSelected">
+        <span data-toggle="tooltip" appHoverTooltip labelText="{{'EDIT' | translate}}" class="icn_edit"
+          (click)="editTransactionInfoPopup()"></span>
+        <span *ngIf="isDevEnv && TransColName" class="icn_legal_receipt" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'LEGAL RECEIPT' | translate}}" (click)="BulkLegalTransaction()"></span>
+        <span data-toggle="tooltip" appHoverTooltip labelText="{{'BATCHPAYMENT' | translate}}" class="icn_batch"
+          (click)="editBatchPaymentPopup()"></span>
+        <span class="icn_text_receipt" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'PRINT' | translate}} {{'RECEIPT' | translate}}" (click)="AdvancePrintReceipt()"></span>
+        <span class="icn_text_msg" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'TEXT' | translate}} {{'RECEIPT' | translate}}" (click)="AdvanceSMSReceiptAction()"></span>
+        <span class="icn_mail" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'EMAIL' | translate}} {{'RECEIPT' | translate}}" (click)="AdvanceEmailReceiptAction()"></span>
+        <span class="icn_message" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'MAIL' | translate}} {{'RECEIPT' | translate}}" (click)="AdvanceMailReceiptAction()"></span>
+        <span class="icn_block" data-toggle="tooltip" appHoverTooltip labelText="{{'VOIDPAYMENT' | translate}}"
+          (click)="AdvanceVoidPaymentAction()"></span>
+        @if (isDevEnv) {
+        <span class="icn_retry" *ngIf="isRetrySelected" data-toggle="tooltip" appHoverTooltip
+          labelText="{{'RETRYPAYMENT' | translate}}" (click)="AdvanceRetryPaymentAction()"></span>
+        }
+        <span class="icn_labels" data-toggle="tooltip" appHoverTooltip labelText="{{'GENERATEREPORT' | translate}}"
+          (click)="onPaymentCustomReport()"></span>
+        <span class="icn_advance" data-toggle="tooltip" appHoverTooltip labelText="{{'ADVANCEACTION' | translate}}"
+          (click)="AdvanceReceiptAction()">{{'ADVANCE' | translate}}</span>
+
+      </div>
+    </div>
+
+    <ng-container *appIsWeb>
+      <ng-template [ngTemplateOutlet]="webIn"></ng-template>
+    </ng-container>
+
+    <ng-container *appIsMobile>
+      <ng-template [ngTemplateOutlet]="mobileIn"></ng-template>
+    </ng-container>
+
+  </div>
+  <div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>
+
+<ng-template #chipCardTemp let-item="item">
+  <div class="col-3" *ngIf="item">
+    <div [class]="item.paymentTypeChipCSSClass" (click)="GetPaymentTransByPaymentChipType(item)">
+      <div class="info-box-content">
+        <div class="row">
+          <div class="col-12 top_value">
+            <span class="info-box-text" [title]="item.paymentType">{{
+              item.paymentType?.toUpperCase() == "ALL" ? (item.paymentType| join_and_uppercase | translate) :
+              item.paymentType
+              }}</span>
+            <span class="info-box-count">({{ item.paymentCount }}) </span>
+          </div>
+          <div class="col-12 bottom_value">
+            <span class="info-box-number">{{
+              commonMethodService.formatAmount(item.totalAmount)
+              }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- The Modal -->
+<div class="modal fade import-doc" id="import-data-payment">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header ui-draggable-handle">
+        <h4 class="modal-title">{{'IMPORT' | translate}} {{'PAYMENTS' | translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="reseteFile()">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="import-doc-body">
+          <div id="other" class="file-drop-area {{ changeText }}" draggable="true"
+            (dragstart)="changeText = 'is-active'" (drag)="changeText = 'is-active'"
+            (dragover)="changeText = 'is-active'" (drop)="changeText = 'is-active'" (dragend)="changeText = ''">
+            <div id="NotReadyToUpload" class="file-not-ready">
+              <span class="file-msg text-center"><i class="cloud-upload"></i>{{'DRAGFILEUPLOAD' | translate}}</span>
+              <label class="file-devider">{{'OR' | translate}}</label>
+              <input class="file-input" type="file" name="doc_file" id="doc_file" (change)="incomingfile($event)"
+                placeholder="{{'UPLOADFILE' | translate}}" accept=".xlsx" />
+              <span class="fake-btn">{{'CHOOSEFILE' | translate}}</span>
+            </div>
+            <div id="readyToUpload" class="file-ready" style="display: none">
+              <span class="file-msg text-center"><i class="cloud-upload"></i> {{'FILEREADY' | translate}}</span>
+              <div class="label-download">
+                <button class="download-excel-tem">{{ fileName }}</button>
+              </div>
+            </div>
+          </div>
+          <div class="label-download">
+            <button (click)="downloadExcelTemplate($event)" class="download-excel-tem">
+              <i class="xls-file"></i> {{'DOWNLOADEXCEL' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-default" (click)="reseteFile()">
+          {{'CANCEL' | translate}}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="uploadExcelTemplate()"
+          *ngIf="this.commonMethodService.isfeatureSetting">
+          {{'UPLOAD' | translate}}
+        </button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary btn-core" (click)="onUpgrade()"
+          *ngIf="!this.commonMethodService.isfeatureSetting">
+          {{'UPGRADETOSAVE' | translate}}
+        </button>
+      </div>
+      <div *ngIf="isloadingModel" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #webIn>
+  <div class="tbl_colm_sticky pyment_tbl" [ngClass]="{ select_action: isSelected == true }" id="print_trans_div">
+    <div class="modal_custom px-0 table-responsive transaction__table">
+      <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+        <div class="px-2" id="paymentTypePayment" style="overflow-y: auto; height: 100%">
+          <table class="table-striped table-resizable" id="paymenttranstbl" [svData]="gridFilterData" #sv="svDataTable"
+            [svRowsOnPage]="25" svSortBy="createdDate" svSortOrder="desc">
+            <thead>
+              <tr>
+                <th>
+                  <div class="select-popup" *ngIf="isSelectPopupShow" (clickOutside)="selectPopupClose()">
+                    <ul>
+                      <li>
+                        <input type="radio" name="select" id="select-page" (change)="selectThisPage($event)" />
+                        <label for="select-page">Select this page</label>
+                        <span class="select-count">{{displayThisPageCount}}</span>
+                      </li>
+                      <li>
+                        <input type="radio" name="select" id="select-all"
+                          (change)="selectRecord($event, 'selectAll', null)" />
+                        <label for="select-all">Select all</label>
+                        <span class="select-count">{{gridFilterData.length}}</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <input type="checkbox" appHoverTooltip labelText="{{'SELECT' | translate}}" name="selectAll"
+                    id="select_all" (change)="selectPopupOpen($event)" [checked]="isBulkCheckbox" />
+                  <label for="select_all" class="custom-checkbox"></label>
+                </th>
+
+
+                <ng-container *ngFor="let groupHeader of colFields; let i = index">
+                  <ng-container *ngIf="groupHeader.id != 2">
+                    <ng-container *ngFor="let objHeader of groupHeader.items;let i = index">
+                      <ng-container *ngIf="!objHeader.isAdvancedField && checkVisibility(objHeader.colName)">
+                        <th resizable
+                          [class.payment-th-cls]="objHeader.colName != 'RECEIPT#' && objHeader.colName != 'PAYMENTDATE' && objHeader.colName != 'DONORJEWISHNAME'"
+                          [class.payment-sticky-th-cls]="objHeader.colName == 'RECEIPT#' || objHeader.colName == 'PAYMENTDATE' || objHeader.colName == 'DONORJEWISHNAME'"
+                          [class.receipt-sticky-cls]="objHeader.colName == 'RECEIPT#'"
+                          [class.payment-date-sticky-cls]="objHeader.colName == 'PAYMENTDATE'"
+                          [class.donor-jewish-name-sticky-cls]="objHeader.colName == 'DONORJEWISHNAME'">
+                          <sv-default-sorter [by]="objHeader.sortName"> {{ (TransColName && objHeader.colName ===
+                            'RECEIPT#') ? 'Payment #' : objHeader.colName | translate }}
+                          </sv-default-sorter>
+                        </th>
+                      </ng-container>
+
+
+                      <ng-container
+                        *ngIf="objHeader.isAdvancedField && checkGridAdvancedColVisibilityIfMove(objHeader.colId)">
+                        <th resizable [ngClass]="getTableTdClassName(objHeader)">
+                          <sv-default-sorter [by]="objHeader.sortName">{{ objHeader.colName }}</sv-default-sorter>
+                        </th>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="groupHeader.id == 2">
+                    <ng-container *ngFor="let objHeader of groupHeader.items;let i = index">
+
+                      <ng-container
+                        *ngIf="objHeader.isAdvancedField && checkGridAdvancedColVisibility(objHeader.colId)">
+                        <th resizable [ngClass]="getTableTdClassName(objHeader)">
+                          <sv-default-sorter [by]="objHeader.sortName">{{ objHeader.colName }}</sv-default-sorter>
+                        </th>
+                      </ng-container>
+
+                      <ng-container *ngIf="!objHeader.isAdvancedField && checkVisibility(objHeader.colName)">
+                        <th resizable
+                          [class.payment-th-cls]="objHeader.colName != 'RECEIPT#' && objHeader.colName != 'PAYMENTDATE' && objHeader.colName != 'DONORJEWISHNAME'"
+                          [class.payment-sticky-th-cls]="objHeader.colName == 'RECEIPT#' || objHeader.colName == 'PAYMENTDATE' || objHeader.colName == 'DONORJEWISHNAME'"
+                          [class.receipt-sticky-cls]="objHeader.colName == 'RECEIPT#'"
+                          [class.payment-date-sticky-cls]="objHeader.colName == 'PAYMENTDATE'"
+                          [class.donor-jewish-name-sticky-cls]="objHeader.colName == 'DONORJEWISHNAME'">
+                          <sv-default-sorter [by]="objHeader.sortName"> {{ (TransColName && objHeader.colName ===
+                            'RECEIPT#') ? 'Payment #' : objHeader.colName }}
+                          </sv-default-sorter>
+                        </th>
+                      </ng-container>
+
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+
+
+            </thead>
+            <tbody *ngIf="sv.data?.length > 0">
+              <tr *ngFor="let item of sv.data; let i = index" tabindex="{{ i }}" class="table-row table-row-{{ i }}">
+                <td class="payment-td-cls">
+                  <input #checkboxes id="{{ item.paymentId }}" type="checkbox" name="singlecheck" (change)="
+                    selectRecord(
+                      $event,
+                      'singlecheck',
+                      item.paymentId,
+                      item.paymentStatus
+                    )
+                  " [checked]="checkselectRecord(item.paymentId)" />
+                  <label for="{{ item.paymentId }}" class="custom-checkbox"></label>
+                  <span class="tooltip-custom">{{'SELECT' | translate}}</span>
+                </td>
+
+                <ng-container *ngFor="let groupHeader of colFields">
+                  <ng-container *ngIf="groupHeader.id != 2">
+                    <ng-container *ngFor="let objHeader of groupHeader.items">
+
+                      <ng-container *ngIf="checkVisibility(objHeader.colName)">
+                        <ng-template [ngTemplateOutlet]="rowTdTmp"
+                          [ngTemplateOutletContext]="{ item: item, objHeader: objHeader }"></ng-template>
+                      </ng-container>
+
+                      <ng-container
+                        *ngIf="checkIsAdvanceFieldColId(objHeader.colId) && checkGridAdvancedColVisibilityIfMove(objHeader.colId)">
+                        <td>
+                          {{ viewOfAdvanceFieldValue(objHeader.colName, item) }}
+                        </td>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="groupHeader.id == 2">
+                    <ng-container *ngFor="let objHeader of groupHeader.items">
+                      <ng-container
+                        *ngIf="checkIsAdvanceFieldColId(objHeader.colId) && checkGridAdvancedColVisibility(objHeader.colId)">
+                        <td>
+                          {{ viewOfAdvanceFieldValue(objHeader.colName, item) }}
+                        </td>
+                      </ng-container>
+
+                      <ng-container *ngIf="!objHeader.isAdvancedField && checkVisibility(objHeader.colName)">
+                        <ng-template [ngTemplateOutlet]="rowTdTmp"
+                          [ngTemplateOutletContext]="{ item: item, objHeader: objHeader }"></ng-template>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+
+
+                <td class="custom_action hover__action">
+                  <div class="float__action">
+                    <ng-template [ngIf]="notSuccessAction" [ngIfElse]="notSuccessAction">
+                      <span data-toggle="tooltip" [ngClass]="{'disabled-edit-button default-cursor': (item.batchNum && !isEventBatchEdit)}"
+                        appHoverTooltip [labelText]="!item.batchNum || isEventBatchEdit ? ('EDIT' | translate) : 'Payment already batched'"
+                        class="icn_edit" (click)="
+                      (!item.batchNum || isEventBatchEdit) &&
+                        editPaymentPopup(
+                          item.paymentId,
+                          item.paymentType,
+                          item.refNum
+                        )
+                      "></span>
+                      <ng-template [ngIf]="isGlobalId(item)">
+                        <span class="icn_text_receipt" data-toggle="tooltip" appHoverTooltip
+                          labelText="{{'ACTIONSENABLEMESSAGE' | translate}}"
+                          (click)="printReceipt(item.paymentId,item.globalId)"
+                          *ngIf="hideShowActionButton(item.paymentStatus)"></span>
+                      </ng-template>
+
+                      <ng-template [ngIf]="!isGlobalId(item)">
+                        <span class="icn_text_receipt " [ngClass]="{'modal-recept-50':!item.legalReceiptNum}"
+                          data-toggle="tooltip" appHoverTooltip
+                          [labelText]="item.legalReceiptNum ? ('PRINT' | translate) + ' '+ ('RECEIPT' | translate) : 'To enable generate the legal receipt'"
+                          (click)="item.legalReceiptNum && printReceipt(item.paymentId,item.globalId)"
+                          *ngIf="hideShowActionButton(item.paymentStatus) && isDevEnv && TransColName"></span>
+                        <span class="icn_text_receipt " data-toggle="tooltip" appHoverTooltip
+                          labelText="{{'PRINT' | translate}} {{'RECEIPT' | translate}}"
+                          (click)="printReceipt(item.paymentId,item.globalId)"
+                          *ngIf="hideShowActionButton(item.paymentStatus) && (!isDevEnv || (isDevEnv && !TransColName )) "></span>
+                      </ng-template>
+
+                      <ng-template [ngIf]="isGlobalId(item)">
+                        <span class="icn_text_msg" [ngClass]="{'modal-recept-50':!item.legalReceiptNum}" (click)="
+                        SendTextReceipt(
+                          item.paymentId,
+                          item.phoneNumberList,
+                          item.accountId,
+                          item.globalId,
+                          item.fullNameJewish,
+                          item.phoneCountryCodeIDs
+                        )
+                      " data-toggle="tooltip" appHoverTooltip labelText="{{'ACTIONSENABLEMESSAGE' | translate}}"
+                          *ngIf="hideShowActionButton(item.paymentStatus)"></span>
+                      </ng-template>
+
+                      <ng-template [ngIf]="!isGlobalId(item)">
+                        <span class="icn_text_msg" [ngClass]="{'opacity-50':!item.legalReceiptNum}" (click)="item.legalReceiptNum &&
+                        SendTextReceipt(
+                          item.paymentId,
+                          item.phoneNumberList,
+                          item.accountId,
+                          item.globalId,
+                          item.fullNameJewish,
+                          item.phoneCountryCodeIDs
+                        )
+                      " data-toggle="tooltip" appHoverTooltip
+                          [labelText]="item.legalReceiptNum ? ('TEXT' | translate) + ' '+ ('RECEIPT' | translate) : 'To enable generate the legal receipt'"
+                          *ngIf="hideShowActionButton(item.paymentStatus)&& isDevEnv && TransColName"></span>
+                        <span class="icn_text_msg" (click)="
+                          SendTextReceipt(
+                            item.paymentId,
+                            item.phoneNumberList,
+                            item.accountId,
+                            item.globalId,
+                            item.fullNameJewish,
+                            item.phoneCountryCodeIDs
+                          )
+                        " data-toggle="tooltip" appHoverTooltip
+                          labelText="{{'TEXT' | translate}} {{'RECEIPT' | translate}}"
+                          *ngIf="hideShowActionButton(item.paymentStatus) && (!isDevEnv|| (isDevEnv && !TransColName ))"></span>
+                      </ng-template>
+
+                      <ng-template [ngIf]="isGlobalId(item)">
+                        <span class="icn_mail" [ngClass]="{'opacity-50':!item.legalReceiptNum}" data-toggle="tooltip"
+                          appHoverTooltip labelText="{{'ACTIONSENABLEMESSAGE' | translate}}" (click)="
+                        SendEmailReceipt(
+                          item.paymentId,
+                          item.emailList,
+                          item.accountId,
+                          item.globalId,
+                          item.fullNameJewish,
+                          item.phoneNumberList,
+                          item.pledgePayment
+                        )
+                      " *ngIf="hideShowActionButton(item.paymentStatus)"></span>
+                      </ng-template>
+
+                      <ng-template [ngIf]="!isGlobalId(item)">
+                        <span class="icn_mail" [ngClass]="{'opacity-50':!item.legalReceiptNum}" data-toggle="tooltip"
+                          appHoverTooltip
+                          [labelText]="item.legalReceiptNum ? ('EMAIL' | translate) + ' '+ ('RECEIPT' | translate) : 'To enable generate the legal receipt'"
+                          (click)="item.legalReceiptNum &&
+                        SendEmailReceipt(
+                          item.paymentId,
+                          item.emailList,
+                          item.accountId,
+                          item.globalId,
+                          item.fullNameJewish,
+                          item.phoneNumberList,
+                          item.pledgePayment
+                        )
+                      " *ngIf="hideShowActionButton(item.paymentStatus) && isDevEnv && TransColName"></span>
+                        <span class="icn_mail" data-toggle="tooltip" appHoverTooltip
+                          labelText="{{'EMAIL' | translate}} {{'RECEIPT' | translate}}" (click)="
+                       SendEmailReceipt(
+                         item.paymentId,
+                         item.emailList,
+                         item.accountId,
+                         item.globalId,
+                         item.fullNameJewish,
+                         item.phoneNumberList,
+                         item.pledgePayment
+                       )
+                     " *ngIf="hideShowActionButton(item.paymentStatus) && (!isDevEnv|| (isDevEnv && !TransColName ))"></span>
+                      </ng-template>
+
+                      <span class="icn_message" [ngClass]="{'opacity-50':!item.legalReceiptNum}"
+                        *ngIf="item.globalId != 688008 && hideShowActionButton(item.paymentStatus) && isDevEnv && TransColName"
+                        (click)="item.legalReceiptNum &&
+                        SendMailReceipt(
+                          item.paymentId,
+                          item.accountId,
+                          item.address,
+                          item.cityStateZip,
+                          item.globalId
+                        )
+                      " data-toggle="tooltip" appHoverTooltip
+                        [labelText]="item.legalReceiptNum ? ('MAIL' | translate) + ' '+ ('RECEIPT' | translate) : 'To enable generate the legal receipt'"></span>
+                      <span class="icn_message"
+                        *ngIf="item.globalId != 688008 && hideShowActionButton(item.paymentStatus) && (!isDevEnv || (isDevEnv && !TransColName ))"
+                        (click)="item.legalReceiptNum &&
+                      SendMailReceipt(
+                        item.paymentId,
+                        item.accountId,
+                        item.address,
+                        item.cityStateZip,
+                        item.globalId
+                      )
+                    " data-toggle="tooltip" appHoverTooltip
+                        labelText="{{'MAIL' | translate}} {{'RECEIPT' | translate}}"></span>
+                      <span class="icn_block" data-toggle="tooltip" appHoverTooltip
+                        [ngClass]="{'disabled-void-button default-cursor': item.batchNum}"
+                        [labelText]="!item.batchNum ? ('VOIDPAYMENT' | translate) : 'Payment already batched'" (click)="
+                       !item.batchNum && VoidPayment(
+                          item.paymentId,
+                          item.paymentStatus,
+                          item.currencyAmount,
+                          item.paymentType
+                        )
+                      " *ngIf="hideShowActionButton(item.paymentStatus)"></span>
+                      <span data-toggle="tooltip" appHoverTooltip labelText="{{'RETRY' | translate}}" class="icn_retry"
+                        (click)="RetryPayment(item.paymentId, item.walletId)"
+                        *ngIf="hideActionVoided(item.paymentStatus) && item.paymentType !=='ACH'"
+                        [class.disabled]="isRetryClicked"></span>
+                    </ng-template>
+
+                    <ng-template #notSuccessAction>
+                      <span data-toggle="tooltip" appHoverTooltip labelText="{{'EDIT' | translate}}" class="icn_edit"
+                        (click)="
+                        editPaymentPopup(
+                          item.paymentId,
+                          item.paymentType,
+                          item.refNum
+                        )
+                      "></span>
+                      <span data-toggle="tooltip" appHoverTooltip labelText="{{'RETRY' | translate}}" class="icn_retry"
+                        (click)="RetryPayment(item.paymentId, item.walletId)" *ngIf="!!item.walletId"></span>
+                    </ng-template>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="sv.data?.length == 0">
+              <tr>
+                <td colspan="15" style="text-align: center">{{'NODATAFOUND' | translate}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="new_tblfoot">
+    <div class="show_entry">
+      <span class="total_record">{{'SHOWING' | translate}}
+        <span *ngIf="isFiltered"><strong>{{ filterRecord }}</strong> {{'OF' | translate}}
+        </span>
+        <strong>{{ totalRecord }}</strong> {{'RECORDS' | translate}}</span>
+      <div class="show_entry">
+        <span class="total_record">
+          {{'SELECTED' | translate}}
+          <strong>{{ totalSelectedShow() }}</strong>
+          {{'RECORDS' | translate}}
+        </span>
+      </div>
+      <div class="custom_pagination">
+        <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+        </sv-bootstrap-paginator>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mobileIn>
+  <!-- Mobile listing dynamic data code started  -->
+  <div class="payment-listing">
+    <ul *ngFor="let item of gridFilterData;">
+      <li (click)="paymentActions(item.paymentId)">
+        <div class="payment-actions" *ngIf="item.isPaymentActionsVisible">
+          <ul>
+            <li (click)="
+                editPaymentPopup(
+                  item.paymentId,
+                  item.paymentType,
+                  item.refNum
+                )
+              ">
+              <a>
+                <span class="material-icons">edit</span> {{'EDIT' | translate}} payment </a>
+            </li>
+            <li (click)="AddReminderPopup(item)">
+              <span class="material-icons">notifications</span> Create Reminder
+            </li>
+            <li class="seprator-line">
+              <hr>
+            </li>
+            <li (click)="printReceipt(item.paymentId,item.globalId)">
+
+              <span class="material-icons">print</span> {{'PRINT' | translate}} {{'RECEIPT' | translate}}
+            </li>
+            <li (click)="
+                SendTextReceipt(
+                  item.paymentId,
+                  item.phoneNumberList,
+                  item.accountId,
+                  item.globalId,
+                  item.fullNameJewish,
+                  item.phoneCountryCodeIDs
+                )
+              ">
+              <span class="material-icons">message</span> {{'TEXT' | translate}} {{'RECEIPT' | translate}}
+            </li>
+            <li (click)="
+                SendEmailReceipt(
+                  item.paymentId,
+                  item.emailList,
+                  item.accountId,
+                  item.globalId,
+                  item.fullNameJewish,
+                  item.phoneNumberList,
+                  item.pledgePayment
+                )
+              ">
+              <span class="material-icons">alternate_email</span> {{'EMAIL' | translate}} {{'RECEIPT' | translate}}
+
+
+            </li>
+            <li *ngIf="item.globalId != 688008" (click)="
+                SendMailReceipt(
+                  item.paymentId,
+                  item.accountId,
+                  item.address,
+                  item.cityStateZip,
+                  item.globalId
+                )
+              ">
+              <span class="material-icons">email</span> {{'MAIL' | translate}} {{'RECEIPT' | translate}}
+            </li>
+            <li class="seprator-line">
+              <hr>
+            </li>
+            <li class="void" (click)="
+                VoidPayment(
+                  item.paymentId,
+                  item.paymentStatus,
+                  item.currencyAmount,
+                  item.paymentType
+                )
+              ">
+              <span class="material-icons">block</span> {{'VOIDPAYMENT' | translate}}
+            </li>
+
+
+          </ul>
+        </div>
+        <div class="d-flex justify-content-between">
+          <h4 *ngIf="item.fullNameJewish != null" class="left-content donor-name">{{item.fullNameJewish}}</h4>
+          <span class="right-content donor-amt">{{ commonMethodService.formatAmount(item.amount) }}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="left-content donor-time">
+            <span class="donor-date">{{ item.createdDate | donaryDateFormat: "short" }}</span>
+            <span class="donor-location">{{ item.locationName }}</span>
+          </div>
+          <div class="right-content">
+            <span class="donor-payment">
+              {{ item.paymentType }}
+            </span>
+            <ng-container *ngIf="item.paymentType != 'Cash'">
+              <span [ngSwitch]="item.paymentStatus">
+                <span class="donor-status" *ngSwitchCase="'Pending'">
+                  <img src="/assets/dist/img/status-pending.png" alt="" />
+                </span>
+                <span class="donor-status status-success" *ngSwitchCase="'Processing'">
+                  <i class="material-icons">priority_high</i>
+                </span>
+                <span class="donor-status status-success" *ngSwitchCase="'Success'">
+                  <i class="material-icons">check</i>
+                </span>
+                <span class="donor-status status-success" *ngSwitchCase="'Deposited'">
+                  <i class="material-icons">check</i>
+                </span>
+                <span class="donor-status status-error" *ngSwitchCase="'Error'">
+                  <i class="material-icons">close</i>
+                </span>
+                <span class="donor-status status-error" *ngSwitchCase="'Declined'">
+                  <i class="material-icons">close</i>
+                </span>
+              </span>
+            </ng-container>
+
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="left-content payment-category d-flex flex-wrap">
+            <div class="payment-campaign">
+              <div *ngIf="item.campaignName != null && item.campaignName != ''; else campaignNullData">
+                <label>CAMPAIGN:</label>
+                <span [ngClass]="{'hebrew-text': containsHebrewCharacters(item.campaignName)}">{{ item.campaignName
+                  }}</span>
+              </div>
+              <ng-template #campaignNullData>
+                <label>CAMPAIGN:</label>
+                <span>-</span>
+              </ng-template>
+            </div>
+            <div class="payment-reason">
+              <div *ngIf="item.reasonName != null && item.campaignName != ''; else reasonNullData">
+                <label>REASON:</label>
+                <span [ngClass]="{'hebrew-text': containsHebrewCharacters(item.reasonName)}">{{ item.reasonName
+                  }}</span>
+              </div>
+              <ng-template #reasonNullData>
+                <label>REASON:</label>
+                <span>-</span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="right-content">
+            <span class="payment-currency" (click)="
+            openPaymentCardPopup(item.paymentId, item.globalId,item.legalReceiptNum)
+          ">
+              #{{item.receiptNum}}
+            </span>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+    <div class="payment-overlay" *ngIf="paymentActionVisible"></div>
+
+    <div class="end-list">You've reach the end of the list</div>
+  </div>
+  <!-- Mobile listing dynamic data code ended -->
+</ng-template>
+
+<ng-template #rowTdTmp let-objHeader="objHeader" let-item="item">
+  <td class="payment-td-cls receipt-sticky-cls" *ngIf="objHeader.sortName == 'receiptNum'" (click)="
+                      openPaymentCardPopup(item.paymentId, item.globalId,item.legalReceiptNum)
+                    " style="color: blueviolet; cursor: pointer">
+    {{ item.receiptNum }}
+  </td>
+  <td class="payment-td-cls payment-date-sticky-cls" *ngIf="objHeader.sortName == 'paymentDateTime'">
+    {{ item.paymentDateTime | donaryDateFormat: "short" }}
+  </td>
+  <td class="payment-td-cls donor-jewish-name-sticky-cls lng_hebrew hebrew_font"
+    (click)="openDonorCardPopup(item.accountId)" *ngIf="objHeader.sortName == 'fullNameJewish'">
+    <span>{{ item.fullNameJewish }}</span>
+    @if(!item.accountId || item.accountNum == 'DEFAULT')
+    {
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'createdDate'">
+    {{ item.createdDate | donaryDateFormat: "long" }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'amount'">
+    {{ commonMethodService.formatAmount(item.amount) }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'paymentType'">
+    {{ item.paymentType }}
+  </td>
+  
+  <td *ngIf="objHeader.sortName == 'legalReceipt' && isDevEnv && TransColName">
+    <span *ngIf="item.legalReceiptNum">{{ item.legalReceiptNum }}</span>
+    <span class="modal-recept d-flex align-items-center" *ngIf="!item.legalReceiptNum"
+      [ngClass]="{'modal-recept-50': item.paymentStatus === 'Error' || item.paymentStatus === 'Declined' || item.fullNameJewish === null|| 
+                    (item.paymentStatus === 'Pending' && item.paymentType === 'Check')}"
+      (click)="item.paymentStatus!='Error' && (!(item.paymentStatus === 'Pending' && item.paymentType === 'Check')) && item.paymentStatus!='Declined' && item.fullNameJewish!=null && OpenLegalReceipt(item.paymentId,item,item.paymentType)"
+      data-toggle="tooltip" appHoverTooltip [labelText]="item.paymentStatus === 'Error' || item.paymentStatus === 'Declined' ? 'Can\'t generate a receipt for error or declined payments' :
+      item.paymentStatus === 'Pending' && item.paymentType === 'Check' ? 'Can\'t generate legal receipt for pending checks' :
+                   item.fullNameJewish === null ? ('DONORSELECTEDTRANSACTION' | translate) :
+                   null"><i class="icon icon-receipt mr-1"></i> Generate Receipt</span>
+  </td>
+  <td *ngIf="objHeader.sortName == 'paymentJewishDate'">
+    {{ item.paymentJewishDate }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'approval'">
+    {{ item.approval }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'refNum'" class="reference_col">
+    {{
+    item.refNum != null && item.refNum.length > 25
+    ? (item.refNum | slice : 0 : 25) + ".."
+    : item.refNum
+    }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'paymentStatus'">
+    <span [ngClass]="item.status_class">{{ item.paymentStatus | uppercase | translate }}
+    </span>
+  </td>
+  <td *ngIf="objHeader.sortName == 'scheduleNum'" style="color: blueviolet; cursor: pointer"
+    (click)="openSchedulePaymentCardPopup(item.scheduleID)">
+    {{ item.scheduleNum }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'scheduleInfo'">
+    {{ (item.scheduleInfo) }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'cardHolderName'">
+    {{ item.cardHolderName }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'note'">
+    {{
+    item.note != null && item.note.length > 18
+    ? (item.note | slice : 0 : 18) + ".."
+    : item.note
+    }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'campaignName'" (click)="openCampaignCardPopup(item.campaignId)"
+    style="color: blueviolet; cursor: pointer">
+    {{
+    item.campaigns != null
+    ? item.campaigns
+    : item.campaignName
+    }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'reasonName'" (click)="openReasonCardPopup(item.reasonId)"
+    style="color: blueviolet; cursor: pointer">
+    {{ item.reasonName }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'reasonNum'">
+    {{ item.reasonNum }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'locationName'" (click)="openLocationCardPopup(item.locationId)"
+    style="color: blueviolet; cursor: pointer">
+    {{ item.locationName }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'colectorName'" (click)="openCollectorCardPopup(item.collectorId)"
+    style="color: blueviolet; cursor: pointer">
+    {{ item.colectorName }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'device'" (click)="openDeviceCardPopup(item.deviceId)"
+    style="color: blueviolet; cursor: pointer">
+    {{ item.device }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'accountNum'">
+    {{ item.accountNum }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'fullName'" style="color: blueviolet; cursor: pointer">
+    <span (click)="openDonorCardPopup(item.accountId)">{{ item.fullName }}</span>
+    @if(!item.accountId || item.accountNum == 'DEFAULT'){
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'address'">
+    {{ item.address }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'cityStateZip'">
+    {{ item.cityStateZip }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'phoneNumbers'">
+    <span [innerHTML]="
+                        item.phoneNo2 != 'null' ? item.phoneNo2 : ' '
+                      "></span>
+  </td>
+  <td *ngIf="objHeader.sortName == 'emailLabels'">
+    <span [innerHTML]="
+                        item.emailLabels2 != 'null: null'
+                          ? item.emailLabels2
+                          : ' '
+                      "></span>
+  </td>
+  <td *ngIf="objHeader.sortName == 'batchNum'">
+    {{ item.batchNum }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'group'">
+    {{ item.group }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'class'">
+    {{ item.class }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'father'">
+    {{ item.father }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'fatherInLaw'">
+    {{ item.fatherInLaw }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'title'">
+    {{ item.title }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'firstName'">
+    {{ item.firstName }}
+    @if(!item.accountId || item.accountNum == 'DEFAULT'){
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'lastName'">
+    {{ item.lastName }}
+    @if(!item.accountId || item.accountNum == 'DEFAULT'){
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'titleJewish'">
+    {{ item.titleJewish }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'firstNameJewish'">
+    {{ item.firstNameJewish }}
+    @if(!item.accountId || item.accountNum == 'DEFAULT'){
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'lastNameJewish'">
+    {{ item.lastNameJewish }}
+    @if(!item.accountId || item.accountNum == 'DEFAULT'){
+    <span class="no-donor">No donor selected</span>
+    }
+  </td>
+  <td *ngIf="objHeader.sortName == 'suffixJewish'">
+    {{ item.suffixJewish }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'pledgePayment'">
+    {{
+    commonMethodService.formatAmount(item.pledgePayment)
+    }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'currencyAmount'">
+    {{ formatAmount(item.currencyAmount,
+    item.currencyName) }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'currencyName'">
+    {{ item.currencyName }}
+  </td>
+  <td *ngIf="objHeader.sortName == 'tagNames'" [innerHTML]="item.tagFormat"></td>
+  <td *ngIf="objHeader.sortName == 'gatewayBatchNum'">
+    {{ item.gatewayBatchNum }}
+  </td>
+</ng-template>

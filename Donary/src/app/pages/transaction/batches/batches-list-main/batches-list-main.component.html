@@ -1,0 +1,267 @@
+<div class="card batch-page batch-page-new" *ngIf="!isNewBatch">
+  <div class="card-body batches_list__main">
+    <div class="extra__details">
+      <div class="filters__options filters__options_batch">
+        <div class="search_opts">
+          <div class="input-group search_input">
+            <input type="text" name="advanceSearch" id="localsearch1" class="form-control float-right"
+              (keyup)="search($event.target.value)" placeholder="{{'SEARCH' | translate}} {{'BATCHES' | translate}}" />
+          </div>
+          <!-- new calendar code started -->
+          <ng-template #popContent>
+            <app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+              [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+          </ng-template>
+          <div class="input-group date_picker" (click)="openCalendarPopup(p1)"
+            (clickOutside)="onClickedOutsidePopover(p1)" #p1="ngbPopover" container="body" [ngbPopover]="popContent"
+            popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+            placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="batchCalender">
+            <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+          </div>
+          <!-- new calendar code ended -->
+          <div class="fields_opts" id="statusDropdown" (click)="openStatusDropdown()"
+            [class.statusBackground]=statusDropdown>
+            <div class="dropdown dropdown_status dropleft extra_opts">
+              <div class="subby_dropdown d-flex justify-content-between m-0">
+                <span>{{'SHOWSTATUS' | translate}}:</span>
+                <div class="custo_selct">
+                  <angular2-multiselect id="ddlCardType" [settings]="commonMethodService.setDropDownSettings(
+                      '',
+                      1,
+                      false,
+                      true,
+                      false
+                      )
+                  " [data]="statusFilter" (onSelect)="statusTypeChange(statusType)" [(ngModel)]="statusType">
+                  </angular2-multiselect>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fields_opts justify-content-end">
+          <div class="fields_opts">
+            <div class="dropdown tbl_field">
+              <button id="dLabel" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-tag">
+                  <span> {{ "FIELDS" | translate }}</span></i>
+              </button>
+              <ul class="dropdown-menu multi-level field_dropdown" role="menu" aria-labelledby="dropdownMenu"
+                cdkDropList (cdkDropListDropped)="drop($event)">
+                <li class="dropdown" style="list-style: none" cdkDrag (click)="$event.stopPropagation()"
+                  *ngFor="let objcolField of colFields; let i = index">
+                  <div class="fieldlst_chkbox" style="padding-left: 50px"
+                    [ngClass]="{ hidefield: objcolField.disabled == true }">
+                    <input type="checkbox" [disabled]="objcolField.disabled" class="fields_chkbx" class=""
+                      [(ngModel)]="objcolField.isVisible" (change)="
+                      setGridColVisibility(
+                        $event,
+                        objcolField.colName,
+                        objcolField.isVisible
+                      )
+                    " [id]="objcolField.colId" />
+                    <label class="fields_lbl" [for]="objcolField.colId">{{objcolField.colName | translate}}</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="dropdown dropleft extra_opts">
+              <button type="button" class="btn btn-default btn-action" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <span>...</span>
+              </button>
+              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <li class="dropdown">
+                  <a class="dropdown-item" (click)="SaveLayout()"><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate
+                    }}</a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-item" (click)="downloadExcel()"><i class="fas fa-file-excel"></i> {{ "EXCEL" |
+                    translate }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tbl_colm_sticky" id="">
+      <div class="modal_custom px-0 table-responsive">
+        <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+          <div class="px-2" style="overflow-y: auto; height: 100%">
+            <table class="table table_batches redesign_table" [svData]="gridFilterData" #sv="svDataTable"
+              [svRowsOnPage]="25" svSortBy="Status" svSortOrder="asc">
+              <thead>
+                <tr>
+                  <ng-container *ngFor="let objHeader of headerList; let i = index">
+                    <th class="text-uppercase" *ngIf="checkGridColVisibility(objHeader.colName)">
+                      <!-- <sv-default-sorter [by]="objHeader.sortName">{{ objHeader.colName | translate }}
+                      </sv-default-sorter> -->
+                      <!-- Split the column name if it contains spaces -->
+                      <ng-container *ngIf="objHeader.colName.includes(' ')">
+                        <sv-default-sorter [by]="objHeader.sortName">
+                          <div style="white-space: nowrap;"> <!-- Ensure each part stays on a single line -->
+                            <span>{{ objHeader.colName.split(' ')[0] | translate}}</span>
+                            <!-- First part of the name -->
+                          </div>
+                          <div style="white-space: nowrap;">
+                            <span>{{ objHeader.colName.split(' ').slice(1).join(' ') | translate }}</span>
+                            <!-- Remaining parts joined together -->
+                          </div>
+                        </sv-default-sorter>
+                      </ng-container>
+                      <!-- If the column name doesn't contain spaces, render it normally -->
+                      <ng-container *ngIf="!objHeader.colName.includes(' ')">
+                        <sv-default-sorter [by]="objHeader.sortName">
+                          <span>{{ objHeader.colName | translate }}</span>
+                        </sv-default-sorter>
+                      </ng-container>
+                    </th>
+                  </ng-container>
+                </tr>
+              </thead>
+              <tbody *ngIf="sv.data?.length > 0">
+                <tr *ngFor="let item of sv.data; let i = index" tabindex="{{ i }}" class="table-row table-row-{{ i }}">
+
+                  <ng-container *ngFor="let objHeader of headerList">
+                    <ng-container *ngIf="checkGridColVisibility(objHeader.colName)">
+                      <td class="td-col-gatway" *ngIf="objHeader.sortName == 'gateway'">{{ item.gatewayName}}</td>
+                      <td class="td-col-batch" (click)="openBatchCardPopup(item)"
+                        style="color: #7B5BC4; cursor: pointer;" *ngIf="objHeader.sortName == 'gatewayBatch#'">{{
+                        item.gatewayBatchNum}}</td>
+                      <td class="td-col-status" *ngIf="objHeader.sortName == 'status'"><span class="badge"
+                          [ngClass]="statusClass(item.status)">{{ item.status}}</span></td>
+                      <td class="td-col-batchDate" *ngIf="objHeader.sortName == 'gatewayDateRange'">{{
+                        item.gatewayDateRange}}</td>
+                      <td class="td-col-createdDate" *ngIf="objHeader.sortName == 'dateCreated'"> {{ item.dateCreated |
+                        donaryDateFormat: "short"}}
+                      </td>
+                      <td class="td-col-donaryBatch" style="color: #7B5BC4; cursor: pointer;"
+                        *ngIf="objHeader.sortName == 'gatewayBatchNum'">{{ item.donaryBatchNum}}</td>
+                      <td class="td-col-note" *ngIf="objHeader.sortName == 'note'">
+                        {{ item.note | slice:0:20 }}
+                        <ng-container *ngIf="item.note && item.note.length > 20">
+                          ...
+                        </ng-container>
+                      </td>
+                      <td class="td-col-bank" *ngIf="objHeader.sortName == 'bankColor'">{{item.bankName}}</td>
+                      <td class="td-col-transaction" *ngIf="objHeader.sortName == 'transactionCount'">
+                        {{item.transactionCount}}</td>
+                      <td class="td-col-amount d-flex align-items-center" *ngIf="objHeader.sortName == 'totalAmount'">
+                        <span class="amout-heavy">{{commonMethodService.formatAmount(item.totalAmount)}}</span>
+                        @if(item.status == "UnBatched" && !(isBetaEnv || isProdEnv) ){
+                          @if(this.commonMethodService.isfeatureSetting){
+                            <button class="btn-batch" (click)="SaveBatch(item.gatewayBatchNum,item.transactionCount,item.totalAmount)">Save batch</button>
+                          }@else {
+                            <button class="btn btn-primary btn-core btn-core-sm"  (click)="commonMethodService.onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+
+                          }
+                      }
+                        @if(item.status == "Batched" && !(isBetaEnv || isProdEnv)){
+                        <button class="btn-batch"
+                          (click)="openDepositBatch(batchStatusPopup,item.batchID)">Deposit batch</button>
+                        }
+
+                        <button class="btn-arrow" (click)="openBatchCardPopup(item)" *ngIf="item.status === 'Batched' || item.status === 'UnBatched'">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="8.281" height="14.562"
+                            viewBox="0 0 8.281 14.562">
+                            <path id="Path_275" data-name="Path 275" d="M18,7.5l5.867,5.867L18,19.234"
+                              transform="translate(-16.586 -6.086)" fill="none" stroke="#7B5BC4" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2" />
+                          </svg>
+                        </button>
+                      </td>
+                    </ng-container>
+                  </ng-container>
+                </tr>
+              </tbody>
+              <tbody *ngIf="sv.data?.length == 0">
+                <tr>
+                  <td colspan="15" style="text-align: center">
+                    {{ "NODATAFOUND" | translate }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="new_tblfoot">
+      <div class="show_entry">
+        <span class="total_record">{{ "SHOWING" | translate }}
+          <span *ngIf="isFiltered"><strong>{{ filterRecord }}</strong> {{ "OF" | translate }}
+          </span>
+          <strong>{{ totalRecord }}</strong> {{ "RECORDS" | translate }}</span>
+        <div class="custom_pagination">
+          <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
+          </sv-bootstrap-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #arhivedBatchPopup let-modal>
+    <div class="modal-body">
+      <div class="modal-icon mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+          <g id="Group_2739" data-name="Group 2739" transform="translate(-932 -350)">
+            <g id="Rectangle_2181" data-name="Rectangle 2181" transform="translate(932 350)" fill="none"
+              stroke="#e94242" stroke-width="1">
+              <rect width="56" height="56" rx="28" stroke="none" />
+              <rect x="0.5" y="0.5" width="55" height="55" rx="27.5" fill="none" />
+            </g>
+            <path id="Icon_awesome-archive" data-name="Icon awesome-archive"
+              d="M1.361,19.937A1.359,1.359,0,0,0,2.721,21.3H19.047a1.359,1.359,0,0,0,1.361-1.361V7.692H1.361Zm6.8-9.014a.512.512,0,0,1,.51-.51H13.1a.512.512,0,0,1,.51.51v.34a.512.512,0,0,1-.51.51H8.673a.512.512,0,0,1-.51-.51Z"
+              transform="translate(949.116 366.226)" fill="#e94242" />
+            <path id="Icon_awesome-archive-2" data-name="Icon awesome-archive"
+              d="M20.408,2.25H1.361A1.359,1.359,0,0,0,0,3.611V5.651a.682.682,0,0,0,.68.68H21.088a.682.682,0,0,0,.68-.68V3.611A1.359,1.359,0,0,0,20.408,2.25Z"
+              transform="translate(955.72 357.359) rotate(30)" fill="#e94242" />
+          </g>
+        </svg>
+      </div>
+      <p class="mb-0">Are you sure you want to archive batch# 15965?</p>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-center align-items-center border-0 pt-0">
+      <button class="btn btn-default" (click)="modal.close()">{{'CANCEL' | translate}}</button>
+      <button class="btn btn-danger" (click)="isArchived($event, arhivedBatchClosePopup)">Archive</button>
+    </div>
+  </ng-template>
+  <ng-template #arhivedBatchClosePopup let-modal>
+    <div class="modal-body">
+      <div class="modal-icon mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+          <g id="Group_2739" data-name="Group 2739" transform="translate(-932 -350)">
+            <g id="Rectangle_2181" data-name="Rectangle 2181" transform="translate(932 350)" fill="none"
+              stroke="#e94242" stroke-width="1">
+              <rect width="56" height="56" rx="28" stroke="none" />
+              <rect x="0.5" y="0.5" width="55" height="55" rx="27.5" fill="none" />
+            </g>
+            <path id="Icon_awesome-archive" data-name="Icon awesome-archive"
+              d="M1.361,19.937A1.359,1.359,0,0,0,2.721,21.3H19.047a1.359,1.359,0,0,0,1.361-1.361V7.692H1.361Zm6.8-9.014a.512.512,0,0,1,.51-.51H13.1a.512.512,0,0,1,.51.51v.34a.512.512,0,0,1-.51.51H8.673a.512.512,0,0,1-.51-.51ZM20.408,2.25H1.361A1.359,1.359,0,0,0,0,3.611V5.651a.682.682,0,0,0,.68.68H21.088a.682.682,0,0,0,.68-.68V3.611A1.359,1.359,0,0,0,20.408,2.25Z"
+              transform="translate(949.116 366.226)" fill="#e94242" />
+          </g>
+        </svg>
+      </div>
+      <p class="mb-0">Batch# 15965 archived!</p>
+    </div>
+    <div class="modal-footer d-flex justify-content-center align-items-center border-0 pt-0">
+      <button class="btn btn-default" (click)="modal.close()">{{'CLOSE' | translate}}</button>
+    </div>
+  </ng-template>
+  <ng-template #batchStatusPopup let-modal>
+    <div class="modal-body p-4 text-left">
+      <p class="mb-0">Batch status has been updated, from <span class="badge badge-batched">Batched</span> to <span
+          class="badge badge-deposited">Deposited</span> </p>
+    </div>
+    <div class="modal-footer d-flex justify-content-end align-items-center border-0 p-3">
+      <button class="btn btn-default" (click)="modal.close()">{{'CLOSE' | translate}}</button>
+    </div>
+  </ng-template>
+  <div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+  </div>
+</div>
+
+<app-create-new-batch *ngIf="isNewBatch" (emtOutputRoomAdded)="backToList($event)"></app-create-new-batch>

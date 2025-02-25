@@ -1,0 +1,518 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body pt-0 tab-api  tab-minyanim">
+      <div class="tabs__wrap">
+        <ul class="nav nav-tabs p-0">
+          <li class="active"><a href="#minyanim-01" data-toggle="tab" #minyanimTab (click)="tabClick(tabName)">שחרית</a>
+          </li>
+          <li><a href="#minyanim-02" data-toggle="tab" (click)="tabClick(tabName1)">מנחה</a></li>
+          <li><a href="#minyanim-03" data-toggle="tab" (click)="tabClick(tabName2)">מעריב</a></li>
+          <li> <a href="#minyanim-04" data-toggle="tab">חדרים </a> </li>
+        </ul>
+        <div class="tab-content tab_draggable">
+          <div class="tab-pane" id="minyanim-01">
+            <div class="inner-nav">
+              <ul class="nav nav-tabs p-0">
+                <li class="active"><a href="#minyanim-default" [class.active]="isDefaultTab" data-toggle="tab"
+                    (click)="defaultTabOpening()">{{'DEFAULTMINYANIM' | translate}}</a>
+                </li>
+                <!-- Add the dynamically created tabs started-->
+                <li *ngFor="let tab of dynamicTabs; let i = index">
+                  <a [id]="'dynamic'+tab.tabId"   [href]="'#' + tab.tabId" data-toggle="tab"
+                    (click)="tabDataLoading(tab,tabName,true)">{{ tab.groupName }}</a>
+    
+          
+                  <div class="minyanim-dropdown remove-group" *ngIf="tab.isShowDropDown">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="toggledropdownif(i,tab.tabId)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList ;  let indx = index"
+                        [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup"
+                          [(ngModel)]="dynamicSelectedGroup" [value]="group.groupId" [id]="generateId(indx,1)"
+                          (change)="selectGroup(group.groupId, i , indx , tab.tabId)" />
+                        <label [for]="generateId(indx,1)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                    <button (click)="removeGroup(tab)" class="btn-remove"><span class="material-icons">delete</span>
+                      {{'REMOVE' | translate}} {{'GROUP' | translate}}</button>
+                  </div>
+                </li>
+                <!-- Add the dynamically created tabs ended-->
+    
+                <li><a href="#minyanim-in-01" [class.active]="this.isGroupListShow == true" data-toggle="tab"
+                    (click)="onGroupList(true)">+ {{'NEW' | translate}} {{'GROUP' | translate}}</a>
+                  <div class="minyanim-dropdown remove-group" *ngIf="isGroupListShow">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="onGroupList(false)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList ;  let indx = index"
+                        [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup"
+                          [(ngModel)]="selectedGroup1" [value]="group.groupId" [id]="generateId(indx,1)"
+                          (change)="selectGroupList(group.groupId,true)" />
+                        <label [for]="generateId(indx,1)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+    
+              </ul>
+              <div class="tab-content tab_draggable">
+                <div class="tab-pane" [class.active]="minyanDefault" id="minyanim-default">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>ברכות</th>
+                        <th>הודו</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of defaultFormGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר"
+                            [searchable]="false" [formControl]="formGroup.get('room')"
+                            (click)="onDefaultRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onDefaultTimeAInputChange(formGroup.get('timeA').value, i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeB')"
+                            (input)="onDefaultTimeBInputChange(formGroup.get('timeB').value, i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showBErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon"
+                            (click)="onDeletetimes(formGroup.get('minyanId').value,true)">delete</span>
+                        </td>
+                      </tr>
+    
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addDefaultNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onDefaultSaveTimes()">{{'SAVE' | translate}} {{'MINYAN' |
+                            translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+    
+                  </table>
+                </div>
+    
+                <div class="tab-pane" *ngFor="let tabId of dynamicTabs" [class.active]="!minyanDefault"
+                  id="{{tabId.tabId}}"></div>
+                <ng-template [ngIf]="!minyanDefault">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>ברכות</th>
+                        <th>הודו</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of formGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר" [searchable]="false"
+                          [formControl]="formGroup.get('room')" (click)="onDynamicRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onTimeAInputChange(formGroup.get('timeA').value , i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeB')"
+                            (input)="onTimeBInputChange(formGroup.get('timeB').value , i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showBErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon"
+                            (click)="onDeletetimes(formGroup.get('minyanId').value,false)">delete</span>
+                        </td>
+                      </tr>
+    
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onSaveTimes()">{{'SAVE' | translate}} {{'MINYAN' |
+                            translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="minyanim-02">
+            <div class="inner-nav">
+              <ul class="nav nav-tabs p-0">
+                <li class="active"><a href="#minyanim-default-01" [class.active]="isDefaultTab1" data-toggle="tab" (click)="defaultTabOpening()">{{'DEFAULTMINYANIM' | translate}}</a>
+                </li>
+                <!-- Add the dynamically created tabs started-->
+                <li *ngFor="let tab of dynamicTabs; let i = index">
+                  <a [id]="'dynamic'+tab.tabId" [class.active]="activeTab === tab.tabId && !isDefaultTab1" [href]="'#' + tab.tabId" data-toggle="tab" (click)="tabDataLoading(tab,tabName1,true)">{{ tab.groupName }}</a>
+                  <div class="minyanim-dropdown remove-group"  *ngIf="tab.isShowDropDown">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="toggledropdownif(i,tab.tabId)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList ;  let indx = index" [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup" [(ngModel)]="dynamicSelectedGroup1" [value]="group.groupId" [id]="generateId(indx,2)"
+                          (change)="selectGroup(group.groupId , i , indx , tab.tabId)" />
+                        <label [for]="generateId(indx,2)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                    <button (click)="removeGroup(tab)" class="btn-remove"><span class="material-icons">delete</span> {{'REMOVE' | translate}} {{'GROUP' | translate}}</button>
+                  </div>
+                </li>
+                <!-- Add the dynamically created tabs ended-->
+
+                <li><a href="#minyanim-in-01" [class.active]="this.isGroupListShow == true" data-toggle="tab" (click)="onGroupList(true)">+ New Group</a>
+                  <div class="minyanim-dropdown remove-group" *ngIf="isGroupListShow">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="onGroupList(false)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList ;  let indx = index" [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup" [(ngModel)]="selectedGroup2" [value]="group.groupId" [id]="generateId(indx,2)"
+                          (change)="selectGroupList(group.groupId,true)" />
+                        <label [for]="generateId(indx,2)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+
+              </ul>
+              <div class="tab-content tab_draggable">
+                <div class="tab-pane" [class.active]="minyanDefault1" id="minyanim-inner-01">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>קרבנות</th>
+                        <th>אשרי</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of defaultFormGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר" [searchable]="false"
+                            [formControl]="formGroup.get('room')" (click)="onDefaultRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onDefaultTimeAInputChange(formGroup.get('timeA').value, i)" maxlength="8" placeholder="12:00 AM"
+                            class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeB')"
+                            (input)="onDefaultTimeBInputChange(formGroup.get('timeB').value, i)" maxlength="8" placeholder="12:00 AM"
+                            class="form-control" />
+                          <p *ngIf="formGroup.value.showBErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon" (click)="onDeletetimes(formGroup.get('minyanId').value,true)">delete</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addDefaultNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onDefaultSaveTimes()">{{'SAVE' | translate}} {{'MINYAN' | translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Add the content for the dynamically created tabs started -->
+                <div *ngFor="let tabId of dynamicTabs" class="tab-pane" [class.active]="!minyanDefault1" id="{{tabId.tabId}}"></div>
+                <ng-template [ngIf]="!minyanDefault1">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>ברכות</th>
+                        <th>הודו</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of formGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר" [searchable]="false"
+                            [formControl]="formGroup.get('room')" (click)="onDynamicRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onTimeAInputChange(formGroup.get('timeA').value , i)" maxlength="8" placeholder="12:00 AM"
+                            class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeB')"
+                            (input)="onTimeBInputChange(formGroup.get('timeB').value , i)" maxlength="8" placeholder="12:00 AM"
+                            class="form-control" />
+                          <p *ngIf="formGroup.value.showBErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon"
+                            (click)="onDeletetimes(formGroup.get('minyanId').value,false)">delete</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onSaveTimes()">{{'SAVE' | translate}} {{'MINYAN' | translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-template>
+                <!-- Add the content for the dynamically created tabs ended -->
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="minyanim-03">
+            <div class="inner-nav">
+              <ul class="nav nav-tabs p-0">
+
+                <li class="active"><a href="#minyanim-default-02" [class.active]="isDefaultTab2" data-toggle="tab" (click)="defaultTabOpening()">{{'DEFAULTMINYANIM' | translate}}</a>
+                </li>
+
+                <!-- Add the dynamically created tabs started-->
+                <li *ngFor="let tab of dynamicTabs; let i = index">
+                  <a [id]="'dynamic'+tab.tabId" [class.active]="activeTab === tab.tabId && !isDefaultTab2" [href]="'#' + tab.tabId" data-toggle="tab" (click)="tabDataLoading(tab,tabName2,true)">{{ tab.groupName }}</a>
+                  <div class="minyanim-dropdown remove-group"  *ngIf="tab.isShowDropDown">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="toggledropdownif(i,tab.tabId)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList;  let indx = index" [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup" [(ngModel)]="dynamicSelectedGroup2" [value]="group.groupId" [id]="generateId(indx,3)"
+                          (change)="selectGroup(group.groupId , i , indx , tab.tabId)" />
+                        <label [for]="generateId(indx,3)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                    <button (click)="removeGroup(tab)" class="btn-remove"><span class="material-icons">delete</span> {{'REMOVE' | translate}} {{'GROUP' | translate}}</button>
+                  </div>
+                </li>
+                <!-- Add the dynamically created tabs ended-->
+                <li><a href="#minyanim-in-01" [class.active]="this.isGroupListShow == true" data-toggle="tab" (click)="onGroupList(true)">+ New Group</a>
+                  <div class="minyanim-dropdown remove-group" *ngIf="isGroupListShow">
+                    <div class="minyanim-dropdown-head d-flex justify-content-between align-items-center">
+                      <h4>{{'SELECTDATATYPE' | translate}}</h4>
+                      <span (click)="onGroupList(false)">{{'CANCEL' | translate}}</span>
+                    </div>
+                    <ul>
+                      <li *ngFor="let group of groupList;  let indx = index" [class.disabled-opacity]="group.timelist === false">
+                        <input type="radio" [disabled]="group.timelist == false" name="rdbGroup" [(ngModel)]="selectedGroup3" [value]="group.groupId" [id]="generateId(indx,3)"
+                          (change)="selectGroupList(group.groupId,true)" />
+                        <label [for]="generateId(indx,3)">
+                          {{group.groupNameJewish}}
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="tab-content tab_draggable">
+                <div class="tab-pane" [class.active]="minyanDefault2" id="minyanim-inner-01">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>ברכו</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of defaultFormGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר"
+                            [searchable]="false" [formControl]="formGroup.get('room')"
+                            (click)="onDefaultRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onDefaultTimeAInputChange(formGroup.get('timeA').value, i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon"
+                            (click)="onDeletetimes(formGroup.get('minyanId').value,true)">delete</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addDefaultNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onTimeDefaultASaveTimes()">{{'SAVE' | translate}} {{'MINYAN' | translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Add the content for the dynamically created tabs started -->
+                <div *ngFor="let tabId of dynamicTabs" class="tab-pane" [class.active]="!minyanDefault2"  id="{{tabId.tabId}}"></div>
+                <ng-template [ngIf]="!minyanDefault2">
+                  <table class="table table-rtl table-minyanim mb-0">
+                    <thead>
+                      <tr>
+                        <th>חדר</th>
+                        <th>ברכו</th>
+                        <th>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let formGroup of formGroups; let i = index">
+                        <td>
+                          <ng-select [items]="roomsList" bindLabel="roomName" bindValue="roomId" placeholder="חדר" [searchable]="false"
+                          [formControl]="formGroup.get('room')" (click)="onDynamicRoomInputChange(formGroup.get('room').value)">
+                          </ng-select>
+                          <p *ngIf="formGroup.value.showRoomErrorMessage" class="error">Error Empty values in Minyen
+                          </p>
+                        </td>
+                        <td>
+                          <input type="text" [formControl]="formGroup.get('timeA')"
+                            (input)="onTimeAInputChange(formGroup.get('timeA').value , i)" maxlength="8"
+                            placeholder="12:00 AM" class="form-control" />
+                          <p *ngIf="formGroup.value.showAErrorMessage" class="error">Invalid time input</p>
+                        </td>
+                        <td >
+                          <span *ngIf="!formGroup.get('isNew').value" class="material-icons delete-icon"
+                            (click)="onDeletetimes(formGroup.get('minyanId').value,false)">delete</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="minyan-action d-flex align-items-center">
+                          <button class="btn btn-add" (click)="addNewRow()">+</button>
+                          <button class="btn btn-minyan" [disabled]="isSaved" (click)="onTimeASaveTimes()">{{'SAVE' | translate}} {{'MINYAN' | translate}}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-template>
+                <!-- Add the content for the dynamically created tabs ended -->
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="minyanim-04">
+            <div class="extra__details">
+              <div class="filters__options minyanim_page">
+                <div class="search_opts">
+                  <div class="input-group search_input">
+                    <input type="text" name="advanceSearch" id="localsearch" class="form-control float-right"
+                      placeholder="{{'SEARCH' | translate}}">
+                  </div>
+                </div>
+                <div class="fields_opts justify-content-end">
+                  <button type="button" class="btn new-btn btn-default" (click)="addNewshtibelRoom()"><i class="fa fa-plus"></i>
+                    {{'NEW' | translate}}</button>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="tbl_colm_sticky" id="">
+              <div class="modal_custom px-0 table-responsive ">
+                <div style="overflow-y: hidden; height: calc(100vh - 15rem);">
+                  <div class="px-2" id="apiListScroll" style="overflow-y: auto; height: 100%;">
+                    <table class="table table-striped redesign_table admin-api-kyes" [svData]="shtibelGridFilterData" #sv="svDataTable"
+                      [svRowsOnPage]="25" svSortOrder="asc">
+                      <thead>
+                        <tr>
+                          <th>{{'CHEDER NAME' | translate}}</th>
+
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="sv.data?.length > 0">
+                        <ng-container *ngFor="let item of sv.data; let i=index">
+                          <tr>
+                            <td class="key-highlight">{{item.roomName}}
+
+
+                            </td>
+                            <td class="custom_action hover__action">
+                              <div class="float__action">
+                                <span class="icn_edit" data-toggle="tooltip" appHoverTooltip labelText="{{'EDIT' | translate}}"
+                                  (click)="editRoomPopup(item)"></span>
+                                <span class="icn_delete" data-toggle="tooltip" appHoverTooltip
+                                  labelText="{{'DELETE' | translate}}" (click)="delete(item.roomId)"></span>
+                              </div>
+                            </td>
+
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isloading" class="overlay">
+      <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+  </div>
+</div>

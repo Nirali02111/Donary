@@ -1,0 +1,3182 @@
+<div class="modal_wrap mew_transaction fade show modal_maketrans" id="exampleModal" ngbAutofocus tabindex="-1"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block">
+  <div class="modal-dialog modal-lg" id="right_section">
+    <div class="modal-content modal_content">
+      <div class="modal-header modal__custom_header">
+        <div class="left_section">
+          <h4>{{ "NEWTRANSACTION" | translate }}</h4>
+        </div>
+        <div class="close_trans" (click)="closePopup()">
+          <span>&times;</span>
+        </div>
+      </div>
+      <div class="modal__custom_content">
+        <ng-container *ngIf="isFromBuilkDonarList">
+          <div
+            class="modal-content-success sucess__alert d-flex justify-content-center align-items-center w-100 text-center m-0"
+            *ngIf="isSuccess">
+            <div>
+              <span>
+                <img src="/assets/dist/img/icon-checked.svg" width="55" height="55" alt="" />
+              </span>
+              <h4 class="succes_msg">Payments processing in queue</h4>
+              <p>Your bulk payments are being processed, this may take a while.</p>
+              <p>You will receive an email when processing is complete with the payments status.</p>
+              <button class="btn btn-light" (click)="closeModal()">Done</button>
+            </div>
+          </div>
+        </ng-container>
+        <div class="left_section payment_sect position-static" *ngIf="showTransaction" id="payment_section">
+          <div class="tabbing-listing">
+            <ul id="tabs" class="nav nav-tabs" role="tablist">
+              <li role="presentation" [ngClass]="[!isDonorBulkSelected ? 'tab_completed' : '']">
+                <a (click)="OpenAmountTab('donorInfoTab')"
+                  [ngClass]="{ tooltip_disabled: isPayPledgeError || commonMethodService.isFrequencyError}"
+                  id="donorTab" role="tab" data-toggle="tab" class="active">
+                  <span class="icon donor-info"></span>
+                  <span class="selected_donor_span">
+                    <h6 *ngIf="isDonorBulkSelected">
+                      {{ "MULTIPLEDONORS" | translate }}
+                      <span>{{ selectedDonor }}</span>
+                    </h6>
+                    <h6 *ngIf="!isDonorBulkSelected">
+                      {{ "DONORINFO" | translate }}
+                    </h6>
+                    <p class="selected_donor" *ngIf="!isDonorBulkSelected">
+                      {{ selectedDonor }}
+                    </p>
+                  </span>
+                </a>
+              </li>
+
+              <li role="presentation" [ngClass]="[!scheduleToggle ? 'tab_completed' : '']">
+                <a (click)="OpenAmountTab('donationTab')" [ngClass]="{ tooltip_disabled: isPayPledgeError }"
+                  class="amt_tab" id="donorAmtTab" role="tab" data-toggle="tab">
+                  <span class="icon donate-icon"></span>
+                  <span class="selected_donor_span">
+                    <h6>{{ "AMOUNT" | translate }}</h6>
+                    <p class="donate_amount">
+
+                      <span *ngIf="!scheduleToggle">
+                        {{
+                        selectedAmount != undefined
+                        ? symbol + selectedAmount
+                        : ""
+                        }}
+
+                      </span>
+                      <span *ngIf="scheduleToggle">
+                        {{this.scheduleAmtPerPayment + "X" + this.scheduleCount }}
+                      </span>
+                    </p>
+                  </span>
+                </a>
+              </li>
+
+              <li role="presentation">
+                <a (click)="OpenAmountTab('paymentTab')"
+                  [ngClass]="{ tooltip_disabled: isPayPledgeError || commonMethodService.isFrequencyError}"
+                  id="paymentTab" role="tab" data-toggle="tab">
+                  <span class="icon payment-icon"></span>
+                  <span class="selected_donor_span">
+                    <h6>{{ "PAYMENTTYPE" | translate }}</h6>
+                    <p class="paymentmode">{{ transformedPaymentModeDetail | translate }}</p>
+                  </span>
+                </a>
+              </li>
+            </ul>
+
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active show" id="donorInfo">
+
+                <ng-container *appIsWeb>
+                  <div class="modal__custom_content_inside">
+                    <div class="content__inside">
+                      <div *ngIf="!isDonorSelected && !isDonorBulkSelected">
+                        <h5 *ngIf="!isTxtCardHolderName">
+                          {{ "ENTERDONORINFO" | translate }}
+                        </h5>
+                        <div *ngIf="!isTxtCardHolderName" class="field_content" (clickOutside)="onClickedOutside()">
+                          <div class="input_group" data-toggle="modal">
+                            <span class="icon"><img src="/assets/dist/img/donor_book.svg" width="30" height="30"
+                                alt="" /></span>
+                            <input autocomplete="off" type="text" class="form-control" id="donorText"
+                              [(ngModel)]="commonMethodService.txtQuery" (keyup)="SearchDonor($event)" #donorSearch
+                              [readonly]="isReadOnly" (blur)="donarInfoTabReturn('donorText')"
+                              (keydown.ArrowDown)="onDown($event)" (keydown.ArrowUp)="onUp($event)" />
+                            <!-- <button class="search_btn" *ngIf="displaySearchIcon" (click)="SearchGlobalDonor()">Search</button> -->
+                            <button class="search_btn hover_tooltip" *ngIf="isSearchDisable && displaySearchIcon"
+                              data-toggle="tooltip" appHoverTooltip labelText="{{ 'CHARACTERTOOLTIP' | translate }}"
+                              type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()">
+                              {{ "SEARCH" | translate }}
+                            </button>
+                            <button class="search_btn hover_tooltip" *ngIf="!isSearchDisable && displaySearchIcon"
+                              data-toggle="tooltip" type="button" (click)="SearchGlobalDonor()">
+                              {{ "SEARCH" | translate }}
+                            </button>
+
+                            <label class="switch global_list_togle" data-toggle="tooltip" appHoverTooltip
+                              labelText="{{ 'SWTICHBUTTONTOOLTIP' | translate }}">
+                              <input type="checkbox" class="global_chck" id="globallist"
+                                (change)="OnCheckboxChange($event)" />
+                              <span class="slider round"></span>
+                              <div class="toggel-switch-loader" *ngIf="this.commonMethodService.isLoaderNewTrans">
+                                <div class="loader_img">
+                                  <img src="/assets/img/loader.svg" alt="loader" />
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <!-- CardHolderName -->
+                        <div class="edit-donor-wrap" *ngIf="isTxtCardHolderName">
+                          <div class="input-edit-donor">
+                            <input type="text" class="form-control" id="cardHolderNameText" [(ngModel)]="cardHolderName"
+                              placeholder="{{ 'ENTERDONORINFO' | translate }}"
+                              (input)="cardHolderNameTextEnableNextButton()" />
+                          </div>
+                          <div class="input-edit-donor-close">
+                            <button (click)="resetCardHolderName()">
+                              <span class="eye-icon">X</span>
+                            </button>
+                          </div>
+                        </div>
+                        <!-- CardHolderName -->
+                      </div>
+                      <div class="donor_infolist" id="searcheddonorlist" *ngIf="
+                          showBox &&
+                          !isDonorSelected &&
+                          !isDonorBulkSelected &&
+                          !commonMethodService.loaderSearch &&
+                          !isShortcut
+                        ">
+                        <div class="donorinfo_loop" (mouseout)="isRecordHovered = false" *ngIf="
+                            !isDonorSelected &&
+                            !isDonorBulkSelected &&
+                            commonMethodService.donorList.length != 0
+                          ">
+
+                          <ng-container *appIsWeb>
+
+                            <div style="cursor: pointer" tabindex="{{ i }}" class="donor_row tab-focus-{{ i }}"
+                              (keydown.ArrowDown)="onDownTabFocus(i)" (keydown.ArrowUp)="onUpTabFocus(i)"
+                              (keyup.enter)="SelectDonor(item.id)" (mouseover)="SelectonEnter(i)" *ngFor="
+                                let item of commonMethodService.donorList;
+                                let i = index
+                              " (mouseover)="RemoveSelectedCls()" [ngClass]="[
+                                i == 0 && !isRecordHovered ? 'selected_record' : ''
+                              ]" (click)="SelectDonor(item.id)">
+                              <div class="donor_column donor_name" style="cursor: pointer">
+                                <p class="lng_hebrew">{{ item.fullNameJewish }}</p>
+                                <p>{{ item.displayText }}</p>
+                              </div>
+                              <div class="donor_column father_name" style="cursor: pointer">
+                                <p>
+                                  <span class="father_lbl" *ngIf="item.father != null">בן :</span>{{ item.father }}
+                                </p>
+                                <p>
+                                  <span class="father_lbl" *ngIf="item.fatherInLaw != null">חתן: </span>{{
+                                  item.fatherInLaw
+                                  }}
+                                </p>
+                              </div>
+                              <div class="donor_column phone_info" style="cursor: pointer"
+                                [innerHTML]="item.phoneNumber">
+                              </div>
+                              <div class="donor_column address_info" style="cursor: pointer">
+                                {{ item.address }}
+                                <p>{{ item.cityStateZip }}</p>
+                              </div>
+                              <div class="global_search" *ngIf="item.id == item.globalId && isGlobalList">
+                                <span class="global_icon"></span>
+                              </div>
+                            </div>
+                          </ng-container>
+
+                          <ng-container *appIsMobile>
+
+                            <div autocomplete="off" style="cursor: pointer" tabindex="{{ i }}"
+                              class="donor_row tab-focus-{{ i }}" (keydown.ArrowDown)="onDownTabFocus(i)"
+                              (keydown.ArrowUp)="onUpTabFocus(i)" (keyup.enter)="SelectDonor(item.id)"
+                              (mouseover)="SelectonEnter(i)" *ngFor="
+                                let item of commonMethodService.donorList;
+                                let i = index
+                              " (mouseover)="RemoveSelectedCls()" [ngClass]="[
+                                i == 0 && !isRecordHovered ? 'selected_record' : ''
+                              ]" (click)="SelectDonor(item.id)">
+                              <div class="donor_column donor_name" style="cursor: pointer">
+                                <p class="lng_hebrew">{{ item.fullNameJewish }}</p>
+                                <p>{{ item.displayText }}</p>
+                                <p class="address_info"> {{ item.address }} {{ item.cityStateZip }}</p>
+                              </div>
+                              <div class="donor_column phone_info" style="cursor: pointer">
+                                <div [innerHTML]="item.phoneNumber"></div>
+                              </div>
+                            </div>
+                          </ng-container>
+
+                        </div>
+                        <div class="donorinfo_addnew transaction-modal-button">
+                          <button type="button" (click)="cardHolderNameHideShow()" class="rounded-arrow">
+                            {{ "DISPLAYDONORNAME" | translate }}
+                          </button>
+                          <button type="button" (click)="OpenCreateDonorPopup()">
+                            <i class="fa fa-plus"></i>
+                            {{ "ADDDONOR" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="donor_list" style="cursor: pointer" *ngIf="isDonorSelected && !isDonorBulkSelected">
+                        <div class="donorInfo_content">
+                          <div class="col__left">
+                            <div class="top_header">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng" (click)="openDonorCardPopup(selectedDonorId)">
+                                  {{
+                                  fullNameJewish != ""
+                                  ? fullNameJewish
+                                  : displayText
+                                  }}
+                                </h6>
+                              </div>
+                              <div class="right_col">
+                                <h6 class="hebrew_lng">{{ defaultLocation }}</h6>
+                              </div>
+                            </div>
+                            <div class="mid_content">
+                              <p class="p_address">
+                                {{ address }} {{ cityStateZip != "" ? "," : ""
+                                }}{{ cityStateZip }}
+                              </p>
+                              <div class="contant_info">
+                                <span class="contact" [innerHTML]="phoneNumber">
+                                </span>
+                              </div>
+                            </div>
+                            <div class="bottom_info">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng">
+                                  {{ father != null ? father + " / " : ""
+                                  }}{{ fatherInLaw }}
+                                </h6>
+                              </div>
+                              <div class="right_col" (click)="openDonorCardPopup(selectedDonorId)">
+                                <h6>
+                                  {{ accountNum != null ? "#" + accountNum : "" }}
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col__right">
+                            <button class="view_trigger">
+                              <span class="eye_icon" (click)="removeDonor()">
+                                &times;</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="donor_list" style="cursor: pointer" *ngIf="isDonorBulkSelected && isDonorSelected">
+                        <div class="donorInfo_content" *ngFor="let item of bulkDonorList">
+                          <div class="col__left">
+                            <div class="top_header">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng" (click)="openDonorCardPopup(selectedDonorId)">
+                                  {{
+                                  item.fullNameJewish != ""
+                                  ? item.fullNameJewish
+                                  : item.displayText
+                                  }}
+                                </h6>
+                              </div>
+                              <div class="right_col">
+                                <h6 class="hebrew_lng">
+                                  {{ item.defaultLocation }}
+                                </h6>
+                              </div>
+                            </div>
+                            <div class="mid_content">
+                              <p class="p_address">
+                                {{ item.address }}, {{ item.cityStateZip }}
+                              </p>
+                              <div class="contant_info">
+                                <span class="contact" [innerHTML]="item.phoneNumber">
+                                </span>
+                              </div>
+                            </div>
+                            <div class="bottom_info">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng">
+                                  {{
+                                  item.father != null
+                                  ? item.father + " / "
+                                  : ""
+                                  }}{{ item.fatherInLaw }}
+                                </h6>
+                              </div>
+                              <div class="right_col" (click)="openDonorCardPopup(selectedDonorId)">
+                                <h6>
+                                  {{
+                                  item.accountNum != null
+                                  ? "#" + item.accountNum
+                                  : ""
+                                  }}
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col__right">
+                            <button class="view_trigger">
+                              <span class="eye_icon" (click)="removeDonor(item.accountId)">
+                                &times;</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="skip_button" *ngIf="
+                        commonMethodService.donorList.length == 0 &&
+                        !isDonorSelected &&
+                        !isDonorBulkSelected
+                      ">
+                      <button (click)="SkipDonor()" role="tab" data-toggle="tab">
+                        {{ "SKIP" | translate }} <span class="skip-icon"></span>
+                      </button>
+                    </div>
+                    <div class="donor_val_req">
+                      <p *ngIf="
+                          isDonorSelect && !isDonorBulkSelected && checkSchedule
+                        " class="text-danger">
+                        {{ "SELECTDONOR" | translate }}
+                      </p>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *appIsMobile>
+                  <div class="modal__custom_content_inside">
+                    <div class="content__inside">
+                      <div *ngIf="!isDonorSelected && !isDonorBulkSelected">
+                        <h5 *ngIf="!isTxtCardHolderName">
+                          Select Donor:
+                        </h5>
+                        <div *ngIf="!isTxtCardHolderName" class="field_content" (clickOutside)="onClickedOutside()">
+                          <div class="input_group" data-toggle="modal">
+                            <input type="text" class="form-control" id="donorText"
+                              [(ngModel)]="commonMethodService.txtQuery" (keyup)="SearchDonor($event)" #donorSearch
+                              [readonly]="isReadOnly" (blur)="donarInfoTabReturn('donorText')"
+                              (keydown.ArrowDown)="onDown($event)" (keydown.ArrowUp)="onUp($event)" />
+                            <!-- <button class="search_btn" *ngIf="displaySearchIcon" (click)="SearchGlobalDonor()">Search</button> -->
+                            <button class="search_btn hover_tooltip" *ngIf="isSearchDisable && displaySearchIcon"
+                              data-toggle="tooltip" appHoverTooltip labelText="{{ 'CHARACTERTOOLTIP' | translate }}"
+                              type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()">
+                              {{ "SEARCH" | translate }}
+                            </button>
+                            <button class="search_btn hover_tooltip" *ngIf="!isSearchDisable && displaySearchIcon"
+                              data-toggle="tooltip" type="button" (click)="SearchGlobalDonor()">
+                              {{ "SEARCH" | translate }}
+                            </button>
+                            <div class="toggel-switch-loader" *ngIf="this.commonMethodService.isLoaderNewTrans">
+                              <div class="loader_img">
+                                <img src="/assets/img/loader.svg" alt="loader" />
+                              </div>
+                            </div>
+                          </div>
+                          <label class="switch global_list_togle" data-toggle="tooltip" appHoverTooltip
+                            labelText="{{ 'SWTICHBUTTONTOOLTIP' | translate }}">
+                            <input type="checkbox" class="global_chck" id="globallist"
+                              (change)="OnCheckboxChange($event)" />
+                            <span class="slider round"></span>
+                            <span class="toggel-switch-text">Search global list</span>
+
+                          </label>
+                        </div>
+                        <!-- CardHolderName -->
+                        <div class="edit-donor-wrap" *ngIf="isTxtCardHolderName">
+                          <div class="input-edit-donor">
+                            <input type="text" class="form-control" id="cardHolderNameText" [(ngModel)]="cardHolderName"
+                              placeholder="{{ 'ENTERDONORINFO' | translate }}"
+                              (input)="cardHolderNameTextEnableNextButton()" />
+                          </div>
+                          <div class="input-edit-donor-close">
+                            <button (click)="resetCardHolderName()">
+                              <span class="eye-icon">X</span>
+                            </button>
+                          </div>
+                        </div>
+                        <!-- CardHolderName -->
+                      </div>
+                      <div class="donor_infolist" id="searcheddonorlist" *ngIf="
+                        showBox &&
+                        !isDonorSelected &&
+                        !isDonorBulkSelected &&
+                        !commonMethodService.loaderSearch &&
+                        !isShortcut
+                      ">
+                        <div class="donorinfo_loop" (mouseout)="isRecordHovered = false" *ngIf="
+                          !isDonorSelected &&
+                          !isDonorBulkSelected &&
+                          commonMethodService.donorList.length != 0
+                        ">
+                          <ng-container *appIsWeb>
+                            <div style="cursor: pointer" tabindex="{{ i }}" class="donor_row tab-focus-{{ i }}"
+                              (keydown.ArrowDown)="onDownTabFocus(i)" (keydown.ArrowUp)="onUpTabFocus(i)"
+                              (keyup.enter)="SelectDonor(item.id)" (mouseover)="SelectonEnter(i)" *ngFor="
+                              let item of commonMethodService.donorList;
+                              let i = index
+                            " (mouseover)="RemoveSelectedCls()" [ngClass]="[
+                              i == 0 && !isRecordHovered ? 'selected_record' : ''
+                            ]" (click)="SelectDonor(item.id)">
+                              <div class="donor_column donor_name" style="cursor: pointer">
+                                <p class="lng_hebrew">{{ item.fullNameJewish }}</p>
+                                <p>{{ item.displayText }}</p>
+                              </div>
+                              <div class="donor_column father_name" style="cursor: pointer">
+                                <p>
+                                  <span class="father_lbl" *ngIf="item.father != null">בן :</span>{{ item.father }}
+                                </p>
+                                <p>
+                                  <span class="father_lbl" *ngIf="item.fatherInLaw != null">חתן: </span>{{
+                                  item.fatherInLaw
+                                  }}
+                                </p>
+                              </div>
+                              <div class="donor_column phone_info" style="cursor: pointer"
+                                [innerHTML]="item.phoneNumber">
+                              </div>
+                              <div class="donor_column address_info" style="cursor: pointer">
+                                {{ item.address }}
+                                <p>{{ item.cityStateZip }}</p>
+                              </div>
+                              <div class="global_search" *ngIf="item.id == item.globalId && isGlobalList">
+                                <span class="global_icon"></span>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *appIsMobile>
+                            <div style="cursor: pointer" tabindex="{{ i }}" class="donor_row tab-focus-{{ i }}"
+                              (keydown.ArrowDown)="onDownTabFocus(i)" (keydown.ArrowUp)="onUpTabFocus(i)"
+                              (keyup.enter)="SelectDonor(item.id)" (mouseover)="SelectonEnter(i)" *ngFor="
+                              let item of commonMethodService.donorList;
+                              let i = index
+                            " (mouseover)="RemoveSelectedCls()" [ngClass]="[
+                              i == 0 && !isRecordHovered ? 'selected_record' : ''
+                            ]" (click)="SelectDonor(item.id)">
+                              <div class="donor_column donor_name" style="cursor: pointer">
+                                <p class="lng_hebrew">{{ item.fullNameJewish }}</p>
+                                <p class="address_info">{{ item.address }} {{ item.cityStateZip }}</p>
+                                <p class="email_info">{{ item.emails }}</p>
+                              </div>
+                              <div class="donor_column phone_info" style="cursor: pointer">
+                                <div class="accountNum">#{{item.accountId}}</div>
+                                <div [innerHTML]="item.phoneNumber"></div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                        <div class="donorinfo_addnew transaction-modal-button">
+                          <button type="button" (click)="cardHolderNameHideShow()" class="rounded-arrow">
+                            {{ "DISPLAYDONORNAME" | translate }}
+                          </button>
+                          <button type="button" (click)="OpenCreateDonorPopup()">
+                            <i class="fa fa-plus"></i>
+                            {{ "ADDDONOR" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="donor_list" style="cursor: pointer" *ngIf="isDonorSelected && !isDonorBulkSelected">
+                        <div class="donorInfo_content">
+                          <div class="col__left">
+                            <div class="top_header">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng" (click)="openDonorCardPopup(selectedDonorId)">
+                                  {{
+                                  fullNameJewish != ""
+                                  ? fullNameJewish
+                                  : displayText
+                                  }}
+                                </h6>
+                              </div>
+                              <div class="right_col">
+                                <h6 class="hebrew_lng">{{ defaultLocation }}</h6>
+                              </div>
+                            </div>
+                            <div class="mid_content">
+                              <p class="p_address">
+                                {{ address }} {{ cityStateZip != "" ? "," : ""
+                                }}{{ cityStateZip }}
+                              </p>
+                              <div class="contant_info">
+                                <span class="contact" [innerHTML]="phoneNumber">
+                                </span>
+                              </div>
+                            </div>
+                            <div class="bottom_info">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng">
+                                  {{ father != null ? father + " / " : ""
+                                  }}{{ fatherInLaw }}
+                                </h6>
+                              </div>
+                              <div class="right_col" (click)="openDonorCardPopup(selectedDonorId)">
+                                <h6>
+                                  {{ accountNum != null ? "#" + accountNum : "" }}
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col__right">
+                            <button class="view_trigger">
+                              <span class="eye_icon" (click)="removeDonor()">
+                                &times;</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="donor_list" style="cursor: pointer" *ngIf="isDonorBulkSelected && isDonorSelected">
+                        <div class="donorInfo_content" *ngFor="let item of bulkDonorList">
+                          <div class="col__left">
+                            <div class="top_header">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng" (click)="openDonorCardPopup(selectedDonorId)">
+                                  {{
+                                  item.fullNameJewish != ""
+                                  ? item.fullNameJewish
+                                  : item.displayText
+                                  }}
+                                </h6>
+                              </div>
+                              <div class="right_col">
+                                <h6 class="hebrew_lng">
+                                  {{ item.defaultLocation }}
+                                </h6>
+                              </div>
+                            </div>
+                            <div class="mid_content">
+                              <p class="p_address">
+                                {{ item.address }}, {{ item.cityStateZip }}
+                              </p>
+                              <div class="contant_info">
+                                <span class="contact" [innerHTML]="item.phoneNumber">
+                                </span>
+                              </div>
+                            </div>
+                            <div class="bottom_info">
+                              <div class="left_col">
+                                <h6 class="hebrew_lng">
+                                  {{
+                                  item.father != null
+                                  ? item.father + " / "
+                                  : ""
+                                  }}{{ item.fatherInLaw }}
+                                </h6>
+                              </div>
+                              <div class="right_col" (click)="openDonorCardPopup(selectedDonorId)">
+                                <h6>
+                                  {{
+                                  item.accountNum != null
+                                  ? "#" + item.accountNum
+                                  : ""
+                                  }}
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col__right">
+                            <button class="view_trigger">
+                              <span class="eye_icon" (click)="removeDonor(item.accountId)">
+                                &times;</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="skip_button" *ngIf="
+                        commonMethodService.donorList.length == 0 &&
+                        !isDonorSelected &&
+                        !isDonorBulkSelected
+                      ">
+                      <button (click)="SkipDonor()" role="tab" data-toggle="tab">
+                        {{ "SKIP" | translate }} <span class="skip-icon"></span>
+                      </button>
+                    </div>
+                    <div class="donor_val_req">
+                      <p *ngIf="
+                        isDonorSelect && !isDonorBulkSelected && checkSchedule
+                      " class="text-danger">
+                        {{ "SELECTDONOR" | translate }}
+                      </p>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <div class="modal__custom_footer_inside">
+                  <div class="next_button">
+                    <ng-container *appIsMobile>
+                      <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                    </ng-container>
+                    <button (click)="OpenAmountTab('donationTab')" role="tab" class="btn_next txtBtn" data-toggle="tab"
+                      [disabled]="!isDonorSkipped && !isDonorSelected" *ngIf="
+                        !CheckPaymentValidation(paymentMethodId) ||
+                        (selectedAmount == undefined && !isOptionList)
+                      " #donorNextButton id="btn_donarinfo_next" (blur)="donarInfoTabReturn('btn_donarinfo_next')">
+                      {{ "NEXT" | translate }} <span class="next-icon"></span>
+                    </button>
+
+                    <button class="btn btn-primary txtBtn btn_procrss" role="tab" data-toggle="tab"
+                      [disabled]="!isDonorSkipped && !isDonorSelected" *ngIf="
+                        CheckPaymentValidation(paymentMethodId) &&
+                        selectedAmount != 0 &&
+                        selectedAmount != undefined
+                      " (click)="ProcessTransaction()" #donorProcessButton>
+                      {{ "PROCESS" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="donationAmount">
+                <div class="modal__custom_content_inside">
+                  <div class="content__inside">
+                    <h5>{{ "ENTERAMOUNTINFO" | translate }}</h5>
+                    <div class="field_content">
+                      <!--code started for showing currency and symbol -->
+
+                      <!-- showing currency and symbol code ended -->
+                      <div class="input_group">
+                        <div class="d-flex justify-content-center align-items-center flex-column add-currency">
+                          <span> {{ symbol }}</span>
+                          <ng-select bindLabel="currencyName" bindValue="currencyName" [(ngModel)]="currency"
+                            [items]="currencies" (change)="updateSymbol()" [searchable]="false">
+                            <ng-template ng-option-tmp let-item="item">
+                              <div>
+                                <div>
+                                  {{ item.currencyName }}
+                                </div>
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <!-- <span class="icon"
+                          ><img
+                            src="/assets/dist/img/user-icon.svg"
+                            width="30"
+                            height="30"
+                            alt=""
+                        /></span> -->
+                        <input type="text" maxlength="14"
+                          (keypress)="commonMethodService.numberOnly($event)  && changeSideTab($event.target.value,'payPledgeTab')"
+                          (keyup.enter)="TriggerPaymentEvent()" (keydown.Tab)="focusAmtEvent()"
+                          (input)="formatAmt$.next($event.target.value)" class="form-control" placeholder="0.00"
+                          [(ngModel)]="selectedAmount" (keyup)="
+                            commonMethodService.getPledgeAmount(
+                              $event.target.value
+                            )
+                          " (focusout)="commonMethodService.getPledgeAmount($event.target.value)" #donationAmt name=""
+                          autofocus (blur)="removeDpw()" />
+                      </div>
+
+                      <span class="prefilled_value" *ngIf="isPresetAmountList()">{{ "SELECTPREFILLED" | translate
+                        }}:</span>
+                      <ul class="predefine_amount" style="cursor: pointer">
+                        <li #amount10 *ngFor="let item of presetAmountList; let i = index" (click)="
+                            SelectAmount(item.amount, item.amountID);
+                            commonMethodService.getPledgeAmount(item.amount)
+                          " class="btn-ten-li li-{{ item.amountID }}">
+                          <span tabindex="0" [id]="item.amountID" (keypress)="amtButtonEnterPress($event)" (focusin)="
+                              fisrtIndexTab($event, item.amount, item.amountID)
+                            " (focusout)="removeClsfisrtIndexTab($event)">{{ item.text }}</span>{{
+                          commonMethodService.formatAmount(item.amount) }}
+                        </li>
+                        <!-- <li (click)="SelectAmount(18,'id_btn_eighteen'); commonMethodService.getPledgeAmount(18)">
+                  <span tabindex="0" id="id_btn_eighteen" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,18)"(focusout)="removeClsfisrtIndexTab($event)">18 דולר</span> $18</li>
+                  <li (click)="SelectAmount(36,'id_btn_thirtysix'); commonMethodService.getPledgeAmount(36)">
+                  <span tabindex="0" id="id_btn_thirtysix" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,36)"(focusout)="removeClsfisrtIndexTab($event)">36 דולר</span> $36</li>
+                  <li  (click)="SelectAmount(50,'id_btn_fifty'); commonMethodService.getPledgeAmount(50)">
+                  <span tabindex="0" id="id_btn_fifty"(keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,50)"(focusout)="removeClsfisrtIndexTab($event)">50 דולר</span> $50</li>
+                  <li (click)="SelectAmount(72,'id_btn_seventytwo'); commonMethodService.getPledgeAmount(72)">
+                  <span tabindex="0" id="id_btn_seventytwo"(keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,72)"(focusout)="removeClsfisrtIndexTab($event)">72 דולר</span> $72</li>
+                  <li  (click)="SelectAmount(100,'id_btn_hundred'); commonMethodService.getPledgeAmount(100)">
+                  <span tabindex="0"id="id_btn_hundred" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,100)" (keydown.Tab)="backToFistIndexTab($event)" >100 דולר</span> $100</li> -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal__custom_footer_inside">
+                  <!-- <div class="actions_button" *ngIf="isDonorSelected">
+              <a class="btn" (click)="SchedulePopup()"
+                ><span class="icon"
+                  ><img src="/assets/dist/img/schedule-payment-icon.svg" alt=""
+                /></span>
+                &nbsp;&nbsp; Schedule Payments</a
+              >
+              <a class="btn" (click)="PayPledgePopup()">Pay off Pledge</a>
+            </div> -->
+                  <div class="next_button">
+                    <ng-container *appIsMobile>
+                      <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                    </ng-container>
+                    <button id="btnAmountTabNextId" (click)="SwitchTab()" class="btn_next" role="tab" *ngIf="
+                        !CheckPaymentValidation(paymentMethodId) ||
+                        (!isDonorSelected &&
+                          !isDonorBulkSelected &&
+                          !isDonorSkipped)
+                      " [disabled]="
+                        selectedAmount == 0 ||
+                        selectedAmount == undefined ||
+                        isPayPledgeError || commonMethodService.isFrequencyError
+                      " data-toggle="tab" #paymentNextBtn>
+                      {{ "NEXT" | translate }} <span class="next-icon"></span>
+                    </button>
+                    <button id="btnAmountTabProcessId" (click)="ProcessTransaction()" #paymentProcessBtn [disabled]="
+                        selectedAmount == 0 || selectedAmount == undefined || (isCash && checkSchedule)
+                      " *ngIf="
+                        CheckPaymentValidation(paymentMethodId) &&
+                        (isDonorSkipped || isDonorSelected)
+                      " class="btn btn-primary">
+                      {{ "PROCESS" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="paymentMathod">
+                <div class="payment_wrap">
+                  <div class="content__inside">
+                    <h5>{{ "CHOOSEPAYMENTTYPE" | translate }}</h5>
+                    <ul class="payment_type">
+                      <span class="pay-icon-1" tabindex="0" id="id_tab_creditcard"
+                        (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'creditcard')">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_creditcard" id="creditcardtab"
+                          [ngClass]="{ disabled: isDonorBulkSelected }" (click)="ChangePayment('creditcard')">
+                          <!-- <a href="credit-card.html"> -->
+                          <a>
+                            <img src="/assets/dist/img/credit-card.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+                      <!-- ach code started -->
+                      <span *ngIf="isEnableACH === 'True' || isEnableACH === 'False'" class="pay-icon-1" tabindex="0"
+                        id="id_tab_ach" (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'ach')">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_creditcard" id="achtab"
+                          [ngClass]="{ disabled: isDonorBulkSelected }" (click)="ChangePayment('ach')">
+                          <a class="payment-type-ach">
+                            ACH
+                          </a>
+                        </li>
+                      </span>
+                      <!-- ach code ended -->
+                      <span class="pay-icon-1-1" tabindex="0" id="id_tab_charity"
+                        (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'charity')">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_charity" id="charitytab"
+                          [ngClass]="{ disabled: isDonorBulkSelected }" (click)="ChangePayment('charity')">
+                          <!-- <a href="credit-card.html"> -->
+                          <a>
+                            <img src="/assets/dist/img/charity-card.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+
+                      <span class="pay-icon-2" tabindex="0" (keypress)="paymentButtonEnterPress($event)"
+                        (focusin)="PaymentFisrtIndexTab($event, 'cash')" class="payment-cash-wrap hover_tooltip"
+                        data-toggle="tooltip" [title]="disableTitle">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_cash" id="cashtab"
+                          (click)="ChangePayment('cash')" [ngClass]="{
+                            disabled: checkSchedule && !isDonorBulkSelected
+                          }">
+                          <a>
+                            <img src="/assets/dist/img/cash.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+                      <!-- <span class="pay-icon-3" tabindex="0" (focusin)="PaymentFisrtIndexTab($event,'check')" class="payment-check-wrap hover_tooltip" data-toggle="tooltip" [title]="disableTitle">
+                <li
+                  style="cursor: pointer"
+                  class="pymnt_tab indextab_check"
+                  id="checktab"
+                  (click)="ChangePayment('check')"
+                  [ngClass]="{'disabled': checkSchedule || isDonorBulkSelected}">
+                  <a>
+                    <img src="/assets/dist/img/check.svg" alt="" />
+                  </a>
+                </li>
+              </span> -->
+                      <span class="pay-icon-3" tabindex="0"
+                        (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'check')"
+                        class="payment-check-wrap hover_tooltip" data-toggle="tooltip">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_check" id="checktab"
+                          (click)="ChangePayment('check')" [ngClass]="{ disabled: isDonorBulkSelected }">
+                          <a>
+                            <img src="/assets/dist/img/check.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+                      <span class="pay-icon-4" tabindex="0" (focusin)="PaymentFisrtIndexTab($event, 'pledge')">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_pledge" id="pledgetab"
+                          (click)="ChangePayment('pledge')" [ngClass]="{
+                            disabled: isPledgeDisabled && !isDonorBulkSelected
+                          }" data-toggle="tooltip" [title]="disableTitle">
+                          <a>
+                            <img src="/assets/dist/img/pledge_icon.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+                      <!-- <li
+      x            style="cursor: pointer"
+                  class="pymnt_tab"
+                  id="ojctab"
+                  [ngClass]="{'disabled':isDonorBulkSelected}"
+                  (click)="ChangePayment('ojc')">
+                  <a>
+                    <img src="/assets/dist/img/ojc.svg" alt=""/>
+                  </a>
+                </li> -->
+                      <span class="pay-icon-5" tabindex="0" (click)="Wallet()"
+                        (focusin)="PaymentFisrtIndexTab($event, 'wallet')">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_wallet" id="wallettab"
+                          (click)="ChangePayment('wallet')">
+                          <a>
+                            <img src="/assets/dist/img/wallet.svg" alt="" />
+                          </a>
+                        </li>
+                      </span>
+                      <span class="pay-icon-6" tabindex="0"
+                        (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'other')" class="hover_tooltip"
+                        data-toggle="tooltip" [title]="disableTitle" (blur)="backToPaymentFistIndexTab($event)"
+                        (focusout)="removeClsfisrtIndexTab($event)">
+                        <li style="cursor: pointer" class="pymnt_tab indextab_other" id="othertab"
+                          (click)="ChangePayment('other')" [ngClass]="{
+                            disabled: checkSchedule || isDonorBulkSelected
+                          }">
+                          {{ "OTHER" | translate }}
+                        </li>
+                      </span>
+                      <!-- <li class="the-donor-fund" style="cursor: pointer;" id="donorfundtab" (click)="ChangePayment('donorfund')"  [ngClass]="{'disabled':isDonorBulkSelected}">
+                  <a><img src="/assets/dist/img/payment-type-icon.svg" alt="" /></a>
+                  </li> -->
+                    </ul>
+                    <div class="modal__custom_footer_inside chosepayment_btn">
+                      <div class="section-footer process_btn">
+                        <ng-container *appIsMobile>
+                          <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                        </ng-container>
+                        <button class="btn btn-primary" (click)="ProcessTransaction()" disabled="true" *ngIf="
+                            !disableValue &&
+                            selectedAmount != 0 &&
+                            selectedAmount != undefined &&
+                            (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                          ">
+                          {{ "PROCESS" | translate }}
+                        </button>
+                        <ng-container *ngIf="this.commonMethodService.isfeatureSetting">
+                          <button type="button" (click)="OpenAmountTab('donationTab')" disabled="true" class="btn_next"
+                            *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped &&
+                                !isDonorSelected &&
+                                !isDonorBulkSelected) 
+                            ">
+                            {{ "NEXT" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                        </ng-container>
+                        <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                          *ngIf="!this.commonMethodService.isfeatureSetting">
+                          {{ "UPGRADETOSAVE" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isCreditCard">
+                    <form (ngSubmit)="f.form.valid && ProcessTransaction()" name="creditCardForm" #f="ngForm">
+                      <!-- <div class="section-header">
+                                    <span>
+                                        <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                    </span> Enter Credit Card
+                                </div>
+                                                          -->
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <p *ngIf="
+                                isDonorSelect &&
+                                !isDonorBulkSelected &&
+                                checkSchedule
+                              " class="text-danger">
+                              {{ "SHEDULEFETUREDATE" | translate }}
+                            </p>
+                            <p *ngIf="isFutureDate" class="text-danger">
+                              {{ "SHEDULEFETUREDATE" | translate }}
+                            </p>
+                            <div class="payment-thumb-icons">
+                              <ul>
+                                <li *ngIf="isVisaCard">
+                                  <img src="/assets/dist/img/metro-visa.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isMasterCard">
+                                  <img src="/assets/dist/img/metro-mastercard.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isAmericanExpress">
+                                  <img src="/assets/dist/img/metro-amex.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isDiscoverCard">
+                                  <img src="/assets/dist/img/metro-discover.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isMatbiaCard">
+                                  <img src="/assets/dist/img/metro-matbiacard.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isOJCCard">
+                                  <img src="/assets/dist/img/metro-OJC.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isDonorFundCard">
+                                  <img src="/assets/dist/img/metro-donors-fund.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isPledgerCard">
+                                  <img src="/assets/dist/img/metro-pledger.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isDinerCard">
+                                  <img src="/assets/dist/img/metro-diners-club.svg" width="40" alt="" />
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="form-wrapper">
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/credit-card-icon.svg" width="40" alt="" />
+                                </span>
+                                <!-- <input
+                            type="text"
+                            class="form-control card__icon"
+                            [(ngModel)]="creditCardNumber"
+                            name="txtcreditCardNumber"
+                            (focusin)="ChangeCreditMask()"
+                            (focusout)="IdentifyCardType('creditcard')"
+                            [mask]="maskCreditValue"
+                            (keyup)="EnterCreditCard($event)"
+                            [showMaskTyped]="true"
+                            #txtcreditCardNumber="ngModel"
+                            id="input-creditCardNumber"
+                            [ngClass]="{
+                              'is-invalid': f.submitted && creditCardNumber.invalid
+                            }"
+                            required
+                          /> -->
+                                <input type="text" class="form-control card__icon" [(ngModel)]="creditCardNumber"
+                                  name="txtcreditCardNumber" (focusout)="IdentifyCardType('creditcard')"
+                                  (keypress)="ChangeCreditMask()" (input)="CardReader($event)" [mask]="maskCreditValue"
+                                  [showMaskTyped]="true" placeholder="____-____-____-____" autocomplete="cc-number"
+                                  id="input-creditCardNumber" [ngClass]="{
+                                   'is-invalid':
+                                      f.submitted && creditCardNumber.invalid
+                                  }" required autofocus #ccField />
+                                <div class="swipe-loader" *ngIf="isSwipeLoader">
+                                  <div class="loader_img">
+                                    <img src="/assets/img/loader.svg" alt="loader" />
+                                  </div>
+                                </div>
+                                <!--(focusin)="ChangeCreditMask()" for issue remove above-->
+                                <div *ngIf="
+                                    f.submitted && creditCardNumber.invalid
+                                  " class="input-group col-12">
+                                  <span class="error invalid-feedback" style="display: block">{{ "CREDITCARDNUMBER" |
+                                    translate }}</span>
+                                </div>
+                                <span class="text-danger" *ngIf="inValidCCNum">{{ "INVALIDCARD" | translate }}</span>
+                                <div class="form-group form-group-fields">
+                                  <div class="form-group">
+                                    <!-- <input
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="expDate"
+                                name="txtexpDate"
+                                mask="00/00"
+                                id="expiryDate"
+                                (keyup)="EnterExpiryDate($event)"
+                                (focusout)="ValidExpiryDate($event)"
+                                [showMaskTyped]="true"
+                                #txtexpDate="ngModel"
+                                required
+                              /> -->
+                                    <input type="text" class="form-control" [(ngModel)]="expDate" name="txtexpDate"
+                                      maxlength="5" minlength="5" id="expiryDate" (keyup)="EnterExpiryDate($event)"
+                                      (focusout)="ValidExpiryDate($event)" autocomplete="cc-exp"
+                                      placeholder="{{ 'MMYY' | translate }}" required />
+                                    <span class="val-exp-error" *ngIf="isInValid && isExpiryDateValid">{{
+                                      "INVALIDEXPIRY" | translate
+                                      }}</span>
+                                  </div>
+
+                                  <div class="form-group" *ngIf="isCvvVisible">
+                                    <input type="text" class="form-control" placeholder="{{ 'CVV' | translate }}"
+                                      [(ngModel)]="creditCardCVV" name="txtcreditCardCVV" #txtcreditCardCVV="ngModel"
+                                      id="input-txtcreditCardCVV" [maxlength]="cvvMaxLength" (keyup)="EnterCVV($event)"
+                                      (keypress)="
+                                        commonMethodService.numberOnly($event)
+                                      " [ngClass]="{
+                                        'is-invalid':
+                                          f.submitted &&
+                                          creditCardNumber.invalid
+                                      }" />
+                                  </div>
+                                  <div class="form-group" *ngIf="isZipVisible">
+                                    <input type="text" class="form-control" placeholder="{{ 'ZIPCODE' | translate }}"
+                                      [(ngModel)]="creditCardZip" name="txtcreditCardZip"
+                                      (keyup.enter)="TriggerPaymentTypeEvent()" #txtcreditCardZip="ngModel"
+                                      id="input-txtcreditCardZip" mask="00000" (keypress)="
+                                        commonMethodService.numberOnly($event)
+                                      " [ngClass]="{
+                                        'is-invalid':
+                                          f.submitted &&
+                                          creditCardNumber.invalid
+                                      }" />
+                                    <div *ngIf="
+                                        f.submitted && creditCardZip.invalid
+                                      " class="input-group col-12 text-danger">
+                                      <span class="val-error">{{
+                                        "CREDITCARDNUMBER" | translate
+                                        }}</span>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group save_crd ae-checkbox">
+                                    <input type="checkbox" name="rdbtn_savecard" class="save_card" value="true"
+                                      id="save_card" [(ngModel)]="isSaveCard" /><label class="lblsave_crd"
+                                      for="save_card">
+                                      {{ "SAVECARD" | translate }}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="next_button process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="( !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="!f.valid || isInValid" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid || isInValid" type="button" (click)="OpenTab()" class="btn_next"
+                            *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- ach form code started -->
+                  <div class="credit-card-wrap p-5" *ngIf="isAch">
+                    <form [formGroup]="achForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <div class="modal__custom_content_inside m-0">
+                        <div class="payment-ach">
+                          <div class="form-group">
+                            <label for="bankType">{{'BANKTYPE' | translate}}</label>
+                            <div class="radio-group type-bank">
+                              <input type="radio" formControlName="bankType" value="Personal" id="personal" />
+                              <label class="radio-label" for="personal">
+                                <span class="icon-personal"></span> {{'PERSONAL' | translate}}
+                              </label>
+                              <input type="radio" formControlName="bankType" value="Business" id="business" />
+                              <label class="radio-label" for="business">
+                                <span class="icon-business"></span> {{'BUSINESS' | translate}}
+                              </label>
+                            </div>
+                            <div *ngIf="f.submitted && BankType?.errors?.required" class="error-message">
+                              {{'BANKTYPE' | translate}} {{'ISREQUIRED' | translate}}.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label>{{'ACCOUNT' | translate}} {{'TYPE' | translate}}</label>
+                            <div class="radio-group  d-flex align-items-center">
+                              <div class="input-checkbox">
+                                <input type="radio" formControlName="accountType" value="Checking" id="checking" />
+                                <label class="radio-label" for="checking">
+                                  {{'CHECKING' | translate}}
+                                </label>
+                              </div>
+                              <div class="input-checkbox">
+                                <input type="radio" formControlName="accountType" value="Savings" id="saving" />
+                                <label class="radio-label" for="saving">
+                                  {{'SAVINGS' | translate}}
+                                </label>
+                              </div>
+                            </div>
+                            <div *ngIf="f.submitted && AccountType?.errors?.required" class="error-message">
+                              {{'ACCOUNT' | translate}} {{'TYPE' | translate}} {{'ISREQUIRED' | translate}}.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="nameOnAccount">{{'NAME' | translate}} {{'ON' | translate}} {{'ACCOUNT' |
+                              translate}}</label>
+                            <input type="text" formControlName="nameOnAccount" class="form-input" />
+                            <div *ngIf="f.submitted && NameOnAccount?.errors?.required" class="error-message">
+                              {{'NAME' | translate}} {{'ON' | translate}} {{'ACCOUNT' | translate}} {{'ISREQUIRED' |
+                              translate}}.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="routingNumber">{{'ROUNTINGNUMBER' | translate}}</label>
+                            <input type="text" formControlName="routingNumber" class="form-input" />
+                            <div *ngIf="f.submitted && RoutingNumber?.errors?.required" class="error-message">
+                              {{'ROUNTINGNUMBER' | translate}} {{'ISREQUIRED' | translate}}.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="accountNumber">{{'ACCOUNTNUMBER' | translate}}</label>
+                            <input type="text" formControlName="accountNumber" class="form-input" />
+                            <div *ngIf="f.submitted && AccountNumber?.errors?.required" class="error-message">
+                              {{'ACCOUNTNUMBER' | translate}} {{'ISREQUIRED' | translate}}.
+                            </div>
+                          </div>
+
+                          <div class="note_panel" id="notepanel">
+                            <span class="note_lbl text-uppercase">{{ "NOTE" | translate }}</span>
+                            <textarea class="note_area" id="txtareanote" formControlName="note"
+                              placeholder="{{'WRITENOTE' | translate}}"
+                              (blur)="donarInfoTabReturn('txtareanote')"></textarea>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="section-footer process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="isChekedNotifyDonarPhone" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">{{'CANCEL' |
+                              translate}}</button>
+                          </ng-container>
+                          <button class="btn btn-primary" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid" type="button" (click)="OpenTab()" class="btn_next" *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- ach form code ended -->
+                  <!-- no ach code started -->
+                  <div class="setup-ach" *ngIf="isNoAch">
+                    <img src="/assets/dist/img/setup-img.svg" alt="Setup" />
+                    <p>Setup your account to accept ACH transactions</p>
+                    <a href="https://achq.com/donary/" target='_blank' class="btn btn-primary">Apply for ACH</a>
+                  </div>
+                  <!-- no ach code ended -->
+                  <div class="credit-card-wrap p-5" *ngIf="isCharity">
+                    <form (ngSubmit)="f.form.valid && ProcessTransaction()" name="charityForm" #f="ngForm">
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <p *ngIf="
+                                isDonorSelect &&
+                                !isDonorBulkSelected &&
+                                checkSchedule
+                              " class="text-danger">
+                              {{ "SHEDULEFETUREDATE" | translate }}
+                            </p>
+                            <p *ngIf="isFutureDate" class="text-danger">
+                              {{ "SAVECARD" | translate }}
+                            </p>
+                            <div class="payment-thumb-icons">
+                              <ul>
+                                <li *ngIf="isMatbiaCard">
+                                  <img src="/assets/dist/img/metro-matbiacard.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isOJCCard">
+                                  <img src="/assets/dist/img/metro-OJC.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isDonorFundCard">
+                                  <img src="/assets/dist/img/metro-donors-fund.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isPledgerCard">
+                                  <img src="/assets/dist/img/metro-pledger.png" width="40" alt="" />
+                                </li>
+                                <li *ngIf="isAmericanExpress">
+                                  <img src="/assets/dist/img/metro-amex.png" width="40" alt="" />
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="form-wrapper">
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/credit-card-icon.svg" width="40" alt="" />
+                                </span>
+                                <input type="text" class="form-control card__icon" [(ngModel)]="creditCardNumber"
+                                  name="txtcreditCardNumber" (focusout)="IdentifyCardType('creditcard')"
+                                  (keypress)="ChangeCreditMask()" (input)="CardReader($event)" [mask]="maskCreditValue"
+                                  [showMaskTyped]="true" placeholder="____-____-____-____" autocomplete="cc-number"
+                                  id="input-charityCardNumber" [ngClass]="{
+                                    'is-invalid':
+                                      f.submitted && creditCardNumber.invalid
+                                  }" required autofocus #ccField+ />
+                                <!--(focusin)="ChangeCreditMask()" for issue remove above-->
+                                <div *ngIf="
+                                    f.submitted && creditCardNumber.invalid
+                                  " class="input-group col-12">
+                                  <span class="error invalid-feedback" style="display: block">{{
+                                    "VALIDCREDITCARDNUMBER" | translate
+                                    }}</span>
+                                </div>
+                                <span class="text-danger" *ngIf="inValidCCNum">{{
+                                  "VALIDCREDITCARDNUMBER" | translate
+                                  }}</span>
+                                <div class="form-group form-group-fields">
+                                  <div class="form-group">
+                                    <!-- <input
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="expDate"
+                                name="txtexpDate"
+                                mask="00/00"
+                                id="expiryDate"
+                                (keyup)="EnterExpiryDate($event)"
+                                (focusout)="ValidExpiryDate($event)"
+                                [showMaskTyped]="true"
+                                #txtexpDate="ngModel"
+                                required
+                              /> -->
+                                    <input type="text" class="form-control" [(ngModel)]="expDate" name="txtexpDate"
+                                      maxlength="5" minlength="5" id="expiryDate" (keyup)="EnterExpiryDate($event)"
+                                      (focusout)="ValidExpiryDate($event)" autocomplete="cc-exp"
+                                      placeholder="{{ 'MMYY' | translate }}" required />
+                                    <span class="val-exp-error" *ngIf="isInValid && isExpiryDateValid">{{
+                                      "INVALIDEXPIRY" | translate
+                                      }}</span>
+                                  </div>
+
+                                  <div class="form-group" *ngIf="isCvvVisible">
+                                    <input type="text" class="form-control" placeholder="{{ 'CVV' | translate }}"
+                                      [(ngModel)]="creditCardCVV" name="txtcreditCardCVV" #txtcreditCardCVV="ngModel"
+                                      id="input-txtcreditCardCVV" [maxlength]="cvvMaxLength" (keyup)="EnterCVV($event)"
+                                      (keypress)="
+                                        commonMethodService.numberOnly($event)
+                                      " [ngClass]="{
+                                        'is-invalid':
+                                          f.submitted &&
+                                          creditCardNumber.invalid
+                                      }" />
+                                  </div>
+                                  <div class="form-group" *ngIf="isZipVisible">
+                                    <input type="text" class="form-control" placeholder="{{ 'ZIPCODE' | translate }}"
+                                      [(ngModel)]="creditCardZip" name="txtcreditCardZip"
+                                      (keyup.enter)="TriggerPaymentTypeEvent()" #txtcreditCardZip="ngModel"
+                                      id="input-txtcreditCardZip" mask="00000" (keypress)="
+                                        commonMethodService.numberOnly($event)
+                                      " [ngClass]="{
+                                        'is-invalid':
+                                          f.submitted &&
+                                          creditCardNumber.invalid
+                                      }" />
+                                    <div *ngIf="
+                                        f.submitted && creditCardZip.invalid
+                                      " class="input-group col-12 text-danger">
+                                      <span class="val-error">{{
+                                        "ZIPCORDISREQUIRED" | translate
+                                        }}</span>
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group save_crd ae-checkbox">
+                                    <input type="checkbox" name="rdbtn_savecard" class="save_card" value="true"
+                                      id="save_card_2" [(ngModel)]="isSaveCard" /><label class="lblsave_crd"
+                                      for="save_card_2">
+                                      {{ "SAVECARD" | translate }}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="next_button process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="!f.valid || isInValid" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid || isInValid" type="button" (click)="OpenTab()" class="btn_next"
+                            *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="credit-card-wrap cash_wrap p-5" *ngIf="isCash">
+                    <!-- <div class="section-header">
+                                    <span>
+                                        <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                    </span> Cash
+                                </div> -->
+                    <div class="modal__custom_content_inside">
+                      <div class="modal__custom_content_inside_wrapper">
+                        <div class="inside_content">
+                          <div class="form-wrapper">
+                            {{ "CASH" | translate }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal__custom_footer_inside">
+                      <div class="next_button process_btn p">
+                        <!--Notify donar start -->
+                        <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                          *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                          <h6>NOTIFY DONOR:</h6>
+                          <div
+                            class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                            <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                              [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                            <label class="mt-0" for="email-to">Email To:</label>
+                            <div class="option-group position-relative " appClickOutside
+                              (clickOutside)="closeTransactionEmailDropdown($event)"
+                              (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                              <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                              <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                <li [class.active]="item.email==notifyDonarEmail.email"
+                                  class="align-items-center d-flex justify-content-between"
+                                  *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                  {{item.email}} <span>{{item.label}}</span></li>
+                                <li class="align-items-center d-flex justify-content-between opacity-40"
+                                  (click)="openEmailAddressPopup()"> + Add email address</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                            <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                              [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                            <label class="mt-0" for="sms-to">SMS To:</label>
+                            <div class="option-group position-relative" appClickOutside
+                              (clickOutside)="closeTransactionSmsDropdown($event)"
+                              (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                              <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                              <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                  class="align-items-center d-flex justify-content-between"
+                                  *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                  {{item.phone}} <span>{{item.label}}</span></li>
+                                <li class="align-items-center d-flex justify-content-between opacity-40"
+                                  (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Notify donar end -->
+                        <ng-container *appIsMobile>
+                          <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                        </ng-container>
+                        <button class="btn btn-primary" #cashProcessBtn (click)="ProcessTransaction()" [hidden]="
+                            !(
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            )
+                          " [disabled]="isCash && checkSchedule">
+                          {{ "PROCESS" | translate }}
+                        </button>
+                        <button type="button" (click)="OpenTab()" #cashNextBtn class="btn_next" [hidden]="
+                            !(
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            )
+                          ">
+                          {{ "PROCESS" | translate }}
+                          <span class="next-icon"></span>
+                        </button>
+                        <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                          *ngIf="!this.commonMethodService.isfeatureSetting">
+                          {{ "UPGRADETOSAVE" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isCheckNumber">
+                    <form name="checkNumberForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <!-- <div class="section-header">
+                                        <span>
+                                            <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                        </span> Check Number
+                                    </div> -->
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <p *ngIf="
+                                isDonorSelect &&
+                                !isDonorBulkSelected &&
+                                checkSchedule
+                              " class="text-danger">
+                              {{ "SHEDULEFETUREDATE" | translate }}
+                            </p>
+                            <div class="form-wrapper">
+                              <span class="ent_checknum">{{
+                                checkSchedule
+                                ? "ENTER FIRST CHECK NUMBER"
+                                : "ENTER CHECK NUMBER"
+                                }}</span>
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/check-active.svg" width="40" alt="" />
+                                </span>
+                                <input type="text" class="form-control" placeholder="05432" [(ngModel)]="checkNumber"
+                                  name="txtCheckNumber" #txtCheckNumber="ngModel" id="input-txtCheckNumber"
+                                  (keyup.enter)="TriggerPaymentTypeEvent()" [maxlength]="16" [minlength]="1" (keypress)="
+                                    commonMethodService.numberOnly($event)
+                                  " (keyup)="IdentifyCardType('check')" [ngClass]="{
+                                    'is-invalid':
+                                      f.submitted && checkNumber.invalid
+                                  }" required autofocus />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="section-footer process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="!f.valid" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid" type="button" (click)="OpenTab()" class="btn_next" *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isPledgePayment">
+                    <!-- <div class="section-header">
+                                        <span>
+                                            <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                        </span> Pledge Options
+                                    </div>  -->
+                    <div class="modal__custom_content_inside">
+                      <div class="modal__custom_content_inside_wrapper">
+                        <div class="inside_content">
+                          <p *ngIf="isDonorSelect && !isDonorBulkSelected" class="text-danger">
+                            {{ "PLEDGESELECTDONOR" | translate }}
+                          </p>
+                          <p *ngIf="isCampaignSelect" class="text-danger">
+                            {{ "PLEDGESELECTCAMPAIGN" | translate }}
+                          </p>
+                          <div class="pledge_option">
+                            <div class="pledge_row">
+                              <div class="left_name">
+                                <h5>{{ "CAMPAIGN" | translate }}:</h5>
+                              </div>
+                              <div class="right_name">
+                                <span>{{ selectedCampaign }}</span>
+                                <span class="right_arrow" id="campaign_pldge" [ngClass]="{
+                                    blink_animate: isCampaignSelect == true
+                                  }" (click)="OpenCampaignDrp()">
+                                  <!-- <img src="/assets/dist/img/right-arrow.svg" alt=""/> -->
+                                </span>
+                              </div>
+                            </div>
+                            <div class="pledge_row">
+                              <div class="left_name">
+                                <h5>{{ "PLEDGEDATE" | translate }}:</h5>
+                              </div>
+                              <div class="right_name">
+                                <span>{{
+                                  selectedDate.startDate | donaryDateFormat: "short"
+                                  }}</span>
+                                <span class="right_arrow ngx-daterangepicker-action" (click)="OpenDatePicker()">
+                                  <!-- <img src="/assets/dist/img/right-arrow.svg" alt=""/> -->
+                                </span>
+                              </div>
+                            </div>
+                            <!-- <div class="notes_input">
+                        <textarea placeholder="Notes"[(ngModel)]="pledgenotes"></textarea>
+                      </div> -->
+                            <!-- <div class="schedule_button">
+                        <span class="icon icon-well"></span>
+                        <span class="btn-text">Schedule Follow Up</span>
+                      </div> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="note_panel pledge-payment-note">
+                        <div class="payment-row">
+                          <span class="note_lbl">{{ "INTERNALNOTE" | translate }}:</span>
+                          <textarea class="note_area" [(ngModel)]="pledgeinternalnotes"></textarea>
+                        </div>
+                        <div class="payment-row">
+                          <span class="note_lbl">{{ "EXTERNALNOTE" | translate }}:</span>
+                          <textarea class="note_area" [(ngModel)]="pledgeexternalnotes"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal__custom_footer_inside">
+                      <div class="section-footer process_btn">
+                        <!--Notify donar start -->
+                        <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                          *ngIf="( !isDonorBulkSelected) ">
+                          <h6>NOTIFY DONOR:</h6>
+                          <div
+                            class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                            <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                              [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                            <label class="mt-0" for="email-to">Email To:</label>
+                            <div class="option-group position-relative" appClickOutside
+                              (clickOutside)="closeTransactionEmailDropdown($event)"
+                              (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                              <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                              <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                <li [class.active]="item.email==notifyDonarEmail.email"
+                                  class="align-items-center d-flex justify-content-between"
+                                  *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                  {{item.email}} <span>{{item.label}}</span></li>
+                                <li class="align-items-center d-flex justify-content-between opacity-40"
+                                  (click)="openEmailAddressPopup()"> + Add email address</li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                            <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                              [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                            <label class="mt-0" for="sms-to">SMS To:</label>
+                            <div class="option-group position-relative" appClickOutside
+                              (clickOutside)="closeTransactionSmsDropdown($event)"
+                              (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                              <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                              <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                  class="align-items-center d-flex justify-content-between"
+                                  *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                  {{item.phone}} <span>{{item.label}}</span></li>
+                                <li class="align-items-center d-flex justify-content-between opacity-40"
+                                  (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Notify donar end -->
+                        <ng-container *appIsMobile>
+                          <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                        </ng-container>
+                        <button class="btn btn-primary" [disabled]="disablePledgeProcess" #peldgeProcessBtn
+                          (click)="CheckPledgeValidation()" *ngIf="
+                            !disableValue &&
+                            selectedAmount != 0 &&
+                            selectedAmount != undefined &&
+                            isDonorSelected && this.commonMethodService.isfeatureSetting
+                          ">
+                          {{ "PROCESS" | translate }}
+                        </button>
+                        <button [disabled]="disablePledgeProcess" type="button" #pledgeNextBtn
+                          (click)="CheckPledgeValidation()" class="btn_next" *ngIf="
+                            disableValue ||
+                            selectedAmount == undefined ||
+                            !isDonorSelected && this.commonMethodService.isfeatureSetting
+                          ">
+                          {{ "PROCESS" | translate }}
+                          <span class="next-icon"></span>
+                        </button>
+                        <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                          *ngIf="!this.commonMethodService.isfeatureSetting">
+                          {{ "UPGRADETOSAVE" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isOJC">
+                    <form name="ojcForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <!-- <div class="section-header">
+                                        <span>
+                                            <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                        </span> Enter OJC
+                                    </div> -->
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <p *ngIf="
+                                isDonorSelect &&
+                                !isDonorBulkSelected &&
+                                checkSchedule
+                              " class="text-danger">
+                              {{ "SHEDULEFETUREDATE" | translate }}
+                            </p>
+                            <p *ngIf="ojcValidationMsg" class="text-danger">
+                              {{ "SHEDULEDATEDIFFERENT" | translate }}
+                            </p>
+                            <div class="form-wrapper">
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/credit-card-icon.svg" width="40" alt="" />
+                                </span>
+                                <input type="text" class="form-control card__icon" [(ngModel)]="creditCardOJCNumber"
+                                  name="txtcreditCardOJCNumber" [mask]="maskOJCValue" [showMaskTyped]="true"
+                                  [disabled]="ojcValidationMsg" #txtcreditCardOJCNumber="ngModel"
+                                  id="input-creditCardOJCNumber" (keyup)="EnterOJCCreditCard($event)"
+                                  (focusin)="ChangeOJCMask()" (focusout)="IdentifyCardType('ojc')" [ngClass]="{
+                                    'is-invalid':
+                                      f.submitted && creditCardOJCNumber.invalid
+                                  }" required autofocus />
+                                <div *ngIf="
+                                    f.submitted && creditCardOJCNumber.invalid
+                                  " class="input-group col-12">
+                                  <span class="error invalid-feedback" style="display: block">{{
+                                    "VALIDCREDITCARDNUMBER" | translate
+                                    }}</span>
+                                </div>
+                                <span class="text-danger" *ngIf="inValidOJCNum">{{ "NEWTRANSACTION" | translate
+                                  }}</span>
+                              </div>
+                              <div class="form-group form-group-fields">
+                                <div class="form-group">
+                                  <input type="text" class="form-control" [(ngModel)]="expOJCDate" name="txtexpOJCDate"
+                                    mask="00/00" [disabled]="ojcValidationMsg" (keyup.enter)="TriggerPaymentTypeEvent()"
+                                    (focusout)="ValidExpiryDate($event)" [showMaskTyped]="true" #txtexpOJCDate="ngModel"
+                                    id="ojcexpirydate" required />
+                                  <span class="val-exp-error" *ngIf="isInValid && isExpiryDateValid">{{ "INVALIDEXPIRY"
+                                    | translate }}</span>
+                                </div>
+                                <!-- added new -->
+                                <div class="form-group save_crd ae-checkbox">
+                                  <input type="checkbox" name="rdbtn_savecard" class="save_card" value="true"
+                                    id="save_card_1" [(ngModel)]="isSaveCard" /><label class="lblsave_crd"
+                                    for="save_card_1">{{
+                                    "SAVECARD" | translate
+                                    }}</label>
+                                </div>
+                                <!--  -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="section-footer process_btn">
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="
+                              !f.valid || isInValid || ojcValidationMsg
+                            " *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="
+                              !f.valid || isInValid || ojcValidationMsg
+                            " type="button" (click)="OpenTab()" class="btn_next" *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="credit-card-wrap p-5 wallet_tab" *ngIf="isWallet">
+                    <form name="walletForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <div class="modal__custom_content_inside">
+                        <div class="card-select position-relative overflow-hidden" *ngIf="isDonorBulkSelected">
+                          <h6>{{fullCount}} donors selected</h6>
+
+                          <ul *ngIf="defaultCardDonorLength !=0">
+                            <li class="text-danger">{{defaultCardDonorLength}} Donors don't have a default card saved
+                            </li>
+                            <ng-container *ngFor="let donor of donorWithoutWallet">
+                              <li>
+                                <span>{{donor[0].fullNameJewish ?donor[0].fullNameJewish:donor[0].fullName}}</span>
+                                <a href="javascript:void(0)" (click)="AddCard(donor[0].accountId)">+ Add card</a>
+                                <a href="javascript:void(0)" (click)="RemoveCard(donor[0].accountId)">Remove donor</a>
+                              </li>
+                            </ng-container>
+                            <!-- <li>
+      <span>ר’ חיים הלל פריעדמאן</span>
+      <a href="javascript:void(0)" (click)="AddCard()">+ Add card</a>
+      <a href="javascript:void(0)" (click)="RemoveCard()">Remove donor</a>
+    </li>
+    <li>
+      <span>ר’ חיים הלל פריעדמאן</span>
+      <a href="javascript:void(0)">+ Add card</a>
+      <a href="javascript:void(0)">Remove donor</a>
+    </li> -->
+                          </ul>
+                          <div *ngIf="isloading2" class="overlay d-flex">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                          </div>
+                        </div>
+
+                        <div class="modal__custom_content_inside_wrapper" #walletListContainer>
+                          <div class="inside_content">
+
+                            <div class="card_grid">
+                              <span class="no_wallet" *ngIf="isWalletFound"><b>{{ "WALLETFOUND" | translate
+                                  }}</b></span>
+                              <div class="card_item" *ngFor="let item of walletList">
+                                <div class="left">
+                                  <input type="radio" class="rdbtnwallet" [value]="item.walletId"
+                                    (change)="changeWallet(item.walletId)" name="wallet"
+                                    [(ngModel)]="selectedWalletId" />
+                                  <h6>{{ item.accountName }}</h6>
+                                </div>
+                                <div class="visa_title" (click)="EditWallet('edit', item.walletId)">
+                                  <p>{{ item.description }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="section-footer process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <ng-container *appIsMobile>
+                              <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                            </ng-container>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="defaultCardDonorLength!=0" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid || selectedWalletId == null" type="button" (click)="OpenTab()"
+                            class="btn_next" *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isDonorFund">
+                    <form name="donorFundForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <div class="form-wrapper">
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/credit-card-icon.svg" width="40" alt="" />
+                                </span>
+                                <input type="text" class="form-control card__icon" [(ngModel)]="donorFundCCNumber"
+                                  name="txtDonorFundNumber" (focusin)="ChangeCreditMask()"
+                                  (focusout)="IdentifyCardType('creditcard')" [mask]="maskCreditValue"
+                                  (keyup)="EnterCreditCard($event)" [showMaskTyped]="true" #txtDonorFundNumber="ngModel"
+                                  id="input-donorFundCCNumber" [ngClass]="{
+                                    'is-invalid':
+                                      f.submitted && donorFundCCNumber.invalid
+                                  }" required />
+                                <div *ngIf="
+                                    f.submitted && donorFundCCNumber.invalid
+                                  " class="input-group col-12">
+                                  <span class="error invalid-feedback" style="display: block">{{
+                                    "VALIDCREDITCARDNUMBER" | translate
+                                    }}</span>
+                                </div>
+                                <span class="text-danger" *ngIf="inValidDonorFundNum">{{ "NEWTRANSACTION" | translate
+                                  }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="next_button process_btn">
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="!f.valid || isInValid" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid || isInValid" type="button" (click)="OpenTab()" class="btn_next"
+                            *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="credit-card-wrap p-5" *ngIf="isOther">
+                    <form name="checkNumberForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
+                      <div class="modal__custom_content_inside">
+                        <div class="modal__custom_content_inside_wrapper">
+                          <div class="inside_content">
+                            <div class="form-wrapper">
+                              <span class="ent_checknum">{{
+                                "REFRENCE" | translate
+                                }}</span>
+                              <div class="form-group card-number">
+                                <span class="icon">
+                                  <img src="/assets/dist/img/check-active.svg" width="40" alt="" />
+                                </span>
+                                <input type="text" class="form-control lng_hebrew" [(ngModel)]="refNumber"
+                                  name="txtrefNumber" #txtrefNumber="ngModel" id="input-txtrefNumber"
+                                  (keyup.enter)="TriggerPaymentTypeEvent()" [maxlength]="16" [minlength]="1" [ngClass]="{
+                                    'is-invalid':
+                                      f.submitted && refNumber.invalid
+                                  }" required autofocus />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal__custom_footer_inside">
+                        <div class="section-footer process_btn">
+                          <!--Notify donar start -->
+                          <div class="aliyas-col aliyas-notify d-flex align-items-center pl-0 mt-0"
+                            *ngIf="(showNotifySection && !isDonorBulkSelected)">
+                            <h6>NOTIFY DONOR:</h6>
+                            <div
+                              class="form-group ae-checkbox with-label from-group-email d-flex align-items-center mb-0">
+                              <input id="email-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="EmailCheckbox" (change)="ChangeEmail($event)" />
+                              <label class="mt-0" for="email-to">Email To:</label>
+                              <div class="option-group position-relative " appClickOutside
+                                (clickOutside)="closeTransactionEmailDropdown($event)"
+                                (click)="donarNotifyDwnHideShow('notify-credit-card')">
+                                <span class="option-select notify-credit-card"> {{getEmailSelected}}</span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropDownOpen">
+                                  <li [class.active]="item.email==notifyDonarEmail.email"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarEmailArray" (click)="selectNotifyDonarEmail(item)">
+                                    {{item.email}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openEmailAddressPopup()"> + Add email address</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="form-group ae-checkbox with-label d-flex align-items-center mb-0">
+                              <input id="sms-to" name="notify" type="checkbox" [disabled]="!isDonorSelected"
+                                [checked]="PhoneCheckbox" (change)="ChangePhone($event)" />
+                              <label class="mt-0" for="sms-to">SMS To:</label>
+                              <div class="option-group position-relative" appClickOutside
+                                (clickOutside)="closeTransactionSmsDropdown($event)"
+                                (click)="donarSmsNotifyDwnHideShow('notify-sms-credit-card')">
+                                <span class="option-select notify-sms-credit-card"> {{getPhoneSelected}} </span>
+                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropDownOpen">
+                                  <li [class.active]="item.phone==notifyDonarPhoneNumber.phone"
+                                    class="align-items-center d-flex justify-content-between"
+                                    *ngFor="let item of notifyDonarPhoneArray" (click)="selectNotifyDonarPhone(item)">
+                                    {{item.phone}} <span>{{item.label}}</span></li>
+                                  <li class="align-items-center d-flex justify-content-between opacity-40"
+                                    (click)="openPhoneNumberPopup()"> + Add phone Number</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Notify donar end -->
+                          <ng-container *appIsMobile>
+                            <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
+                          </ng-container>
+                          <button class="btn btn-primary" [disabled]="!f.valid" *ngIf="
+                              !disableValue &&
+                              selectedAmount != 0 &&
+                              selectedAmount != undefined &&
+                              (isDonorSkipped || isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                          </button>
+                          <button [disabled]="!f.valid" type="button" (click)="OpenTab()" class="btn_next"
+                            id="btn_chooseProcesstypeProcess" *ngIf="
+                              disableValue ||
+                              selectedAmount == undefined ||
+                              (!isDonorSkipped && !isDonorSelected) && this.commonMethodService.isfeatureSetting
+                            ">
+                            {{ "PROCESS" | translate }}
+                            <span class="next-icon"></span>
+                          </button>
+                          <button type="button" (click)="onUpgrade()" class="btn_next btn-core"
+                            *ngIf="!this.commonMethodService.isfeatureSetting">
+                            {{ "UPGRADETOSAVE" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="note_panel" id="notepanel" *ngIf="!isAch && !isNoAch">
+                  <span class="note_lbl text-uppercase">{{ "NOTE" | translate }}:</span>
+                  <textarea class="note_area" id="txtareanote" [(ngModel)]="note" name="txtnote" #txtnote="ngModel"
+                    (blur)="donarInfoTabReturn('txtareanote')"></textarea>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="commonMethodService.loaderSearch" class="card-overlay">
+          <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+
+        <div class="right_section option_tab" *ngIf="showTransaction">
+          <ul id="option_tabs" class="nav nav-tabs" role="tablist">
+            <ng-container *appIsWeb>
+              <li role="presentation">
+                <span data-toggle="tooltip" class="hover_tooltip" placement="bottom" [title]="payPledgeToolTip">
+                  <a (click)="OpenSideTab('optionTab')"
+                    [ngClass]="{ tooltip_disabled: isPayPledgeError || commonMethodService.isFrequencyError }"
+                    id="moreOptionsTab" role="tab" data-toggle="tab" class="active">
+                    <span class="selected_donor_span">
+                      <h6>{{ "OPTIONS" | translate }}</h6>
+                    </span>
+                  </a>
+                </span>
+              </li>
+            </ng-container>
+
+            <ng-container *appIsMobile>
+              <li role="presentation">
+                <span data-toggle="tooltip" class="hover_tooltip" placement="bottom" [title]="payPledgeToolTip">
+                  <a (click)="OpenSideTab('optionTab')" [ngClass]="{ tooltip_disabled: isPayPledgeError }"
+                    id="moreOptionsTab" role="tab" data-toggle="tab" class="active">
+                    <span class="selected_donor_span">
+                      <h6>{{ "SETTINGS" | translate }}</h6>
+                    </span>
+                  </a>
+                </span>
+              </li>
+            </ng-container>
+
+            @if (isAmountTab && isDonorBulkSelected) {
+            <li role="presentation">
+              <span data-toggle="tooltip" class="hover_tooltip" placement="bottom" [title]="payPledgeToolTip">
+                <a (click)="OpenSideTab('schedulePaymentTab')" [ngClass]="{ tooltip_disabled: isPayPledgeError }"
+                  id="schedulePaymentTab" role="tab" data-toggle="tab">
+                  <span class="selected_donor_span">
+                    <h6>{{ "SHEDULEPAYMENT" | translate }}</h6>
+                  </span>
+                </a>
+              </span>
+            </li>
+            } @else {
+            @if(isAmountTab ){
+            <li role="presentation">
+              <span data-toggle="tooltip" class="hover_tooltip" placement="bottom" [title]="payPledgeToolTip">
+                <a (click)="OpenSideTab('schedulePaymentTab')" [ngClass]="{ tooltip_disabled: isPayPledgeError }"
+                  id="schedulePaymentTab" role="tab" data-toggle="tab">
+                  <span class="selected_donor_span">
+                    <h6>{{ "SHEDULEPAYMENT" | translate }}</h6>
+                  </span>
+                </a>
+              </span>
+            </li>
+            }
+            }
+
+            <li class="switcher-block pay-switcher-block" role="presentation" *ngIf="isAmountTab || isPaymentList"
+              [ngClass]="{ disabled: isPayoffPledgeDisable || commonMethodService.isFrequencyError}"
+              data-toggle="tooltip" appHoverTooltip
+              [labelText]="isDonorBulkSelected && isCloseTooltip ? 'You cannot pay pledges on bulk charge' : null">
+              <div *ngIf="
+
+                  isCloseTooltip &&
+                  showTooltip &&
+                  pledgeRemainingAmount != 0 &&
+                  !ispayoffPledgeTabSelected &&
+                  !isPledgeDisabled
+                ">
+                <div class="tooltip-pledge">
+                  <div *ngIf="pledgeRemainingAmount != 0">
+                    <h4>you have {{ pledgeCount }} open pledges.</h4>
+                    <span> Total amount: ${{ pledgeRemainingAmount }}</span>
+                    <i class="material-icons" (click)="closePledgeTooltip()">close</i>
+                  </div>
+                </div>
+              </div>
+              <a (click)="OpenSideTab('payPledgeTab')" id="payoffPledgeTab" role="tab" data-toggle="tab"
+                [class.disabled]="isDonorBulkSelected">
+                <span class="selected_donor_span">
+                  <h6 class="position-relative" *ngIf="ispayoffPledgeTabSelected">
+                    {{ "PAYOFFPLEDGE" | translate }}
+                  </h6>
+
+                  <h6 class="position-relative"
+                    *ngIf="!ispayoffPledgeTabSelected && !isRoundIcon && !isDonorBulkSelected">
+                    {{ "PAYOFFPLEDGE" | translate }}
+                  </h6>
+                  <h6 class="pay-off-pledge position-relative"
+                    *ngIf="!ispayoffPledgeTabSelected && isRoundIcon && !isDonorBulkSelected">
+
+                    {{ "PAYOFFPLEDGE" | translate }}
+                  </h6>
+
+                  <h6 class="pay-off-pledge position-relative"
+                    *ngIf="!ispayoffPledgeTabSelected && !isRoundIcon && isDonorBulkSelected">
+                    {{ "PAYOFFPLEDGE" | translate }}
+                  </h6>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active show" id="moreOptions" *ngIf="showMoreOption">
+              <div class="overlay"></div>
+              <div class="sticky-sidemenu h-100">
+                <div class="option_item h-100 d-flex flex-column">
+                  <div class="header-option nav-tabs" role="tablist">
+                    <a (click)="OpenDropdown('optionlist')" class="opt_backarrow"></a>
+                    <!-- <h4>Options</h4> -->
+                    <div role="presentation">
+                      <a class="close-icon" (click)="ShowDonorTab()">&times;</a>
+                    </div>
+                  </div>
+                  <div class="option_list d-flex flex-column" *ngIf="isOptionList">
+                    <div class="saveDefualtAction" [ngClass]="savedDefault ? 'active' : ''">
+                      <span>{{ "SAVE_SETTING_AS_DEFAULT" | translate }}
+                        <span (click)="saveOptionsLayout()">
+                          <i *ngIf="!savedDefault" class="fa fa-star-o"></i>
+                          <i *ngIf="savedDefault" class="fa fa-star"></i>
+                        </span>
+                      </span>
+                    </div>
+                    <ng-container *appIsWeb>
+                      <ul>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "REASON" | translate }}:</h5>
+                          </div>
+                          <div class="right acc-no-on-dropdown">
+                            <div class="input_single" [ngClass]="{
+                                blink_animate: isReasonRequired == true
+                              }">
+                              <angular2-multiselect id="ddlPaymentReason" tabindex="1" #reasondrp style="border: none"
+                                [settings]="
+                                  commonMethodService.setDropDownSettings(
+                                    '',
+                                    2,
+                                    false,
+                                    true,
+                                    true
+                                  )
+                                " [data]="commonMethodService.localReasonList" [(ngModel)]="reasonList"
+                                (onDeSelectAll)="
+                                  SelectReason($event); onDeselectAllresonDpwn()
+                                " (onSelect)="SelectReason($event)" (focusin)="
+                                  isSelectAmoutClickddlPaymentReason
+                                    ? reasonDrpTabIn($event)
+                                    : ''
+                                " (keydown.Tab)="CampaingDrpTabIn($event)">
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label [ngClass]="
+                                        contains_heb(item.itemName)
+                                          ? 'heb-dropdown-title'
+                                          : 'simple-dropdown-title'
+                                      ">
+                                      {{ item.itemName }}
+                                      <span [ngClass]="
+                                          contains_heb(item.itemName)
+                                            ? 'heb-dropdown-num'
+                                            : 'simple-dropdown-num'
+                                        ">{{ item.num }}</span></label>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "CAMPAIGN" | translate }}:</h5>
+                          </div>
+                          <div class="right tran-campaign">
+                            <div class="input_single" [ngClass]="{
+                                blink_animate: isCampaignRequired == true
+                              }">
+                              <angular2-multiselect id="ddlCampaign" style="border: none" [settings]="
+                                  commonMethodService.setDropDownSettings(
+                                    '',
+                                    2,
+                                    false,
+                                    true,
+                                    true
+                                  )
+                                " [data]="commonMethodService.localCampaignList" [(ngModel)]="campaignList"
+                                class="campaign_cls" #campaigndrp (onDeSelectAll)="
+                                  SelectCampaign($event); onDeselectAllDpwn()
+                                " (onSelect)="SelectCampaign($event)" tabindex="2"
+                                (keydown.Tab)="LocationDrpTabIn($event)">
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label [ngClass]="
+                                        contains_heb(item.itemName)
+                                          ? 'heb-dropdown-title'
+                                          : 'simple-dropdown-title'
+                                      ">
+                                      {{ item.itemName }}
+                                      <span [ngClass]="
+                                          contains_heb(item.itemName)
+                                            ? 'heb-dropdown-num'
+                                            : 'simple-dropdown-num'
+                                        ">{{ item.num }}</span>
+                                    </label>
+                                    <span class="heb-dropdown-status status_align">{{ item.status }}</span>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "LOCATION" | translate }}:</h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_single switch_toggle">
+                              <angular2-multiselect [data]="
+                                  commonMethodService.paymentGlobalLocationList
+                                " [(ngModel)]="locationList" [settings]="
+                                  commonMethodService.setDropDownSettings(
+                                    '',
+                                    2,
+                                    false,
+                                    true,
+                                    true
+                                  )
+                                " (onDeSelectAll)="
+                                  SelectLocation($event); onDeselectAllDpwn()
+                                " (onSelect)="SelectLocation($event)" tabindex="3" #locationdrp
+                                (keydown.Tab)="CollectorDrpTabIn($event)">
+                                <c-badge>
+                                  <ng-template let-item="item">
+                                    <span style="margin: 0px">{{
+                                      item.itemName
+                                      }}</span>
+                                  </ng-template>
+                                </c-badge>
+                                <c-search>
+                                  <ng-template>
+                                    <input type="text" *ngIf="isLocationGLobal" [(ngModel)]="txtQuery" (ngModelChange)="
+                                        commonMethodService.onDonorLocationSearchFieldChange(
+                                          $event,
+                                          true
+                                        )
+                                      " placeholder="" style="
+                                        border: none;
+                                        width: 100%;
+                                        height: 100%;
+                                        outline: none;
+                                      " />
+
+                                    <input type="text" *ngIf="!isLocationGLobal" [(ngModel)]="txtQuery" (ngModelChange)="
+                                        commonMethodService.onDonorLocationSearchFieldChange(
+                                          $event,
+                                          false
+                                        )
+                                      " placeholder="" style="
+                                        border: none;
+                                        width: 100%;
+                                        height: 100%;
+                                        outline: none;
+                                      " />
+                                    <label class="switch global_list_togle" *ngIf="!isLocationGLobal"
+                                      data-toggle="tooltip" appHoverTooltip labelText="{{
+                                        'SWTICHLISTTOOLTIP' | translate
+                                      }}">
+                                      <input type="checkbox" class="global_chck" id="globallist"
+                                        (change)="OnGlobalCheckboxChange($event)" />
+                                      <span class="slider round"></span>
+                                    </label>
+                                    <label class="switch global_list_togle" *ngIf="isLocationGLobal"
+                                      data-toggle="tooltip" appHoverTooltip labelText="{{
+                                        'CHARACTERTOOLTIP' | translate
+                                      }}">
+                                      <input type="checkbox" checked class="global_chck" id="globallist"
+                                        (change)="OnGlobalCheckboxChange($event)" />
+                                      <span class="slider round"></span>
+                                    </label>
+                                  </ng-template>
+                                </c-search>
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label class="angular2-multiselectDataLabel">{{ item.itemName }}</label>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "COLLECTOR" | translate }}:</h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_single">
+                              <angular2-multiselect id="ddlCollector" [settings]="
+                                  commonMethodService.setDropDownSettings(
+                                    '',
+                                    2,
+                                    false,
+                                    true,
+                                    true
+                                  )
+                                " [data]="commonMethodService.localCollectorList" [(ngModel)]="collectorList"
+                                (onDeSelectAll)="
+                                  SelectCollector($event); onDeselectAllDpwn()
+                                " (onSelect)="SelectCollector($event)" tabindex="4" #collectordrp
+                                (keydown.Tab)="DateTabIn($event)">
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>
+                              {{ 'RECORD' | translate}} {{ "DATE" | translate }}:
+                              <span class="tooltip-info" data-toggle="tooltip" appHoverTooltip
+                                labelText="{{ 'DATETOOLTIP' | translate }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                  xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0"
+                                  viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                  <g>
+                                    <g data-name="Layer 2">
+                                      <g data-name="Layer 1">
+                                        <g data-name="Question mark">
+                                          <rect width="512" height="512" fill="#b4b3b5" rx="256" opacity="1"
+                                            data-original="#231f20"></rect>
+                                          <path fill="#ffffff"
+                                            d="M167.67 196.113q0-16.782 10.776-34.007t31.446-28.532q20.672-11.3 48.228-11.306 25.611 0 45.225 9.452t30.3 25.705a63.061 63.061 0 0 1 10.688 35.331q0 15.016-6.1 26.323a80.469 80.469 0 0 1-14.486 19.52q-8.39 8.217-30.119 27.648a122.942 122.942 0 0 0-9.628 9.628 39.065 39.065 0 0 0-5.387 7.6 36.932 36.932 0 0 0-2.738 6.89q-.974 3.446-2.916 12.1-3.358 18.375-21.021 18.372a21.482 21.482 0 0 1-15.459-6.006q-6.273-6-6.271-17.842 0-14.839 4.592-25.7a65.3 65.3 0 0 1 12.19-19.089 279.09 279.09 0 0 1 20.492-19.521q11.305-9.891 16.343-14.928a50.613 50.613 0 0 0 8.478-11.218 27.13 27.13 0 0 0 3.444-13.426 31.225 31.225 0 0 0-10.51-23.849q-10.514-9.712-27.117-9.716-19.434 0-28.618 9.8t-15.548 28.883q-6.007 19.975-22.788 19.975a22.394 22.394 0 0 1-16.695-6.978q-6.801-6.981-6.801-15.109zm86.211 193.619a27.794 27.794 0 0 1-18.814-6.978q-8.042-6.976-8.039-19.521a25.151 25.151 0 0 1 7.772-18.726 26.263 26.263 0 0 1 19.081-7.6 25.946 25.946 0 0 1 26.319 26.326q0 12.368-7.951 19.432a26.824 26.824 0 0 1-18.368 7.067z"
+                                            opacity="1" data-original="#ffffff"></path>
+                                        </g>
+                                      </g>
+                                    </g>
+                                  </g>
+                                </svg>
+                              </span>
+                            </h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_group">
+                              <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                  alt="" /></span>
+                              <div class="searchbar">
+                                <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                                    [data]="selectedDate" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                </ng-template>
+                                <div (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)"
+                                  container="body" #p1="ngbPopover" popoverClass="calender-modal" container="body"
+                                  [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false"
+                                  placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                  id="recordDateDynamicsCalender">
+                                  <input type="text" class="form-control" value="" id="calendar_input_add_transaction"
+                                    [placeholder]="EngHebCalPlaceholder" />
+                                </div>
+                                <!-- Calendar code ended -->
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+                      </ul>
+                    </ng-container>
+                    <ng-container *appIsMobile>
+                      <ul>
+                        <li>
+                          <div class="left">
+                            <h5>Record {{ "DATE" | translate }}:</h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_group">
+                              <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                  alt="" /></span>
+                              <div class="searchbar">
+                                <input type="text" class="form-control" [(ngModel)]="selectedDate" ngxDaterangepickerMd
+                                  [singleDatePicker]="true" [alwaysShowCalendars]="
+                                  commonMethodService.alwaysShowCalendars
+                                " [showRangeLabelOnInput]="
+                                  commonMethodService.showRangeLabelOnInput
+                                " [opens]="commonMethodService.open" drops="up" [showClearButton]="
+                                  commonMethodService.showClearButton
+                                " (datesUpdated)="datesUpdated($event)" id="datePickerId" #datedrp
+                                  (keydown.Tab)="btnAmountTabNextTabIn()" />
+                              </div>
+                            </div>
+
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "CAMPAIGN" | translate }}:</h5>
+                          </div>
+                          <div class="right tran-campaign">
+                            <div class="input_single" [ngClass]="{
+                              blink_animate: isCampaignRequired == true
+                            }">
+                              <angular2-multiselect id="ddlCampaign" style="border: none" [settings]="
+                                commonMethodService.setDropDownSettings(
+                                  '',
+                                  2,
+                                  false,
+                                  true,
+                                  true
+                                )
+                              " [data]="commonMethodService.localCampaignList" [(ngModel)]="campaignList"
+                                class="campaign_cls" #campaigndrp (onDeSelectAll)="
+                                SelectCampaign($event); onDeselectAllDpwn()
+                              " (onSelect)="SelectCampaign($event)" tabindex="2"
+                                (keydown.Tab)="LocationDrpTabIn($event)">
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label [ngClass]="
+                                      contains_heb(item.itemName)
+                                        ? 'heb-dropdown-title'
+                                        : 'simple-dropdown-title'
+                                    ">
+                                      {{ item.itemName }}
+                                      <span [ngClass]="
+                                        contains_heb(item.itemName)
+                                          ? 'heb-dropdown-num'
+                                          : 'simple-dropdown-num'
+                                      ">{{ item.num }}</span>
+                                    </label>
+                                    <span class="heb-dropdown-status status_align">{{ item.status }}</span>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "REASON" | translate }}:</h5>
+                          </div>
+                          <div class="right acc-no-on-dropdown">
+                            <div class="input_single" [ngClass]="{
+                              blink_animate: isReasonRequired == true
+                            }">
+                              <angular2-multiselect id="ddlPaymentReason" tabindex="1" #reasondrp style="border: none"
+                                [settings]="
+                                commonMethodService.setDropDownSettings(
+                                  '',
+                                  2,
+                                  false,
+                                  true,
+                                  true
+                                )
+                              " [data]="commonMethodService.localReasonList" [(ngModel)]="reasonList" (onDeSelectAll)="
+                                SelectReason($event); onDeselectAllresonDpwn()
+                              " (onSelect)="SelectReason($event)" (focusin)="
+                                isSelectAmoutClickddlPaymentReason
+                                  ? reasonDrpTabIn($event)
+                                  : ''
+                              " (keydown.Tab)="CampaingDrpTabIn($event)">
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label [ngClass]="
+                                      contains_heb(item.itemName)
+                                        ? 'heb-dropdown-title'
+                                        : 'simple-dropdown-title'
+                                    ">
+                                      {{ item.itemName }}
+                                      <span [ngClass]="
+                                        contains_heb(item.itemName)
+                                          ? 'heb-dropdown-num'
+                                          : 'simple-dropdown-num'
+                                      ">{{ item.num }}</span></label>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "LOCATION" | translate }}:</h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_single switch_toggle">
+                              <angular2-multiselect [data]="
+                                commonMethodService.paymentGlobalLocationList
+                              " [(ngModel)]="locationList" [settings]="
+                                commonMethodService.setDropDownSettings(
+                                  '',
+                                  2,
+                                  false,
+                                  true,
+                                  true
+                                )
+                              " (onDeSelectAll)="
+                                SelectLocation($event); onDeselectAllDpwn()
+                              " (onSelect)="SelectLocation($event)" tabindex="3" #locationdrp
+                                (keydown.Tab)="CollectorDrpTabIn($event)">
+                                <c-badge>
+                                  <ng-template let-item="item">
+                                    <span style="margin: 0px">{{
+                                      item.itemName
+                                      }}</span>
+                                  </ng-template>
+                                </c-badge>
+                                <c-search>
+                                  <ng-template>
+                                    <input type="text" *ngIf="isLocationGLobal" [(ngModel)]="txtQuery" (ngModelChange)="
+                                      commonMethodService.onDonorLocationSearchFieldChange(
+                                        $event,
+                                        true
+                                      )
+                                    " placeholder="" style="
+                                      border: none;
+                                      width: 100%;
+                                      height: 100%;
+                                      outline: none;
+                                    " />
+
+                                    <input type="text" *ngIf="!isLocationGLobal" [(ngModel)]="txtQuery" (ngModelChange)="
+                                      commonMethodService.onDonorLocationSearchFieldChange(
+                                        $event,
+                                        false
+                                      )
+                                    " placeholder="" style="
+                                      border: none;
+                                      width: 100%;
+                                      height: 100%;
+                                      outline: none;
+                                    " />
+                                    <label class="switch global_list_togle" *ngIf="!isLocationGLobal"
+                                      data-toggle="tooltip" appHoverTooltip labelText="{{
+                                      'SWTICHLISTTOOLTIP' | translate
+                                    }}">
+                                      <input type="checkbox" class="global_chck" id="globallist"
+                                        (change)="OnGlobalCheckboxChange($event)" />
+                                      <span class="slider round"></span>
+                                    </label>
+                                    <label class="switch global_list_togle" *ngIf="isLocationGLobal"
+                                      data-toggle="tooltip" appHoverTooltip labelText="{{
+                                      'CHARACTERTOOLTIP' | translate
+                                    }}">
+                                      <input type="checkbox" checked class="global_chck" id="globallist"
+                                        (change)="OnGlobalCheckboxChange($event)" />
+                                      <span class="slider round"></span>
+                                    </label>
+                                  </ng-template>
+                                </c-search>
+                                <c-item>
+                                  <ng-template let-item="item">
+                                    <label class="angular2-multiselectDataLabel">{{ item.itemName }}</label>
+                                  </ng-template>
+                                </c-item>
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="left">
+                            <h5>{{ "COLLECTOR" | translate }}:</h5>
+                          </div>
+                          <div class="right">
+                            <div class="input_single">
+                              <angular2-multiselect id="ddlCollector" [settings]="
+                                commonMethodService.setDropDownSettings(
+                                  '',
+                                  2,
+                                  false,
+                                  true,
+                                  true
+                                )
+                              " [data]="commonMethodService.localCollectorList" [(ngModel)]="collectorList"
+                                (onDeSelectAll)="
+                                SelectCollector($event); onDeselectAllDpwn()
+                              " (onSelect)="SelectCollector($event)" tabindex="4" #collectordrp
+                                (keydown.Tab)="DateTabIn($event)">
+                              </angular2-multiselect>
+                            </div>
+                          </div>
+                        </li>
+
+                      </ul>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="options_dropdown" *ngIf="isCollectorDropdown">
+                  <div class="d_header">
+                    <div class="titlebar">
+                      <div class="d_left">
+                        <!-- <span class="backArrow">
+                                <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                            </span> -->
+                        <span class="d_name">{{
+                          "CHOOSECOLLECTOR" | translate
+                          }}</span>
+                      </div>
+                      <div class="d_right">
+                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
+                        <span><i class="fa fa-plus"></i>
+                          {{ "NEWCOLLECTOR" | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="search_box">
+                      <input type="text" class="seach_input" (keyup)="SearchCollector($event.target.value)" />
+                      <span class="icon"><img src="/assets/dist/img/search-symbol.svg" width="20" height="20"
+                          alt="" /></span>
+                    </div>
+                  </div>
+                  <div class="option_list" *ngFor="let item of collectorList">
+                    <div class="doption_row" (click)="SelectCollector(item.itemName)">
+                      <div class="d_left">
+                        <h4>
+                          <input type="radio" class="rdbtn-collector" [(ngModel)]="this.selectedCollectorId"
+                            [value]="item.id" />
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </h4>
+                      </div>
+                      <div class="d_right">
+                        <h4>{{ item.itemName }}</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="options_dropdown" *ngIf="isLocationDropdown">
+                  <div class="d_header">
+                    <div class="titlebar">
+                      <div class="d_left">
+                        <!-- <span class="backArrow">
+                                    <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                </span> -->
+                        <span class="d_name">{{
+                          "CHOOSELOCATION" | translate
+                          }}</span>
+                      </div>
+                      <div class="d_right">
+                        <label class="switch">
+                          <span class="chck_location">{{
+                            "DISABLELOCATION" | translate
+                            }}</span>
+                          <input type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
+                      </div>
+                    </div>
+                    <div class="search_box">
+                      <input type="text" class="seach_input" (keyup)="SearchLocation($event.target.value)" />
+                      <span class="icon"><img src="/assets/dist/img/search-symbol.svg" width="20" height="20"
+                          alt="" /></span>
+                    </div>
+                  </div>
+                  <div class="option_list" *ngFor="let item of locationList">
+                    <div class="doption_row" (click)="SelectLocation(item.itemName)">
+                      <div class="d_left">
+                        <input type="radio" class="rdbtn-location" [(ngModel)]="this.selectedLocationId"
+                          [value]="item.id" />
+                        <h4>{{ item.itemName }}</h4>
+                        <h6>{{ item.address }}</h6>
+                      </div>
+                      <div class="d_right lng_hebrew">
+                        {{ item.locationJewishName }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="options_dropdown" *ngIf="isCampaignDropdown">
+                  <div class="d_header">
+                    <div class="titlebar">
+                      <div class="d_left">
+                        <span class="d_name">{{
+                          "CHOOSECAMPAIGN" | translate
+                          }}</span>
+                        <!-- <span class="backArrow">
+                                        <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                    </span> -->
+                      </div>
+                      <div class="d_right">
+                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
+                        <span><i class="fa fa-plus"></i>
+                          {{ "NEWCAMPAIGN" | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="search_box">
+                      <input type="text" class="seach_input" (keyup)="SearchCampaign($event.target.value)" />
+                      <span class="icon"><img src="/assets/dist/img/search-symbol.svg" width="20" height="20"
+                          alt="" /></span>
+                    </div>
+                  </div>
+                  <div class="option_list" *ngFor="let item of campaignList">
+                    <div class="doption_row" (click)="SelectCampaign(item.itemName)">
+                      <div class="d_left">
+                        <h4>
+                          <input type="radio" class="rdbtn-campaign" [(ngModel)]="this.selectedCampaignId"
+                            [value]="item.id" />
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </h4>
+                      </div>
+                      <div class="d_right">
+                        <h4>{{ item.itemName }}</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="options_dropdown" *ngIf="isReasonDropdown">
+                  <div class="d_header">
+                    <div class="titlebar">
+                      <div class="d_left">
+                        <span class="d_name">{{
+                          "CHOOSEREASON" | translate
+                          }}</span>
+                        <!-- <span class="backArrow">
+                                            <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                        </span> -->
+                      </div>
+                      <div class="d_right">
+                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
+                        <span><i class="fa fa-plus"></i>
+                          {{ "NEWREASON" | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="search_box">
+                      <input type="text" class="seach_input" (keyup)="SearchReason($event.target.value)" />
+                      <span class="icon"><img src="/assets/dist/img/search-symbol.svg" width="20" height="20"
+                          alt="" /></span>
+                    </div>
+                  </div>
+                  <div class="option_list" *ngFor="let item of reasonList">
+                    <div class="doption_row" (click)="SelectReason(item.itemName)">
+                      <div class="d_left">
+                        <h4>
+                          <input type="radio" class="rdbtn-reason" [(ngModel)]="this.selectedReasonId"
+                            [value]="item.id" />
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </h4>
+                      </div>
+                      <div class="d_right">
+                        <h4>{{ item.itemName }}</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="options_dropdown" *ngIf="isDateSelection">
+                  <div class="d_header">
+                    <div class="titlebar">
+                      <!-- <div class="d_left">
+                   <span class="backArrow">
+                                    <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
+                                </span>
+                  <span class="d_name">Choose Date</span>
+                </div> -->
+                      <!-- <div class="d_right">
+                                    <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a>
+                                </div> -->
+                    </div>
+                    <!-- <div class="input_group">
+                <span class="icon"
+                  ><img
+                    src="/assets/dist/img/calendar-icon.svg"
+                    width="20"
+                    height="20"
+                    alt=""
+                /></span>
+                <div class="searchbar">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="selectedDate"
+                    ngxDaterangepickerMd
+                    [singleDatePicker]="true"
+                    [alwaysShowCalendars]="
+                      commonMethodService.alwaysShowCalendars
+                    "
+                    #
+                    [opens]="commonMethodService.open"
+                    [drops]="commonMethodService.drop"
+                    [showClearButton]="commonMethodService.showClearButton"
+                    (datesUpdated)="datesUpdated($event)"
+                  />
+                </div>
+              </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="schedulePayment">
+              <app-maketransaction-schedule-popup (emtOutputDonationAmt)="changeAmount($event)"
+                (emtOutputSideTabAmt)="changeSideTab($event,'payPledgeTab')"
+                (emtOutputDisableButton)="disableButton($event)" (emtOutputScheduleData)="submitScheduleData($event)"
+                [ScheduleObjData]="objScheduleData" (emtOutputScheduleDataToggle)="setToggle($event)"
+                [DonationAmountData]="selectedAmount"></app-maketransaction-schedule-popup>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="payoffPledge">
+              <app-pay-pledge-popup [DonationAmount]="selectedAmount" [PledgeId]="pledgeId" [DonorId]="selectedDonorId"
+                [payPledgeList]="getPayPledgeList" (emtDisableTabs)="disableTab($event)" [cardPledge]="cardPledge"
+                (emtAvailableAmt)="GetAvailableAmt($event)" (emtDisablePledgePayment)="disablePledgePayment($event)"
+                (emtOutputPledgePayData)="submitPayPledge($event)"></app-pay-pledge-popup>
+            </div>
+          </div>
+        </div>
+        <div class="proccesing_card" *ngIf="isloading">
+          <div class="proccesing_card_inside">
+            <h6>{{ "PROCESSING" | translate }} …</h6>
+            <div class="loader_img">
+              <img src="/assets/img/loader.svg" alt="loader" />
+            </div>
+          </div>
+        </div>
+        <div class="success__trans_tab" *ngIf="isPaymentDone" [class.payment-decline]="checkSchedule && isError">
+          <div class="sucess__alert" *ngIf="isSuccess && paymentStatus != 'Partial'">
+            <span class="success__icon" [ngClass]="[
+                isPaymentExist == true ? 'error__icon' : 'success__icon'
+              ]"></span>
+            <h4 class="succes_msg">
+              @if(successMessage === 'Success !!'){
+              {{ 'SUCCESS' | translate }}
+              } @else {
+              {{ successMessage }}
+              }
+            </h4>
+          </div>
+
+          <div class="fail__alert" *ngIf="isError">
+            <span class="error__icon"></span>
+            <h4 class="error_msg" *ngIf="!checkSchedule">{{ errorMessage }}</h4>
+            <ng-container *ngIf="checkSchedule">
+              <h4 class="error_head">Payment Declined</h4>
+              <h6 class="error_msg">{{ errorMessage }}</h6>
+            </ng-container>
+          </div>
+
+          <div class="fail__alert" *ngIf="paymentStatus == 'Partial' && isSuccess">
+            <span class="caution__icon"></span>
+            <div class="error_msg" [innerHTML]="errorMessage"></div>
+          </div>
+          <div class="payment__card" *ngIf="paymentId!=null">
+            <div class="col_left">
+              <span class="receipt_num" style="cursor: pointer; color: blueviolet" *ngIf="type == 'Payment'"
+                (click)="openPaymentCardPopup(paymentId)">#{{ receiptNum }}</span>
+              <span class="receipt_num" style="cursor: pointer; color: blueviolet" *ngIf="type == 'Pledge'"
+                (click)="openPledgeCardPopup(paymentId)">#{{ receiptNum }}</span>
+              <h5 class="name">{{ donorname }}</h5>
+              <p class="heb_name lng_hebrew">{{ donorJewishname }}</p>
+            </div>
+            <div class="col_right">
+              <div class="price_info d-flex align-items-center">
+                <span class="card__icon  mr-2">
+                  <img src="/assets/dist/img/credit-card.svg" alt="" />
+                </span>
+                <span class="price">{{ symbol + selectedAmount }}</span>
+              </div>
+              <div class="card__info">
+                <!-- <span class="card_type">{{paymentModeDetail}}</span> -->
+                <span class="card_type">{{ refNum }}</span>
+                <span class="payment_status" [ngClass]="{ 'text-danger': isPaymentExist == true }"
+                  *ngIf="isSuccess && paymentStatus != 'Partial'">{{ paymentStatus | uppercase | translate }}</span>
+                <span class="text-danger payment_status" *ngIf="isError && !checkSchedule">{{
+                  paymentStatus
+                  }}</span>
+                <!-- code to show partial -->
+                <span class="partial_payment_status" [ngClass]="{ 'text-danger': isPaymentExist == true }"
+                  *ngIf="isSuccess && paymentStatus == 'Partial'">{{ paymentStatus }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="schedule-btn-div text-center mt-4" *ngIf="isScheduleWithoutAuthorization">
+            <button class="btn btn-primary" type="button" (click)="scheduleWithoutAuthorization()">Schedule without
+              authorization</button>
+          </div>
+          @if (isDevEnv) {
+            
+          <ng-container *ngIf="(!isCreditCard && this.OtherCurrencyId) && !((isPledgePayment && !showNotifySection) || showNotifySection ) ">
+            
+      
+                <span 
+    (click)="!(isPaymentFailed || !selectedDonorId || isGenerateReceiptDisable || paymentType == 'Check') && OpenLegalReceipt(paymentId, paymentType)"
+    class="modal-recept d-flex align-items-center mx-auto"
+    data-toggle="tooltip"
+    [ngClass]="{'modal-recept-50': isPaymentFailed || !selectedDonorId || isGenerateReceiptDisable || paymentType == 'Check'}"
+    appHoverTooltip
+    [labelText]="isPaymentFailed ? 'Can\'t generate a receipt for error or declined payments' :
+       (!selectedDonorId) ? ('DONORSELECTEDTRANSACTION' | translate) : 
+       (paymentType == 'Check') ? 'Can\'t generate legal receipt for pending checks' : null">
+    
+    <i 
+        data-toggle="tooltip"
+        class="icon icon-receipt mr-1">
+    </i>
+    {{ 'GENERATE_RECEIPT' | translate }}
+</span>
+
+          </ng-container>
+          }
+        
+          <div class="other__actions" *ngIf="(isOtherActionShow  && !isPaymentCredit) || ((isPledgePayment && !showNotifySection) || showNotifySection )">
+            <div class="card__block {{ isDefaultCls }}" [ngClass]="{ disabled: isError }"
+              (click)="!isError && printReceipt(paymentId, type)" appHoverTooltip
+              labelText="{{ 'DONORSELECTEDTRANSACTION' | translate }}" data-toggle="tooltip">
+              <span class="icon icn_text_receipt" [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null"></span>
+              <h6 [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null">
+                {{ printActionBtn | join_and_uppercase | translate }}
+              </h6>
+            </div>
+            <div class="card__block {{ isDefaultCls }}" [ngClass]="{ disabled: isError }"
+              (click)="!isError && SendTextReceipt(paymentId, type)" appHoverTooltip
+              labelText="{{ 'DONORSELECTEDTRANSACTION' | translate }}" data-toggle="tooltip">
+              @if (isDevEnv) {
+              <span class="icn" [ngClass]="getSelectedPhoneIconClass()"></span>
+              }
+              <span class="icon icn_text_msg" [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null"></span>
+              <h6 [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null">
+                {{ textActionBtn | join_and_uppercase | translate}}
+              </h6>
+            </div>
+            <div class="card__block {{ isDefaultCls }}" [ngClass]="{ disabled: isError }"
+              (click)="!isError && SendEmailReceipt(paymentId, type)" appHoverTooltip
+              labelText="{{ 'DONORSELECTEDTRANSACTION' | translate }}" data-toggle="tooltip">
+              @if (isDevEnv) {
+              <span class="icn" [ngClass]="getSelectedEmailIconClass()"></span>
+              }
+              <span class="icon icn_mail" [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null"></span>
+              <h6 [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null">
+                {{ emailActionBtn | join_and_uppercase | translate}}
+              </h6>
+            </div>
+            <div class="card__block {{ isDefaultCls }}" [ngClass]="{ disabled: isError }"
+              (click)="!isError && SendMailReceipt(paymentId, type)" appHoverTooltip
+              labelText="{{ 'DONORSELECTEDTRANSACTION' | translate }}" data-toggle="tooltip">
+              <span class="icon icn_message" [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null"></span>
+              <h6 [ngStyle]="isDefaultCls ? { opacity: '0.5' } : null">
+                {{ mailActionBtn | join_and_uppercase | translate}}
+              </h6>
+            </div>
+            <div class="card__block" *ngIf="type == 'Payment'" [ngClass]="{ disabled: isError }"
+              (click)="!isError && VoidPayment(paymentId)">
+              <span class="icon icn_block"></span>
+              <h6>{{ "VOIDPAYMENT" | translate }}</h6>
+            </div>
+            <div class="card__block" *ngIf="type == 'Pledge'" [ngClass]="{ disabled: isError }"
+              (click)="!isError && VoidPledge(paymentId)">
+              <span class="icon icn_block"></span>
+              <h6>{{ "VOIDPLEDGE" | translate }}</h6>
+            </div>
+          </div>
+          <div class="btn_section">
+            <div class="new_tran_btn back_btn" *ngIf="isError" style="cursor: pointer" (click)="BackToTransaction()">
+              {{ "BACK" | translate }}
+            </div>
+            <div class="new_tran_btn new-btn" style="cursor: pointer" (click)="NewTransaction()">
+              {{ "NEWTRANSACTION" | translate }}
+            </div>
+          </div>
+          <div *ngIf="isActionloading" class="card-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

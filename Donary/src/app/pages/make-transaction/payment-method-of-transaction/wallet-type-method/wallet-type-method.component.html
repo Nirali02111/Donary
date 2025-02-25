@@ -1,0 +1,24 @@
+<div [formGroup]="parentFormGroup">
+    <div formGroupName="walletType">
+        @for (item of walletList; track $index) {
+        <div class="card_item">
+            <div class="left">
+                <input type="radio" class="rdbtnwallet" formControlName="walletId" [value]="item.walletId" />
+                <h6>{{ item.accountName }}</h6>
+            </div>
+            <div class="visa_title">
+                <p>{{ item.description }}</p>
+            </div>
+        </div>
+        }
+
+
+        @if (WalletId?.touched && WalletId?.invalid) {
+            <app-input-error [errors]="WalletId?.errors"></app-input-error>
+        }
+        <div class="note_panel">
+            <span class="note_lbl text-uppercase">{{ "NOTE" | translate }}</span>
+            <textarea class="note_area" formControlName="note" [placeholder]="'WRITENOTE' | translate"></textarea>
+        </div>
+    </div>
+</div>

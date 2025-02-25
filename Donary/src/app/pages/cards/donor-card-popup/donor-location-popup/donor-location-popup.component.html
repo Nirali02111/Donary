@@ -1,0 +1,75 @@
+<!-- Donor location Card -->
+<div class="modal_wrap" style="display: block;"ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header">
+    <h4>{{'LOCATIONDETAIL'|translate}}</h4>
+    <button class="close" (click)="closePopup()">&times;</button>
+    </div>
+    <div class="modal_content modal__custom_content"> 
+        <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+                <div class="table-responsive transaction__table">
+                    <table class="table table-striped" [svData]="gridFilterData" #sv="svDataTable"
+                        [svRowsOnPage]="25" svSortBy="locationName" svSortOrder="asc">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <sv-default-sorter by="locationName">{{'LOCATIONNAME'|translate}}
+                                    </sv-default-sorter>
+                                </th>
+                                <th>
+                                    <sv-default-sorter by="address">{{'ADDRESS'|translate}}
+                                    </sv-default-sorter>
+                                </th> 
+                                <th>
+                                    <sv-default-sorter by="city">{{'CITY'|translate}}
+                                    </sv-default-sorter>
+                                </th>
+                                <th>
+                                    <sv-default-sorter by="state">{{'STATE'|translate}}
+                                    </sv-default-sorter>
+                                </th>                                                                       
+                                <th>
+                                    <sv-default-sorter by="country">{{'COUNTRY'|translate}}
+                                    </sv-default-sorter>
+                                </th>                                                                       
+                                <th>
+                                    <sv-default-sorter by="zip">{{'ZIP'|translate}}
+                                    </sv-default-sorter>
+                                </th>                                                                                                     
+                               
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="sv.data?.length > 0">
+                            <tr *ngFor="let item of sv.data; let i=index">
+                                <td>{{ item.locationName }}</td>
+                                <td>{{ item.address  }}</td>   
+                                <td>{{ item.city }}</td>
+                                <td>{{ item.state }}</td>                                                                                                             
+                                <td>{{ item.country }}</td>
+                                <td>{{ item.zip }}</td>                                                                                                                                           
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="sv.data?.length == 0">
+                            <tr>
+                                <td colspan="15" style="text-align: center;">{{'NODATAFOUND'|translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="15" style="border-left: none !important;border-right: none !important;">
+                                    <sv-bootstrap-paginator  [rowsOnPageSet]="[25, 50, 100]">
+                                    </sv-bootstrap-paginator>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>  
+        <div *ngIf="isloading" class="card-overlay" >
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>    
+</div>
+    <!-- End Donor location  Card -->

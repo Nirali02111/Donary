@@ -1,0 +1,617 @@
+<!--<form [formGroup]="formGroup" (ngSubmit)="onRegister()">-->
+<form [formGroup]="formGroup" focusInvalidInput #focusInput="focusInvalidInput" (ngSubmit)="onRegister();focusInput.focus()">
+    <div class="white_box">
+        <div class="form-section" *ngIf="isOrganzation">
+            <h4 class="headline">{{'ORGANIZATIONINFORMATION' | translate}}</h4>
+            <div class="form-group field-organization">
+                <label>{{'ORGANIZATIONNAME' | translate}}:</label>
+                <input class="form-control" type="text" readonly="true" formControlName="OrgName"
+                    [class.error-field]="isFormSubmited && organization.invalid" />
+                <ng-container *ngIf="organization.touched && organization.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: organization}"></ng-template>
+                </ng-container>
+
+            </div>
+            <div class="form-group colm-12">
+                <label>{{'TAXID' | translate}}:</label>
+                <input class="form-control" type="text" formControlName="TaxId"
+                    [class.error-field]="isFormSubmited && taxId.invalid" />
+                <ng-container *ngIf="taxId.touched && taxId.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: taxId}"></ng-template>
+                </ng-container>
+            </div>
+
+            <div class="form-group field-street-apt">
+                <!-- <label>ADDRESS:</label>
+                <div class="colm colm-6 br-0 mb-3 col-w-25">
+                    <input
+                    type="text"
+                    placeholder="Enter Location"
+                    class="form-control"
+                    name="orgAddress"
+                    [(ngModel)]="orgAddress"
+                    [ngModelOptions]="{standalone: true}"
+                    appAddressAutocomplete
+                    (focusout)="onOrgAddressBlur()"
+                    (onAddressChange)="onOrgAddressChange($event)"
+                     />
+                </div> -->
+               <!-- <div class="colm colm-6 br-0 col-w-25">
+                    <input
+                    type="text"
+                    placeholder="House num"
+                    class="form-control"
+                    formControlName="OrgHouseNum"
+                    [class.error-field]="isFormSubmited && OrgHouseNum.invalid"
+                    />
+
+                    <ng-container *ngIf="OrgHouseNum.touched && OrgHouseNum.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: OrgHouseNum}"></ng-template>
+                    </ng-container>
+                </div>
+                -->
+                <div class="colm colm-6 br-0 mb-3 col-w-50">
+                    <input class="form-control" placeholder="{{'STREETADDRESS' | translate}}" type="text"
+                    formControlName="OrgStreet" 
+                    appAddressAutocomplete
+                   
+                    (onAddressChange)="onOrgAddressChange($event)"
+                    [class.error-field]="isFormSubmited && OrgStreet.invalid">
+
+                <ng-container *ngIf="OrgStreet.touched && OrgStreet.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: OrgStreet}"></ng-template>
+                </ng-container>
+                </div>
+
+
+                <div class="colm colm-6 col-w-25">
+                    <input class="form-control" placeholder="{{'APT' | translate}}" type="text" formControlName="OrgApt"
+                        [class.error-field]="isFormSubmited && OrgApt.invalid">
+                    <ng-container *ngIf="OrgApt.touched && OrgApt.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: OrgApt}"></ng-template>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="form-group primary_address field-3">
+                <div class="colm colm-4 br-0">
+                    <input class="form-control" placeholder="{{'CITY' | translate}}" type="text" formControlName="OrgCity"
+                        [class.error-field]="isFormSubmited && OrgCity.invalid">
+                    <ng-container *ngIf="OrgCity.touched && OrgCity.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: OrgCity}"></ng-template>
+                    </ng-container>
+                </div>
+                <div class="colm colm-2 br-0">
+                    <!-- <select class="form-control" formControlName="OrgState" [class.error-field]="isFormSubmited && OrgState.invalid">
+                        <option value="null">State</option>
+                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.abbreviations}}</option>
+
+                    </select> -->
+
+                    <ng-select bindLabel="abbreviations" bindValue="abbreviations" [searchable]="true"
+                        formControlName="OrgState" [items]="stateList" [searchFn]="customSearchFn"
+                        [selectOnTab]="true" [class.error-field]="isFormSubmited && OrgState.invalid"
+                        >
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.abbreviations }}
+                        </ng-template>
+                    </ng-select>
+                    <ng-container *ngIf="isFormSubmited && OrgState.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: OrgState}"></ng-template>
+                    </ng-container>
+                </div>
+                <div class="colm colm-3 zip-input">
+                    <input class="form-control" placeholder="{{'ZIP' | translate}}" type="text" maxlength="5"
+                        formControlName="OrgZip" [class.error-field]="isFormSubmited && OrgZip.invalid">
+                    <ng-container *ngIf="OrgZip.touched && OrgZip.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: OrgZip}"></ng-template>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{'PHONENUMBER' | translate}}:</label>
+                <input class="form-control" type="text" formControlName="OrgPhone"
+                    mask="(000) 000-000099999" [validation]="true"
+                    [class.error-field]="isFormSubmited && OrgPhone.invalid" />
+                <ng-container *ngIf="OrgPhone.touched && OrgPhone.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: OrgPhone}"></ng-template>
+                </ng-container>
+            </div>
+            <div class="form-group">
+                <label>{{'EMAILADDRESS' | translate}}:</label>
+                <input class="form-control" type="email" formControlName="OrgEmail"
+                    [class.error-field]="isFormSubmited && OrgEmail.invalid" />
+                <ng-container *ngIf="OrgEmail.touched && OrgEmail.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: OrgEmail}"></ng-template>
+                </ng-container>
+            </div>
+
+        </div>
+
+        <hr  *ngIf="isOrganzation" />
+        <div class="form-section" *ngIf="isOrganzation">
+            <h4 class="headline">{{'CONTACTINFORMATION' | translate}}</h4>
+            <div class="form-group">
+                <label>{{'CONTACT' | translate}} {{'NAME' | translate}}:</label>
+                <input class="form-control" value="Yosef Kestenbaum" type="text"
+                    formControlName="ContactName"
+                    [class.error-field]="isFormSubmited && ContactName.invalid" />
+                <ng-container *ngIf="ContactName.touched && ContactName.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: ContactName}"></ng-template>
+                </ng-container>
+            </div>
+
+            <div class="form-group field-street-apt">
+                <!-- <label>ADDRESS:</label>
+                <div class="colm colm-6 br-0 mb-3 col-w-25">
+                    <input
+                    type="text"
+                    placeholder="Enter Location"
+                    class="form-control"
+                    name="contactAddress"
+                    [(ngModel)]="contactAddress"
+                    [ngModelOptions]="{standalone: true}"
+                    appAddressAutocomplete
+                    (focusout)="onContactAddressBlur()"
+                    (onAddressChange)="onContactAddressChange($event)"
+                     />
+                </div> -->
+                <!--<div class="colm colm-6 br-0 col-w-25">
+                    <input class="form-control"
+                    placeholder="House num" type="text"
+                    formControlName="ContactHouseNum"
+                    [class.error-field]="isFormSubmited && ContactHouseNum.invalid"/>
+                <ng-container *ngIf="ContactHouseNum.touched && ContactHouseNum.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: ContactHouseNum}"></ng-template>
+                </ng-container>
+                </div>
+                -->
+                <div class="colm colm-6 br-0 col-w-50">
+                    <input class="form-control" placeholder="{{'STREETADDRESS' | translate}}" type="text"
+                        formControlName="ContactStreet" appAddressAutocomplete
+                    
+                        (onAddressChange)="onContactAddressChange($event)"
+                        [class.error-field]="isFormSubmited && ContactStreet.invalid">
+                    <ng-container *ngIf="ContactStreet.touched && ContactStreet.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: ContactStreet}"></ng-template>
+                    </ng-container>
+                </div>
+
+
+                <div class="colm colm-6 col-w-25">
+                    <input class="form-control" placeholder="{{'APT' | translate}}" type="text"
+                        formControlName="ContactApt"
+                        [class.error-field]="isFormSubmited && ContactApt.invalid">
+                    <ng-container *ngIf="ContactApt.touched && ContactApt.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: ContactApt}"></ng-template>
+                    </ng-container>
+                </div>
+
+            </div>
+            <div class="form-group primary_address field-3">
+                <div class="colm colm-4 br-0">
+                    <input class="form-control" placeholder="{{'CITY' | translate}}" type="text"
+                        formControlName="ContactCity"
+                        [class.error-field]="isFormSubmited && ContactCity.invalid">
+                    <ng-container *ngIf="ContactCity.touched && ContactCity.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: ContactCity}"></ng-template>
+                    </ng-container>
+                </div>
+                <div class="colm colm-2 br-0">
+                    <!-- <select class="form-control" formControlName="ContactState" [class.error-field]="isFormSubmited && ContactState.invalid">
+                        <option value="null">State</option>
+                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.abbreviations}}</option>
+                    </select> -->
+                    <ng-select bindLabel="abbreviations" bindValue="abbreviations" [searchable]="true"
+                        formControlName="ContactState" [items]="stateList" [searchFn]="customSearchFn"
+                        [selectOnTab]="true"
+                        [class.error-field]="isFormSubmited && ContactState.invalid">
+                        <ng-template ng-option-tmp let-item="item">
+                            {{ item.abbreviations }}
+                        </ng-template>
+                    </ng-select>
+                    <ng-container *ngIf="ContactState.touched && ContactState.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: ContactState}"></ng-template>
+                    </ng-container>
+                </div>
+                <div class="colm colm-3 zip-input">
+                    <input class="form-control" placeholder="{{'ZIP' | translate}}" maxlength="5" type="text"
+                        formControlName="ContactZip"
+                        [class.error-field]="isFormSubmited && ContactZip.invalid">
+                    <ng-container *ngIf="ContactZip.touched && ContactZip.invalid">
+                        <ng-template [ngTemplateOutlet]="feedbackError"
+                            [ngTemplateOutletContext]="{item: ContactZip}"></ng-template>
+                    </ng-container>
+                </div>
+            </div>
+
+
+            <div class="form-group contactphone" formArrayName="ContactPhone">
+                <label>{{'PHONENUMBER' | translate}}:</label>
+                <div class="input-group ">
+                    <div class="clone-phone" *ngFor="let item of ContactPhone.controls;let i = index">
+                        <input class="form-control" type="text" [formControlName]="i"
+                            [validation]="true" mask="(000) 000-000099999" />
+                        <ng-container *ngIf="item.touched && item.invalid">
+                            <ng-template [ngTemplateOutlet]="feedbackError"
+                                [ngTemplateOutletContext]="{item: item}"></ng-template>
+                        </ng-container>
+                    </div>
+                </div>
+                <button type="button" *ngIf="ContactPhone.length<2" class="btn_add"
+                    (click)="addContactPhone()"><i class="fa fa-plus"></i>  {{'ADDPHONE' | translate}}</button>
+            </div>
+
+            <div class="form-group contactemail" formArrayName="ContactEmail">
+                <label>{{'EMAILADDRESS' | translate}}:</label>
+                <div class="input-group ">
+                    <div class="clone-email" *ngFor="let item of ContactEmail.controls;let i = index">
+                        <input class="form-control" type="email" [formControlName]="i" />
+                        <ng-container *ngIf="item.touched && item.invalid">
+                            <ng-template [ngTemplateOutlet]="feedbackError"
+                                [ngTemplateOutletContext]="{item: item}"></ng-template>
+                        </ng-container>
+                    </div>
+                </div>
+                <button type="button" *ngIf="ContactEmail.length<2" class="btn_add"
+                    (click)="addContactEmail()"><i class="fa fa-plus"></i> {{'ADD' | translate}} {{'EMAIL' | translate}}</button>
+            </div>
+
+        </div>
+        <!-- <hr *ngIf="isOrganzation" /> -->
+
+        <div class="form-section" *ngIf="isOrganzation && isBranding">
+            <h4 class="headline">Credit card processing Information</h4>
+            <!-- <div class="form-group">
+                <label>CREDIT CARD MERCHANT:</label>
+                <input class="form-control" value="Fidelity" type="text" formControlName="CCMerchant"
+                    [class.error-field]="isFormSubmited && CCMerchant.invalid" />
+                <ng-container *ngIf="CCMerchant.touched && CCMerchant.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: CCMerchant}"></ng-template>
+                </ng-container>
+            </div> -->
+
+            <div class="form-group">
+                <label>{{'CREDITCARDGATEWAY'  | translate}}:</label>
+                <select class="slect_box" formControlName="CCGateway" (change)="onChangeGateway($event)"
+                    [class.error-field]="isFormSubmited && CCGateway.invalid">
+                    <option>Select one</option>
+                    <option *ngFor="let item of gateWayList" [value]="item.gatewayId">
+                        {{item.gatewayName}}</option>
+                </select>
+                <ng-container *ngIf="CCGateway.touched && CCGateway.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: CCGateway}"></ng-template>
+                </ng-container>
+            </div>
+
+
+            <div class="form-group">
+                <label>{{'PROCESSINGINTEGRATIONKEY' | translate}}:</label>
+                <input class="form-control" value="" type="text" formControlName="APIKey"
+                    [class.error-field]="isFormSubmited && APIKey.invalid" />
+                <ng-container *ngIf="APIKey.touched && APIKey.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: APIKey}"></ng-template>
+                </ng-container>
+            </div>
+            <div class="form-group" *ngIf="CCGateway.value !=2"><!--<div class="form-group" *ngIf="!isCardKnox">-->
+                <label>{{'APIKEYPIN' | translate}}: <span class="small-text" *ngIf="isUSAEPAY" >({{'USAEPAY' | translate}})</span></label>
+                <input class="form-control" value="" type="text" formControlName="Pin"
+                    [class.error-field]="isFormSubmited && Pin.invalid" />
+                <ng-container *ngIf="Pin.touched && Pin.invalid">
+                    <ng-template [ngTemplateOutlet]="feedbackError"
+                        [ngTemplateOutletContext]="{item: Pin}"></ng-template>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label>{{'OJCAPIKEY' | translate}}</label>
+                <input class="form-control" type="text" formControlName="OJCApiKey"/>
+            </div>
+
+
+        </div>
+
+        <!-- <hr *ngIf="isOrganzation"/> -->
+        <div class="form-section" *ngIf="isBranding">
+            <h4 class="headline">{{'BRANDINGSETUP' | translate}}</h4>
+            <div class="form-group">
+                <label>{{'ORGANIZATIONLOGO' | translate}}: <span class="small-text">({{'JPGPNGFORMAT' | translate}}) <i
+                            class="fas fa-question-circle" [ngbTooltip]="orgLogo"></i>
+                    </span></label>
+                <div class="cstm_selct_file {{setCls}}">
+                    <div class="cstm_selct_file_content" *ngIf="!imageUrl">
+                        <button class="selct_file">{{'SELECTFILE' | translate}}</button>
+                        <p>{{'DRAGHERE' | translate}}</p>
+                        <input class="file-input" type="file" name="doc_file" id="org_file"
+                            (change)="checkImageLightness($event,1)" #organizationLogo placeholder="{{'UPLOADFILE'  | translate}}"
+                            accept=".png,.JPG">
+
+                    </div>
+                    <div class="preview-imageUrl input-drag-drop" *ngIf="imageUrl">
+                       <section *ngIf="fromDbImg_1"><img src={{imageUrl}} /></section>
+                       <section *ngIf="!fromDbImg_1">
+                        <image-cropper
+                        [imageChangedEvent]="imageChangedEvent_1"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]='415'
+                        [resizeToHeight]='384'
+                        [aspectRatio]="1.0807291666666667 / 1"
+                        format="png"
+                        [containWithinAspectRatio]="false"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                        [transform]="transform_1"
+                        [hideResizeSquares]="true"
+                    ></image-cropper>
+                    </section>
+                    </div>
+                    </div>
+                    <div *ngIf="!imageUrl" class="div-size-organation-logo"><span class="size-organation-logo org-file-size-item"> {{'HEIGHT' | translate}} 384 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 415 {{'PX' | translate}}</span></div>
+            <div class="thumb-info-item">
+            <div *ngIf="!fromDbImg_1 || imageUrl" class="div-size-organation-logo"><span class="size-organation-logo org-file-size-item"> {{'HEIGHT' | translate}} 384 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 415 {{'PX' | translate}}</span></div>
+            <div class="file-action" *ngIf="imageUrl">
+                    <button class="btn btn-red" (click)="deleteUploadedImage($event,1)">
+                      <span class="material-icons">delete</span>
+                    </button>
+            </div>
+        </div>
+            </div>
+
+                <div *ngIf="!fromDbImg_1" class="cropp-action">
+                 <button (click)="zoomOut($event,1)" class="mr-4 btn btn-success zoom-btn">{{'ZOOM' | translate}} <span class="material-icons">
+                    zoom_out
+                    </span></button>
+            <button (click)="zoomIn($event,1)"class="mr-2 btn btn-success">{{'ZOOM' | translate}} <span class="material-icons">
+                zoom_in
+                </span></button>
+            </div>
+            <ng-template #orgLogo>
+                <img src="/assets/dist/img/organization-tooltips.png">
+            </ng-template>
+            <div class="form-group img-donate-banner">
+                <label>{{'DONATEBANNER' | translate}}:<span class="small-text"> ({{'JPGPNGFORMAT' | translate}}) <i
+                            class="fas fa-question-circle" [ngbTooltip]="donateBanner"></i></span>
+                </label>
+                <div class="cstm_selct_file {{setCls2}}">
+                    <div class="cstm_selct_file_content" *ngIf="!imageUrl2">
+                        <button class="selct_file">{{'SELECTFILE' | translate}}</button>
+                        <p>{{'DRAGFILE' | translate}}</p>
+                        <input class="file-input" type="file" name="doc_file" id="banner_file"
+                            (change)="getBase64String($event,2)" placeholder="{{'UPLOADFILE'  | translate}}"
+                            accept=".png,.JPG">
+                    </div>
+                    <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl2">
+                      <section *ngIf="fromDbImg_2">  <img src={{imageUrl2}} id="resizer-demo"  /></section>
+                       <section *ngIf="!fromDbImg_2">
+                       <image-cropper
+                        [imageChangedEvent]="imageChangedEvent_2"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]='1030'
+                        [resizeToHeight]='535'
+                        [aspectRatio]="1.925233644859813"
+                        format="png"
+                        [containWithinAspectRatio]="false"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                        [transform]="transform_2"
+                        [hideResizeSquares]="true"
+                    ></image-cropper>
+                    </section>
+                    </div>
+                </div>
+                <div *ngIf="!imageUrl2" class="div-size-organation-logo"><span class="size-donate-banner org-file-size-item"> {{'HEIGHT' | translate}} 535 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 1030 {{'PX' | translate}}</span></div>
+                <div class="thumb-info-item">
+                <div *ngIf="!fromDbImg_2 || imageUrl2" class="div-size-organation-logo"><span class="size-donate-banner org-file-size-item"> {{'HEIGHT' | translate}} 535 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 1030 {{'PX' | translate}}</span></div>
+                <div class="file-action" *ngIf="imageUrl2">
+                    <button class="btn btn-red" (click)="deleteUploadedImage($event,2)">
+                      <span class="material-icons">delete</span>
+                    </button>
+                  </div>
+                </div>
+
+                </div>
+                <!--
+            <img [src]="croppedImage" />
+                -->
+
+                <div *ngIf="!fromDbImg_2" class="cropp-action">
+                 <button (click)="zoomOut($event,2)" class="mr-4 btn btn-success zoom-btn">{{'ZOOM' | translate}} <span class="material-icons">
+                    zoom_out
+                    </span></button>
+            <button (click)="zoomIn($event,2)"class="mr-2 btn btn-success">{{'ZOOM' | translate}} <span class="material-icons">
+                zoom_in
+                </span></button>
+            </div>
+            <!--new added-->
+            <ng-template #donateBanner>
+                <img src="/assets/dist/img/donate-banner.png">
+            </ng-template>
+            <div class="form-group">
+                <label>{{'ORGLETTERHEADS' | translate}}:<span class="small-text"> ({{'JPGPNGFORMAT' | translate}}) <i
+                            class="fas fa-question-circle" [ngbTooltip]="orgLetter"></i></span>
+                </label>
+                <div class="cstm_selct_file {{setCls2}}">
+                    <div class="cstm_selct_file_content" *ngIf="!imageUrl3">
+                        <button class="selct_file">{{'SELECTFILE' | translate}}</button>
+                        <p>{{'DRAGFILE' | translate}}</p>
+                        <input class="file-input" type="file" name="doc_file" id="banner_file"
+                            (change)="getBase64String($event,4)" placeholder="{{'UPLOADFILE'  | translate}}"
+                            accept=".png,.JPG">
+                    </div>
+                    <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl3">
+                       <section *ngIf="fromDbImg_4"> <img src={{imageUrl3}} /></section>
+                       <section *ngIf="!fromDbImg_4">
+                        <image-cropper
+                        [imageChangedEvent]="imageChangedEvent_4"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]='1010'
+                        [resizeToHeight]='215'
+                        [aspectRatio]="4.702325581395349 / 1"
+                        format="png"
+                        [containWithinAspectRatio]="false"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                        [transform]="transform_4"
+                        [hideResizeSquares]="true"
+                    ></image-cropper>
+                    </section>
+                    </div>
+                </div>
+                <div *ngIf="!imageUrl3" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> {{'HEIGHT' | translate}} 215 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 1010 {{'PX' | translate}}</span></div>
+            <div class="thumb-info-item">
+            <div *ngIf="!fromDbImg_4 || imageUrl3" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> {{'HEIGHT' | translate}} 215 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 1010 {{'PX' | translate}}</span></div>
+                <div class="file-action" *ngIf="imageUrl3">
+                    <button class="btn btn-red" (click)="deleteUploadedImage($event,4)">
+                      <span class="material-icons">delete</span>
+                    </button>
+                </div>
+            </div>
+            </div>
+
+
+            <div *ngIf="!fromDbImg_4" class="cropp-action">
+                 <button (click)="zoomOut($event,4)" class="mr-4 btn btn-success zoom-btn">{{'ZOOM' | translate}} <span class="material-icons">
+                    zoom_out
+                    </span></button>
+            <button (click)="zoomIn($event,4)"class="mr-2 btn btn-success">{{'ZOOM' | translate}} <span class="material-icons">
+                zoom_in
+                </span></button>
+            </div>
+            <!--new end-->
+            <!-- start SHUL KIOSK MAIN IMAGE -->
+            <ng-template #orgLetter>
+                <img src="/assets/dist/img/org-letterheads.png">
+            </ng-template>
+            <div class="form-group">
+                <label>{{'SHULKIOSKMAINIMAGE' | translate }}:<span class="small-text"> ({{'JPGPNGFORMAT' | translate}}) <i
+                            class="fas fa-question-circle" [ngbTooltip]="tipContent"></i></span>
+                </label>
+                <div class="cstm_selct_file {{setCls2}}">
+                    <div class="cstm_selct_file_content" *ngIf="!imageUrl5">
+                        <button class="selct_file">{{'SELECTFILE' | translate}}</button>
+                        <p>{{'DRAGFILE' | translate}}</p>
+                        <input class="file-input" type="file" name="doc_file" id="banner_file"
+                            (change)="getBase64String($event,5)" placeholder="{{'UPLOADFILE'  | translate}}"
+                            accept=".png,.JPG">
+                    </div>
+                    <div class="preview-imageUrl2 input-drag-drop" *ngIf="imageUrl5">
+                       <section *ngIf="fromDbImg_5"> <img src={{imageUrl5}} /></section>
+                       <section *ngIf="!fromDbImg_5">
+                        <image-cropper
+                        [imageChangedEvent]="imageChangedEvent_5"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]='800'
+                        [resizeToHeight]='290'
+                        [aspectRatio]="80 / 29"
+                        format="png"
+                        [containWithinAspectRatio]="false"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                        [transform]="transform_5"
+                        [hideResizeSquares]="true"
+                    ></image-cropper>
+                    </section>
+                    </div>
+                </div>
+                <div *ngIf="!imageUrl5" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> {{'HEIGHT' | translate}} 290 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 800 {{'PX' | translate}}</span></div>
+            <div class="thumb-info-item">
+            <div *ngIf="!fromDbImg_5 || imageUrl5" class="div-size-organation-logo"><span class="size-org-letthereads org-file-size-item"> {{'HEIGHT' | translate}} 290 {{'PX' | translate}} {{'AND' | translate}} {{'WIDTH' | translate}} 800 {{'PX' | translate}}</span></div>
+                <div class="file-action" *ngIf="imageUrl5">
+                    <button class="btn btn-red" (click)="deleteUploadedImage($event,5)">
+                      <span class="material-icons">delete</span>
+                    </button>
+                </div>
+            </div>
+            </div>
+
+
+            <div *ngIf="!fromDbImg_5" class="cropp-action">
+                 <button (click)="zoomOut($event,5)" class="mr-4 btn btn-success zoom-btn">{{'ZOOM' | translate}} <span class="material-icons">
+                    zoom_out
+                    </span></button>
+            <button (click)="zoomIn($event,5)"class="mr-2 btn btn-success">{{'ZOOM' | translate}} <span class="material-icons">
+                zoom_in
+                </span></button>
+            </div>
+
+            <!-- end SHUL KIOSK MAIN IMAGE -->
+            <ng-template #tipContent>
+                <img src="/assets/dist/img/shul-banner.png">
+            </ng-template>
+
+            <div class="form-group record_group_sec">
+                <div class="row">
+                    <div class="col-sm-6 inline_colm" *ngIf="!isAudioFileSelected">
+                        <label>
+                            {{'UPLOADFILE' | translate}}<br> <span class="text">({{'WAVFORMAT' | translate}})</span>
+                        </label>
+                        <button class="selct_file" id="btn_select_audio" *ngIf="!isAudioFileSelected">{{'SELECTFILE' | translate}}</button>
+                        <!-- <span id="lbl_select_audio" class="select-audio-name" *ngIf="isAudioFileSelected">{{audioFileName}}</span> -->
+                        <input class="file-input" type="file" name="doc_file" id="aud_file"
+                            (change)="getBase64String($event,3)" placeholder="{{'UPLOADFILE'  | translate}}"
+                            accept=".WAV" *ngIf="!isAudioFileSelected">
+                    </div>
+
+                    <div class="col-sm-12 inline_colm reg-audio-wrap">
+                        <span id="lbl_select_audio" class="select-audio-name" *ngIf="isAudioFileSelected">{{audioFileName}}</span>
+                        <!-- <span  class="stop_btn controls-audio" style="display: none;" (click)="myAudio.pause();"> <i class="fa fa-stop"></i></span> -->
+                        <audio #myAudio controls class="controls-audio"  style="height: 30px; width: 500px;display: none;"></audio>
+                        <span class="delete_btn controls-audio" (click)="deleteAudioFile(3)" style="display: none;"> <i class="fa fa-trash"></i></span>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+        <!-- {{ formGroup.value | json}} -->
+
+
+
+        <div class="actions_buttons" [ngClass]="isloading? 'loading' : ''">
+            <button type="submit"  class="btn btn-primary"><span>{{'SAVE' | translate }}</span> </button>
+        </div>
+    </div>
+</form>
+<div *ngIf="isloading" class="overlay branding_loader">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+
+
+<ng-template #feedbackError let-item="item">
+    <div class="row text-danger">
+        <!-- <div *ngIf="item.errors?.required"  class="val-error">field is required</div> -->
+        <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID' | translate}}</div>
+        <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID' | translate}}</div>
+    </div>
+</ng-template>
+

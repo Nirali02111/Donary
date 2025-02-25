@@ -1,0 +1,167 @@
+<div class="export__statement export_multiSelectDesign modal_wrap" style="display: block;"ngbAutofocus tabindex="-1">
+	<div class="modal_header">
+		<h4>{{'EXPORTSTATMENT'|translate}}</h4>
+		<button class="close" (click)="closePopup()">&times;</button>
+	</div>
+	<div class="modal-body">
+		<div  class="filter_by_opt">
+			<div class="filter_option genrate-tmp-field">
+				<span class="lbl_text">
+					{{'DATERANGE'|translate}}:
+				</span>
+				<span class="lbl_text">
+					<ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+							[isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+					</ng-template>
+					<div (click)="openHebrewCalendarPopup()" (clickOutside)="onClickedOutsidePopover(p1)" #p1="ngbPopover"
+						container="body" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"
+						[autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+						id="dynamicsCalender">
+						<input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+					</div>
+				</span>
+			</div>
+			<div class="filter_option genrate-tmp-field">
+				<span class="lbl_text">
+					{{'TEMPLATE'|translate}}:
+				</span>
+				<span class="lbl_text">
+					<angular2-multiselect id="ddlPaymentReason"
+					[settings]="commonMethodService.setDropDownSettings('Select',1,false,true)"
+					[data]="this.commonMethodService.statementTypeList" [(ngModel)]="this.commonMethodService.statementType" (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeSelectAllItems()"
+					(onDeSelectAll)="deSelectAll()"
+					>
+				</angular2-multiselect>
+				</span>
+			</div>
+			<div class="filter_option">
+				<span class="lbl_text">
+					{{'REASON'|translate}}:
+				</span>
+				<span class="lbl_text">
+						<angular2-multiselect id="ddlPaymentReason"
+							[settings]="commonMethodService.setDropDownSettings('Select Payment Reason',1,false,false,true,true)"
+							[data]="commonMethodService.localReasonList"
+							[(ngModel)]="commonMethodService.selectedPaymentReasons"
+							(onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')"
+              (onSelectAll)="commonMethodService.onSelectAll('paymentReasonList',$event)">
+              <c-search>
+                <ng-template>
+                    <input type="text" (keyup)="commonMethodService.onSearch('paymentReasonList',$event)" placeholder="Search Reasons" style="border: none;width: 100%; height: 100%;outline: none;"/>
+                </ng-template>
+           </c-search>
+						</angular2-multiselect>
+				</span>
+			</div>
+			<div class="filter_option">
+				<span class="lbl_text">
+					{{'COLLECTOR'|translate}}:
+				</span>
+				<span class="lbl_text">
+						<angular2-multiselect id="ddlPaymentCollector"
+							[settings]="commonMethodService.setDropDownSettings('Select Collector',1,false,false,true,true)"
+							[data]="commonMethodService.localCollectorList"
+							[(ngModel)]="commonMethodService.selectedPaymentCollectors"
+							(onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')"
+              (onSelectAll)="commonMethodService.onSelectAll('paymentCollectorList',$event)">
+              <c-search>
+                <ng-template>
+                    <input type="text" (keyup)="commonMethodService.onSearch('paymentCollectorList',$event)" placeholder="Search Collectors" style="border: none;width: 100%; height: 100%;outline: none;"/>
+                </ng-template>
+           </c-search>
+						</angular2-multiselect>
+				</span>
+			</div>
+			<div class="filter_option">
+				<span class="lbl_text">
+					{{'LOCATION'|translate}}:
+				</span>
+				<span class="lbl_text">
+					<angular2-multiselect id="ddlPaymentLocation"
+								[settings]="commonMethodService.setDropDownSettings('Select Location',1,false,false,true,true)"
+								[data]="commonMethodService.localLocationList"
+								[(ngModel)]="commonMethodService.selectedPaymentLocations"
+								(onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')"
+		          				(onSelectAll)="commonMethodService.onSelectAll('paymentLocationList',$event)">
+			          	<c-search>
+			            	<ng-template>
+			                	<input type="text" (keyup)="commonMethodService.onSearch('paymentLocationList',$event)" placeholder="Search Locations" style="border: none;width: 100%; height: 100%;outline: none;"/>
+			            	</ng-template>
+			       		</c-search>
+					</angular2-multiselect>
+				</span>
+			</div>
+			<div class="filter_option mb-4 pb-2">
+				<span class="lbl_text">
+					{{'CAMPAIGN'|translate}}:
+				</span>
+				<span class="lbl_text input-field-custom">
+					<angular2-multiselect id="ddlCampaign"
+								[settings]="commonMethodService.setDropDownSettings('Select Campaign',1,false,false,true,true,'bottom',false)"
+								[data]="commonMethodService.localCampaignList"
+								[(ngModel)]="commonMethodService.selectedFromCampaignList"
+								(onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')"
+			          			(onSelectAll)="commonMethodService.onSelectAll('CampaignList',$event)">
+			          	<c-search>
+			            	<ng-template>
+			                	<input type="text" (keyup)="commonMethodService.onSearch('CampaignList',$event)" placeholder="Search Campaigns" style="border: none;width: 100%; height: 100%;outline: none;"/>
+			           		</ng-template>
+			       		</c-search>
+						<c-item>
+							<ng-template let-item="item">
+								<label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+									{{item.itemName}}
+									<span class="heb-dropdown-status">{{item.status}}</span>
+								</label>
+						  	</ng-template>
+						</c-item>
+				</angular2-multiselect>
+				</span>
+			</div>
+			<div class="input-group mb-3 ">
+				<input class="form-check-input" type="checkbox" value="" [(ngModel)]="isOnlyPledgePayment" id="id_isOnlyPledgePayment">
+				<label class="form-check-label" for="id_isOnlyPledgePayment">
+					{{'HIDEPAYMENT'|translate}}
+				</label>
+			</div>
+			<div class="input-group mb-3 ">
+				<input class="form-check-input" type="checkbox" value="" [(ngModel)]="hidePaymentsList" id="id_hidePaymentsList">
+				<label class="form-check-label" for="id_hidePaymentsList">
+					{{'HIDETOTALPAYMENT'|translate}}
+				</label>
+			</div>
+				<div class="input-group">
+				<input class="form-check-input" type="checkbox" value="" [(ngModel)]="hide0BalancePledges" id="id_hide0BalancePledges">
+				<label class="form-check-label" for="id_hide0BalancePledges">
+					{{'HIDEPLEDGES'|translate}}
+				</label>
+			</div>
+		</div>
+
+	</div>
+	<div class="modal_footer mt-0">
+		<div class="btn btn-preview" style="cursor: pointer;" (click)="Preview()">
+			<i class="fas fa-eye"></i>
+			<span>{{'PREVIEW'|translate}}</span>
+		</div>
+
+
+		<div class="btn btn-text" style="cursor: pointer;"  data-toggle="tooltip" appHoverTooltip labelText="{{'TEXT' | translate}} {{'RECEIPT' | translate}}"  (click)="SendTextReceipt()">
+			<i class="fa fa-comment-alt"></i>
+			<span>{{'TEXT'|translate}}</span>
+		</div>
+		<div class="btn btn-mail" style="cursor: pointer;" data-toggle="tooltip" appHoverTooltip labelText="{{'MAIL' | translate}} {{'RECEIPT' | translate}}"  (click)="sendMailReceipt()">
+			<i class="fas fa-envelope"></i>
+			<span>{{'MAIL'|translate}}</span>
+		</div>
+		<div class="btn btn-email" style="cursor: pointer;" data-toggle="tooltip" appHoverTooltip labelText="{{'EMAIL' | translate}} {{'RECEIPT' | translate}}" (click)="SendEmailReceipt()">
+			<i class="fa fa-at"></i>
+			<span>{{'EMAIL'|translate}}</span>
+		</div>
+	</div>
+	<div *ngIf="isloading" class="card-overlay" >
+		<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+	</div>
+</div>
+
+

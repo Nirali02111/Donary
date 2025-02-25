@@ -1,0 +1,294 @@
+<!-- Edit Batch popup -->
+<div>
+  <div class="pop-header">
+    <div class="pop-left--colm">
+      <h3 class="d-flex align-items-center">Batch Card <span class="badge ml-2" [ngClass]="statusClass(status)">{{status
+          | translate}}</span></h3>
+      <div class="batch-title">{{gateway}}-Batch#{{gatewayBatchNum}}</div>
+    </div>
+    <div class="pop-right--colm header_actions">
+      <button class="deposit-batch-btn btn btn-primary mr-3" *ngIf="isCardStatus && isDownloadIFFVisible">
+        <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="12.036" height="16.048" viewBox="0 0 12.036 16.048">
+          <path id="Icon_awesome-file-alt" data-name="Icon awesome-file-alt"
+            d="M7.021,4.263V0H.752A.75.75,0,0,0,0,.752V15.3a.75.75,0,0,0,.752.752H11.284a.75.75,0,0,0,.752-.752V5.015H7.773A.754.754,0,0,1,7.021,4.263Zm2.006,7.4a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376v-.251a.377.377,0,0,1,.376-.376H8.651a.377.377,0,0,1,.376.376Zm0-2.006a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376V9.4a.377.377,0,0,1,.376-.376H8.651a.377.377,0,0,1,.376.376Zm0-2.257v.251a.377.377,0,0,1-.376.376H3.385a.377.377,0,0,1-.376-.376V7.4a.377.377,0,0,1,.376-.376H8.651A.377.377,0,0,1,9.027,7.4Zm3.009-3.576v.191H8.024V0h.191a.752.752,0,0,1,.533.219l3.069,3.072A.75.75,0,0,1,12.036,3.821Z"
+            fill="#fff" />
+        </svg>
+        <span>Download IIF file</span>
+      </button>
+      <button class="deposit-batch-btn btn btn-primary mr-3" (click)="openDepositBatch($event,batchStatusPopup)"
+        *ngIf="status !== 'Archived'&& isCardStatus">
+        <span>Deposit batch</span>
+      </button>
+      <button class="b_tn btn-danger mr-3" type="button" data-hover="Archive Batch"
+        *ngIf="status !== 'Archived'&& isCardStatus" (click)="onClick($event, arhivedBatchPopup)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15.728" height="13.762" viewBox="0 0 15.728 13.762">
+          <path id="Icon_awesome-archive" data-name="Icon awesome-archive"
+            d="M.983,15.029a.982.982,0,0,0,.983.983h11.8a.982.982,0,0,0,.983-.983V6.182H.983ZM5.9,8.516a.37.37,0,0,1,.369-.369H9.461a.37.37,0,0,1,.369.369v.246a.37.37,0,0,1-.369.369H6.266A.37.37,0,0,1,5.9,8.762ZM14.745,2.25H.983A.982.982,0,0,0,0,3.233V4.707A.493.493,0,0,0,.491,5.2H15.236a.493.493,0,0,0,.491-.491V3.233A.982.982,0,0,0,14.745,2.25Z"
+            transform="translate(0 -2.25)" fill="#e94242" />
+        </svg>
+      </button>
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+
+  </div>
+
+  <div class="modal__custom_content">
+    <div class="top-info--row">
+      <div class="card-colm">
+        <app-circle-skeleton-loader [isLoading]="isloading"> <span class="card-round-icon"><i> <img src="assets/dist/img/dollar--icon.svg" alt="" /> </i></span></app-circle-skeleton-loader>
+        <span class="card-titles">
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }"><h6>Total:</h6></app-skeleton-loader-component>  
+          <h4><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }"> {{commonMethodService.formatAmount(totalAmount)}}</app-skeleton-loader-component></h4>
+         
+        </span>
+      </div>
+      <div class="card-colm">
+        <app-circle-skeleton-loader [isLoading]="isloading"><span class="card-round-icon"><i> <img src="assets/dist/img/icon-paymentType.svg" alt="" /> </i></span></app-circle-skeleton-loader>
+        <span class="card-titles">
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }"> <h6>Payment type:</h6></app-skeleton-loader-component>
+          <h4><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }">{{paymentType}}</app-skeleton-loader-component></h4>
+        </span>
+      </div>
+      <div class="card-colm">
+        <app-circle-skeleton-loader [isLoading]="isloading"><span class="card-round-icon"><i> <img src="assets/dist/img/icon-dateRange.svg" alt="" /> </i></span></app-circle-skeleton-loader>
+        
+        <span class="card-titles">
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }"><h6>Date range:</h6></app-skeleton-loader-component>
+          @if(isloading){
+            <br>
+          }          
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '90px', height: '15px' }"><h4>{{dateRange}}</h4></app-skeleton-loader-component>
+        </span>
+      </div>
+    </div>
+
+    <div class="tabs__wrap batchCard--tabs">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" (click)="addClassForTransactions(false)">
+          <a class="active" href="#batchInfo" role="tab" data-toggle="tab">BATCH INFO</a>
+        </li>
+        <li role="presentation" (click)="addClassForTransactions(true)">
+          <a href="#batchsTransaction" role="tab" data-toggle="tab">TRANSACTIONS</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active show" id="batchInfo">
+          @if(isloading){
+            <div class="content-info--row">
+              
+              
+              <div class="inside--row"><ng-container *ngFor="let item of skeletoncolitems">
+                <div class="inline-col" style="margin-bottom: 0px;" >
+                  <app-skeleton-info-loader [isLoader]="isloading"></app-skeleton-info-loader>
+                </div>
+              </ng-container></div>
+              <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '630px', height: '120px' }"></app-skeleton-loader-component>
+            </div>
+          }@else {
+            <div class="content-info--row">
+            
+              <div class="inside--row">
+                <div class="card-colm">
+                  <span class="card-titles">
+                    <h6>DONARY BATCH #:</h6>
+                    <h4>{{batchNum}}</h4>
+                  </span>
+                </div>
+                <div class="card-colm">
+                  <span class="card-titles">
+                    <h6>STATUS:</h6>
+                    <h4 [ngClass]="status === 'Archived' ? 'text-danger' : ''">{{status}}</h4>
+                  </span>
+                </div>
+                <div class="card-colm">
+                  <span class="card-titles">
+                    <h6>BANK TAGS:</h6>
+                    <div class="bg-new-tag dropdown" (clickOutside)="CloseDropdown($event)">
+                      <h4 class="d-flex align-items-center" (click)="badgeToggle = !badgeToggle" style="cursor: pointer;">
+                        <span> {{tagName || 'Select'}} </span>
+                        <span class="material-icons" *ngIf="!badgeToggle">keyboard_arrow_down</span>
+                        <span class="material-icons" *ngIf="badgeToggle">keyboard_arrow_up</span>
+                      </h4>
+                      <div class="dropdown-menu tabg_dropdown" [class.show]="badgeToggle">
+                        <div class="search_box position-relative">
+                          <input class="form-control" type="text" placeholder="Search Tag" />
+                        </div>
+  
+                        <ul>
+  
+                          <ng-container *ngFor="let itemTag of tagsLists">
+                            <li [ngClass]="
+                              commonMethodService.getTagTextColor(itemTag.tagColor)
+                            " [class.active]="activeTab === itemTag.tagId"
+                              (click)="onSelectTag(itemTag.tagId, itemTag.tagName)">
+                              <span class="bg-badge" [ngClass]="
+                                commonMethodService.getTagBackgroundColor(
+                                  itemTag.tagColor
+                                )
+                              "></span>
+                              <span class="text">{{
+                                tagService.formatTagName(itemTag.tagName)
+                                }}</span>
+  
+                            </li>
+                          </ng-container>
+                        </ul>
+                        <span class="add-new-tag" (click)="AddNewTag()">+ Add New Tag</span>
+                      </div>
+                    </div>
+                    <!-- <ng-select #select [items]="tags" [searchable]="false" [(ngModel)]="selectedTag" bindLabel="name" bindValue="name" class="bank-tag">
+                    <ng-template ng-header-tmp>
+                        <input type="text" (input)="select.filter($event.target.value)" placeholder="Search Tag" />
+                    </ng-template>
+                  </ng-select> -->
+                  </span>
+                </div>
+              </div>
+              <div class="inside--row">
+                <div class="card-colm">
+                  <span class="card-titles">
+                    <h6>DATE CREATED:</h6>
+                    <h4>{{createdDate | donaryDateFormat: "short"}}</h4>
+                  </span>
+                </div>
+                <div class="card-colm">
+                  <span class="card-titles">
+                    <h6>BATCHED BY:</h6>
+                    <h4>{{batchedBy}}</h4>
+                  </span>
+                </div>
+              </div>
+              <div class="note-textarea--row">
+                <h6>
+                  NOTE:
+                </h6>
+                <textarea (focus)="toggleButtons(true)" (blur)="toggleButtons(false)" class="note-textarea"
+                  placeholder="Write note..." [(ngModel)]="note"></textarea>
+                <div class="note-btn d-flex justify-content-end align-items-center d-none" *ngIf="showButtons">
+                  <button (click)="CancelNote()" class="btn btn-defaut">Cancel</button>
+                  <button class="btn btn-primary" (click)="SaveNote(false)">Save Note</button>
+                </div>
+              </div>
+            </div>
+          }
+        
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="batchsTransaction">
+
+          <div class="table-sortable-header filters__options">
+            <div class="input-group search_input">
+              <input type="text" name="advanceSearch" id="localsearch1" class="form-control float-right"
+                (keyup)="search($event.target.value)" placeholder="Search Payment" />
+            </div>
+          </div>
+
+
+          <div class="table-small table-responsive transaction__table reminder__table">
+            <table class="table table-striped" cellspacing="0" cellpadding="0" border="0">
+              <thead>
+                <tr>
+                  <th>RECEIPT #</th>
+                  <th>DATE & TIME</th>
+                  <th>PAYMENT METHOD</th>
+                  <th>REFERENCE NO</th>
+                  <th>DONOR NAME</th>
+                  <th>AMOUNT</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="batchTransactions?.length > 0">
+                <tr *ngFor="let data of batchTransactions">
+                  <td (click)="openPaymentCardPopup(data.paymentId)" style="color: #7B5BC4; cursor: pointer;">
+                    #{{data.receiptNum}}</td>
+                  <td>{{data.createdDate | donaryDateFormat: "long" }}</td>
+                  <td>{{data.paymentType}}</td>
+                  <td>{{data.refNum}}</td>
+                  <td style="color: #7B5BC4; cursor: pointer;"
+                    (click)="OpenDonorCardPopup(data.accountId,data.fullNameJewish,data.fullName)"> <span
+                      *ngIf="data.fullNameJewish">{{ data.fullNameJewish }}</span>
+                    <span *ngIf="!data.fullNameJewish && data.fullName">{{ data.fullName }}</span>
+                  </td>
+                  <td> <span [class.text-danger]="data.amount<0"><span class="text-danger" *ngIf="data.amount<0"></span>{{commonMethodService.formatAmount(data.amount)}} </span>
+                  </td>
+                  <td class="notification-td">
+                    <span class="open-notification">></span>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="batchTransactions?.length == 0">
+                <tr>
+                  <td colspan="15" style="text-align: center">
+                    {{ "NODATAFOUND" | translate }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #arhivedBatchPopup let-modal>
+    <div class="modal-body">
+      <div class="modal-icon mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+          <g id="Group_2739" data-name="Group 2739" transform="translate(-932 -350)">
+            <g id="Rectangle_2181" data-name="Rectangle 2181" transform="translate(932 350)" fill="none"
+              stroke="#e94242" stroke-width="1">
+              <rect width="56" height="56" rx="28" stroke="none" />
+              <rect x="0.5" y="0.5" width="55" height="55" rx="27.5" fill="none" />
+            </g>
+            <path id="Icon_awesome-archive" data-name="Icon awesome-archive"
+              d="M1.361,19.937A1.359,1.359,0,0,0,2.721,21.3H19.047a1.359,1.359,0,0,0,1.361-1.361V7.692H1.361Zm6.8-9.014a.512.512,0,0,1,.51-.51H13.1a.512.512,0,0,1,.51.51v.34a.512.512,0,0,1-.51.51H8.673a.512.512,0,0,1-.51-.51Z"
+              transform="translate(949.116 366.226)" fill="#e94242" />
+            <path id="Icon_awesome-archive-2" data-name="Icon awesome-archive"
+              d="M20.408,2.25H1.361A1.359,1.359,0,0,0,0,3.611V5.651a.682.682,0,0,0,.68.68H21.088a.682.682,0,0,0,.68-.68V3.611A1.359,1.359,0,0,0,20.408,2.25Z"
+              transform="translate(955.72 357.359) rotate(30)" fill="#e94242" />
+          </g>
+        </svg>
+      </div>
+      <p class="mb-0">Are you sure you want to archive batch #{{batchNum}}?</p>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-center align-items-center border-0 pt-0">
+      <button class="btn btn-default" (click)="modal.close()">{{'CANCEL' | translate}}</button>
+      <button class="btn btn-danger" (click)="isArchive($event, arhivedBatchClosePopup)">Archive</button>
+    </div>
+  </ng-template>
+
+  <ng-template #arhivedBatchClosePopup let-modal>
+    <div class="modal-body">
+      <div class="modal-icon mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+          <g id="Group_2739" data-name="Group 2739" transform="translate(-932 -350)">
+            <g id="Rectangle_2181" data-name="Rectangle 2181" transform="translate(932 350)" fill="none"
+              stroke="#e94242" stroke-width="1">
+              <rect width="56" height="56" rx="28" stroke="none" />
+              <rect x="0.5" y="0.5" width="55" height="55" rx="27.5" fill="none" />
+            </g>
+            <path id="Icon_awesome-archive" data-name="Icon awesome-archive"
+              d="M1.361,19.937A1.359,1.359,0,0,0,2.721,21.3H19.047a1.359,1.359,0,0,0,1.361-1.361V7.692H1.361Zm6.8-9.014a.512.512,0,0,1,.51-.51H13.1a.512.512,0,0,1,.51.51v.34a.512.512,0,0,1-.51.51H8.673a.512.512,0,0,1-.51-.51ZM20.408,2.25H1.361A1.359,1.359,0,0,0,0,3.611V5.651a.682.682,0,0,0,.68.68H21.088a.682.682,0,0,0,.68-.68V3.611A1.359,1.359,0,0,0,20.408,2.25Z"
+              transform="translate(949.116 366.226)" fill="#e94242" />
+          </g>
+        </svg>
+      </div>
+      <p class="mb-0">Batch #{{batchNum}} archived!</p>
+    </div>
+    <div class="modal-footer d-flex justify-content-center align-items-center border-0 pt-0">
+      <button class="btn btn-default" (click)="modal.close()">{{'CLOSE' | translate}}</button>
+    </div>
+  </ng-template>
+
+  <ng-template #batchStatusPopup let-modal>
+    <div class="modal-body p-4 text-left">
+      <p class="mb-0">Batch status has been updated, from <span class="badge badge-batched">Batched</span> to <span
+          class="badge badge-deposited">Deposited</span> </p>
+    </div>
+    <div class="modal-footer d-flex justify-content-end align-items-center border-0 p-3">
+      <button class="btn btn-default" (click)="modal.close()">{{'CLOSE' | translate}}</button>
+    </div>
+  </ng-template>
+</div>

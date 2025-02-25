@@ -1,0 +1,982 @@
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+  <div class="modal-header-custom">
+    <h4>{{ title }}</h4>
+    <span class="close_trigger" data-dismiss="modal" (click)="closePopup()"
+      >&times;</span
+    >
+  </div>
+  <div class="modal-content-custom">
+    <div class="data-set-form">
+      <div class="form-group" [ngClass]="[queryReq ? 'error-query-name' : '']">
+        <label>{{ "QUERYNAME" | translate }} :</label>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="{{ 'ENTERQUERYNAME' | translate }}"
+            name="queryName"
+            [(ngModel)]="queryName"
+            (input)="queryValidation()"
+          />
+        </div>
+        <span *ngIf="queryReq"
+          >{{ "QUERYNAME" | translate }} {{ "ISREQUIRED" | translate }}
+        </span>
+      </div>
+      <!-- <div class="form-group">
+
+					<label>Base Column:</label>
+					<div class="input-group">
+						<angular2-multiselect id="ddlBaseField"
+                        [settings]="commonMethodService.setDropDownSettings('',1,false,true,false)"
+                        [data]="baseFieldFilter"
+                        [(ngModel)]="baseField"
+						(onSelect)="changeBaseField(baseField)"
+						(onDeSelectAll)="deselectBaseField()"
+                        >
+                    </angular2-multiselect>
+					</div>
+				</div> -->
+
+      <div
+        class="form-group multi-selector"
+        [ngClass]="[fieldReq ? 'error-field' : '']"
+      >
+        <label>{{ "FIELDSTOBEDISPLAYED" | translate }} :</label>
+        <div class="input-group">
+          <angular2-multiselect
+            id="ddlDisplayField"
+            [settings]="
+              commonMethodService.setDropDownSettings(
+                '',
+                4,
+                true,
+                false,
+                true,
+                false,
+                '',
+                false,
+                false,
+                'category'
+              )
+            "
+            [data]="displayFieldFilter"
+            (onSelect)="ItemSelect($event)"
+            (onDeSelect)="ItemDeSelect()"
+            (onDeSelectAll)="ItemDeSelectAll()"
+            [(ngModel)]="displayField"
+          >
+          </angular2-multiselect>
+        </div>
+        <span *ngIf="fieldReq"
+          >{{ "FIELDSTOBEDISPLAYED" | translate }}
+          {{ "ISREQUIRED" | translate }}</span
+        >
+      </div>
+
+      <div class="form-group" *ngIf="isCollectorAcctNoFilterVisible">
+        <label>{{ "ACCT#" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorAcctNo"
+            class="form-control"
+            name="txtAcctNo"
+            id="input-acctNo"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCollectorFullNameFilterVisible">
+        <label>{{ "FULLNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorFullName"
+            class="form-control"
+            name="txtFullName"
+            id="input-fullname"
+          />
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="isCollectorPhoneFilterVisible">
+        <label>{{ "PHONE" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorPhone"
+            class="form-control"
+            name="txtPhone"
+            id="input-phone"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCollectorEmailFilterVisible">
+        <label>{{ "EMAIL" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorEmail"
+            class="form-control"
+            name="txtEmail"
+            id="input-email"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCollectorGroupFilterVisible">
+        <label>{{ "GROUP" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorGroup"
+            class="form-control"
+            name="txtGroup"
+            id="input-group"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCollectorClassFilterVisible">
+        <label>{{ "CLASS" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorClass"
+            class="form-control"
+            name="txtClass"
+            id="input-class"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCollectorStatusFilterVisible">
+        <label>{{ "STATUS" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="collectorStatus"
+            class="form-control"
+            name="txtStatus"
+            id="input-status"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isReasonNoFilterVisible">
+        <label>{{ "REASON#" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="reasonNo"
+            class="form-control"
+            name="txtReasonNo"
+            id="input-reasonNo"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isReasonNameFilterVisible">
+        <label>{{ "REASONNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="reasonName"
+            class="form-control"
+            name="txtReasonName"
+            id="input-reasonname"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isGoalFilterVisible">
+        <label class="text-capitalize">{{ "GOAL" | translate }}</label>
+        <div class="input-group query-filed-two col-4">
+          <input
+            type="number"
+            [(ngModel)]="mingoal"
+            class="form-control"
+            name="txtMinValue"
+            id="input-minvalue"
+            min="0"
+            placeholder="{{ 'MIN' | translate }} {{ 'GOAL' | translate }}"
+          />-
+          <input
+            type="number"
+            [(ngModel)]="maxgoal"
+            name="txtMaxValue"
+            class="form-control"
+            id="input-maxvalue"
+            min="0"
+            placeholder="{{ 'MAX' | translate }} {{ 'GOAL' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isPercentageFilterVisible">
+        <label>{{ "PERCENTAGE" | translate }}</label>
+        <div class="input-group query-filed-two col-4">
+          <input
+            type="number"
+            [(ngModel)]="minpercentage"
+            class="form-control"
+            name="txtMinPercentageValue"
+            id="input-minpercentage"
+            min="0"
+            placeholder="{{ 'MIN' | translate }} {{ 'PERCENTAGE' | translate }}"
+          />-
+          <input
+            type="number"
+            [(ngModel)]="maxpercentage"
+            name="txtMaxPercentageValue"
+            class="form-control"
+            id="input-maxpercentage"
+            min="0"
+            placeholder="{{ 'MAX' | translate }} {{ 'PERCENTAGE' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isReasonEmailFilterVisible">
+        <label>{{ "EMAIL" | translate }}Email</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="reasonEmail"
+            class="form-control"
+            name="txtReasonEmail"
+            id="input-reasonemail"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isHomePhoneFilterVisible">
+        <label>{{ "HOMEPHONE" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="reasonHomePhone"
+            class="form-control"
+            name="txtReasonPhone"
+            id="input-reasonphone"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCellFilterVisible">
+        <label>{{ "CELL" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="reasonCell"
+            class="form-control"
+            name="txtReasonCell"
+            id="input-reasoncell"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationNameFilterVisible">
+        <label>{{ "LOCATIONNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="locationName"
+            class="form-control"
+            name="txtLocationName"
+            id="input-locationName"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationNusachFilterVisible">
+        <label>{{ "NUSACH" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="nusach"
+            class="form-control"
+            name="txtNusach"
+            id="input-nusach"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationRabbiFilterVisible">
+        <label>{{ "RABBI" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="rabbi"
+            class="form-control"
+            name="txtRabbi"
+            id="input-rabbi"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationPhoneFilterVisible">
+        <label>{{ "PHONE" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="lphone"
+            class="form-control"
+            name="txtLphone"
+            id="input-lphone"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationShortNameFilterVisible">
+        <label>{{ "SHORTNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="shortName"
+            class="form-control"
+            name="txtShortName"
+            id="input-shortName"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isLocationTypeFilterVisible">
+        <label>{{ "LOCATIONTYPE" | translate }}</label>
+        <div class="input-group">
+          <angular2-multiselect
+            [settings]="
+              commonMethodService.setDropDownSettings('', 2, false, true, true)
+            "
+            [data]="commonMethodService.locationTypeList"
+            id="drpLocationType"
+            #drpLocationType="ngModel"
+            name="drpLocationType"
+            (onDeSelectAll)="typeId.length = 0"
+            [(ngModel)]="typeId"
+          >
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isCampaignNameFilterVisible">
+        <label>{{ "CAMPAIGNNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="campaignName"
+            class="form-control"
+            name="txtCampaignName"
+            id="input-campaignName"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isFriendlyNameFilterVisible">
+        <label>{{ "FRIENDLYNAME" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="friendlyName"
+            class="form-control"
+            name="txtFriendlyName"
+            id="input-friendlyName"
+          />
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="isSourceEventFilterVisible">
+        <label>{{ "EVENT" | translate }}Event</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceEvent"
+            class="form-control"
+            name="txtSourceEvent"
+            id="input-sourceEvent"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceProductFilterVisible">
+        <label>{{ "PRODUCT" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceProduct"
+            class="form-control"
+            name="txtSourceProduct"
+            id="input-sourceProduct"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceDeviceFilterVisible">
+        <label>{{ "DEVICE" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceDevice"
+            class="form-control"
+            name="txtSourceDevice"
+            id="input-sourceDevice"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceActivationFilterVisible">
+        <label>{{ "ACTIVATIONCODE" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceActivation"
+            class="form-control"
+            name="txtSourceActivation"
+            id="input-sourceActivation"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceMacAddressFilterVisible">
+        <label>{{ "MACADDRESS" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceMacAddress"
+            class="form-control"
+            name="txtSourceMacAddress"
+            id="input-sourceMacAddress"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourcePlanFilterVisible">
+        <label>{{ "PLAN" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourcePlan"
+            class="form-control"
+            name="txtSourcePlan"
+            id="input-sourcePlan"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceStatusFilterVisible">
+        <label>{{ "STATUS" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="friendlyName"
+            class="form-control"
+            name="txtSourceStatus"
+            id="input-sourceStatus"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceNotesFilterVisible">
+        <label>{{ "NOTES" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceNotes"
+            class="form-control"
+            name="txtSourceNotes"
+            id="input-sourceNotes"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceDeviceNoFilterVisible">
+        <label>{{ "DEVICE#" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceDevice"
+            class="form-control"
+            name="txtSourceDevice"
+            id="input-sourceDevice"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceSimFilterVisible">
+        <label>{{ "SIM#" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceSim"
+            class="form-control"
+            name="txtSourceSim"
+            id="input-sourceSim"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceCollectorFilterVisible">
+        <label>{{ "COLLECTOR" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceCollector"
+            class="form-control"
+            name="txtSourceCollector"
+            id="input-sourceCollector"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceCampaignFilterVisible">
+        <label>{{ "CAMPAIGN" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceCampaign"
+            class="form-control"
+            name="txtSourcecampaign"
+            id="input-sourceCampaign"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceReasonFilterVisible">
+        <label>{{ "REASON" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceReason"
+            class="form-control"
+            name="txtSourceReason"
+            id="input-sourceCampaign"
+          />
+        </div>
+      </div>
+      <div class="form-group" *ngIf="isSourceLocationFilterVisible">
+        <label>{{ "LOCATION" | translate }}</label>
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="sourceLocation"
+            class="form-control"
+            name="txtSourceLocation"
+            id="input-sourceLocation"
+          />
+        </div>
+      </div>
+      <hr />
+
+      <div class="filter_by_section">
+        <div class="top_row">
+          <div class="filter_by_text">{{ "FILTERBY" | translate }} :</div>
+          <!-- <div class="filter_by_exclude">EXCLUDE</div> -->
+        </div>
+
+        <div class="middle_content">
+          <div class="form-group">
+            <!-- <label>Address</label>
+
+							<div class="input-group ">
+								<angular2-multiselect id="ddlCityStateZip"
+								[settings]="commonMethodService.setDropDownSettings('Select Address',2,true,false, true)"
+								[data]="commonMethodService.cityStateZipList"
+								[(ngModel)]="selectedCityStateZipList"
+								(onDeSelectAll)="onDeleteAllCityStateZip()">
+							</angular2-multiselect>
+							</div>
+						</div> -->
+
+            <label>{{ "ADDRESS" | translate }}</label>
+            <div class="input-group">
+              <div
+                class="city-dpwn"
+                [ngClass]="isCityDpwDisable ? 'City-dpw-disable' : ''"
+                [ngStyle]="isCityDpwDisable ? { opacity: '0.5' } : null"
+              >
+                <angular2-multiselect
+                  id="ddlCity"
+                  [settings]="
+                    commonMethodService.setDropDownSettings(
+                      'Select City',
+                      2,
+                      true,
+                      false,
+                      true,
+                      false,
+                      '',
+                      isCityDpwDisable
+                    )
+                  "
+                  [data]="citysList"
+                  [(ngModel)]="citysSelected"
+                  (onDeSelectAll)="onDeleteCitys()"
+                  (onSelect)="onCitysSelect()"
+                  (onDeSelect)="enableCityDpw()"
+                >
+                </angular2-multiselect>
+              </div>
+              <div
+                class="zip-dpwn"
+                [ngClass]="isZipDpwDisable ? 'zip-dpw-disable' : ''"
+                [ngStyle]="isZipDpwDisable ? { opacity: '0.5' } : null"
+              >
+                <angular2-multiselect
+                  id="ddlZip"
+                  [settings]="
+                    commonMethodService.setDropDownSettings(
+                      'Select ZIP',
+                      2,
+                      true,
+                      false,
+                      true,
+                      false,
+                      '',
+                      isZipDpwDisable
+                    )
+                  "
+                  [data]="zipsList"
+                  [(ngModel)]="zipsSelected"
+                  (onDeSelectAll)="onDeleteZips()"
+                  (onSelect)="onZipsSelect()"
+                  (onDeSelect)="enableZipDpw()"
+                >
+                </angular2-multiselect>
+              </div>
+            </div>
+          </div>
+          <div class="form-group add_new_field">
+            <div class="lbl__text">
+              <label>{{ "ADDNEWFIELD" | translate }}</label>
+            </div>
+            <div class="input_group">
+              <angular2-multiselect
+                id="ddlNewField"
+                [settings]="
+                  commonMethodService.setDropDownSettings(
+                    'Add Field',
+                    2,
+                    false,
+                    false,
+                    true,
+                    false,
+                    'top'
+                  )
+                "
+                [data]="donorFieldList"
+                [(ngModel)]="selectDonorField"
+                (onSelect)="displayFilter($event)"
+                (onDeSelect)="removeDonorFilter($event)"
+                (onDeSelectAll)="hideFilter()"
+              >
+              </angular2-multiselect>
+              <!-- <div class="dropdown">
+									<button id="dLabel" [disabled]="commonMethodService.isCommonDropDownloading" type="button"
+									class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fas fa-plus text-center"> <span> Add New Feild</span></i>
+								</button> -->
+              <!-- <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isDonorFilter">
+								<li *ngFor="let item of donorFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isReasonFilter">
+								<li *ngFor="let item of reasonFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul>
+
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isCollectorFilter">
+								<li *ngFor="let item of collectorFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isLocationFilter">
+								<li *ngFor="let item of locationFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isCampaignFilter">
+								<li *ngFor="let item of campaignFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isSourceFilter">
+								<li *ngFor="let item of sourceFieldList">
+									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
+								</li>
+								</ul> -->
+            </div>
+            <!-- <div class="exclude_checkbox">
+
+							</div> -->
+          </div>
+
+          <!-- <div class="form-group">
+						<div class="lbl__text">
+							<label>City:</label>
+						</div>
+						<div class="input_group">
+							<div class="input_text">
+								<select class="select_box">
+									<option>Select City</option>
+								</select>
+							</div>
+							 <div class="exclude_checkbox custom__checkbox">
+								<input type="checkbox" id="exclude_lable1" class="cstm_checkbox">
+								<label for="exclude_lable1"></label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="lbl__text">
+							<label>State:</label>
+						</div>
+						<div class="input_group">
+							<div class="input_text">
+								<select class="select_box">
+									<option>Select City</option>
+								</select>
+							</div>
+							 <div class="exclude_checkbox custom__checkbox">
+								<input type="checkbox" id="exclude_lable2" class="cstm_checkbox">
+								<label for="exclude_lable2"></label>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<div class="lbl__text">
+							<label>Zip:</label>
+						</div>
+						<div class="input_group">
+							<div class="input_text">
+								<select class="select_box">
+									<option>Select City</option>
+								</select>
+							</div>
+							 <div class="exclude_checkbox custom__checkbox">
+								<input type="checkbox" id="exclude_lable3" class="cstm_checkbox">
+								<label for="exclude_lable3"></label>
+							</div>
+						</div>
+
+					</div> -->
+
+          <div class="form-group" *ngIf="isAcctNoFilterVisible">
+            <label>{{ "ACCT#" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="acctNo"
+                class="form-control"
+                name="txtAcctNo"
+                id="input-acctNo"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isFullNameFilterVisible">
+            <label>{{ "FULLNAME" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="fullName"
+                class="form-control"
+                name="txtFullName"
+                id="input-fullname"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isFullNameJewishFilterVisible">
+            <label>{{ "FULLNAMEJEWISH" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="fullNameJewish"
+                class="form-control"
+                name="txtFullNameJewish"
+                id="input-fullnamejewish"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isFamilyFilterVisible">
+            <label>{{ "FAMILY" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="family"
+                class="form-control"
+                name="txtFamily"
+                id="input-family"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isAddressFilterVisible">
+            <label>{{ "ADDRESS" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="address"
+                class="form-control"
+                name="txtAddress"
+                id="input-address"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isCityStateZipFilterVisible">
+            <label>{{ "CITYSTATEZIP" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="cityStateZip"
+                class="form-control"
+                name="txtCityStateZip"
+                id="input-cityStateZip"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isPhoneFilterVisible">
+            <label>{{ "PHONE" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="phone"
+                class="form-control"
+                name="txtPhone"
+                id="input-phone"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isEmailFilterVisible">
+            <label>{{ "EMAIL" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="email"
+                class="form-control"
+                name="txtEmail"
+                id="input-email"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isNoteFilterVisible">
+            <label>{{ "NOTE" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="note"
+                class="form-control"
+                name="txtNote"
+                id="input-note"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isFatherFilterVisible">
+            <label>{{ "FATHER" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="father"
+                class="form-control"
+                name="txtFather"
+                id="input-class"
+              />
+            </div>
+          </div>
+          <div class="form-group" *ngIf="isFatherInLawFilterVisible">
+            <label>{{ "FATHERINLAW" | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="fatherInLaw"
+                class="form-control"
+                name="txtFatherinLaw"
+                id="input-class"
+              />
+            </div>
+          </div>
+          <!-- added new -->
+          <div class="form-group" *ngIf="isLoacationFieldFilterVisible">
+            <label>{{ "LOCATION" | translate }}</label>
+            <div class="input-group">
+              <angular2-multiselect
+                id="ddlPaymentLocation"
+                [settings]="
+                  commonMethodService.setDropDownSettings(
+                    '',
+                    2,
+                    false,
+                    false,
+                    true
+                  )
+                "
+                [data]="commonMethodService.localLocationList"
+                [(ngModel)]="selectedLocationList"
+                (onDeSelectAll)="
+                  commonMethodService.onDeSelectAll('paymentLocationList')
+                "
+              >
+              </angular2-multiselect>
+            </div>
+          </div>
+          <!--added new -->
+          <div class="form-group">
+            <label>{{ "STATUS" | translate }}</label>
+            <div class="input-group">
+              <select
+                class="form-control"
+                [(ngModel)]="selectedStatus"
+                name="slctStatus"
+                id="input-status"
+              >
+                <option value="">{{ "ALL" | translate }}</option>
+                <option value="0">{{ "ACTIVE" | translate }}</option>
+                <option value="-1">{{ "INACTIVE" | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <!--added end -->
+          <div class="form-group" *ngIf="isAdvanceFieldFilterVisible">
+            <section
+              *ngFor="let item of advanceFieldList"
+              class="sub-section-field"
+            >
+              <div *ngIf="item.isDisplayed == true" class="sub-child-field">
+                <label>{{ item.itemName }}</label>
+                <div class="input-group" *ngIf="item.type == 'text'">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="item.filtervalue"
+                    id="input-class"
+                  />
+                </div>
+                <div class="input-group" *ngIf="item.type == 'dropdown'">
+                  <angular2-multiselect
+                    id="ddlAdvanceField"
+                    [settings]="
+                      commonMethodService.setDropDownSettings(
+                        '',
+                        2,
+                        false,
+                        false,
+                        true
+                      )
+                    "
+                    [data]="item.options"
+                    [(ngModel)]="item.filtervalue"
+                    (onDeSelectAll)="
+                      commonMethodService.onDeSelectAll('AdvanceFieldList')
+                    "
+                  >
+                  </angular2-multiselect>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- start code to show tag filed -->
+          <div class="form-group" *ngIf="isTagFieldFilterVisible">
+            <section *ngFor="let item of tagList" class="sub-section-field">
+              <div *ngIf="item.isDisplayed == true" class="sub-child-field">
+                <label>{{ item.itemName.replace(":", "") }}</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="item.filtervalue"
+                    id="input-class"
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+          <!-- end code to show tag filed -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-custom-footer flex-end" *ngIf="this.commonMethodService.isfeatureSetting">
+    <button class="btn btn-primary" (click)="CreateQuery()">
+      {{ buttonName }}
+    </button>
+  </div>
+  <div class="modal-custom-footer flex-end" *ngIf="!this.commonMethodService.isfeatureSetting">
+    <button class="btn btn-primary btn-core" (click)="onUpgrade()">
+      {{'UPGRADETOSAVE' | translate}}
+    </button>
+  </div>
+</div>

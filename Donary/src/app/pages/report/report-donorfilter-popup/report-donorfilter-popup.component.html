@@ -1,0 +1,201 @@
+
+<div class="modal-header report-popup" style="display: block;" ngbAutofocus tabindex="-1">
+    <div class="row">
+        <div class="input-group col-5">
+            <h4 class="modal-title">{{'DONORFILTER'  |translate}}</h4>
+        </div>
+        <div class="input-group col-4">
+            &nbsp;
+        </div>
+        <div class="input-group col-2">
+            <div class="dropdown">
+                              
+            </div>
+        </div>
+        <div class="input-group col-1">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body"> 
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                      {{'ACCOUNTNUMBER'  |translate}}Account Number
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="accountNo" class="form-control" name="txtAccountNo"
+                        id="input-accountno" />
+                </div>
+            </div>         
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'FULLNAME'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="fullName" class="form-control" name="txtFullName"
+                        id="input-fullname" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'FULLNAMEJEWISH'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="fullNameJewish" class="form-control" name="txtFullNameJewish"
+                        id="input-fullname" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'ADDRESS'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="address" class="form-control" name="txtAddress"
+                        id="input-address" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'CITY'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="city" name="txtCity" id="input-city" />
+                </div>
+            </div>
+          <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'STATE'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="state" name="txtState" id="input-state" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'ZIP'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="zip" name="txtZip" id="input-zip" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'DEFAULTLOCATION'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentLocation"
+                        [settings]="commonMethodService.setDropDownSettings('Select Default Location',2,false,false,true)"
+                        [data]="commonMethodService.paymentLocationList" [(ngModel)]="defaultLocations">
+                    </angular2-multiselect>
+                    <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'GROUP'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="group" name="txtGroup" id="input-group" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'CLASS'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="class" name="txtClass" id="input-class" />
+                </div>
+            </div>          
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'PHONE'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="phone" name="txtphone" id="input-phone" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'EMAIL'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="email" name="txtEmail" id="input-email" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'FATHER'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="father" name="txtFather" id="input-Father" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                        {{'FATHERINLAW'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" class="form-control" [(ngModel)]="fatherInLaw" name="txtFatherInLaw" id="input-fatherinlaw" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label for="lblDonor">
+                       {{'STATUS'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <select class="form-control" [(ngModel)]="status" name="slctStatus" id="input-status">
+                        <option value="">{{'ALL'  |translate}}</option>
+                        <option value="0">{{'ACTIVE'  |translate}}</option>
+                        <option value="-1">{{'INACTIVE'  |translate}}</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+</div>
+<div class="modal-footer justify-content-between">
+    <div class="left_part">
+    <button class="btn btn-primary" (click)="clearFilter()" style="float:left;">{{'CLEARALLFILTERS'|translate}}</button>
+</div>
+    <div class="right_part">
+    <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE'  |translate}}</button>&nbsp;&nbsp;
+    <button class="btn btn-primary" (click)="searchDonors()">{{buttonName}}</button>
+</div>
+</div>

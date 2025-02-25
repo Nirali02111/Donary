@@ -1,0 +1,88 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <!-- <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Transactions</h1>
+                </div>
+                 <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Transaction</a></li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
+            </ol>
+          </div>
+            </div>
+        </div>
+    </section> -->
+  <div class="add_new_button trans_add">
+    <app-add-new-dropdown></app-add-new-dropdown>
+  </div>
+  <!-- Main content -->
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="tabs__wrapper head__tabs transition-page">
+        <div class="card card__tabs">
+          <div class="card-header p-0 border-bottom-0">
+
+            <ul class="nav-tabs" ngbNav #nav="ngbNav" [(activeId)]="activeId">
+              <li [ngbNavItem]="1" [destroyOnHide]="true" (click)="RemoveClass()">
+                <a ngbNavLink>{{ "PAYMENTS" | translate }}</a>
+                <ng-template ngbNavContent>
+                  <app-payment-transaction></app-payment-transaction>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2" [destroyOnHide]="true" (click)="RemoveClass()">
+                <a ngbNavLink>{{ "PLEDGES" | translate }}</a>
+                <ng-template ngbNavContent>
+                  <app-pledge-transaction></app-pledge-transaction>
+                </ng-template>
+              </li>
+              @if (isDevEnv) {
+              <li [ngbNavItem]="4" [destroyOnHide]="true">
+                <a ngbNavLink>Aliyos</a>
+                <ng-template ngbNavContent>
+                  <app-aliyos-group-list-main></app-aliyos-group-list-main>
+                </ng-template>
+              </li>
+              }
+              <li [ngbNavItem]="3" [destroyOnHide]="true" class="schedule_tb">
+
+                <a ngbNavLink (click)="showSubMenu = true">{{ "SCHEDULES" | translate }}</a>
+
+                <ul [hidden]="activeId !== 3" ngbNav #navSch="ngbNav" [(activeId)]="activeSchId" class="custom-submenu">
+                  <li [ngbNavItem]="1" [destroyOnHide]="true" class="custom_pymnt_li">
+                    <a ngbNavLink class="custom_pymnt">{{ "PAYMENTS" | translate }}</a>
+                    <ng-template ngbNavContent>
+                      <app-schedule-payment-transaction></app-schedule-payment-transaction>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" [destroyOnHide]="true" class="custom_pledge_li">
+                    <a ngbNavLink class="custom_pledge">{{ "PLEDGES" | translate }}</a>
+                    <ng-template ngbNavContent>
+                      <app-schedule-pledge-transaction></app-schedule-pledge-transaction>
+                    </ng-template>
+                  </li>
+                </ul>
+                <ng-template ngbNavContent>
+                  <div [ngbNavOutlet]="navSch" class="mt-2"></div>
+                </ng-template>
+              </li>
+            </ul>
+
+          </div>
+          <div class="card-body">
+            <div [ngbNavOutlet]="nav"></div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- /.content -->
+</div>

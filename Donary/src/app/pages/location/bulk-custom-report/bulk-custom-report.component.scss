@@ -1,0 +1,26 @@
+.custom-report-card-modal {
+    padding: 0;
+}
+.custom-report-card-modal form {
+    padding: 20px 0;
+}
+.custom-report-card-modal form .modal__custom_content {
+    padding: 0 20px;
+    min-height: 240px;
+}
+.custom-report-card-modal .modal__custom_header {
+    background: #605481 0% 0% no-repeat padding-box;
+    text-align: center;
+    border-radius: 12px 12px 0px 0px;
+}
+.custom-report-card-modal .modal__custom_header h4 {
+    color: #fff;
+}
+.custom-report-card-modal .modal__custom_header .titlebar {
+    flex: 0 0 100%;
+}
+.custom-report-card-modal .btn-run {
+    border-top: 1px solid #dedede;
+    padding-top: 20px;
+    margin-top: 0;
+}

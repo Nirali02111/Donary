@@ -1,0 +1,239 @@
+<div class=" payPledge_pop pay_off_pledge_content" NgbAutoFocus tabindex="-1">
+    <div class="schedule_showall">
+        <span class="show_all">{{'PAYOFFPLEDGE'|translate}}&nbsp;</span>
+        <label class="switch">
+            <input type="checkbox" id="payoffpledge"
+                (change)="OnCheckboxChange($event); commonMethodService.PayoffPledgeCheckBoxChange($event)">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div *ngIf="showForm">
+        <div class="content_wrapper">
+            <div class="pledge_tab_content pay_off_pledge" [class.item-blur]="!commonMethodService.selectedAmount">
+                <div class="top_data">
+                    <div class="colm_left">
+                        <div class="data">
+                            <p>{{'PAYOFFPLEDGE'|translate}}</p>
+                            <h6>{{commonMethodService.formatAmount(orgTotalAmount)}}</h6>
+                        </div>
+                    </div>
+                    <div class="colm_right">
+                        <div class="data">
+                            <p>{{'AVAILABLE'|translate}}</p>
+                            <h6>{{commonMethodService.formatAmount(amount)}}</h6>
+                        </div>
+                        <div class="data">
+                            <p>{{'APPLIED'|translate}}</p>
+                            <h6>{{commonMethodService.formatAmount(paymentAmount)}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters_data">
+                    <div class="row_data colm">
+                        <ng-template #popContent ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                        </ng-template>
+                        <div class="input-group dnr-datepicker-container date_picker" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent" popoverClass="calender-modal" [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="payPledgeDynamicsCalender">
+                            <input type="text" class="form-control" value=""
+                            [placeholder]="EngHebCalPlaceholder" />
+                        </div>
+                        <!-- Calendar code ended -->
+                        <!-- <div class="input-group date_picker">
+                    <input
+                      type="text"
+                      class="form-control"
+                      #calendarsearch
+                      ngxDaterangepickerMd
+                      [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+                      [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                      [ranges]="commonMethodService.ranges"
+                      [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                      [linkedCalendars]="commonMethodService.linkedCalendars"
+                      [opens]="commonMethodService.open"
+                      [drops]="commonMethodService.drop"
+                      [showClearButton]="commonMethodService.showClearButton"
+                      placeholder="All Time"
+                    />
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i
+                            class="far fa-calendar-alt ngx-daterangepicker-action"
+                          ></i>
+                        </span>
+                    </div>
+                  </div>  -->
+
+                        <div class="filter_field colm" (click)="OpenPayPledgeFilter()">
+                            <button class="btn btn-default" type="button">
+                                <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                                <span class="filter_text">{{'FILTER'|translate}}</span>
+                            </button>
+                        </div>
+                        <div class="auto_apply_btn colm">
+                            <button class="auto_apply" [ngClass]="[isAutoApplyDisabled ? 'disabled' : '']"   (click)="AutoApply()" style="cursor: pointer;">{{'AUTOAPPLY'|translate}}</button>
+                        </div>
+                    </div>
+
+                </div>
+                                        <p style="text-align: center;">{{nopledgeMessage}}</p>
+                                                    
+                                                    
+                <div *ngIf="commonMethodService.isPayoffPledgeCheckBoxChecked  && !commonMethodService.selectedAmount"
+                    class="Payment-label">{{'ENTERPAYMENTAMOUNT'|translate}}</div>
+                <ng-container *appIsWeb>
+                    <div class="main__data">
+                        <div class="row_data colm" *ngFor="let item of pledgeList">
+                            <div class="cstm_checkbox" *ngIf="hasPledges">
+                                <input #checkboxes type="checkbox" id="{{item.pledgeId}}"
+                                    [checked]="item.isPledgeChecked"
+                                    [ngClass]="item.checkbxClass"
+                                    [disabled]="(commonMethodService.isPayoffPledgeCheckBoxChecked && !commonMethodService.selectedAmount) || item.checkboxDisabled"
+                                    name="singlepay"
+                                    (click)="selectAmount($event,item.balance,'singlepay',item.pledgeId)" />
+                                <label class="empty" for="{{item.pledgeId}}"></label>
+                            </div>
+                            <div class="name_data colm">
+                                <h6>{{item.campaignName}} </h6>
+
+                            </div>
+                            <div class="jewish_date colm">
+                                <h6 class="lang_hebrew">{{item.pledgeJewishDate}}</h6>
+                                <h5>{{item.pledgeDate | donaryDateFormat: "short"}}</h5>
+                            </div>
+                            <div class="amount_data colm">
+                                <p>{{'AMOUNT'|translate}}</p>
+                                <h6>{{commonMethodService.formatAmount(item.pledgeTotalAmount)}}</h6>
+                            </div>
+                            <div class="balance_data colm">
+                                <p>{{'BALANCE'|translate}}</p>
+                                <h6>{{commonMethodService.formatAmount(item.showbalance)}}</h6>
+                            </div>
+                            <div class="input_data colm">
+                                <input type="number" min="0" class="pledge_txtbox" id="pledge_{{item.pledgeId}}"
+                                    (keyup)="ChangeTextValue($event,item.pledgeTotalAmount,item.showbalance,item.pledgeId)"
+                                    (focusout)="RemoveValue(item.pledgeId,item.balance)" placeholder="0.00"
+                                    value="{{item.balance}}"[readonly]="item.readonly" [ngClass]="[item.readonly ? 'amt_opacity' : '']"
+                                    [disabled]="commonMethodService.isPayoffPledgeCheckBoxChecked  && !commonMethodService.selectedAmount  || item.isDisabled"/>
+                                <span class="pledge_error" *ngIf="item.balanceError">{{'NOTALLOWGREATERBALANCE'|translate}}</span>                                                              
+                            </div>
+                        </div>
+
+                        <ng-container *ngIf="orgPledgeList && orgPledgeList.length !== 0">
+                            <button class="btn btn-default pay_off_pledge_upcoming_btn" *ngIf="!showUpcoming"
+                                (click)="showAllPledge()">{{'SHOWUPCOMMING'|translate}}</button>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <ng-container *appIsMobile>
+                    <div class="main__data">
+                        <div class="row_data colm" *ngFor="let item of pledgeList">
+                            <div class="cstm_checkbox" *ngIf="hasPledges">
+                                <input #checkboxes type="checkbox" id="{{item.pledgeId}}"
+                                    [checked]="item.isPledgeChecked"
+                                    [ngClass]="item.checkbxClass"
+                                    [disabled]="(commonMethodService.isPayoffPledgeCheckBoxChecked && !commonMethodService.selectedAmount) || item.checkboxDisabled"
+                                    name="singlepay"
+                                    (click)="selectAmount($event,item.balance,'singlepay',item.pledgeId)" />
+                                <label class="empty" for="{{item.pledgeId}}"></label>
+                            </div>
+                            <div class="pledgeRow colm">
+                            <div class="name_data colm">
+                                <h6>{{item.campaignName}} </h6>
+                                <div class="jewish_date colm">
+                                    <h6 class="lang_hebrew">{{item.pledgeJewishDate}}</h6>
+                                    <h5>{{item.pledgeDate | donaryDateFormat: "short"}}</h5>
+                                </div>
+                            </div>
+                            <div class="amountData-balance colm">
+                                <div class="amount_data">
+                                    <p>{{'AMOUNT'|translate}}</p>
+                                    <h6>{{commonMethodService.formatAmount(item.pledgeTotalAmount)}}</h6>
+                                </div>
+                                <div class="balance_data">
+                                    <p>{{'BALANCE'|translate}}</p>
+                                    <h6>{{commonMethodService.formatAmount(item.showbalance)}}</h6>
+                                </div>
+                                <div class="applyLabelRow">
+                                <div class="applyLabel">
+                                    APPLY:
+                                </div>
+                                <div class="input_data colm">
+                                        <input type="number" min="0" class="pledge_txtbox" id="pledge_{{item.pledgeId}}"
+                                            (keyup)="ChangeTextValue($event,item.pledgeTotalAmount,item.showbalance,item.pledgeId)"
+                                            (focusout)="RemoveValue(item.pledgeId,item.balance)" placeholder="0.00"
+                                            value="{{item.balance}}"[readonly]="item.readonly" [ngClass]="[item.readonly ? 'amt_opacity' : '']"
+                                            [disabled]="commonMethodService.isPayoffPledgeCheckBoxChecked  && !commonMethodService.selectedAmount  || item.isDisabled"/>
+                                        <span class="pledge_error" *ngIf="item.balanceError">{{'NOTALLOWGREATERBALANCE'|translate}}</span>                                                              
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+
+                        <ng-container *ngIf="orgPledgeList && orgPledgeList.length !== 0">
+                            <button class="btn btn-default pay_off_pledge_upcoming_btn" *ngIf="!showUpcoming"
+                                (click)="showAllPledge()">{{'SHOWUPCOMMING'|translate}}</button>
+                        </ng-container>
+                    </div>
+                </div>
+                </ng-container>
+            </div>
+            <span class="pledge_error" *ngIf="greaterAmountError">{{'NOTALLOWGREATERAMOUNT'|translate}}</span>
+
+
+            <!-- <div class="added_amt">
+        <span class="applied_pledge_lbl">Open Pledges:</span>
+        <div class="input-group">
+       <label>{{commonMethodService.formatAmount(totalAmount)}}</label>
+    </div>
+    </div>
+    <div class="autoApply-bar">
+        <div class="left">
+              <span class="t-amount">{{commonMethodService.formatAmount(paymentAmount)}}</span>
+             <span>Avail. {{commonMethodService.formatAmount(amount)}}</span>
+        </div> -->
+            <!-- <div class="sorter"> -->
+            <!-- <img src="/assets/dist/img/sort_icon.svg" alt="" />
+        </div> -->
+            <!-- <div class="apply-button" style="cursor: pointer;" (click)="AutoApply()">
+            Auto<br> Apply
+        </div>
+    </div>
+    <ul class="payments_list payall"> -->
+            <!-- <li class="selectAll">
+            <div class="left checkbox-inpt">
+                <input type="checkbox" id="payall" [disabled]="isPayAllDisabled"  (change)="selectAmount($event,totalAmount,'payall',0)">
+                <label for="payall" >Pay All -  {{commonMethodService.formatAmount(totalAmount)}}</label>
+            </div>
+        </li>
+    </ul>-->
+            <!-- <ul class="payments_list">
+
+        <li *ngFor="let item of pledgeList">
+            <div class="left">
+                <span class="checkbox-inpt"  *ngIf="hasPledges">
+                    <input #checkboxes type="checkbox" id="{{item.pledgeId}}" [disabled]="item.isDisabled" name="singlepay" (change)="selectAmount($event,item.balance,'singlepay',item.pledgeId)"/>
+                    <label class="empty" for="{{item.pledgeId}}"></label>
+                </span>
+                <span class="input-text">
+                    <input type="number" class="pledge_txtbox" id="pledge_{{item.pledgeId}}" (focusout)="ChangeTextValue($event,item.showbalance,item.balance,item.pledgeId)" placeholder="0.00" value="{{item.balance|number:'1.2-2'}}" />
+                    <span class="pledge_error" *ngIf="item.amountError">Not allowed to enter amount greater than balance</span>
+
+                </span>
+            </div>
+            <div class="right">
+                <p>#{{item.pledgeNum}}</p>
+                <h5>{{item.campaignName}}</h5>
+                <p>{{item.pledgeDate | donaryDateFormat: "short"}}</p>
+                <p class="amounts" *ngIf="item.isSameAmount">{{commonMethodService.formatAmount(item.showbalance)}}</p>
+                <p class="amounts" *ngIf="!item.isSameAmount"><span>{{commonMethodService.formatAmount(item.showbalance)}}</span> of {{commonMethodService.formatAmount(item.pledgeTotalAmount)}}</p>
+            </div>
+        </li>
+    </ul> -->
+
+        </div>
+        <!-- <div class="pay_off_pledge_footer">
+<button class="btn btn-primary" (click)="SubmitPledgePay()">Submit</button>
+</div> -->
+
+    </div>
+</div>

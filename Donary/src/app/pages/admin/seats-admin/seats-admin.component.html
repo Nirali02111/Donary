@@ -1,0 +1,138 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body pt-0 tab-api adminSeats-tab">
+            <div class="tabs__wrap">
+                <ul class="nav nav-tabs p-0">
+                    <li><a href="#seats-01" data-toggle="tab">Maps</a></li>
+                    <li class="active"><a href="#seats-02" class="active" data-toggle="tab">Rates</a></li>
+                    <li><a href="#seats-03" data-toggle="tab">Settings</a></li>
+                </ul>
+
+                <div class="header--buttons">
+                    <button class="btn btn-primary" (click)="AddNewSeason()">Create new Season</button>
+                </div>
+
+                <div class="tab-content tab_draggable">
+                  
+                    <div class="tab-pane"  id ="seats-01">
+                        Advanced
+                    </div>
+                    <div class="tab-pane active"  id ="seats-02">
+                        <div class="extra__details">
+                            <div class="filters__options mt-4 seats_page">
+                              <div class="search_opts">
+                                <div class="input-group search_input">
+                                  <input
+                                    type="text"
+                                    name="advanceSearch"
+                                    id="localsearch1"
+                                    class="form-control float-right"
+                                    placeholder="Search Keys"
+                                  />
+                                </div>
+                                <div class="colm tbl_field">
+                                    <div class="dropdown">
+                                            <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-tag"> <span> {{'FIELDS'|translate}}</span></i>
+                                            </button>
+                                         
+                                    </div>
+                                </div>
+                              </div>
+                              
+                              <div class="fields_opts justify-content-end">
+                                <button
+                                  type="button"
+                                  class="btn new-btn btn-default" (click)="onAddNewSeatRate()"
+                                >
+                                  <i class="fa fa-plus"></i> New
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                         
+                          <div class="tbl_colm_sticky" id="">
+                            <div class="modal_custom px-0 table-responsive">
+                              <div style="overflow-y: hidden; height: calc(100vh - 15rem)">
+                                <div class="px-2" style="overflow-y: auto; height: 100%">
+                                  <table 
+                                        class="table table-striped redesign_table admin-seats" 
+                                        [svData]="listData"
+                                        #sv="svDataTable" 
+                                        [svRowsOnPage]="25" 
+                                        svSortBy="createdDate" 
+                                        svSortOrder="desc" 
+                                  >
+                                    <thead>
+                                    <tr class="header-table">
+                                        <th>SEAT TYPE:</th>
+                                        <th class="section-td">&nbsp;</th>
+                                        <th>ONE TIME RENTAL:</th>
+                                        <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
+                                        </tr>
+                                      <tr>
+                                        <th>LOCATION:</th>
+                                        <th class="section-td">SECTION:</th>
+                                        <th>SEAT PRICE:</th>
+                                        <th>IF AISLE ADD:</th>
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <ng-container *ngFor="let item of sv.data">
+                                        <tr>
+                                          <td class="lng_hebrew hebrew_font">{{ item.mapLocationName }}</td>
+                                          <td class="lng_hebrew hebrew_font section-td">{{ item.sectionName }}</td>
+                                          
+                                          <td>{{ commonMethodService.formatAmount(item.seatPrice)   }}</td>
+                                          <td>{{ commonMethodService.formatAmount(item.aisleAdditionalFee)  }}</td>
+
+                                          <td class="custom_action hover__action">
+                                            <div class="float__action">
+                                              <span
+                                                class="icn_edit"
+                                                data-toggle="tooltip"
+                                                t-title="Edit"
+                                                (click)="onEditSeatRate(item)"
+                                              ></span>
+                                              <span
+                                              class="icn_duplicate"
+                                              data-toggle="tooltip"
+                                              t-title="Duplicate"
+                                            >
+                                            </span>
+                                              <span
+                                                class="icn_delete"
+                                                data-toggle="tooltip"
+                                                t-title="Delete"
+                                                (click)="onDeleteSeatRate(item)"
+                                              ></span>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </ng-container>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="addCategory-action">
+                            <i class="fa fa-plus"></i>
+                            Add category
+                          </div>
+                    </div>
+                    <div class="tab-pane"  id ="seats-03">
+                        Setting Works here!
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="isLoading" class="overlay">
+  <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>

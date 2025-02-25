@@ -1,0 +1,96 @@
+<div class="content-wrapper">
+    <div class="add_new_button trans_add">
+        <app-add-new-dropdown></app-add-new-dropdown>
+    </div> 
+<!-- Main content -->
+@if (!isProdEnv) {
+<section class="content">
+    <div class="container-fluid">
+      <div class="tabs__wrapper head__tabs transition-page">
+        <div class="card card__tabs">
+          <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <li class="nav-item batches-tab">
+                    <a
+                        class="nav-link active"
+                        id="custom-tabs-three-batches-tab"
+                        data-toggle="pill"
+                        href="#custom-tabs-three-batches"
+                        role="tab"
+                        aria-controls="custom-tabs-three-batches"
+                        aria-selected="false"
+                        >{{'BATCHES' | translate}}</a
+                    >
+                </li>
+                @if (isDevEnv) {
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="custom-tabs-three-pledges-tab"
+                  data-toggle="pill"
+                  href="#custom-tabs-three-pledges"
+                  role="tab"
+                  aria-controls="custom-tabs-three-pledges"
+                  aria-selected="false"
+                  >{{ "QUICKBOOKS" | translate }}</a
+                >
+              </li>
+                }
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content" id="custom-tabs-three-tabContent">
+              <div
+                class="tab-pane fade show active"
+                id="custom-tabs-three-batches"
+                role="tabpanel"
+                aria-labelledby="custom-tabs-three-batches-tab"
+              >
+              <app-batches-list-main></app-batches-list-main>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="custom-tabs-three-pledges"
+                role="tabpanel"
+                aria-labelledby="custom-tabs-three-pledges-tab"
+              >
+                tab 2
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</section>
+}
+@if (isProdEnv) {
+    <div class="finance-page">
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <div class="finance-content">
+                    <h1>Coming Soon...</h1>
+                    <div class="finance-block">
+                        <h2>Batch Deposits</h2>
+                        <p>Streamline your payment reconciliation with our batch deposits feature. Easily group your
+                            payments based on categories, like campaign, collector, getaway reference number, date, or
+                            payment type.</p>
+                    </div>
+                    <div class="finance-block">
+                        <h2>QuickBooks Integration</h2>
+                        <p>Say goodbye to tedious bookkeeping with our new QuickBooks integration. It allows you to
+                            download a detailed deposit breakdown and import it directly into QuickBooks, reducing your
+                            manual workload.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <img src="assets/dist/img/finance-img.png" alt="Finance" class="finance-img mw-100" />
+            </div>
+        </div>
+    </div>
+}
+</div>
+<!-- <div class="add_new_button trans_add">
+    <app-add-new-dropdown></app-add-new-dropdown>
+</div> -->
+

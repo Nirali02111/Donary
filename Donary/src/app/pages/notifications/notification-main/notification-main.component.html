@@ -1,0 +1,59 @@
+<div class="content-wrapper report_tabs">
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <div class="add_new_button trans_add">
+        <app-add-new-dropdown></app-add-new-dropdown>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="tabs__wrapper head__tabs">
+                <div class="card card__tabs list_tab notification_tabs">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-alerts-tab" data-toggle="pill"
+                                    href="#custom-tabs-alerts" role="tab" aria-controls="custom-tabs-alerts"
+                                    aria-selected="false">{{'ALERT' |translate }}
+                                    <span *ngIf="alertCount > 0">{{alertCount}}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="custom-tabs-reminders-tab" data-toggle="pill"
+                                    href="#custom-tabs-reminders" role="tab"
+                                    aria-controls="custom-tabs-reminders">{{'REMINDERS' |translate}}</a>
+                            </li>
+                            @if (isDevEnv) {
+                            <li class="nav-item nav-item-setting">
+                                <a class="nav-link " id="custom-tabs-settings-tab" data-toggle="pill"
+                                    href="#custom-tabs-settings" role="tab"
+                                    aria-controls="custom-tabs-settings">Settings</a>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-body list_body report_query">
+                        <div class="tab-content" id="custom-tabs-three-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-alerts" role="tabpanel"
+                                aria-labelledby="custom-tabs-alerts-tab">
+                                <app-notification-alerts></app-notification-alerts>
+                            </div>
+                            <div class="tab-pane fade " id="custom-tabs-reminders" role="tabpanel"
+                                aria-labelledby="custom-tabs-reminders-tab">
+                                <app-notification-list></app-notification-list>
+                            </div>
+                            @if (isDevEnv) {
+                            <div class="tab-pane fade " id="custom-tabs-settings" role="tabpanel"
+                                aria-labelledby="custom-tabs-settings-tab">
+                                <app-notification-setting></app-notification-setting>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>

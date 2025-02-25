@@ -1,0 +1,74 @@
+<div class="edit__payment_main edit_pledge" ngbAutofocus  tabindex="-1">
+    <div class="popup_header modal__custom_header">
+        <h4>{{'FILTER'|translate}}</h4>
+        <div class="close_trans" (click)="closePopup()">
+            <span>&times;</span>
+        </div>        </div>
+        <div class="edit_pymnt_wrap modal__custom_content">
+    <div class="payement_fields">
+        <div class="schedule-sticky-pop">
+            <div class="form-group d-flex">
+                <label>{{'REASON'|translate}} :</label>
+                <div class="input_single">                      
+                    <angular2-multiselect id="ddlPaymentReason"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localReasonList"
+                    [(ngModel)]="selectedReasons"
+                    (onDeSelectAll)="onDeSelectAll('reasonList')">
+                </angular2-multiselect>
+                </div>
+            </div>
+            <div class="form-group d-flex">
+                <label>{{'CAMPAIGN'|translate}} :</label>
+                <div class="input_single">                      
+                    <angular2-multiselect id="ddlCampaign"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localCampaignList"
+                    [(ngModel)]="selectedCampaigns"
+                    (onDeSelectAll)="onDeSelectAll('campaignList')">
+                </angular2-multiselect>
+                </div>
+            </div>               
+                <div class="form-group d-flex">
+                    <label>{{'LOCATION'|translate}} :</label>
+                    <div class="input_single">                                            
+                        <angular2-multiselect id="ddlPaymentLocation"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                            [data]="commonMethodService.localLocationList"
+                            [(ngModel)]="selectedLocations"
+                            (onDeSelectAll)="onDeSelectAll('locationList')">
+                        </angular2-multiselect>         
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                    {{item.itemName}}
+                                    <span class="heb-dropdown-status">{{item.status}}</span></label>
+                            </ng-template>
+                        </c-item>               
+                </div>                   
+                </div>                
+                <div class="form-group d-flex"> 
+                    <label>{{'COLLECTOR'|translate}} :</label>
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlCollector"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localCollectorList"
+                    [(ngModel)]="selectedCollectors"
+                    (onDeSelectAll)="onDeSelectAll('collectorList')">
+                </angular2-multiselect>
+                    </div>
+                </div>                 
+    </div>
+    </div>   
+    <div *ngIf="commonMethodService.loaderSearch" class="card-overlay" >
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>
+    <div class="btn_info modal__custom_footer">
+        <button type="button" class="btn btn-default" (click)="clearFilter()">{{'CLEARFILTERS'|translate}}</button>&nbsp;&nbsp;
+        <button class="btn btn-primary"  (click)="filterPayPledge()">{{'SEARCH'|translate}}</button>
+    </div>
+    <div *ngIf="isloading" class="card-overlay" >
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+      </div> 
+    </div>

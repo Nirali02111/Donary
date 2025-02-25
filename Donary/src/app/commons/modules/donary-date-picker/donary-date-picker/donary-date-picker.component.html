@@ -1,0 +1,55 @@
+<div
+  class="input-group dnr-datepicker-container date_picker"
+  [ngClass]="getCmpContainerCls()"
+>
+  <ng-template [ngIf]="isFullView" [ngIfElse]="halfCalendarviewView">
+    <input
+      type="text"
+      class="form-control dnr-datepicker-input"
+      ngxDaterangepickerMd
+      [opens]="open"
+      [drops]="drop"
+      [ranges]="ranges"
+      [locale]="locale"
+      [linkedCalendars]="isFullView"
+      placeholder="{{'SELECTEDRANGE' | translate}}"
+      [(ngModel)]="selectedDateRange"
+      [showCustomRangeLabel]="showCustomRangeLabel"
+      [alwaysShowCalendars]="alwaysShowCalendars"
+      [showRangeLabelOnInput]="showRangeLabelOnInput"
+      [showClearButton]="showClearButton"
+      (datesUpdated)="datesUpdated($event)"
+      [attr.disabled]="checkIsDisable()" 
+    />
+  </ng-template>
+
+  <ng-template #halfCalendarviewView>
+    <input
+      type="text"
+      class="form-control dnr-datepicker-input"
+      ngxDaterangepickerMd
+      [opens]="open"
+      [drops]="drop"
+      [ranges]="halfRanges"
+      [locale]="locale"
+      [linkedCalendars]="isFullView"
+      placeholder="{{'SELECTEDRANGE' | translate}}"
+      [(ngModel)]="selectedDateRange"
+      [showCustomRangeLabel]="showCustomRangeLabel"
+      [alwaysShowCalendars]="alwaysShowCalendars"
+      [showRangeLabelOnInput]="showRangeLabelOnInput"
+      [showClearButton]="showClearButton"
+      (datesUpdated)="datesUpdated($event)"
+      [attr.disabled]="checkIsDisable()" 
+    />
+  </ng-template>
+
+  <div class="input-group-append">
+    <span class="input-group-text">
+      <i
+        class="far fa-calendar-alt ngx-daterangepicker-action"
+        (click)="CalendarFocus()"
+      ></i>
+    </span>
+  </div>
+</div>

@@ -1,0 +1,801 @@
+<div class="diglog_modal payment_schedule_moodal" ngbAutofocus tabindex="-1">
+  <div class="diglog_header modal__custom_header">
+    <div class="titlebar">
+      <div class="pledge_num">
+        <h4>{{ "PAYMENTSHEDULE" | translate }} #{{ scheduleNum }}</h4>
+      </div>
+    </div>
+    <div class="header_actions schedule_payment_actions">
+      <ng-container *ngIf="CheckStatusShowHide(scheduleStatus)">
+        <button
+          class="b_tn btn_ primary"
+          [class.edit-have-related-pledge]="isHaveRelatedPledgePayments()"
+          [attr.data-hover]="
+            isHaveRelatedPledgePayments()
+              ? 'unapply pledge from schedule to edit'
+              : 'Edit'
+          "
+          [disabled]="isHaveRelatedPledgePayments()"
+        >
+          <i
+            class="fa fa-edit"
+            aria-hidden="true"
+            (click)="openEditSchedulePopup()"
+          ></i>
+        </button>
+      </ng-container>
+      <div (clickOutside)="onClickedOut()">
+        <button class="b_tn" type="button" (click)="showTransMenu()">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu transaction_opts show" *ngIf="showTrans">
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              *ngIf="makeTransactionPermission"
+              (click)="makeTransactionPopup()"
+            >
+              <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+              {{ "NEWTRANSACTION" | translate }}</a
+            >
+          </li>
+          <li *ngIf="isReminderDisplay()">
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="AddReminderPopup()"
+            >
+              <i class="fas fa-bell" aria-hidden="true"></i
+              >{{ "ADDREMINDER" | translate }}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div (clickOutside)="onClickedOutside()">
+        <button
+          class="b_tn"
+          appDataHover
+          labelText="{{ 'ACTIONS' | translate }}"
+          (click)="showActionMenu()"
+        >
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu paymnt_opts" *ngIf="showAction">
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="onCancel()"
+            >
+              <i class="fa fa-ban" aria-hidden="true"></i>
+              {{ "CANCELSHEDULE" | translate }}</a
+            >
+          </li>
+          <li *ngIf="canPause()" (click)="onPauseClick()">
+            <a class="dropdown-item" style="cursor: pointer"
+              ><i class="fas fa-pause" aria-hidden="true"></i>
+              {{ "PAUSESHEDULE" | translate }}</a
+            >
+          </li>
+
+          <ng-template [ngIf]="canResume()">
+            <ng-template [ngIf]="checkForSubmenu()" [ngIfElse]="simpleResume">
+              <li
+                class="dropdown-submenu"
+                *ngIf="canResume()"
+                (mouseenter)="openSubmenu($event)"
+                (click)="$event.stopPropagation()"
+              >
+                <a class="dropdown-item" style="cursor: pointer"
+                  ><i class="fas fa-play" aria-hidden="true"></i>
+                  {{ "RESUME" | translate }}</a
+                >
+                <ul
+                  class="dropdown-menu resume-menu"
+                  role="menu"
+                  aria-labelledby="dropdownMenu"
+                  [ngStyle]="{ display: isSubmenuOpen ? 'block' : 'none' }"
+                >
+                  <li (click)="onLeaveClick()">
+                    <a
+                      class="dropdown-item resume-menu-item"
+                      style="cursor: pointer"
+                      >{{ "LEAVEORIGINAL" | translate }}</a
+                    >
+                  </li>
+                  <li (click)="onResumeClickNew()">
+                    <a
+                      class="dropdown-item resume-menu-item"
+                      style="cursor: pointer"
+                      >{{ "EDITNEXTPAYMENTDATE" | translate }}</a
+                    >
+                  </li>
+
+                  <li *ngIf="nextDateEnable">
+                    <div class="dropdown-item resume-menu-item">
+                      <div class="form-group d-flex">
+                        <div class="input_group">
+                          <span class="icon"
+                            ><img
+                              src="/assets/dist/img/calendar-icon.svg"
+                              width="20"
+                              height="20"
+                              alt=""
+                          /></span>
+                          <div class="searchbar">
+                            <input
+                              type="text"
+                              class="form-control"
+                              #calendarsearch
+                              ngxDaterangepickerMd
+                              [singleDatePicker]="true"
+                              [(ngModel)]="selectedStartDate"
+                              [minDate]="minDate"
+                              [showRangeLabelOnInput]="
+                                commonMethodService.showRangeLabelOnInput
+                              "
+                              [alwaysShowCalendars]="
+                                commonMethodService.alwaysShowCalendars
+                              "
+                              [opens]="commonMethodService.open"
+                              [drops]="commonMethodService.drop"
+                              [showClearButton]="
+                                commonMethodService.showClearButton
+                              "
+                            />
+                          </div>
+                        </div>
+                        <button
+                          class="btn btn-primary"
+                          [disabled]="isDisable()"
+                          (click)="resumeSaved()"
+                        >
+                          {{ "SAVE" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ng-template>
+            <ng-template #simpleResume>
+              <li (click)="onSimpleResume()">
+                <a class="dropdown-item" style="cursor: pointer"
+                  ><i class="fas fa-play" aria-hidden="true"></i>
+                  {{ "RESUME" | translate }}</a
+                >
+              </li>
+            </ng-template>
+          </ng-template>
+        </ul>
+      </div>
+      <button class="dismiss" (click)="closePopup(i)">&times;</button>
+    </div>
+  </div>
+
+  <div class="diglog_body modal__custom_content">
+    <div class="top_row">
+      <div class="name_colm">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }"> <h4>{{ accountName }}</h4></app-skeleton-loader-component>
+        <h5 class="lng_hebrew"><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '170px', height: '15px' }">{{ accountNameJewish }}</app-skeleton-loader-component></h5>
+      </div>
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '290px', height: '100px' }">
+        <div class="amounts_colm payment_amt">
+          <div class="amount_status">
+            <div class="inline-col total_amt">
+              <h6>{{ "TOTALAMOUNT" | translate }}:</h6>
+              <div class="value">
+                {{ commonMethodService.formatAmount(totalAmount) }}
+              </div>
+            </div>
+            <div class="inline-col status">
+              <span
+                class="label-status active"
+                [ngClass]="status_class"
+                *ngIf="scheduleStatus != null"
+                >{{ scheduleStatus | translate }}</span
+              >
+            </div>
+          </div>
+          <div class="inline-col-group">
+            <div class="inline-col">
+              <h6>{{ "PAID" | translate }} ({{ paidCount }}):</h6>
+              <div class="value small-text">
+                {{ commonMethodService.formatAmount(paidAmount) }}
+              </div>
+            </div>
+            <div class="inline-col">
+              <h6>{{ "OPEN" | translate }} ({{ upcomingCount }}):</h6>
+              <div class="value small-text">
+                {{ commonMethodService.formatAmount(openAmount) }}
+              </div>
+            </div>
+            <div class="inline-col" *ngIf="totalNotProcessed != 0">
+              <h6>{{ "NOTPROCESSED" | translate }}:</h6>
+              <div class="value small-text not_processed">
+                {{ commonMethodService.formatAmount(totalNotProcessed) }}
+              </div>
+              <div class="original_total">
+                <span class="orig_lbl">{{ "ORIGTOTAL" | translate }}:</span>
+                <span class="orig_amt">{{
+                  commonMethodService.formatAmount(originalTotal)
+                }}</span>
+              </div>
+            </div>
+            <!-- <div class="inline-col" *ngIf="isCancelled">
+                <h6>Total Cancelled:</h6>
+                <div class="text-danger value small-text">
+                  {{commonMethodService.formatAmount(totalCanceled)}}
+                </div>
+              </div> -->
+            <!-- <div class="inline-col" *ngIf="isFailed">
+                <h6>Total Failed :</h6>
+                <div class="text-danger value small-text ">
+                  {{commonMethodService.formatAmount(totalFailed)}}
+                </div>
+              </div> -->
+            <!-- <div class="inline-col large_colm cancel_amt" *ngIf="isCancelled">
+              <h6>Cancelled ({{cancelCount}}):</h6>
+              <div class="text-danger small-text">{{commonMethodService.formatAmount(cancelAmount)}}</div>
+            </div> -->
+          </div>
+        </div>
+      </app-skeleton-loader-component>
+    </div>
+
+    <div class="tabs__wrap">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+          <a class="active" href="#scheduleinfo" role="tab" data-toggle="tab">{{
+            "INFO" | translate
+          }}</a>
+        </li>
+        <li role="presentation">
+          <a href="#recentPayments" role="tab" data-toggle="tab"
+            >{{ "RECENTPAYMENT" | translate }}({{ recentCount }})</a
+          >
+        </li>
+        <li role="presentation">
+          <a href="#upcomingPayments" role="tab" data-toggle="tab"
+            >{{ "PENDINGPAYMENTS" | translate }}({{ upcomingCount }})</a
+          >
+        </li>
+        <!--<li role="presentation"><a href="#" role="tab" class="disabled grey-out" data-toggle="tab">Alerts</a></li>-->
+        <li role="presentation">
+          <a href="#appliedPledges" role="tab" data-toggle="tab"
+            >{{ "APPLIEDTOPLEDGES" | translate }}({{ appliedToPledgeCount }})</a
+          >
+        </li>
+        <li role="presentation">
+          <a href="#paymentNotes" role="tab" data-toggle="tab">{{
+            "NOTES" | translate
+          }}</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div
+          role="tabpanel"
+          class="tab-pane fade in active show"
+          id="scheduleinfo"
+        >
+          <div class="left_colm">
+            @if(isloading){
+              <ng-container *ngFor="let item of skeletonitems">
+                <div style="margin-bottom: 0px;">
+                  <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+                </div>
+              </ng-container>
+            } @else {
+              <div class="block-col">
+                <span class="icon campaign_icon"></span>
+                <span class="text">
+                  <h6>{{ "CAMPAIGN" | translate }}:</h6>
+                  <p>{{ campaignName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon reason_icon"></span>
+                <span class="text">
+                  <h6>{{ "REASON" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ reasonName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon location_icon"></span>
+                <span class="text">
+                  <h6>{{ "LOCATION" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ locationName }}</p>
+                </span>
+              </div>
+              <div class="block-col">
+                <span class="icon collector_icon"></span>
+                <span class="text">
+                  <h6>{{ "COLLECTOR" | translate }}:</h6>
+                  <p class="lng_hebrew">{{ collectorName }}</p>
+                </span>
+              </div>
+              <div class="block-col" *ngIf="latitude && longitude">
+                <span class="icon map_icon-view"
+                  ><img src="assets/dist/img/pin-map.svg"
+                /></span>
+                <span class="text">
+                  <p
+                    class="lng_hebrew"
+                    (click)="openMapCardPopup()"
+                    style="cursor: pointer; text-decoration: underline"
+                  >
+                    {{ "MAPVIEW" | translate }}:
+                  </p>
+                </span>
+              </div>
+            }
+          </div>
+          <div class="right_colm">
+            
+            <div class="block-col">
+    
+              <div class="card_info card_value" style="display: none">
+                <span class="icon icon-card"></span>
+                <span class="text">
+                  <h6>{{ "CARDONFILE" | translate }}:</h6>
+                  <p>{{ walletDescription }}</p>
+                </span>
+                <span
+                  class="arrow right_arrow"
+                  (click)="OpenWalletDetails()"
+                ></span>
+              </div>
+            </div>
+            <hr class="seprator" style="display: none" />
+
+            @if(isloading){
+              <div class="inline-colms">
+                <ng-container *ngFor="let item of skeletoncolitems">
+                  <div class="inline-col" style="margin-bottom: 0px;" >
+                    <app-skeleton-info-loader [isLoader]="isloading"></app-skeleton-info-loader>
+                  </div>
+                </ng-container>
+              </div>
+            } @else {
+              <div class="inline-colms">
+                <div class="inline-col">
+                  <h6>{{ "SCHEDULED" | translate }}:</h6>
+                  <div class="value small-text">
+                    {{ commonMethodService.formatAmount(scheduleAmount) }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>{{ "FREQUENCY" | translate }}:</h6>
+                  <div class="value small-text">
+                    {{ frequency }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>{{ "DATE&TIMECREATED" | translate }}:</h6>
+                  <div class="value small-text">
+                    <p>{{ createdDate | donaryDateFormat: "long" }}</p>
+                    <p class="lng_hebrew">{{createdDateJewish}}</p>
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>{{ "USER" | translate }}:</h6>
+                  <div class="value small-text">
+                    {{ userName }}
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>{{ "NEXTPAYMENTDATE" | translate }}:</h6>
+                  <div class="value small-text">
+                    <p>{{ nextScheduleDt | donaryDateFormat: "short" }}</p>
+                    <p class="lng_hebrew">{{ nextScheduleDtJewish }}</p>
+                  </div>
+                </div>
+                <div class="inline-col">
+                  <h6>{{ "SOURCE" | translate }}:</h6>
+                  <div class="value small-text">
+                    {{ deviceName }}
+                  </div>
+                </div>
+              </div>
+            }
+            
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="recentPayments">
+          <div class="table__main">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th class="text-center">{{ "SCHEDULE#" | translate }}</th>
+                  <th class="text-center">{{ "AMOUNT" | translate }}</th>
+                  <th class="text-center">{{ "DATE" | translate }}</th>
+                  <th class="text-right">{{ "YIDDISHDATE" | translate }}</th>
+                  <th class="status text-center">{{ "STATUS" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="pastSchedules?.length > 0">
+                <tr *ngFor="let item of pastSchedules; let i = index">
+                  <td
+                    class="text-center"
+                    (click)="openPaymentCardPopup(item.paymentId)"
+                    style="cursor: pointer; color: blueviolet"
+                    *ngIf="item.paymentId != null"
+                  >
+                    {{ item.scheduleNum }}
+                  </td>
+                  <td class="text-center" *ngIf="item.paymentId == null">
+                    {{ item.scheduleNum }}
+                  </td>
+                  <td class="text-center">
+                    <strong>{{
+                      commonMethodService.formatAmount(item.paidAmount)
+                    }}</strong>
+                  </td>
+                  <td class="text-center">
+                    {{ item.paymentDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td class="text-right">
+                    <strong class="lng_hebrew">{{
+                      item.scheduleDateJewish
+                    }}</strong>
+                  </td>
+                  <td
+                    class="status text-center justify-content-end"
+                    [ngClass]="getStatusClass(item.scheduleStatus)"
+                  >
+                    <!-- <b *ngIf="item.retires!=null">{{item.retires}}</b> -->
+                    <span
+                      class="sts-error-msg hidden-desktop"
+                      *ngIf="item.error"
+                      [attr.data-hover]="item.error"
+                      >?</span
+                    >
+                    <div class="position-relative status-failed-dropdown">
+                      <span
+                        class="status"
+                        [ngClass]="getStatusClss(item.scheduleStatus)"
+                      >
+                        {{ item.scheduleStatus }}<span class="material-icons"  *ngIf="item.scheduleStatus=='Failed' && appliedToPledgeCount === 0 && scheduleAmount >= 1|| item.scheduleStatus=='Error' && appliedToPledgeCount === 0 && scheduleAmount >= 1 ">keyboard_arrow_down</span></span
+                      >
+                      <ul class="status-failed" *ngIf="item.scheduleStatus=='Failed' && appliedToPledgeCount === 0 && scheduleAmount >= 1 || item.scheduleStatus=='Error' && appliedToPledgeCount === 0 && scheduleAmount >= 1">
+                        <li (click)="ResolveStatus(item.scheduleId,item.scheduleDate)">
+                          Resolve
+                        </li>
+                      </ul>
+                      <ul class="status-failed" *ngIf="item.scheduleStatus=='Failed' && appliedToPledgeCount > 0 && scheduleAmount >= 1 || item.scheduleStatus=='Error' && appliedToPledgeCount > 0 && scheduleAmount >= 1">
+                        <li style="width: 200px;">
+                          Can't resolve schedule applied to pledges
+                        </li>
+                      </ul>
+
+                    </div>
+                    <span
+                      class="sts-error-msg hidden-mobile"
+                      *ngIf="item.error && item.scheduleStatus!= 'Completed'"
+                      [attr.data-hover]="item.error"
+                      >?</span
+                    >
+                    <span
+                      class="btn-retry"
+                      *ngIf="
+                        getStatusClss(item.scheduleStatus) == 'schdl_failed'
+                      "
+                      (click)="executeSchedule(item.scheduleId)"
+                      ><i class="fa fa-repeat" aria-hidden="true"></i
+                    ></span>
+                    <span
+                      class="btn-retry"
+                      *ngIf="
+                        getStatusClss(item.scheduleStatus) !== 'schdl_failed'
+                      "
+                      (click)="openPaymentCardPopup(item.paymentId)"
+                      ><i class="fa fa-angle-right" aria-hidden="true"></i
+                    ></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="upcomingPayments">
+          <div class="table__main">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th class="text-center">{{ "SCHEDULE#" | translate }}</th>
+                  <th class="text-center">{{ "AMOUNT" | translate }}</th>
+                  <th class="text-center">{{ "DATE" | translate }}</th>
+                  <th class="text-right">{{ "YIDDISHDATE" | translate }}</th>
+                  <th class="status text-center">{{ "STATUS" | translate }}</th>
+                  <th class="hidden-desktop"></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="upcomingSchedules?.length > 0">
+                <tr *ngFor="let item of upcomingSchedules; let i = index">
+                  <td class="text-center">{{ item.scheduleNum }}</td>
+                  <td class="text-center">
+                    <strong>{{
+                      commonMethodService.formatAmount(item.scheduleAmount)
+                    }}</strong>
+                  </td>
+                  <td class="text-center">
+                    {{ item.scheduleDate | donaryDateFormat: "long" }}
+                  </td>
+                  <td class="text-right">
+                    <strong class="lng_hebrew">
+                      {{ item.scheduleDateJewish }}</strong
+                    >
+                  </td>
+                  <td class="status text-center pledge-action">
+                    <b>{{ item.retires }}</b> &nbsp;
+                    <span
+                      class="status pending"
+                      [ngClass]="getStatusClss(item.scheduleStatus)"
+                      >{{ item.scheduleStatus }}</span
+                    >
+                    <span
+                      class="action hidden-mobile"
+                      appDataHover
+                      labelText="{{ 'UNAPPLYPLEDGEEDIT' | translate }}"
+                    >
+                      <i
+                        class="more-icon"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div class="dropdown_card dropdown-menu">
+                        <ul>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              [ngClass]="[
+                                appliedToPledgeSchedules.length > 0
+                                  ? 'disbaled'
+                                  : ''
+                              ]"
+                              style="cursor: pointer"
+                              (click)="
+                                OpenEditAmountPopup(
+                                  item.scheduleId,
+                                  item.scheduleDate,
+                                  true
+                                )
+                              "
+                              >{{ "EDITAMOUNT" | translate }}</a
+                            >
+                            <span
+                              class="tooltip-action"
+                              *ngIf="appliedToPledgeSchedules.length > 0"
+                              data-hover="unapply schedule from pledge to edit"
+                            ></span>
+                          </li>
+
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              style="cursor: pointer"
+                              (click)="
+                                DismissPendingPayment(
+                                  item.scheduleId,
+                                  item.scheduleDate
+                                )
+                              "
+                              >{{ "DISMISSPAYMENT" | translate }}</a
+                            >
+                          </li>
+
+                          <li *ngIf="canPauseIndividual(item.scheduleStatus)">
+                            <a
+                              class="dropdown-item"
+                              style="cursor: pointer"
+                              [ngClass]="[
+                                appliedToPledgeSchedules.length > 0
+                                  ? 'disbaled'
+                                  : ''
+                              ]"
+                              (click)="
+                                PausePendingPayment(
+                                  item.scheduleId,
+                                  item.scheduleDate
+                                )
+                              "
+                              >{{ "PAUSEPAYMENT" | translate }}</a
+                            >
+                            <span
+                              class="tooltip-action"
+                              *ngIf="appliedToPledgeSchedules.length > 0"
+                              data-hover="unapply schedule from pledge to edit"
+                            ></span>
+                          </li>
+                          <li *ngIf="canResumeIndividual(item.scheduleStatus)">
+                            <app-next-schedule-date-popup
+                              [scheduleObj]="item"
+                              (OnSimpleResume)="onIndividualResume($event)"
+                            ></app-next-schedule-date-popup>
+                          </li>
+
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              style="cursor: pointer"
+                              (click)="
+                                OpenEditAmountPopup(
+                                  item.scheduleId,
+                                  item.scheduleDate,
+                                  false
+                                )
+                              "
+                              >{{ "CHANGEDATE" | translate }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </td>
+                  <td class="mobile-actions">
+                    <span
+                      class="action hidden-desktop"
+                      (click)="
+                        OpenEditAmountPopup(
+                          item.scheduleId,
+                          item.scheduleDate,
+                          true
+                        )
+                      "
+                    >
+                      <i
+                        class="more-icon"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="paymentNotes">
+          <div class="notes-box">
+            <label class="lbl_text"> {{ "NOTE" | translate }}: </label>
+            <textarea class="notes_input" readonly="true">{{ note }}</textarea>
+          </div>
+          <div class="pymt_log" *ngIf="changeLog != null">
+            <span class="lblPaymentLogs">{{ "PAYMENTLOGS" | translate }}</span
+            ><br /><br />
+            <span [innerHTML]="changeLog"></span><br />
+          </div>
+        </div>
+        <!-- applied Pledges -->
+        <div role="tabpanel" class="tab-pane fade" id="appliedPledges">
+          <div class="table__main">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th class="text-center">{{ "CAMPAIGN" | translate }}</th>
+                  <th class="text-center">{{ "PLEDGE#" | translate }}</th>
+                  <th class="text-center">{{ "PLEDGE" | translate }}</th>
+                  <th class="text-center">{{ "APPLIED" | translate }}</th>
+                  <th class="text-center">{{ "BALANCE" | translate }}</th>
+                  <th class="text-center">{{ "DATE" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="appliedToPledgeSchedules?.length > 0">
+                <ng-container
+                  *ngFor="let item of appliedToPledgeSchedules; let i = index"
+                >
+                  <tr>
+                    <td class="text-center">{{ item.campaignName }}</td>
+                    <td
+                      class="text-center"
+                      (click)="openPledgeCardPopup(item.pledgeId)"
+                      style="color: blueviolet; cursor: pointer"
+                    >
+                      {{ item.pledgeNum }}
+                    </td>
+                    <td class="text-center">
+                      <strong>{{
+                        commonMethodService.formatAmount(item.pledgeAmount)
+                      }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{
+                        commonMethodService.formatAmount(item.paidAmount)
+                      }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{
+                        commonMethodService.formatAmount(item.balance)
+                      }}</strong>
+                    </td>
+                    <td class="text-center status pledge-action">
+                      <span
+                        >{{ item.pledgeDate | donaryDateFormat : "name" }}
+                        <br />
+                        <strong class="lng_hebrew">
+                          {{ item.pledgeJewishDate }}</strong
+                        >
+                      </span>
+                      <!-- <span class="action">
+												<i class="more-icon"  data-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false"></i>
+												<div class="dropdown_card dropdown-menu" >
+													<ul >
+														<li>
+															<a class="dropdown-item disbaled">{{'EDITAMOUNT' | translate}}</a>
+															<span class="tooltip-action" appDataHover labelText="{{'UNAPPLYPLEDGEEDIT' | translate}}"></span>
+														</li>
+
+														<li><a class="dropdown-item"  (click)="DismissPendingPayment(item.pledgeId,item.pledgeDate)">{{'DISMISSPAYMENT' | translate}}</a></li>
+
+														<li >
+															<a class="dropdown-item disbaled" >{{'PAUSEPAYMENT' |translate}}</a>
+															<span class="tooltip-action" appDataHover labelText="{{'UNAPPLYPLEDGEEDIT' | translate}}"></span>
+														</li>
+														<li *ngIf="false">
+															<app-next-schedule-date-popup [scheduleObj]="item" (OnSimpleResume)="onIndividualResume($event)"></app-next-schedule-date-popup>
+														</li>
+
+														<li><a class="dropdown-item"   (click)="OpenEditAmountPopup(item.pledgeId,item.pledgeDate,false)">{{'CHANGEDATE' | translate}}</a></li>
+													</ul>
+												</div>
+											</span> -->
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!--
+				<div  role="tabpanel" class="tab-pane fade payment-alert-tab" id="alerts">
+					<div class="left_colm">
+						<h6>Send receipt after charge</h6>
+						<div class="block-col">
+							<div class="radio_input">
+								<input type="radio" name="receipt1" />
+								<label>Email</label>
+							</div>
+							<div class="radio_input">
+								<input type="radio" name="receipt1" />
+								<label>Mail</label>
+							</div>
+							<div class="radio_input">
+								<input type="radio" name="receipt1" />
+								<label>Text Message</label>
+							</div>
+						</div>
+					</div>
+					<div class="right_colm">
+						<h6>Send Alert One Day Before Charge</h6>
+						<div class="block-col">
+							<div class="radio_input">
+								<input type="radio" name="receipt2" />
+								<label>Email</label>
+							</div>
+							<div class="radio_input">
+								<input type="radio" name="receipt2" />
+								<label>Text Message</label>
+							</div>
+						</div>
+					</div>
+				</div>-->
+        <!-- added new-->
+        <div role="tabpanel" class="tab-pane fade" id="logs">
+          <div class="Schedule_log logs-data" *ngIf="changeLog != null">
+            <h3 class="">{{ "SHEDULELOGS" | translate }}</h3>
+            <span [innerHTML]="changeLog"></span><br />
+          </div>
+        </div>
+        <!--end new -->
+      </div>
+    </div>
+  </div>
+</div>

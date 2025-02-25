@@ -1,0 +1,56 @@
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+    <div class="modal-header-custom modal__custom_header">
+        <h4>Add phone Number</h4>
+        <span class="close_trigger" (click)="closePopup()" data-dismiss="modal"
+        >&times;</span
+      >
+    </div>
+    <div class="modal-content-custom modal__custom_content overflow-initial">     
+        <div class="data-set-form send_email">
+            <div class="data-set d-flex align-items-end">
+                <div class="form-group d-flex flex-column flex-fill colm-number">
+                    <label>{{'PHONENUMBER' | translate}}:</label>              
+                    <div class="input-group d-flex align-items-stretch flex-nowrap">
+
+                        <div class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{selectedFlag}}></i>{{dailingCode}}</a>
+                            <div class="dropdown-menu">
+                                <div class="from-scroll">
+                              <div class="form-check" *ngFor="let country of countries">
+                                <input type="radio" name="cellcountry" class="form-check-input d-none" id="Phone_{{country.countryCodeID}}" [value]="'Phone_'+country.countryCodeID" [(ngModel)]="selectedCountry"  (change)="onCountryChange(country.countryCodeID,country.dialingCode)">
+                                <label class="form-check-label" for="Phone_{{country.countryCodeID}}"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>		
+                                 </div>	
+                                </div>
+                            </div>
+                        </div>
+
+                        <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="inputPhoneNumber"
+                        name="receipt_phoneNumber"
+                        mask="(000) 000-0*"
+                        (focusout)="ValidPhone($event)"
+                        (keypress)="commonMethodService.numberOnly($event)"
+                        (keyup)="EnableAddButton($event)"
+                        />
+                    </div>             
+                </div> 
+                <div class="form-group d-flex flex-column form-label">
+                    <label>{{'LABEL' | translate}}:</label>
+                    <div class="input-group" [class.validation_border]="!isLabelSelected">
+                      <angular2-multiselect id="ddlPhone"
+                          [settings]="commonMethodService.setDropDownSettings('Choose',2,false,true,true)"
+                          [data]="phoneLabelArray"
+                          name="phoneArray"
+                          (onSelect)="onLabelSelect($event)"
+                          (onDeSelectAll)="onLabelDeSelect($event)"
+                          [(ngModel)]="selectedLabelArray">
+                      </angular2-multiselect>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-add"  [disabled]="isAdd || isPhoneNumberPopupClicked" (click)="addPhoneNumber()">{{'ADD' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

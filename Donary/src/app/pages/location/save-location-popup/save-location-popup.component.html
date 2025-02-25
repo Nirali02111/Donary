@@ -1,0 +1,183 @@
+<div class="create_reason" style="display:block" ngbAutofocus tabindex="-1">
+	<div class="modal-header modal__custom_header">
+		<h4>{{title}}</h4>
+		<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
+	</div>
+	<form  name="reasonInfoForm" (ngSubmit)="f.form.valid && SaveLocationInfo()" #f="ngForm" >
+   <div class="reason_wrap">
+	<div class="inside_wrap modal__custom_content">
+		@if(isloading){
+			<ng-container *ngFor="let item of skeletonitems">
+					<app-edit-skeleton-loader [theme1]="{ width: '130px', height: '35px' }" [theme2]="{ width: '440px', height: '35px' }"></app-edit-skeleton-loader>
+			  </ng-container>
+		}@else {
+        <div class="form-group-block">
+			<div class="block_label">
+			 {{'YIDDISHNAME'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<input 
+					type="text" 
+					class="input-text"  
+					[ngClass]="{ 'is-invalid': f.submitted && txtLocationNameJewish.invalid }" 
+					(keypress)="commonMethodService.HebrewOnly($event)"  
+					id="txtLocationNameJewish" 
+					[(ngModel)]="locationNameJewish"   
+					autofocus 
+					#txtLocationNameJewish="ngModel" 
+					name="txtLocationNameJewish"
+					(keypress)="commonMethodService.HebrewOnly($event)"
+					[required]="checkJewishLocation()"
+				/>
+				
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'ENGLISHNAME'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<input 
+					type="text" 
+					class="input-text"  
+					[ngClass]="{ 'is-invalid': f.submitted && txtLocationName.invalid }"  
+					id="txtLocationName" 
+					[(ngModel)]="locationName"   
+					#txtLocationName="ngModel" 
+					name="txtLocationName"
+					(keypress)="commonMethodService.EnglishOnly($event)"
+					[required]="checkLocationName()"
+					[ngClass]="[(txtLocationNameJewish.touched && txtLocationNameJewish.invalid) || (txtLocationName.touched && txtLocationName.invalid) ? 'error-field' : '']"
+				/>	
+				<div  *ngIf="(txtLocationNameJewish.touched && txtLocationNameJewish.invalid) || (txtLocationName.touched && txtLocationName.invalid)" class="row text-danger">
+					<div  class="val-error">{{'FROMYIDDISHNAMEREQUIRED'|translate}}</div>
+				</div>
+		  
+			</div>
+		</div>
+
+
+		<!-- <div class="form-group-block" *ngIf="(txtLocationNameJewish.touched && txtLocationNameJewish.invalid) || (txtLocationName.touched && txtLocationName.invalid)">
+            <div class="block_label"></div>
+            <div class="block_inputs">
+              <div class="form-group">
+                <div class="colm colm-12">
+				  <div class="row text-danger">
+					<div  class="val-error">
+						From Yiddish Name and English Name any one of is required
+					</div>
+				  </div>
+                </div>                                   
+              </div>
+            </div>
+        </div> -->
+
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'LOCATIONTYPE'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<div class="input_single">                      
+					<angular2-multiselect 
+					[settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+					[data]="commonMethodService.locationTypeList"  id="drpLocationType"
+					[ngClass]="[locationTypeId.length==0 ? 'error-field' : '']"
+					#drpLocationType="ngModel" name="drpLocationType" (onDeSelectAll)="locationTypeId.length=0"
+					[(ngModel)]="locationTypeId">
+				</angular2-multiselect>
+				
+				</div>
+				<div *ngIf="locationTypeId.length==0" class="row text-danger">
+					<div  class="val-error">{{'LOCATIONTYPE' |translate}} {{'ISREQUIRED' |translate}}</div>
+				  </div>
+			</div>
+		</div>	
+        <div class="form-group-block">
+			<div class="block_label">
+				{{'SHORTNAME' |translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" class="input-text"  [ngClass]="{ 'is-invalid': f.submitted && txtShortName.invalid }"  id="txtShortName" [(ngModel)]="shortName"   #txtShortName="ngModel" name="txtShortName"  />				
+			</div>
+		</div>
+
+        <div class="form-group-block">
+            <div class="block_label arrow_trigger">{{'PRIMARYADDRESS'|translate}}:</div>
+            <div class="block_inputs">
+              <div class="form-group">
+                <div class="colm colm-12">
+                  <input type="text" class="input-text" appAddressAutocomplete  (onAddressChange)="onOrgAddressChange($event)" [ngClass]="[(txtAddress.touched && txtAddress.invalid) ? 'error-field' : '']" id="txtAddress" required placeholder="{{'ADDRESS'|translate}}"  [(ngModel)]="address"   #txtAddress="ngModel" name="txtAddress"  />
+				  <div *ngIf="txtAddress.touched && txtAddress.invalid" class="row text-danger">
+					<div  class="val-error">{{'ADDRESSREQUIRED'|translate}}</div>
+				  </div>
+				  @if(isNotValidAddress){
+
+					  <div class="row text-danger">
+						<div  class="val-error">Please select address from google result</div>
+					  </div>
+				  }
+                </div>                                   
+              </div>
+              <div class="form-group primary_address">
+                <div class="colm colm-12">
+                  <input type="text" class="input-text" [ngClass]="[(txtCityStateZip.touched && txtCityStateZip.invalid) ? 'error-field' : '']" placeholder="{{'CITYSTATEZIP'|translate}}"  required [(ngModel)]="cityStateZip" id="txtCityStateZip"   #txtCityStateZip="ngModel" name="txtCityStateZip"  />
+				  <div *ngIf="txtCityStateZip.touched && txtCityStateZip.invalid" class="row text-danger">
+					<div  class="val-error">{{'CITY' |translate}} {{'STATE' |translate}} {{'AND' |translate}} {{'ZIP' |translate}} {{'ISREQUIRED' |translate}}</div>
+				  </div>
+                </div>                                                
+              </div>
+            </div>
+          </div>
+				
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'RABBI'|translate}}:
+			</div>
+			<div class="block_inputs">
+				<input type="text" class="input-text"  [ngClass]="{ 'is-invalid': f.submitted && txtRabbi.invalid }"  id="txtRabbi" [(ngModel)]="rabbi"    #txtRabbi="ngModel" name="txtRabbi"  />
+			</div>
+		</div>
+		<div class="form-group-block">
+			<div class="block_label">
+				{{'PHONE'|translate}}:
+			</div>
+			<div class="block_inputs colm-number">
+				<div class="d-flex align-items-stretch">
+				<div class="dropdown">
+            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{selectedFlag}}></i>{{dailingCode}}</a>
+            <div class="dropdown-menu">
+			  <div class="form-check" *ngFor="let country of countries">
+				<input type="radio" name="cellcountry" class="form-check-input d-none" id="Phone_{{country.countryCodeID}}" [value]="'Phone_'+country.countryCodeID" [(ngModel)]="selectedCountry"   (change)="onCountryChange(country.countryCodeID,country.dialingCode)">
+				<label class="form-check-label" for="Phone_{{country.countryCodeID}}"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>		
+			   </div>	
+            </div>
+          </div>
+				<input type="text" class="input-text phone-field" [ngClass]="{ 'is-invalid': f.submitted && txtPhone.invalid }"  id="txtPhone" [(ngModel)]="phone" #txtPhone="ngModel" name="txtPhone" 
+					[validation]="true" 
+					mask="(000) 000-000099999"
+				 />
+				</div>
+				 <div class="row text-danger" *ngIf="txtPhone.invalid">
+					<div class="val-error">{{'PHONEINVALID'|translate}}</div>
+				  </div>
+			</div>
+		</div>		
+		}</div>
+
+	<div class="btn_info modal__custom_footer">
+		<div class="left_part">
+			<button class="btn btn-remove" type="button" (click)="deleteLocation()"*ngIf="isEditMode">{{'DELETE'|translate}}</button>
+		</div>
+		<div class="right_part">			
+			<button class="btn btn-primary" [disabled]="!f.form.valid || locationTypeId.length==0" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
+			<button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+		</div>
+	</div>
+   </div>
+</form>
+<div *ngIf="commonMethodService.loaderSearch" class="card-overlay" >
+	<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+</div>
+
+

@@ -1,0 +1,210 @@
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+  <div class="modal-header-custom modal__custom_header">
+    <h4>{{title}}</h4>
+    <span class="close_trigger" (click)="closePopup()" data-dismiss="modal"
+      >&times;</span
+    >
+  </div>
+
+    <form  [formGroup]="formGroup" (ngSubmit)="SaveWallet()">
+    <div class="modal-content-custom modal__custom_content">
+  <div class="payment-method">
+    <label *ngIf="isAdd">{{'SELECT' | translate}} {{'PAYMENT' | translate}} {{'METHOD' | translate}}:</label>
+    <label *ngIf="!isAdd" class="mb-0">{{'PAYMENT' | translate}} {{'METHOD' | translate}}:</label> <span *ngIf="!isAdd" class="payment-type-option">{{walletType}}</span>
+    <ul class="nav nav-tabs p-0 justify-content-between" *ngIf="isAdd">
+      <li>
+          <input id="id_card" type="radio"  formControlName="optionType" value="card" />
+          <label for="id_card">{{'CARD' | translate}}</label>
+      </li>
+      <li>
+          <input id="id_ach" type="radio" formControlName="optionType" value="ach"/>
+          <label for="id_ach">ACH</label>
+      </li>
+      <li>
+          <input id="id_token" type="radio" formControlName="optionType" value="token" />
+          <label for="id_token">{{'Token' | translate}}</label>
+      </li>
+    </ul>
+  </div>
+  <div class="set-default ae-checkbox with-label" *ngIf="!(OptionType.value === 'ach')">
+    <input type="checkbox" id="payment_method"  formControlName="isPrimary"/>
+    <label for="payment_method">{{'DEFAULTPAYMENTMETHOD' | translate}}</label>
+  </div>
+  <div class="tab-content">
+    <div class="tab-pane " id="payment-card" [class.active]="OptionType.value === 'card'">
+      <div class="data-set-form">
+        <div class="form-group">
+          <label>{{'CARDNAME'|translate}}:</label>
+          <div class="input-group">
+            <input type="text" formControlName="accountName" class="form-control" id="waccountName"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'CARDNUMBER'|translate}}:</label>
+          <div class="input-group ccNum_input">
+            <input type="text" class="form-control" formControlName="accountNumber"   id="wcardNumber"   [showMaskTyped]="true" (input)="CardReader()" (focusin)="!isEditable && ChangeMask()" [mask]="maskValue"  [readonly]="isEditable" (focusout)="!isEditable && MaskNumber()" (keyup)="!isEditable && ValidateCard($event)"
+            [class.is-invalid]="AccountNumberControl?.touched && AccountNumberControl?.invalid || isInvalid"/>
+            <span class="edit_icon" *ngIf="isEditable" (click)="EditCardNumber()" ></span>
+            <ng-container *ngIf="AccountNumberControl?.touched && AccountNumberControl?.invalid">
+              <app-input-error [errors]="AccountNumberControl?.errors"></app-input-error>
+            </ng-container>
+            <ng-container *ngIf="isInvalid">
+              <div class="row text-danger error-container">
+                <div class="val-error">Invalid Card</div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group validity_row">
+          <div class="colm expiration">
+            <label>{{'EXPIRATIONDATE'|translate}}:</label>
+            <div class="input-group">
+               <input
+                type="text" formControlName="expiryDate"
+                name="wexpiryDate"
+                mask="00/00"
+                id="expiryDate"
+                (keyup)="EnterExpiryDate($event)"
+                (focusout)="ValidExpiryDate($event)"
+                [showMaskTyped]="true"
+                class="form-control"
+                [class.is-invalid]="ExpiryDateControl?.touched && ExpiryDateControl?.invalid"/>
+                <ng-container *ngIf="ExpiryDateControl?.touched && ExpiryDateControl?.invalid">
+                  <app-input-error [errors]="ExpiryDateControl?.errors"></app-input-error>
+                </ng-container>
+              <span class="val-exp-error text-danger" *ngIf="isInValid">{{'INVALIDEXPIRY'|translate}}</span>
+
+            </div>
+          </div>
+          <div class="colm cvv"  *ngIf="isCvvVisible">
+            <label>{{'CVV'|translate}}:</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cardCVV"
+                name="wCardCVV"
+                id="wCardCVV"
+                [minlength]="cvvMaxLength"
+                [maxlength]="cvvMaxLength"
+                (keypress)="commonMethodService.numberOnly($event)"/>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <span class="billing_address">{{'BILLINGADDRESS'|translate}}</span>
+        <div class="form-group">
+          <label>{{'ADDRESS'|translate}}:</label>
+          <div class="input-group">
+            <input type="text" formControlName="billingAddress1" class="form-control"   name="waddressLine1"  id="waddressLine1"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'ADDRESS'|translate}} {{'LINE'|translate}} 2:</label>
+          <div class="input-group">
+            <input type="text" class="form-control"   formControlName="billingAddress2"   id="waddressLine2"/>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isZipVisible">
+          <label>{{'BILLINGZIP'|translate}}:</label>
+          <div class="input-group">
+            <input type="text" class="form-control" formControlName="billingZip"  name="wbillingZip"  id="wbillingZip"
+            (keypress)="commonMethodService.numberOnly($event)"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="payment-ach" [class.active]="OptionType.value === 'ach'">
+      <div class="data-set-form">
+        <div class="form-group">
+          <label>{{'BANKTYPE' | translate}}:</label>
+          <div class="input-group bank-type">
+              <input type="radio" value="Personal" formControlName="checkType"  id="personal" class="d-none"  />
+              <label for="personal" class="mr-2">
+                <svg viewBox="-42 0 512 512.002" xmlns="http://www.w3.org/2000/svg"><path d="m210.351562 246.632812c33.882813 0 63.222657-12.152343 87.195313-36.128906 23.972656-23.972656 36.125-53.304687 36.125-87.191406 0-33.875-12.152344-63.210938-36.128906-87.191406-23.976563-23.96875-53.3125-36.121094-87.191407-36.121094-33.886718 0-63.21875 12.152344-87.191406 36.125s-36.128906 53.308594-36.128906 87.1875c0 33.886719 12.15625 63.222656 36.132812 87.195312 23.976563 23.96875 53.3125 36.125 87.1875 36.125zm0 0"/><path d="m426.128906 393.703125c-.691406-9.976563-2.089844-20.859375-4.148437-32.351563-2.078125-11.578124-4.753907-22.523437-7.957031-32.527343-3.308594-10.339844-7.808594-20.550781-13.371094-30.335938-5.773438-10.15625-12.554688-19-20.164063-26.277343-7.957031-7.613282-17.699219-13.734376-28.964843-18.199219-11.226563-4.441407-23.667969-6.691407-36.976563-6.691407-5.226563 0-10.28125 2.144532-20.042969 8.5-6.007812 3.917969-13.035156 8.449219-20.878906 13.460938-6.707031 4.273438-15.792969 8.277344-27.015625 11.902344-10.949219 3.542968-22.066406 5.339844-33.039063 5.339844-10.972656 0-22.085937-1.796876-33.046874-5.339844-11.210938-3.621094-20.296876-7.625-26.996094-11.898438-7.769532-4.964844-14.800782-9.496094-20.898438-13.46875-9.75-6.355468-14.808594-8.5-20.035156-8.5-13.3125 0-25.75 2.253906-36.972656 6.699219-11.257813 4.457031-21.003906 10.578125-28.96875 18.199219-7.605469 7.28125-14.390625 16.121094-20.15625 26.273437-5.558594 9.785157-10.058594 19.992188-13.371094 30.339844-3.199219 10.003906-5.875 20.945313-7.953125 32.523437-2.058594 11.476563-3.457031 22.363282-4.148437 32.363282-.679688 9.796875-1.023438 19.964844-1.023438 30.234375 0 26.726562 8.496094 48.363281 25.25 64.320312 16.546875 15.746094 38.441406 23.734375 65.066406 23.734375h246.53125c26.625 0 48.511719-7.984375 65.0625-23.734375 16.757813-15.945312 25.253906-37.585937 25.253906-64.324219-.003906-10.316406-.351562-20.492187-1.035156-30.242187zm0 0"/></svg>
+                {{'PERSONAL' | translate}}
+              </label>
+              <input type="radio" value="Business" formControlName="checkType"  id="business" class="d-none" />
+              <label for="business">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve"> <g> <g> <g> <path d="M472,464h-48V200c0-4.418-3.582-8-8-8H304V8c0-4.418-3.582-8-8-8H88c-4.418,0-8,3.582-8,8v456H8c-4.418,0-8,3.582-8,8 s3.582,8,8,8h464c4.418,0,8-3.582,8-8S476.418,464,472,464z M168,464h-32v-72c0-4.418,3.582-8,8-8h16c4.418,0,8,3.582,8,8V464z M200,200v264h-16v-72c0-13.255-10.745-24-24-24h-16c-13.255,0-24,10.745-24,24v72H96V16h192v176h-80 C203.582,192,200,195.582,200,200z M408,464H216V208h192V464z"/> <path d="M256,112h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8v-48C264,115.582,260.418,112,256,112z M248,160h-32v-32h32V160z"/> <path d="M256,32h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8V40C264,35.582,260.418,32,256,32z M248,80h-32V48h32V80z"/> <path d="M176,112h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8v-48C184,115.582,180.418,112,176,112z M168,160h-32v-32h32V160z"/> <path d="M176,32h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8V40C184,35.582,180.418,32,176,32z M168,80h-32V48h32V80z"/> <path d="M176,192h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8v-48C184,195.582,180.418,192,176,192z M168,240h-32v-32h32V240z"/> <path d="M176,272h-48c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h48c4.418,0,8-3.582,8-8v-48C184,275.582,180.418,272,176,272z M168,320h-32v-32h32V320z"/> <path d="M328,368h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C320,364.418,323.582,368,328,368z M336,320h32v32h-32V320z"/> <path d="M328,288h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C320,284.418,323.582,288,328,288z M336,240h32v32h-32V240z"/> <path d="M328,448h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C320,444.418,323.582,448,328,448z M336,400h32v32h-32V400z"/> <path d="M248,368h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C240,364.418,243.582,368,248,368z M256,320h32v32h-32V320z"/> <path d="M248,288h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C240,284.418,243.582,288,248,288z M256,240h32v32h-32V240z"/> <path d="M248,448h48c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-48c-4.418,0-8,3.582-8,8v48C240,444.418,243.582,448,248,448z M256,400h32v32h-32V400z"/> </g> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>
+                {{'BUSINESS' | translate}}
+              </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'ACCOUNT' | translate}} {{'TYPE' | translate}}:</label>
+          <div class="input-group d-flex justify-content-start">
+            <div class="form-check pl-0 mr-4">
+              <input type="radio" value="CHECKING" formControlName="accountType"  id="checking" class="d-none" />
+              <label for="checking">{{'CHECKING' | translate}}</label>
+            </div>
+            <div class="form-check pl-0">
+              <input type="radio" value="SAVINGS" formControlName="accountType"  id="saving" class="d-none" />
+              <label for="saving">{{'SAVINGS' | translate}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'NAME' | translate}} {{'ON' | translate}} {{'ACCOUNT' | translate}}:</label>
+          <div class="input-group">
+            <input type="text" formControlName="accountName" class="form-control" id="waccountName"
+            [class.is-invalid]="AccountNameControl?.touched && AccountNameControl?.invalid"/>
+            <ng-container *ngIf="AccountNameControl?.touched && AccountNameControl?.invalid">
+              <app-input-error [errors]="AccountNameControl?.errors"></app-input-error>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'ROUNTINGNUMBER' | translate}}:</label>
+          <div class="input-group">
+            <input type="tel"  class="form-control" mask="000000000"
+            formControlName="routingNumber" id="routingNumber"
+            [class.is-invalid]="RoutingNumberControl?.touched && RoutingNumberControl?.invalid" />
+            <ng-container *ngIf="RoutingNumberControl?.touched && RoutingNumberControl?.invalid">
+              <app-input-error [errors]="RoutingNumberControl?.errors"></app-input-error>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{'ACCOUNTNUMBER' | translate}}:</label>
+          <div class="input-group ccNum_input">
+            <input  type="tel"  [mask]="accountNumberMask"
+            class="form-control" formControlName="accountNumber" [readonly]="isEditable"
+            [class.is-invalid]="AccountNumberControl?.touched && AccountNumberControl?.invalid" />
+            <span class="edit_icon" *ngIf="isEditable" (click)="editAccountNumber()" ></span>
+            <ng-container *ngIf="AccountNumberControl?.touched && AccountNumberControl?.invalid">
+              <app-input-error [errors]="AccountNumberControl?.errors"></app-input-error>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="payment-token" [class.active]="OptionType.value === 'token'">
+      <div class="data-set-form">
+        <div class="form-group flex-wrap">
+          <label class="w-100 mt-0">{{'ENTERAPITOPKEN' | translate}}:</label>
+          <div class="input-group w-100 mw-100 payment-token ccNum_input">
+            <input type="text" formControlName="token" placeholder="Token text" class="form-control"
+            [class.is-invalid]="TokenControl?.touched && TokenControl?.invalid" [readonly]="isEditableToken"/>
+            <span class="edit_icon" *ngIf="isEditableToken"  (click)="editToken()"></span>
+            <ng-container *ngIf="TokenControl?.touched && TokenControl?.invalid">
+              <app-input-error [errors]="TokenControl?.errors"></app-input-error>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+ <div class="modal-custom-footer space-between modal__custom_footer">
+   <button class="remove-wallet"  type="button"  (click)="deleteWallet(walletId)">{{'REMOVEWALLET'|translate}}</button>
+  <button class="btn btn-primary" [disabled]="!formGroup.valid || ( isInValid || isInvalid)" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
+  <button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+</div>
+</form>
+  <div *ngIf="isloading" class="card-overlay" >
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+
+</div>

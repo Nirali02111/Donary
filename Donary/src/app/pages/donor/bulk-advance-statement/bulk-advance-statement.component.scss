@@ -1,0 +1,50 @@
+.popup-send-mail-btn-disable {
+    background: rgb(123, 91, 196, 0.5) 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    width: 154px;
+    height: 50px;
+    font: normal normal 900 17px/23px Avenir;
+    letter-spacing: 0px;
+    color: #fff;
+}
+
+.showInvalid {
+    color: #E23C3C;
+}
+
+.fa-info-circle::before {
+    opacity: 0.5;
+}
+
+.fa-info-circle::after {
+    line-height: 1.5;
+    top: -4px;
+    left: inherit;
+    right: calc(100% + 4px);
+    height: fit-content;
+    display: inline-block;
+}
+
+.z-1 {
+    z-index: 11111;
+}
+
+.z-2 {
+    z-index: 11112;
+}
+
+.show_entry {
+    margin-top: 0;
+    font: normal normal 500 16px/22px Avenir;
+    color: #464549;
+}
+
+.show_entry strong {
+    font-family: 'Avenir';
+    font-weight: 500;
+}
+
+.modal_custom_footer small {
+    font: normal normal 500 14px/20px Avenir;
+    color: #E23C3C;
+}

@@ -1,0 +1,50 @@
+<div class="overlay" *ngIf="isLoading">
+  <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+<div *ngIf="!isLoading">
+  <div class="custom-radio-btn" id="dynamicData">
+      <ul>
+        <li>
+          <label for="dateCreated">
+            <input type="radio" id="dateCreated" checked="checked"  name="date-selection" value="true" (change)="setValueCustomRadio(true)" />
+            <span>Payment Date</span>
+          </label>
+        </li>
+        <li>
+          <label for="dateSelected">
+            <input type="radio" id="dateSelected" name="date-selection" value="false" (change)="setValueCustomRadio(false)"/>
+            <span>Date Created</span>
+          </label>
+        </li>
+      </ul>
+  </div>
+  <input
+      type="text"
+      class="form-control"
+      ngxDaterangepickerMd
+      [(ngModel)]="selectedDateRange"
+      [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
+      [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+      [ranges]="
+      commonMethodService.isHebrew == true
+          ? commonMethodService.hebranges
+          : commonMethodService.ranges
+      "
+      [linkedCalendars]="commonMethodService.linkedCalendars"
+      [opens]="commonMethodService.open"
+      [drops]="commonMethodService.drop"
+      [locale]="
+      commonMethodService.isHebrew == true
+          ? commonMethodService.heblocale
+          : commonMethodService.locale
+      "
+      [showClearButton]="commonMethodService.showClearButton"
+      [showRangeLabelOnInput]="
+      commonMethodService.showRangeLabelOnInput
+      "
+      [showRangeLabelOnInput]="true"
+      [placeholder]="commonMethodService.placeholder"
+      (datesUpdated)="change($event)"
+    
+  />
+</div>

@@ -1,0 +1,190 @@
+<h4 class="modal-title">Filter your report</h4>
+
+<a href="javascript:void(0)" class="close" aria-label="Close" (click)="closePopup()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5" viewBox="0 0 15.5 15.5">
+    <g id="Group_2865" data-name="Group 2865" transform="translate(1.214 0.75)">
+      <path id="Union_42" data-name="Union 42" d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z" transform="translate(-0.464)"
+        fill="none" stroke="#434246" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" opacity="0.45" />
+    </g>
+  </svg>
+</a>
+
+<div class="form-float">
+  <div class="row" [formGroup]="filterFormgroup">
+    <ng-container *ngIf="filterParamList && filterParamList.length > 0">
+      <div class="col-12" [ngClass]="{
+          'col-sm-6 line': item.get('uiDataType')?.value == 'DateTime'
+        }" *ngFor="let item of ReportParams?.controls; let i = index" formArrayName="reportParam">
+        <ng-container *ngIf="item.get('uiDataType')?.value as uiDataType">
+        
+        <div class="form-floating" [ngClass]="{'form-error': checkError(i)}" [formGroupName]="i">
+          <ng-container *ngIf="uiDataType === 'string'">
+            <input type="text" class="form-control" formControlName="inputValue" [placeholder]="paramDisplayName" />
+            <ng-container [ngTemplateOutlet]="paramDisplayName" [ngTemplateOutletContext]="{item}"></ng-container>
+            @if(checkError(i)){
+            <small class="error">{{item.get("parameterDisplayName").value}} is required</small>
+            }
+          </ng-container>
+
+          <ng-container *ngIf="uiDataType === 'INT'&&
+              !item.get('name')?.value.toLowerCase().includes('eventid')">
+            <input type="tel" class="form-control" mask="9*" formControlName="inputValue"
+              [placeholder]="paramDisplayName" />
+            <ng-container [ngTemplateOutlet]="paramDisplayName" [ngTemplateOutletContext]="{item}"></ng-container>
+            @if(checkError(i)){
+            <small class="error">{{item.get("parameterDisplayName").value}} is required</small>
+            }
+          </ng-container>
+        
+          <ng-container *ngIf="
+                      uiDataType == 'DateTime' &&
+                     ( item.get('name')?.value.toLowerCase().includes('dtfrom') || item.get('name')?.value.toLowerCase().includes('fromdate'))
+                    ">
+            <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="pageName" [data]="selectedDateRangeFrom"
+                [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+            </ng-template>
+            <div class="searchbar applybtn_blink" (click)="openFromHebrewCalendarPopup(p1)"
+              (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" popoverClass="calender-modal"
+              container="body" [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false"
+              placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dynamicsCalender"
+              (click)="bindDateValue(item.get('inputValue'))">
+
+              <input type="text" class="form-control" formControlName="inputValue" [placeholder]="FromEngHebCalPlaceholder" />
+              <ng-container [ngTemplateOutlet]="paramDisplayName" [ngTemplateOutletContext]="{item}"></ng-container>
+              <ng-container [ngTemplateOutlet]="calendarIcon"></ng-container>
+              
+              @if(checkError(i)){
+              <small class="error">{{item.get("parameterDisplayName").value}} is required</small>
+              }
+            </div>
+          </ng-container>
+        
+          <ng-container *ngIf="
+                      uiDataType == 'DateTime' &&
+                     ( item.get('name')?.value.toLowerCase().includes('dtto') || item.get('name')?.value.toLowerCase().includes('todate'))
+                    ">
+            <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="pageName" [data]="selectedDateRangeTo"
+                [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+            </ng-template>
+            <div class="searchbar applybtn_blink" (click)="openToHebrewCalendarPopup(p1)"
+              (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover" popoverClass="calender-modal"
+              container="body" [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false"
+              placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dynamicsCalender"
+              (click)="bindDateValue(item.get('inputValue'))">
+              <input type="text" class="form-control" formControlName="inputValue" [placeholder]="ToEngHebCalPlaceholder" />
+              <ng-container [ngTemplateOutlet]="paramDisplayName" [ngTemplateOutletContext]="{item}"></ng-container>
+              <ng-container [ngTemplateOutlet]="calendarIcon"></ng-container>
+              @if(checkError(i)){
+              <small class="error">{{item.get("parameterDisplayName").value}} is required</small>
+              }
+            </div>
+          </ng-container>
+        
+          <ng-container *ngIf="item.get('uiControl')?.value?.toLowerCase() as uiControl">
+            <ng-container *ngIf="item.get('parameterDisplayName').value as displayName">
+              <ng-container *ngIf="uiControl == 'multiselectdropdown' || uiControl == 'singleselectdropdown'">
+                <div class="input-group" [ngClass]="{'fill':item.get('inputValue')?.value?.length > 0}">
+                  @if(item.get('uiDataType').value != 'Campaign'){
+                  <angular2-multiselect class="dropdown-multiselect" #dropdwonReports [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          2,
+                          false,
+                          uiControl == 'singleselectdropdown',
+                          false,
+                          true,
+                          'bottom',
+                          false,
+                          false,
+                          ''
+                        )
+                      " (onSelect)="handleSelection(dropdwonReports)" (onDeSelect)="handleSelection(dropdwonReports)"
+                    (onSelectAll)="selectAll(dropdwonReports)" [data]="getListData(item.get('uiDataType').value,displayName)"
+                    formControlName="inputValue" (onOpen)="toggleLabelClass(dropdwonReports,true)"
+                    (onClose)="toggleLabelClass(dropdwonReports,false)" (onDeSelectAll)="deselectAll(item,dropdwonReports)">
+                    <c-item *ngIf="
+                          uiDataType == 'Reason'
+                        ">
+                      <ng-template let-_item="item">
+                        <label [ngClass]="
+                              contains_heb(_item.itemName)
+                                ? 'heb-dropdown-title'
+                                : 'simple-dropdown-title'
+                            ">
+                          {{ _item.itemName }}
+                          <span [ngClass]="
+                                contains_heb(_item.itemName)
+                                  ? 'heb-dropdown-num'
+                                  : 'simple-dropdown-num'
+                              ">{{ _item.num }}</span></label>
+                        <span class="heb-dropdown-status" *ngIf="uiDataType == 'Campaign'">{{
+                          _item.status }}</span>
+                      </ng-template>
+                    </c-item>
+                  </angular2-multiselect>
+                  }
+                  @else {
+                  <angular2-multiselect class="dropdown-multiselect" formControlName="inputValue" #campaignReports
+                    [settings]="uiControl == 'singleselectdropdown' ? getDropdownSetting() : DrpSettings"
+                    (onSelect)="selectChildCampaigns($event,campaignReports,uiControl == 'singleselectdropdown');expandChildCampaigns($event,true)"
+                    (onDeSelect)="deselectChildCampaigns($event,campaignReports)"
+                    [data]="campaignsObj['show'+displayName] ? getListData('Campaign',displayName) : []"
+                    (onSelectAll)="selectAll(campaignReports);" (onDeSelectAll)="deselectAll(item,campaignReports)"
+                    (onClose)="preserveCampaigns(displayName)" (onOpen)="allowData(displayName)">
+        
+                    <c-item>
+                      <ng-template let-item="item">
+                        <span [class]="'campaign-level-' + item.level"> {{item.itemName}} </span>
+                        @if(item?.children?.length > 0 ){
+                        <button
+                          (click)="item.children[0].visibility ? collapseChildCampaigns(item) : expandChildCampaigns(item,false); $event.stopPropagation()">
+                          {{item.children[0].visibility ? '&#45;' : '&#43;' }} </button>
+                        }
+                      </ng-template>
+                    </c-item>
+                  </angular2-multiselect>
+                  }
+                  <ng-container [ngTemplateOutlet]="paramDisplayName" [ngTemplateOutletContext]="{item}"></ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+      </div>
+    </ng-container>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-primary" (click)="filterReports()" >
+      {{ ("RUN" | translate) + " " + ("REPORT" | translate) }}
+    </button>
+  </div>
+</div>
+
+
+<ng-template #paramDisplayName let-item="item">
+  <label class="form-label">{{
+    item.get("parameterDisplayName").value
+    ? item.get("parameterDisplayName").value
+    : item.get("name")?.value
+    }}:</label>
+</ng-template>
+
+<ng-template #calendarIcon>
+  <i class="icon-input">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18.333" height="20.203" viewBox="0 0 18.333 20.203">
+      <g id="Icon_feather-calendar" data-name="Icon feather-calendar" transform="translate(0.75 0.75)">
+        <path id="Path_1538" data-name="Path 1538"
+          d="M6.37,6H19.463a1.851,1.851,0,0,1,1.87,1.83V20.643a1.851,1.851,0,0,1-1.87,1.83H6.37a1.851,1.851,0,0,1-1.87-1.83V7.83A1.851,1.851,0,0,1,6.37,6Z"
+          transform="translate(-4.5 -3.77)" fill="none" stroke="#9d9d9f" stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="1.5" />
+        <path id="Path_1539" data-name="Path 1539" d="M24,3V7.459" transform="translate(-11.843 -3)" fill="none"
+          stroke="#9d9d9f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+        <path id="Path_1540" data-name="Path 1540" d="M12,3V7.459" transform="translate(-7.324 -3)" fill="none"
+          stroke="#9d9d9f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+        <path id="Path_1541" data-name="Path 1541" d="M4.5,15H21.333" transform="translate(-4.5 -7.519)" fill="none"
+          stroke="#9d9d9f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+      </g>
+    </svg>
+  </i>
+</ng-template>

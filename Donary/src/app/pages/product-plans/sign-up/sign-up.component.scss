@@ -1,0 +1,57 @@
+.thank-you-inside {
+    text-align: center;
+}
+.thank-you-inside .handshake-img img {
+    max-width: 143px;
+}
+.thank-you-title h2 {
+    line-height: normal;
+    margin: 0;
+    color: #434246;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 12px;
+}
+.thank-you-title p {
+    line-height: 20px;
+    font-size: 16px;
+    color: #69696A;
+    max-width: 480px;
+    margin: 0 auto;
+    font-weight: 500;
+}
+.thank-you-main .thank-you-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+.thank-you-action .btn-reg {
+    padding: 9px 30px 11px;
+    max-width: 185px;
+    width: 100%;
+    margin-right: 5px;
+}
+.thank-you-main .thank-you-title {
+    margin-top: 20px;
+}
+.thank-you-action .btn-shoping {
+    border: 2px solid #7B5BC4;
+    border-radius: 5px;
+    background: transparent;
+    font-size: 16px;
+    color: #7B5BC4;
+    font-weight: 500;
+    padding: 8px 20px;
+    max-width: 185px;
+    width: 100%;
+    margin-left: 5px;
+    transition: 0.3s;
+}
+.thank-you-action .btn-shoping:hover{
+    background:#dcd2f0;
+}
+.thank-you-main {
+    width: 100%;
+    display: block;
+    clear: both;
+}

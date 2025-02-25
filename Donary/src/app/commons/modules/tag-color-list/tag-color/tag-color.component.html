@@ -1,0 +1,42 @@
+<div class="form-floating position-relative fill">
+
+    <div class="field_group">
+        <div class="dropdown">
+            <div class="tag_select_wrap" [class.active]="isOpen">
+
+                <!-- Selected Color -->
+                <ul class="default_option" (click)="openDropdown()">
+                    <ng-container *ngIf="selected;else defaultColorTemplate">
+                        <li>
+                            <div [class]="'option' + ' ' + selected">
+                                <div class="icon"></div>
+                                <p>{{displayTagColorName()}}</p>
+                            </div>
+                        </li>
+                    </ng-container>
+                    <ng-template #defaultColorTemplate>
+                        <li>
+                            <div class="option grey">
+                                <div class="icon"></div>
+                                <p>Choose Color</p>
+                            </div>
+                        </li>
+                    </ng-template>
+                </ul>
+
+                <!-- Color list -->
+                <ul class="select_ul">
+                    <ng-container *ngFor="let item of colors">
+                        <li (click)="selectColor(item.code)">
+                            <div [class]="'option' + ' ' + item.code">
+                                <div class="icon"></div>
+                                <p>{{item.name}}</p>
+                            </div>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <label class="form-label">Tag Color:</label>
+</div>

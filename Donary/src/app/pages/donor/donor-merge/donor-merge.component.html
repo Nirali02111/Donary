@@ -1,0 +1,236 @@
+<div class="merge_popups_wrapper" ngbAutofocus  tabindex="-1">
+	<div class="title_stripbar">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="badge_bar">
+					<h2>{{'PRIMARY' | translate}}</h2>
+				</div>
+			</div>
+			<div class="col-sm-8">
+				<div class="badge_bar">
+					<h3>{{'SUB' | translate}}</h3>
+				</div>
+
+				<div class="input-group search_input">
+					<input class="form-control float-right"
+							id="donorSearch" name="donorSearch"
+							[(ngModel)]="searchValue"
+							placeholder="{{'SEARCHDONOR' | translate}}" type="text"
+							(keyup)="searchInDonor($event)"/>
+				</div>
+			</div>
+
+
+
+			<button type="button" class="btn btn-primary" [disabled]="isProcessBtnDisable()" (click)="onProcess()">{{'PROCESS' | translate}}</button>
+			<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
+		</div>
+	</div>
+
+	<div class="popup_content_wrap">
+		<!-- Item -->
+		<ng-container *ngFor="let item of listGridData; let i = index">
+			<div  [ngClass]="dynamicSetclass ==i ? 'row' : 'row  disabled-animation' " id="{{i}}" class="dynamicCls-{{i}} remove-data">
+				<div class="col-sm-4">
+					<div class="primary_pop">
+						<div class="pop_head">
+							<div class="left_title">
+								<h3>{{'PRIMARYCARD' | translate}}</h3>
+								<!-- <p style="cursor: pointer" (click)="openDonorCardPopup(item.accountId1)">{{ item.accountNum }}</p> -->
+								<p [ngStyle]="item.accountId1 ?{'cursor': 'pointer'} : null" (click)="openDonorCardPopup(item.accountId1,'accountId1')">{{ item.accountNum }}</p>
+							</div>
+
+							<div class="number_sect" *ngIf="getSelectedCount(item)" (click)="onExtractClick(item)">
+								<span class="number_lbl">{{ getSelectedCount(item) }}</span>
+								<i class="cross_icon"></i>
+							</div>
+							<div class="right_head">
+								<p [ngStyle]="item.accountId1 ?{'cursor': 'pointer'} : null" style="color:#7b5bc4 ;" (click)="openDonorCardPopup(item.accountId1,'accountId1')">{{ item.fullName }}</p>
+								<p class="lang_hebrew" [ngStyle]="item.accountId1 ?{'cursor': 'pointer'} : null" style="color:#7b5bc4 ;" (click)="openDonorCardPopup(item.accountId1,'accountId1')"> {{ item.fullNameJewish }}</p>
+							</div>
+						</div>
+
+						<div class="pop_content family_wrap">
+							<div class="left_title">
+								<h3><ng-template [ngTemplateOutlet]="fatherInLaNameTemp" [ngTemplateOutletContext]="{item: { fatherInLawNameJewish: item.fatherInLawNameJewish}}"></ng-template>
+									<ng-container *ngFor="let fatherInLaName of getMergedFatherInLawName(item)">
+										<ng-template [ngTemplateOutlet]="fatherInLaNameTemp" [ngTemplateOutletContext]="{item: fatherInLaName}"></ng-template>
+									</ng-container>
+								</h3>
+							   <p>:חתן</p>
+						   </div>
+
+						   <div class="right_head">
+								<p>
+									<ng-template [ngTemplateOutlet]="fatherNameTemp" [ngTemplateOutletContext]="{item: { fatherNameJewish: item.fatherNameJewish}}"></ng-template>
+									<ng-container *ngFor="let fatherName of getMergedFatherName(item)">
+										<ng-template [ngTemplateOutlet]="fatherNameTemp" [ngTemplateOutletContext]="{item: fatherName}"></ng-template>
+									</ng-container>
+								</p>
+							   <p class="lang_hebrew"> :בן </p>
+						   </div>
+						</div>
+						<div class="pop_content">
+							<div class="col col-address">
+								<ng-container *ngFor="let address of item.addressesArray">
+									<ng-template [ngTemplateOutlet]="addressTemp" [ngTemplateOutletContext]="{item: address}"></ng-template>
+								</ng-container>
+
+								<ng-container *ngFor="let address of getMergedAddress(item)">
+									<ng-template [ngTemplateOutlet]="addressTemp" [ngTemplateOutletContext]="{item: address}"></ng-template>
+								</ng-container> 
+							</div>
+							<div class="col col-numbers">
+								<ng-container *ngFor="let phone of item.phonesArray">
+									<ng-template [ngTemplateOutlet]="phoneTemp" [ngTemplateOutletContext]="{item: phone}"></ng-template>
+								</ng-container>
+
+								<ng-container *ngFor="let phone of getPhoneArrayOfSelected(item)">
+									<ng-template [ngTemplateOutlet]="phoneTemp" [ngTemplateOutletContext]="{item: phone}"></ng-template>
+								</ng-container>
+							</div>
+							<div class="col col-email">
+								<ng-container *ngFor="let email of item.emailsArray">
+									<ng-template [ngTemplateOutlet]="emailTemp" [ngTemplateOutletContext]="{item: email}"></ng-template>
+								</ng-container>
+
+								<ng-container *ngFor="let email of getEmailArrayOfSelected(item)">
+									<ng-template [ngTemplateOutlet]="emailTemp" [ngTemplateOutletContext]="{item: email}"></ng-template>
+								</ng-container>
+							</div>
+						</div>
+						<div class="pop_footer">
+							<ul>
+								<li>
+									{{'PAYMENT' | translate}} <span>({{ getPaymentCount(item) }})</span>
+								</li>
+								<li>
+									{{'PLEDGES' | translate}} <span>({{ getPledgesCount(item) }})</span>
+								</li>
+								<li>
+									{{'SCHEDULES' | translate}} <span>({{ getScheduleCount(item) }})</span>
+								</li>
+								<li>
+									{{'WALLET' | translate}} <span>({{ getWalletCount(item) }})</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="row">
+						<ng-container *ngFor="let subCarditem of item.subCards; let index = index">
+							<ng-container *ngIf="!isSelectedCard(subCarditem)" >
+								<ng-template  [ngTemplateOutlet]="subCardTemp" [ngTemplateOutletContext]="{item: subCarditem,i:i,index:index}"></ng-template>
+							</ng-container>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<!-- Item  end-->
+	</div>
+
+	<div *ngIf="isloading" class="overlay">
+		<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+	</div>
+</div>
+
+
+<ng-template #subCardTemp let-item="item" let-i="i" let-index="index">
+	<div class="col-sm-4 sub-{{i}}-{{index}} {{item.primaryCls}}" id={{index}}>
+		<div class="sub_pop">
+			<div class="pop_head">
+				<div class="left_title">
+					<h3>{{'SUBCARD' | translate}}</h3>
+					<p [ngStyle]="item.accountId2 ?{'cursor': 'pointer'} : null" (click)="openDonorCardPopup(item.accountId2,'accountId2')">{{ item.accountNum }}</p>
+				</div>
+				<div class="merge_sect" (click)="onMergeClick(item)">
+					<i class="merge_icon"></i>
+					<span class="merge_lbl">{{'MERGE'|translate}}</span>
+				</div>
+				<div class="swap_sect" id="{{i}}" (click)="onSwapClick(item,$event,i,index)">
+					<i class="swap_icon"></i>
+					<span class="merge_lbl">{{'SWAP'|translate}}</span>
+				</div>
+				<div class="right_head">
+					<p [ngStyle]="item.accountId2 ?{'cursor': 'pointer'} : null" style="color:#7b5bc4 ;"(click)="openDonorCardPopup(item.accountId2,'accountId2')">{{ item.fullName }}</p>
+					<p class="lang_hebrew" [ngStyle]="item.accountId2 ?{'cursor': 'pointer'} : null" style="color:#7b5bc4 ;" (click)="openDonorCardPopup(item.accountId2,'accountId2')">{{ item.fullNameJewish }} </p>
+				</div>
+			</div>
+			<div class="pop_content family_wrap">
+				<div class="left_title">
+					<!-- <h3>{{ item.fatherName }}</h3> -->
+					<h3>{{ item.fatherInLawNameJewish ? item.fatherInLawNameJewish :item.fatherInLawName }}</h3>
+					<p> :חתן</p>
+				</div>
+
+				<div class="right_head">
+					<p>{{item.fatherNameJewish }}</p>
+					<p class="lang_hebrew"> :בן </p>
+				</div>
+
+
+			</div>
+			<div class="pop_content">
+				<div class="col col-address">
+					<ng-container *ngFor="let address of item.addressesArray">
+						<ng-template [ngTemplateOutlet]="addressTemp" [ngTemplateOutletContext]="{item: address}"></ng-template>
+					</ng-container>
+				</div>
+				<div class="col col-numbers">
+					<ng-container *ngFor="let phone of item.phonesArray">
+						<ng-template [ngTemplateOutlet]="phoneTemp" [ngTemplateOutletContext]="{item: phone}"></ng-template>
+					</ng-container>
+				</div>
+				<div class="col col-email">
+					<ng-container *ngFor="let email of item.emailsArray">
+						<ng-template [ngTemplateOutlet]="emailTemp" [ngTemplateOutletContext]="{item: email}"></ng-template>
+					</ng-container>
+				</div>
+			</div>
+			<div class="pop_footer">
+				<ul>
+					<li>
+						{{'PAYMENT' | translate}} <span>({{ item.paymentCount }})</span>
+					</li>
+					<li>
+						{{'PLEDGES' | translate}} <span>({{ item.pledgesCount }})</span>
+					</li>
+					<li>
+						{{'SCHEDULES' | translate}} <span>({{ item.scheduleCount }})</span>
+					</li>
+					<li>
+						{{'WALLET' | translate}} <span>({{ item.walletsCount }})</span>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+
+<ng-template #phoneTemp let-item="item">
+	<h6>{{ item.label}} </h6>
+	<p>{{  commonMethodService.formatPhoneNumber(item.value)}}</p>
+	<br />
+</ng-template>
+
+<ng-template #emailTemp let-item="item">
+	<h6>{{ item.label }} </h6>
+	<p>{{ item.value }}</p>
+</ng-template>
+
+<ng-template #addressTemp let-item="item">
+	<h6>{{ item.label }}</h6>
+	<p class="mb-0">{{ item.value }}</p>
+</ng-template>
+
+<ng-template #fatherNameTemp let-item="item">
+	{{item.fatherNameJewish}}	<br>
+</ng-template>
+<ng-template #fatherInLaNameTemp let-item="item">
+	{{item.fatherInLawNameJewish}}	<br>
+</ng-template>
+

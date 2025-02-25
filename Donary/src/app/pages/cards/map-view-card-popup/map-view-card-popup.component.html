@@ -1,0 +1,29 @@
+<div class="diglog_modal  payment_schedule_moodal paymentcard_modal map-view-modal" ngbAutofocus tabindex="-1">	
+		<div class="diglog_header modal__custom_header">
+			<button class="dismiss" (click)="closePopup()">&times;</button>
+            <div class="titlebar">
+				<h4>{{'MAPVIEW'|translate}}</h4>
+			</div>
+        </div>
+
+<div class="row">
+    <div class="map_area">
+      <iframe
+        width="100%" 
+        height="450" 
+        style="border:0"
+        frameborder="0"
+        allowfullscreen="true"
+        aria-hidden="false" 
+        tabindex="0"
+        [attr.src]="iFrameUrl">
+      </iframe>
+    </div>            
+</div>  
+<div class="view-map-footer">
+  <div class="footer-drag">
+
+  </div>
+  <button  (click)="closePopup()">{{'CLOSE'|translate}}</button>
+</div>
+</div>

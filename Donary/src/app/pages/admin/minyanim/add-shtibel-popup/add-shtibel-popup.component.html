@@ -1,0 +1,30 @@
+<div class="modal__heading form-section pb-0">
+    <button class="close" (click)="closePopup()">&times;</button>
+    <h4 class="headline mt-0">{{title}}</h4>
+</div>
+<div class="modal__custom_content form-section pt-0">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>CHEDER NAME:</label>
+                <input class="form-control"  type="text" placeholder="" [(ngModel)]="shtibelName"/>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="btn_info modal__custom_footer align-items-center">
+    <div class="left_part">
+        <button  *ngIf="isDeleted" class="btn btn-removal" (click)="delete(roomId)"><i class="fas fa-trash"></i> Remove</button>
+    </div>
+    <div class="right_part">
+        <button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+        <button class="btn btn-primary" (click)="onSaveChanges()">{{'SAVECHANGES' | translate}}</button>
+    </div>
+
+</div>
+<div *ngIf="isloading" class="overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+
+    

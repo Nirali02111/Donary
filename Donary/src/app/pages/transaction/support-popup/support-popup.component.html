@@ -1,0 +1,70 @@
+<div class="modal-header" style="display: block;" ngbAutofocus  tabindex="-1">
+    <div class="row">
+        <div class="input-group col-4">
+            <h4 class="modal-title">{{'TEXTMESSAGES' | translate}}</h4>
+        </div>
+        <div class="input-group col-7">
+            &nbsp;
+        </div>
+        <div class="input-group col-1">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body" style="padding: 0 !important;">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="card card-primary card-outline card-outline-tabs">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-three-quickstart-tab" data-toggle="pill"
+                                        href="#custom-tabs-three-quickstart" role="tab"
+                                        aria-controls="custom-tabs-three-quickstart" aria-selected="true">{{'QUICKSTARTGUIDE' | translate}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-three-privacy-tab" data-toggle="pill"
+                                        href="#custom-tabs-three-privacy" role="tab"
+                                        aria-controls="custom-tabs-three-privacy" aria-selected="false">{{'PRIVACYPOLICY' | translate}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-three-contact-tab" data-toggle="pill"
+                                        href="#custom-tabs-three-contact" role="tab"
+                                        aria-controls="custom-tabs-three-contact" aria-selected="false">{{'CONTACTSUPPORT' | translate}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-three-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-three-quickstart" role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-quickstart-tab">
+                                    {{'HOWTOSTART' | translate}}
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-three-privacy" role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-privacy-tab">
+                                    {{'PRIVACYPOLICY' | translate}} {{'TERMCONDITION' } translate}
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-three-contact" role="tabpanel"
+                                    aria-labelledby="custom-tabs-three-contact-tab">
+                                    {{'DONARY' | translate}} {{'CONTACTSUPPORT' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE' | translate}}</button>&nbsp;&nbsp;
+    <!-- <button class="btn btn-primary">Add</button> -->
+</div>

@@ -1,0 +1,162 @@
+<div [formGroup]="formGroup">
+    <div class="modal-head">
+        <h4>Pay off Pledges <sup>Beta</sup></h4>
+        <a class="modal-close" href="javascript:void(0)" (click)="onClose()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14.809" height="14.808" viewBox="0 0 14.809 14.808">
+                <g id="Group_1382" data-name="Group 1382" transform="translate(7.404 -4.575) rotate(45)" opacity="0.55">
+                    <line id="Line_185" data-name="Line 185" y2="16.942" transform="translate(8.471 0)" fill="none"
+                        stroke="#727272" stroke-linecap="round" stroke-width="2" />
+                    <line id="Line_186" data-name="Line 186" x2="16.942" transform="translate(0 8.471)" fill="none"
+                        stroke="#727272" stroke-linecap="round" stroke-width="2" />
+                </g>
+            </svg>
+        </a>
+    </div>
+
+
+    <div class="modal-body d-flex align-items-start">
+        @if(!showPaymentCard) {
+        <div class="flex-fill">
+
+            <app-donor-dropdown-of-transaction
+                (donorChange)="onChangeDonor($event)"></app-donor-dropdown-of-transaction>
+
+            <h6>{{ 'AMOUNT' | translate }}</h6>
+            <app-amount-of-transaction (symbolChange)="symbol = $event"></app-amount-of-transaction>
+
+            <h6 class="mt-4 pt-2">Open Pledges</h6>
+            <div class="table-filter d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center"> <input type="checkbox" name="" [(ngModel)]="checkAll"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!pledgesList || pledgesList.length <= 0"
+                        (click)="autoApplyPledges($event.target.checked)" id="">
+                    <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                            [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                    </ng-template>
+                    <div container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent"
+                        popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+                        placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                        id="payPledgeDynamicsCalender">
+                        <input type="text" class="btn btn-default" value="" [placeholder]="EngHebCalPlaceholder" />
+                    </div>
+                    <button class="btn btn-default" type="button" (click)="OpenPayPledgeFilter()">
+                        <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+                        <span class="filter_text">{{'FILTER'|translate}}</span>
+                    </button>
+                </div>
+
+                <button class="btn btn-light" [disabled]="!isAutoApply || !_amount.value || !donor.value"
+                    (click)="autoApplyPledges(true)">Auto
+                    Apply</button>
+            </div>
+
+            <div class="table-pledge">
+                <table *ngIf="pledgesList && pledgesList.length > 0 ">
+                    @for (pledge of _pledgesArr.controls; track $index) {
+                    <tr formArrayName="pledges" [id]="'pledge-checkbox-' + $index">
+                        <td [formGroupName]="$index">
+                            <input type="checkbox" name="" formControlName="check" id=""
+                                (change)="updateBalance($index,true)">
+                        </td>
+                        <td [formGroupName]="$index">
+                            <h6><strong>{{pledge.get('campaignName').value}}</strong></h6>
+                        </td>
+                        <td [formGroupName]="$index">
+                            {{pledge.get('pledgeJewishDate').value}} <br />
+                            {{pledge.get('pledgeDate').value}}</td>
+                        <td [formGroupName]="$index">
+                            <label for="">AMOUNT:</label>
+                            <h5>{{pledge.get('pledgeTotalAmount').value}}</h5>
+                        </td>
+                        <td [formGroupName]="$index">
+                            <label for="">BALANCE:</label>
+                            <h5>{{pledge.get('RemainingAmount').value}}</h5>
+                        </td>
+                        <td [formGroupName]="$index">
+                            <input type="text" class="form-control" formControlName="PaidAmount"
+                                (change)="updateBalance($index,false)">
+                            @if(_pledgesArr.at($index).get('PaidAmount').errors){
+                            <span class="err">Not allowed to enter amount greater than balance</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        }
+
+        @if(showPaymentCard) {
+        <div class="flex-fill">
+            <div [formGroup]="formGroup">
+                <app-payment-method-of-transaction></app-payment-method-of-transaction>
+                <div class="modal-card modal-form position-relative mt-2 mb-5">
+                    <app-schedule-of-transaction></app-schedule-of-transaction>
+                </div>
+                <app-details-of-transaction></app-details-of-transaction>
+            </div>
+        </div>
+        }
+
+        <div class="modal-card-body">
+            @if(onPaymentPage){
+            <span class="span-lg"> {{donorName}} </span>
+            }
+            <div class="d-flex justify-content-between align-items-center">
+                <label>Payment amount:</label>
+                <span class="span-lg">{{_amount.value | currency}}</span>
+            </div>
+
+            @if(onPaymentPage){
+            <div class="link-edit" (click)="goToDonor()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12.389" height="12.387" viewBox="0 0 12.389 12.387">
+                    <g id="Icon_akar-pencil" data-name="Icon akar-pencil" transform="translate(0.6 0.722)">
+                        <path id="Path_17808" data-name="Path 17808"
+                            d="M5.324,12.654l7.565-7.565a1.583,1.583,0,0,1,2.238,2.237L7.561,14.891a1.236,1.236,0,0,1-.632.338L4.5,15.715l.486-2.429A1.236,1.236,0,0,1,5.324,12.654Z"
+                            transform="translate(-4.5 -4.649)" fill="none" stroke="#7b5bc4" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="1.2" />
+                        <path id="Path_17809" data-name="Path 17809" d="M21.75,9.75,23.6,11.6"
+                            transform="translate(-14.641 -7.648)" fill="none" stroke="#7b5bc4" stroke-width="1.2" />
+                    </g>
+                </svg>
+                Edit payment details
+            </div>
+            }
+
+            <h5>Balance Summary</h5>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center">
+                <label>Total open pledges:</label>
+                <span class="span-lg">{{openPledges | currency}}</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <label>Available to apply:</label>
+                <span>{{availableToApply | currency}}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <label>Applied:</label>
+                <span>{{_amount.value - availableToApply | currency}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="showPaymentCard ? goToDonor() : onClose()">{{ 'CANCEL' | translate
+            }}</button>
+        @if(!showPaymentCard) {
+        <button class="btn btn-primary" [disabled]="!_amount.value || !donor.value" (click)="goToPaymentCard()">{{
+            'NEXT' | translate }}</button>
+        } @else {
+        @if(formGroup.invalid){
+        <button type="button" class="btn btn-secondary" (click)="processTransaction()">
+            {{ 'SAVE' | translate }}
+        </button>
+        } @else {
+        <button type="button" class="btn btn-primary" (click)="processTransaction()">
+            Process {{_amount.value | currency}}
+        </button>
+        }
+        }
+    </div>
+
+</div>

@@ -1,0 +1,28 @@
+.component {
+  line-height: 1.5em;
+  margin: 0 auto;
+  padding: 2em 0 3em;
+  width: 100%;
+  max-width: 1000px;
+  overflow: hidden;
+}
+
+tbody tr:nth-child(2n-1) {
+  background-color: #f5f5f5;
+  transition: all 0.125s ease-in-out;
+}
+tbody tr:hover {
+  background-color: rgba(129, 208, 177, 0.3);
+}
+
+.disabled-edit-button{
+  background-color: rgb(123 91 196 / 50%) !important;
+}
+
+.disabled-void-button{
+  background-color: rgb(123 91 196 / 50%) !important;
+}
+
+.default-cursor{
+  cursor: default !important;
+}

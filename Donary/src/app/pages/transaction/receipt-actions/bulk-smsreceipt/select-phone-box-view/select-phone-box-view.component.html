@@ -1,0 +1,24 @@
+<div class="dropdown show_more_wrapper" >
+    <a class="btn dropdown-toggle" id="testDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        {{showCounts()}}+
+    </a>
+    <div class="dropdown-menu" aria-labelledby="testDropdownMenuLink">
+        <div class="dropdown-item" *ngFor="let x of grpColumn.list; let i=index">
+            <div style="width: 100%;">
+                <ng-template [ngIf]="i === grpColumn.selectedChild" [ngIfElse]="moreSelectCheckBBox">
+                    <!-- <input type="checkbox" name="singlecheck" [checked]="true" [disabled]="true"> -->
+				</ng-template>
+				<ng-template #moreSelectCheckBBox>
+                    <div class="">
+                    <input type="checkbox" name="singlecheck" (change)="selectedItemCheck($event,i,x)" id="id_SpanCheck" [checked]="checkPhoneIsSelectOrNot(x)">
+                    <label class="orginal_lbl" *ngIf="(grpColumn.originalLabelList[i]!='Home' && grpColumn.originalLabelList[i]!='Cell')">{{grpColumn.originalLabelList[i]}}</label>
+                    </div>
+                    <span class="input_value" style="pointer-events: none; cursor: default;">{{ commonMethodService.formatPhoneNumber(x)}}</span>
+                    <span class="checked_icon" *ngIf="grpColumn.sentList !=null && grpColumn.sentList[i]=='1'"></span>
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+</div>

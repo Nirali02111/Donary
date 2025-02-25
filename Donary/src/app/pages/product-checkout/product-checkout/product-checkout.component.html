@@ -1,0 +1,378 @@
+<div class="checkout-summary-section">
+
+    <div class="container">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onPlaceOrder()">
+            <div class="d-flex flex-wrap">
+                <div class="cart-section">
+                    <h3 class="cart-title">{{'CHECKOUT'  |translate}}</h3>
+
+                    <div class="card" *ngIf="!shippingAddressInEdit && !IsSelfPickup">
+                        <h4 class="heading_title">{{'SHIPPINGADDRESS'  |translate}}</h4>
+                        <div class="address-box">
+                            <h6>{{ShippingAddress.get('FirstName').value}} {{ShippingAddress.get('LastName').value}}</h6>
+                            <p>{{ShippingAddress.get('Address').value}} <br> {{ShippingAddress.get('City').value}} {{ShippingAddress.get('State').value}} {{ShippingAddress.get('Zip').value}}</p>
+                            <button class="edit_link" (click)="onEditShipping()">{{'EDIT'  |translate}}</button>
+                        </div>
+                    </div>
+
+
+                    <ng-container *ngIf="shippingAddressInEdit && !IsSelfPickup">
+                        <div class="card payment_form" formGroupName="ShippingAddress" >
+                            <div class="form-group row">
+                                <div class="col-sm-12 street_address" [class.is-error-red]="ShippingAddress.get('Address').touched && ShippingAddress.get('Address').invalid && isFormSubmited">
+                                    <label class="text-uppercase">{{'STREETADDRESS'  |translate}} :</label>
+                                    <input
+                                    type="text"
+                                    class="form-control"
+                                    alt=""
+                                    placeholder=""
+                                    formControlName="Address"
+                                    appAddressAutocomplete
+                                    (onAddressChange)="onAddressChange($event,false)"
+                                      />
+                                    <ng-container *ngIf="ShippingAddress.get('Address').touched && ShippingAddress.get('Address').invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('Address')}"></ng-template>
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 city_col" [class.is-error-red]="ShippingAddress.get('City').touched && ShippingAddress.get('City').invalid && isFormSubmited">
+                                    <label class="text-uppercase">{{'CITY'  |translate}} :</label>
+                                    <input type="text" class="form-control" alt=""  formControlName="City" />
+                                    <ng-container *ngIf="ShippingAddress.get('City').touched && ShippingAddress.get('City').invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('City')}"></ng-template>
+                                    </ng-container>
+                                </div>
+
+                                <div class="col-sm-3 city_col" [class.is-error-red]="ShippingAddress.get('State').touched && ShippingAddress.get('State').invalid && isFormSubmited">
+                                    <label class="text-uppercase">{{'STATE'  |translate}} :</label>
+                                    <ng-select
+                                            bindLabel="abbreviations"
+                                            bindValue="abbreviations"
+                                            [searchable]="true"
+                                            formControlName="State"
+                                            [items]="stateList"
+                                            [searchFn]="customSearchFn"
+                                            [selectOnTab]="true"
+                                        >
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{ item.abbreviations }}
+                                            </ng-template>
+                                    </ng-select>
+
+                                    <ng-container *ngIf="ShippingAddress.get('State').touched && ShippingAddress.get('State').invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('State')}"></ng-template>
+                                    </ng-container>
+
+
+                                    <!-- <select class="selct_box"  formControlName="State">
+                                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.name}}</option>
+                                    </select>
+                                    <ng-container *ngIf="ShippingAddress.get('State').touched && ShippingAddress.get('State').invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('State')}"></ng-template>
+                                    </ng-container> -->
+                                </div>
+
+                                <div class="col-sm-2 city_col" [class.is-error-red]="ShippingAddress.get('Zip').touched && ShippingAddress.get('Zip').invalid && isFormSubmited">
+                                    <label class="text-uppercase">{{'ZIP'  |translate}} :</label>
+                                    <input type="text" class="form-control" alt="" formControlName="Zip"  />
+                                    <ng-container *ngIf="ShippingAddress.get('Zip').touched && ShippingAddress.get('Zip').invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('Zip')}"></ng-template>
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <div class="card" formGroupName="CCDetails">
+                        <h4 class="heading_title">{{'PAYMENTMETHOD'  |translate}}</h4>
+                        <div class="payment_form">
+                            <div class="form-group row">
+                                <div class="col-sm-8 card_num" [class.is-error-red]="CCNum.touched && CCNum.invalid && isFormSubmited">
+                                    <label class="text-uppercase">{{'CARDNUMBER'  |translate}} :</label>
+                                    <div class="with_cardIcon">
+                                        <input type="text" value="" class="form-control" alt="" formControlName="CCNum" [mask]="cardMask" [validation]="true" />
+                                        <span class="card_icon">
+                                            <img src="/assets/dist/img/cc-cards-icon.png" width="130px" alt="" />
+                                        </span>
+
+                                        <ng-container *ngIf="CCNum.touched && CCNum.invalid">
+                                            <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: CCNum}"></ng-template>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 exp_date" [class.is-error-red]="Expiry.touched && Expiry.invalid && isFormSubmited">
+                                    <label>{{'EXPDATE'  |translate}} :</label>
+                                    <input type="text" value="" class="form-control" alt="" formControlName="Expiry"   autocomplete="cc-exp"
+                                    maxlength="5" minlength="5" (keyup)="EnterExpiryDate($event)" placeholder="{{'MMYY'  |translate}}"/> <!-- mask="M0/00" -->
+                                    <ng-container *ngIf="Expiry.touched && Expiry.invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: Expiry}"></ng-template>
+                                    </ng-container>
+                                </div>
+                                <div class="col-sm-2 cvv_num" [class.is-error-red]="CVV.touched && CVV.invalid && isFormSubmited">
+                                    <label>{{'CVV'  |translate}} :</label>
+                                    <input type="text" class="form-control" alt="" formControlName="CVV" [mask]="CVVMASK" [validation]="true" ccCVC/>
+                                    <ng-container *ngIf="CVV.touched && CVV.invalid">
+                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: CVV}"></ng-template>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="payment_form" >
+                            <div class="top_title">
+                                <h4 class="heading_title">{{'BILLINGADDRESS'  |translate}}</h4>
+                                <div class="check_shippingAddress" *ngIf="!IsSelfPickup">
+                                    <input type="checkbox"
+                                    id="shippingAddress"
+                                    class="check-control"
+                                    formControlName="IsBillingSameAsShippingAddress"
+                                     />
+                                    <label for="shippingAddress">{{'USESAMESHIPADDRESS'  |translate}}</label>
+                                </div>
+                            </div>
+
+                            <div formGroupName="BillingAddress">
+                                <div class="form-group row">
+                                    <div class="col-sm-12 street_address"
+                                        [class.is-error-red]="BillingAddress.get('Address').touched && BillingAddress.get('Address').invalid && isFormSubmited">
+                                        <label class="text-uppercase">{{'STREETADDRESS'  |translate}} :</label>
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        alt=""
+                                        placeholder=""
+                                        formControlName="Address"
+                                        appAddressAutocomplete
+                                        (onAddressChange)="onAddressChange($event,true)"
+                                          />
+                                        <ng-container *ngIf="BillingAddress.get('Address').touched && BillingAddress.get('Address').invalid">
+                                            <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: BillingAddress.get('Address')}"></ng-template>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-4 city_col" [class.is-error-red]="BillingAddress.get('City').touched && BillingAddress.get('City').invalid && isFormSubmited">
+                                        <label class="text-uppercase">{{'CITY'  |translate}} :</label>
+                                        <input type="text" class="form-control" alt=""  formControlName="City" />
+                                        <ng-container *ngIf="BillingAddress.get('City').touched && BillingAddress.get('City').invalid">
+                                            <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: BillingAddress.get('City')}"></ng-template>
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="col-sm-3 city_col" [class.is-error-red]="BillingAddress.get('State').touched && BillingAddress.get('State').invalid && isFormSubmited">
+                                        <label class="text-uppercase">{{'STATE'  |translate}} :</label>
+                                        <ng-select
+                                            bindLabel="abbreviations"
+                                            bindValue="abbreviations"
+                                            [searchable]="true"
+                                            formControlName="State"
+                                            [items]="stateList"
+                                            [searchFn]="customSearchFn"
+                                            [selectOnTab]="true"
+                                        >
+                                            <ng-template ng-option-tmp let-item="item">
+                                                {{ item.abbreviations }}
+                                            </ng-template>
+                                        </ng-select>
+                                        <ng-container *ngIf="BillingAddress.get('State').touched && BillingAddress.get('State').invalid">
+                                            <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: BillingAddress.get('State')}"></ng-template>
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="col-sm-2 city_col" [class.is-error-red]="BillingAddress.get('Zip').touched && BillingAddress.get('Zip').invalid && isFormSubmited">
+                                        <label class="text-uppercase">{{'ZIP'  |translate}} :</label>
+                                        <input type="text" class="form-control" alt="" formControlName="Zip"  />
+                                        <ng-container *ngIf="BillingAddress.get('Zip').touched && BillingAddress.get('Zip').invalid">
+                                            <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: BillingAddress.get('Zip')}"></ng-template>
+                                        </ng-container>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- {{ checkoutForm.value | json }} -->
+
+                <div class="summary-section">
+                    <h3 class="cart-title">{{'SUMMARY'  |translate}}</h3>
+
+                    <div class="summary-inner">
+                        <div class="summary-division-wrap">
+                            <div class="row summary-wrapper">
+                                <div class="col-5 summary-left-part">
+                                    <div>
+                                        <h4 class="cart-wrapper-title">{{'MONTHLYTOTAL'  |translate}}:</h4>
+                                        <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'MONTHLYPLAN'  |translate}}</h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-7 summary-right-part">
+                                    <div>
+                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(monthlyTotalAmount)}}</h5>
+                                        <h6 class="summary-text" *ngIf="monthlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{monthlyNextCharge}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row summary-wrapper">
+                                <div class="col-5 summary-left-part">
+                                    <div>
+                                        <h4 class="cart-wrapper-title">{{'YEARLYTOTAL'  |translate}} :</h4>
+                                        <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'YEARLYLICENSE'  |translate}}</h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-7 summary-right-part">
+                                    <div>
+                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(yearlyTotalAmount)}}</h5>
+                                        <h6 class="summary-text" *ngIf="yearlyTotalAmount>0">{{'NEXTCHARGE'  |translate}} : {{yearlyNextCharge}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row summary-wrapper">
+                                <div class="col-5 summary-left-part">
+                                    <div>
+                                        <h4 class="cart-wrapper-title">{{'DEVICES'  |translate}} :</h4>
+                                        <h6 class="summary-text">{{'ONETIMEFREE'  |translate}}</h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-7 summary-right-part">
+                                    <div>
+                                        <h5 class="cart-prize">{{commonMethodService.formatAmount(deviceTotalAmount)}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row summary-wrapper">
+                                <div class="col-5 summary-left-part">
+                                    <div>
+                                        <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-7 summary-right-part">
+
+                                </div>
+                            </div> -->
+                            <div class="row summary-wrapper">
+                            <div class="apply-promo-wrap" *ngIf="!encryptedPromoCodeId">
+                        <h4 class="cart-wrapper-title promo-code">{{'ADDPROMOCODE'  |translate}} :</h4>
+                           <div class="apply-promo-code">
+                              <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
+                              <input type="text"  class="form-control enter-code" placeholder="{{'ENTERCODEOPTIONAL'  |translate}}" name="txt_promoCode" id="txtpromoCode" />
+                              <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;" (click)="onAddPromoCode()"> {{'APPLY'  |translate}}</span></h5>
+                           </div>
+                       </div>
+                            <!--  -->
+                                <div class="apply-promo-wrap" *ngIf="encryptedPromoCodeId">
+                                    <div class="promo-code-left">
+                                 <h4 class="cart-wrapper-title promo-code">{{'PROMOCODE'  |translate}} :</h4>
+                                 <span class="promo-code-description">{{description}}</span>
+                                 </div>
+                                    <div class="apply-promo-code">
+                                       <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
+                                       <input type="text"  class="form-control enter-code code-text-disabled" style="opacity:0.5;"  name="txt_promoCode" id="txtpromoCode" value="{{promoCode}}" disabled/>
+                                       <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;" (click)="onRemovePromoCode()">{{'REMOVE'  |translate}}</span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="summary-division">
+                            <div class="row summary-wrapper">
+                                <div class="col-7 summary-left-part">
+                                    <div>
+                                        <!-- <h4 class="cart-wrapper-title">Tax:</h4> -->
+                                        <a href="" class="cart-wrapper-link" title="exempt form">{{'FILLOUTTAXTEXEMPT'  |translate}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="col-5 summary-right-part checkout-attach">
+                                    <div>
+                                        <!-- <h5 class="cart-prize">{{commonMethodService.formatAmount(taxTotalAmount)}}</h5> -->
+                                        <!-- <span class="input-group-text px-2 text-muted"><i class="fa fa-paperclip" aria-hidden="true"></i> <h6>{{fileOutTaxExemptForm_Name ?fileOutTaxExemptForm_Name:"Attach File"}}</h6></span> -->
+
+                                    </div>
+                                </div>
+                                <div class="form-group cart-file-input input-file-checkout {{checkoutanimation}}" x-data="{ fileName: '' }">
+                                    <div class="input-group shadow">
+                                      <span class="input-group-text px-2 text-muted"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                      <input type="text"  class="form-control form-control-lg" placeholder="{{'UPLOADFILE'  |translate}}" x-model="fileName" disabled value="{{fileOutTaxExemptForm_Name}}">
+                                      <label class="btn-primary">{{'BROWSE'  |translate}}
+                                        <input type="file" name="doc_file" id="doc_file" (change)="commonMethodService.incomingfile($event);incomingfileName($event)">
+                                      </label>
+                                    </div>
+                                  </div>
+                            </div>
+
+                            <ng-container *ngIf="!canDisplayPickup()">
+                                <div class="row summary-wrapper" *ngIf="!IsSelfPickup">
+                                    <div class="col-7 summary-left-part">
+                                        <div>
+                                            <h4 class="cart-wrapper-title">{{'SHIPPING'  |translate}} :</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 summary-right-part">
+                                        <div>
+                                            <h5 class="cart-prize">{{commonMethodService.formatAmount(shippingAmount)}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <div class="summary-division border-0">
+
+                            <div class="row summary-wrapper">
+                                <div class="col-7 summary-left-part">
+                                    <div>
+                                        <h4 class="subtotal-title">{{'SUBTOTAL'  |translate}} :</h4>
+                                    </div>
+                                </div>
+
+                                <div class="col-5 summary-right-part">
+                                    <div>
+                                        <h5 class="subtotal-prize">{{commonMethodService.formatAmount(subTotalAmount)}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="actions_buttons" [class.loading]="isCheckoutLoading">
+                            <button type="submit" [disabled]="isCheckoutLoading" class="checkout-button btn"> <span>{{'PLACEORDER'  |translate}}</span>  </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<div *ngIf="isloading" class="page-overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+
+<ng-template #feedbackError let-item="item">
+    <div class="row text-danger">
+        <div *ngIf="item.errors?.mask"  class="val-error">{{'FIELDNOTVALID'  |translate}}</div>
+        <div *ngIf="item.errors?.minlength"  class="val-error">field require min {{item.errors?.minlength.requiredLength}}</div>
+        <div *ngIf="item.errors?.maxlength"  class="val-error">field require max {{item.errors?.maxlength.requiredLength}}</div>
+        <div *ngIf="!item.errors?.mask && item.errors?.inValidCard"  class="val-error">{{'CARDINVALID'  |translate}}</div>
+    </div>
+</ng-template>

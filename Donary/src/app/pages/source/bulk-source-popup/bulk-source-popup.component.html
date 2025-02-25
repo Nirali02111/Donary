@@ -1,0 +1,84 @@
+<div class="edit-source-field-wrap" ngbAutofocus tabindex="-1">
+    <div class="modal-header pledgepay-popup modal__custom_header">
+        <h4 class="modal-title">{{'EDITSOURCE' | translate}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="form-group d-flex" [ngClass]="{'disable-dropdown': disableFields}">
+        <div class="edit-source-label">
+            <label>{{'CAMPAIGN'|translate}}:</label>
+            <span *ngIf="disableFields" class="material-icons" appHoverTooltip [labelText]="restrictedDevicesTooltip">help</span>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_single">
+                <angular2-multiselect id="ddlCampaign"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localCampaignList" [(ngModel)]="selectedCampaignList"
+                    (onDeSelectAll)="onDeSelectAll('selectedCampaignList')">
+                    <c-item>
+                        <ng-template let-item="item">
+                            <label
+                                [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                {{item.itemName}}
+                                <span class="heb-dropdown-status">{{item.status}}</span></label>
+                        </ng-template>
+                    </c-item>
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="form-group d-flex" [ngClass]="{'disable-dropdown': disableFields}">
+        <div class="edit-source-label">
+            <label>{{'REASON'|translate}}:</label>
+            <span class="material-icons" *ngIf="disableFields" appHoverTooltip [labelText]="restrictedDevicesTooltip">help</span>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_single">
+                <angular2-multiselect id="ddlPaymentReason"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localReasonList" [(ngModel)]="selectedPaymentReasons"
+                    (onDeSelectAll)="onDeSelectAll('selectedPaymentReasons')">
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="form-group d-flex" [ngClass]="{'disable-dropdown': disableFields}">
+        <div class="edit-source-label">
+            <label>{{'LOCATION'|translate}}:</label>
+            <span class="material-icons" *ngIf="disableFields" appHoverTooltip [labelText]="restrictedDevicesTooltip">help</span>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_single">
+                <angular2-multiselect id="ddlPaymentLocation"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localLocationList" [(ngModel)]="selectedPaymentLocations"
+                    (onDeSelectAll)="onDeSelectAll('selectedPaymentLocations')">
+                </angular2-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="form-group d-flex" [ngClass]="{'disable-dropdown': disableFields}">
+        <div class="edit-source-label">
+            <label>{{'COLLECTOR'|translate}}:</label>
+            <span class="material-icons" *ngIf="disableFields" appHoverTooltip [labelText]="restrictedDevicesTooltip">help</span>
+        </div>
+        <div class="edit-source-field">
+            <div class="input_single">
+                <angular2-multiselect id="ddlCollector"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                    [data]="commonMethodService.localCollectorList" [(ngModel)]="selectedPaymentCollectors"
+                    (onDeSelectAll)="onDeSelectAll('selectedPaymentCollectors')">
+                </angular2-multiselect>
+
+            </div>
+        </div>
+    </div>
+    <div class="btn-wrapper">
+        <button class="btn btn-primary" (click)="saveData()" [disabled]="disableFields"><span> {{'SAVE'|translate}}
+            </span></button>
+        <div class="loader" *ngIf="isloading">
+            <img src="assets/dist/img/rolling-loader.svg" alt="" />
+        </div>
+    </div>
+</div>

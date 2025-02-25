@@ -1,0 +1,302 @@
+<div class="create_reminder edit_user_inside page-admin-user" ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header">
+        <h4>{{'EDITUSER'|translate}}</h4>
+        <div class="close_trans" (click)="closePopup()"><span>×</span></div>
+    </div>
+
+    <div class="modal_body">
+        <div class="content_section">
+            <!-- start -->
+            <div class="campaign-modal-tabs">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist" [ngStyle]="{ 'margin-top': isloading ? '10px' : '0px' }">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                               [ngClass]="{'active': activeTab === 'userinfo'}"
+                               id="custom-tabs-userinfo-tab"
+                               role="tab" 
+                               aria-controls="userinfotab" 
+                               aria-selected="false"
+                               (click)="setActiveTab('userinfo')">
+                               {{'USER'|translate}} {{'INFO'|translate}}
+                            </a>
+                        </li>
+                    </app-skeleton-loader-component>
+                
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '30px' }">
+                        <li class="nav-item query-report-tab">
+                            <a class="nav-link"
+                               [ngClass]="{'active': activeTab === 'lists'}"
+                               id="custom-tabs-lists-tab"
+                               role="tab"
+                               aria-controls="lists"
+                               aria-selected="false"
+                               (click)="setActiveTab('lists')"
+                               >
+                               {{'LISTS'|translate}}
+                            </a>
+                        </li>
+                    </app-skeleton-loader-component>
+                
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '30px' }">
+                        <li class="nav-item query-addnew-tab">
+                            <a class="nav-link"
+                               [ngClass]="{'active': activeTab === 'addnew'}"
+                               id="custom-tabs-addnew-tab"
+                               role="tab"
+                               aria-controls="addnew"
+                               aria-selected="false"
+                               (click)="setActiveTab('addnew')">
+                               {{'ADDNEW'|translate}}
+                            </a>
+                        </li>
+                    </app-skeleton-loader-component>
+                
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '30px' }">
+                        <li class="nav-item query-other-tab">
+                            <a class="nav-link"
+                               [ngClass]="{'active': activeTab === 'other'}"
+                               id="custom-tabs-other-tab"
+                               role="tab"
+                               aria-controls="other"
+                               aria-selected="false"
+                               (click)="setActiveTab('other')">
+                               {{'OTHER'|translate}}
+                            </a>
+                        </li>
+                    </app-skeleton-loader-component>
+                
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '30px' }">
+                        <li class="nav-item query-selecteddata-tab">
+                            <a class="nav-link"
+                               [ngClass]="{'active': activeTab === 'selecteddata'}"
+                               id="custom-tabs-selecteddata-tab"
+                               role="tab"
+                               aria-controls="selecteddata"
+                               aria-selected="false"
+                               (click)="setActiveTab('selecteddata')">
+                               {{'SELECTEDDATA'|translate}}
+                            </a>
+                        </li>
+                    </app-skeleton-loader-component>
+                </ul>
+            </div>
+            <!--end  -->
+
+            <div class="tab-content">
+                @if(isloading){
+                    <ng-container *ngFor="let item of skeletonitems">
+                            <app-edit-skeleton-loader [theme1]="{ width: '140px', height: '35px' }" [theme2]="{ width: '330px', height: '35px' }"></app-edit-skeleton-loader>
+                      </ng-container>
+                }@else {
+                <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 'userinfo'}"
+                id="userinfotab" role="tabpanel"
+                    aria-labelledby="custom-tabs-userinfo-tab">
+                    <div class="form-group">
+                        <div class="lbl_text">
+                            <label>
+                                {{'FIRSTNAME'|translate}}:
+                            </label>
+                        </div>
+                        <div class="input_col">
+                            <input type="text" class="form-control" [(ngModel)]="firstName" name="txtFirstName"
+                                id="txtFirstNameId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="lbl_text">
+                            <label>
+                                {{'LASTNAME'|translate}}:
+                            </label>
+                        </div>
+                        <div class="input_col">
+                            <input type="text" class="form-control" [(ngModel)]="lastName" name="txtLastName"
+                                id="txtLastNameId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="lbl_text">
+                            <label>
+                                {{'TITLE'|translate}}:
+                            </label>
+                        </div>
+                        <div class="input_col">
+                            <input type="text" class="form-control" [(ngModel)]="title" name="txtTitle"
+                                id="txtTitleId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="lbl_text">
+                            <label>
+                                {{'EMAIL / USER'|translate}}:
+                            </label>
+                        </div>
+                        <div class="input_col">
+                            <input type="text" class="form-control" [(ngModel)]="email" name="txtEmail"
+                                id="txtEmailId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="lbl_text">
+                            <label>
+                                {{'PHONE'|translate}}:
+                            </label>
+                        </div>
+                        <div class="input_col">
+                            <input type="text" class="form-control" [(ngModel)]="phone" name="txtPhone"
+                                id="txtPhoneId" />
+                        </div>
+                    </div>
+
+                   
+                </div>}
+                @if(!isloading){
+                    
+                <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 'lists'}" id="lists" role="tabpanel" aria-labelledby="custom-tabs-lists-tab">
+                    <div class="toggles_section" >
+                        @for (item of lstUserPermission; track $index) {
+                        @if(isTabContaint(item.permissionName,'lists')){
+                        <div class="row">
+                            <div class="colm_6">
+                                <div class="loct_showall">
+                                    <span class="show_all">{{item.permissionName}}</span>
+                                    <label class="switch"><input [(ngModel)]="item.isActive" checked="item.isActive" type="checkbox"><span
+                                            class="slider round"></span></label>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        }
+                    </div>
+                </div>
+
+            }
+            @if(!isloading){
+            
+                <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 'addnew'}" id="addnew" role="tabpanel" aria-labelledby="custom-tabs-addnew-tab">
+                    @for (item of lstUserPermission; track $index) {
+                    @if(isTabContaint(item.permissionName,'addnew')){
+                    <div class="row">
+                        <div class="colm_6">
+                            <div class="loct_showall">
+                                <span class="show_all">{{item.permissionName}}</span>
+                                <label class="switch"><input [(ngModel)]="item.isActive" checked="item.isActive" type="checkbox"><span
+                                        class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+                </div>
+            }
+               @if(!isloading){
+
+                <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 'other'}" id="other" role="tabpanel" aria-labelledby="custom-tabs-other-tab"> 
+                    @for (item of lstUserPermission; track $index) {
+                    @if(isTabContaint(item.permissionName,'other')){
+                    <div class="row">
+                        <div class="colm_6">
+                            <div class="loct_showall">
+                                <span class="show_all">{{item.permissionName}}</span>
+                                <label class="switch"><input [(ngModel)]="item.isActive" checked="item.isActive" type="checkbox"><span
+                                        class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+                </div>
+            }
+            @if(!isloading){
+
+                <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 'selecteddata'}" id="selecteddata" role="tabpanel" aria-labelledby="custom-tabs-selecteddata-tab">
+                    <p>{{'SHOWDATA'|translate}}</p>
+                    <div class="row">
+                        <div class="input-group col-4 mb-2">
+                            <label>{{'REASON'|translate}}:</label>
+                        </div>
+                        <div class="input-group col-8 mb-2">
+                            <angular2-multiselect id="ddlPaymentReason"
+                                [settings]="commonMethodService.setDropDownSettings('Select Reason',2,false,false,true)"
+                                [data]="commonMethodService.localReasonList"
+                                [(ngModel)]="commonMethodService.selectedPaymentReasons"
+                                (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                           
+                            </angular2-multiselect>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-4 mb-2">
+                        <label>{{'COLLECTOR'|translate}}:</label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <angular2-multiselect id="ddlCollector"
+                                [settings]="commonMethodService.setDropDownSettings('Select Collector',2,false,false,true)"
+                                [data]="commonMethodService.localCollectorList"
+                                [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+                                (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                            </angular2-multiselect>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-4 mb-2">
+                        <label>{{'LOCATION'|translate}}:</label>
+                    </div>
+                        <div class="input-group col-8 mb-2">
+                            <angular2-multiselect id="ddlPaymentLocation"
+                                [settings]="commonMethodService.setDropDownSettings('Select Location',2,false,false,true)"
+                                [data]="commonMethodService.localLocationList"
+                                [(ngModel)]="commonMethodService.selectedPaymentLocations"
+                                (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                            </angular2-multiselect>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-4 mb-2">
+                        <label>{{'CAMPAIGN'|translate}}:</label>
+                        </div>
+                        <div class="input-group col-8 mb-2">
+                                <angular2-multiselect id="ddlCampaign"
+                                    [settings]="commonMethodService.setDropDownSettings('Select Campaign',2,false,false,true)"
+                                    [data]="commonMethodService.localCampaignList"
+                                    [(ngModel)]="commonMethodService.selectedFromCampaignList"
+                                    (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                                 
+                                </angular2-multiselect>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group col-4 mb-2">
+                            <label>{{'SOURCES'|translate}}:</label>
+                        </div>
+                        <div class="input-group col-8 mb-2">
+                            <angular2-multiselect id="ddlSourceType"
+                            [settings]="commonMethodService.setDropDownSettings('Select Sources',2,false,false,true)"
+                            [data]="commonMethodService.localDeviceTypeList"
+                            [(ngModel)]="commonMethodService.selectedPaymentDeviceTypes"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('deviceTypeList')"
+                            >
+                        </angular2-multiselect>
+                        </div>
+                        </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+
+    <div class="action_footer">
+        <div class="left_part">
+            <button class="btn btn-remove" type="button" (click)="onDeleteUser()">{{'REMOVEUSER'|translate}}</button>
+        </div>
+        <div class="right_part">
+            <button class=" btn btn-default" (click)="closePopup()">{{'CANCEL'|translate}}</button>
+            <button class="btn btn-primary" (click)="SaveUser()" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVECHANGES'|translate}}</button>
+            <button class="btn btn-primary btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
+        </div>
+    </div>
+
+</div>

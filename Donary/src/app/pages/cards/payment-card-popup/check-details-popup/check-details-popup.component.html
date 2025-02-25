@@ -1,0 +1,62 @@
+<div class="diglog_modal" ngbAutofocus tabindex="-1">	
+    <div class="diglog_header modal__custom_header">
+        <button class="dismiss" (click)="closePopup()">&times;</button>
+        <div class="titlebar">
+            <h4>{{'EDITCHECKNUMBER'|translate}}</h4>
+        </div>
+        <div class="header_actions">				
+            
+        </div>
+    </div>
+    <form  name="checkNumberInfoForm" (ngSubmit)="f.form.valid && SaveCheckInfo()" #f="ngForm" >
+
+        <div class="check_number_wrap">
+            <div class="inside_wrap modal__custom_content">
+
+                <div class="form-group-block">
+                    <div class="block_label">
+                        {{'ENTERCHECKNUMBER'|translate}}:
+                    </div>
+                    <div class="block_inputs">
+                        <input 
+                            type="text" 
+                            class="input-text"  
+                            [ngClass]="{ 'is-invalid': f.submitted && checkNumber.invalid }"  
+                            id="checkNumber" 
+                            [(ngModel)]="refNum"   
+                            #checkNumber="ngModel" 
+                            name="checkNumber"
+                            (keypress)="commonMethodService.numberOnly($event)"
+                            [required]="checkLocationName()"
+                        />				
+                    </div>
+                </div>
+
+                <div class="form-group-block" *ngIf="(checkNumber.touched && checkNumber.invalid)">
+                    <div class="block_label"></div>
+                    <div class="block_inputs">
+                      <div class="form-group">
+                        <div class="colm colm-12">
+                          <div class="row text-danger">
+                            <div  class="val-error">
+                                {{'REQUIREDCHECKNUMBER'|translate}}
+                            </div>
+                          </div>
+                        </div>                                   
+                      </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="btn_info modal__custom_footer">
+                <button class="btn btn-default" (click)="closePopup()">{{'CANCEL'|translate}}</button>
+                <button class="btn btn-primary" [disabled]="!f.form.valid">{{'SAVECHANGES'|translate}}</button>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="isloading" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>
+	
+

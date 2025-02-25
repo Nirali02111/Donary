@@ -1,0 +1,58 @@
+<div class="edit__payment_main" ngbAutofocus tabindex="-1">
+    <div class="popup_header modal__custom_header">
+        <h4>{{'EDITBULKREASONS' | translate}}</h4>
+        <div class="close_trans" (click)="closePopup()">
+            <span>&times;</span>
+        </div>
+    </div>
+    <div class="edit_pymnt_wrap modal__custom_content">
+        <div class="payement_fields">
+            <div class="schedule-sticky-pop">
+                <div class="form-group d-flex">
+                    <label>{{'EDITCAMPAIGN' | translate}} :</label>
+                    <div class="input_single">                        
+                        <angular2-multiselect id="ddlCampaign"
+                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                        [data]="commonMethodService.CampaignList" [(ngModel)]="selectedFromCampaignList"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                    </angular2-multiselect>
+                    </div>
+                </div>
+                <div class="form-group d-flex">
+                    <label>{{'ADDGOAL' | translate}} :</label>
+                    <div class="input_single">
+                        <input type="text" class="form-control" [maxlength]="10"  (keypress)="commonMethodService.numberOnly($event)"  id="txtGoal" [(ngModel)]="goal"    #txtGoal="ngModel" name="txtGoal"  />
+                    </div>
+                </div>
+                <div class="form-group d-flex">
+                    <label>{{'PARENTREASON' | translate}} :</label>
+                    <div class="input_single">
+                        <angular2-multiselect id="ddlPaymentReason"
+                        [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                        [data]="commonMethodService.paymentReasonList" [(ngModel)]="selectedPaymentReasons"
+                        (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                    </angular2-multiselect>
+                    </div>
+                </div>
+
+                <div class="form-group d-flex">
+                    <label>{{'MAKEINACTIVE' | translate}} :</label>
+                    <div class="input_single">    
+                        <label class="switch">
+                            <input type="checkbox" [(ngModel)]="isDeActive"  id="makeinactive" (change)="OnCheckboxChange($event)" >
+                            <span class="slider round"></span>
+                          </label>                   
+                    </div>
+                </div>
+                    <!-- <span class="record_selected">{{transactionIds.length}} Records selected</span> -->
+            </div>
+        </div>
+    </div>
+    <div class="btn_info modal__custom_footer">
+        <button type="button" class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>&nbsp;&nbsp;
+        <button class="btn btn-primary" (click)="editBulkActions()">{{'SAVECHANGES' | translate}}</button>
+    </div>
+    <div *ngIf="isloading" class="overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+    </div>
+</div>

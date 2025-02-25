@@ -1,0 +1,57 @@
+<div [formGroup]="formGroup">
+    <div formGroupName="recurring">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" formControlName="isRecurring" id="sch-count-id">
+            <label for="sch-count-id" class="form-check-label">{{ "SETSCHEDULE" | translate }}</label>
+        </div>
+
+        @if (isRecurring.value) {
+        <span class="saveDefualtAction" [class.active]="savedDefault">
+            {{ "SAVE_SETTING_AS_DEFAULT" | translate }}
+            <span (click)="onSaveUISetting()">
+                <i class="fa" [class.fa-star]="savedDefault" [class.fa-star-o]="!savedDefault"></i>
+            </span>
+        </span>
+
+        <div class="row mt-4 pt-1">
+            <div class="col-md-6 mb-3">
+                <label for="sch-count-id" class="form-label">{{ "COUNT" | translate }}:</label>
+                <input type="tel" class="form-control" formControlName="count" id="sch-count-id">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="sch-amount-id" class="form-label">{{ "AMOUNTPERPAYMENT" | translate }}:</label>
+                <input type="text" class="form-control" formControlName="amount"
+                    (keypress)="commonMethodService.numberOnly($event)" id="sch-amount-id">
+            </div>
+
+            <div class="col-md-6">
+                <label for="sch-frequency-id" class="form-label">{{ "FREQUENCY" | translate }}:</label>
+                <ng-select bindLabel="itemName" bindValue="id" formControlName="frequency" id="sch-frequency-id"
+                    [selectOnTab]="true" [closeOnSelect]="true" [hideSelected]="true"
+                    [items]="commonMethodService.localscheduleRepatTypeList">
+                    <ng-template ng-option-tmp let-item="item">
+                        {{ item.itemName }}
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">{{ "STARTDATE" | translate }}:</label>
+                <ng-template #popContent>
+                    <app-common-hebrew-english-calendar [pageName]="'schedule-of-transaction'"
+                        [data]="selectedStartDate" [isOneDate]="true">
+                    </app-common-hebrew-english-calendar>
+                </ng-template>
+                <!-- Calendar code started -->
+                <div (click)="openHebrewCalendarPopup(p1)" popoverClass="calender-modal" [ngbPopover]="popContent"
+                    container="body" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"
+                    [popoverTitle]="undefined" [autoClose]="false"
+                    placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                    id="scheduleOfTransactionCalender">
+                    <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

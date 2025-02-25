@@ -1,0 +1,87 @@
+<div class="import-doc">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header ui-draggable-handle">
+            <h4 class="modal-title text-white">{{ "IMPORTTOKENS" | translate }}</h4>
+            <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                (click)="resetTokenFile()"
+            >
+                &times;
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="import-doc-body">
+                <div
+                id="other"
+                class="file-drop-area border-0 {{ changeText }}"
+                draggable="true"
+                (dragstart)="changeText = 'is-active'"
+                (drag)="changeText = 'is-active'"
+                (dragover)="changeText = 'is-active'"
+                (drop)="changeText = 'is-active'"
+                (dragend)="changeText = ''"
+                >
+                <div id="TokenNotReadyToUpload" class="file-not-ready">
+                    <span class="file-msg text-center"
+                    ><i class="cloud-upload"></i
+                    >{{ "DRAGFILEUPLOAD" | translate }}</span
+                    >
+                    <label class="file-devider">{{ "OR" | translate }}</label>
+                    <input
+                    class="file-input"
+                    type="file"
+                    name="doc_file"
+                    id="doc_file"
+                    (change)="incomingTokenFile($event)"
+                    placeholder="{{ 'UPLOADFILE' | translate }}"
+                    accept=".xlsx"
+                    />
+                    <span class="fake-btn">{{ "CHOOSEFILE" | translate }}</span>
+                </div>
+                <div id="tokenReadyToUpload" class="file-ready" style="display: none">
+                    <span class="file-msg text-center"
+                    ><i class="cloud-upload"></i>
+                    {{ "FILEREADY" | translate }}</span
+                    >
+                    <div class="label-download">
+                        <button class="download-excel-tem">{{ fileName }}</button>
+                     </div>
+                </div>
+                </div>
+                <div class="label-download">
+                <button
+                    (click)="downloadTokenTemplate($event)"
+                    class="download-excel-tem"
+                >
+                    <i class="xls-file"></i> {{ "DOWNLOADEXCEL" | translate }}
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button
+                type="button"
+                data-dismiss="modal"
+                class="btn btn-default"
+                (click)="resetTokenFile()"
+            >
+                {{ "CANCEL" | translate }}
+            </button>
+            <button
+                type="button"
+                class="btn btn-primary"
+                (click)="uploadTokenTemplate()"
+            >
+                {{ "UPLOAD" | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+  

@@ -1,0 +1,94 @@
+<div class="modal-header">
+    <h4>Select Payments</h4>
+    <button class="close" (click)="closePopup()">&times;</button>
+</div>
+<div class="modal-body">
+    <div class="bulk-select bulk-checkbox">
+        <input type="checkbox" name="" id="select-all" (change)="selectRecord($event, 'selectAll', null)"/>
+        <label for="select-all"><strong >{{paymentsSelectedCount}}</strong> payments selected <span >({{ commonMethodService.formatAmount(paymentsSelectedAmount) }})</span></label>
+    </div>
+    <div class="bulk-btns d-flex" *ngIf="isSelected">
+        <button class="btn btn-edit" (click)="editTransactionInfoPopup()">
+            <span class="icon"></span>
+            Edit
+        </button>
+        <button class="btn btn-batch" (click)="editBatchPaymentPopup()">
+            <span class="icon"></span>
+            batch
+        </button>
+        <button class="btn btn-payment" (click)="AdvanceVoidPaymentAction()">
+            <span class="icon"></span>
+            Void payments
+        </button>
+        <button class="btn btn-report" (click)="onPaymentCustomReport()">
+            <span class="icon"></span>
+            Generate report
+        </button>
+        <button class="btn btn-print" (click)="AdvancePrintReceipt()">
+            <span class="icon"></span>
+            {{ "PRINT_RECEIPT" | translate }}
+        </button>
+        <button class="btn btn-text" (click)="AdvanceSMSReceiptAction()">
+            <span class="icon"></span>
+            {{ "SMSRECEIPT" | translate }}
+        </button>
+        <button class="btn btn-email" (click)="AdvanceEmailReceiptAction()">
+            <span class="icon"></span>
+            {{ "EMAIL_RECEIPT" | translate }}
+        </button>
+        <button class="btn btn-mail" (click)="AdvanceMailReceiptAction()">
+            <span class="icon"></span>
+            {{ "MAIL__RECEIPT" | translate }}
+        </button>
+        <button class="btn btn-advanced" (click)="AdvanceReceiptAction()">
+            Advanced Actions
+        </button>
+    </div>
+    <div class="payment-listing">
+        <ul>
+            <li *ngFor="let item of gridFilterData; let i=index">
+                <div class="payment-bulk bulk-checkbox">
+                    <input #checkboxes id="singleCheck_{{ item.paymentId }}" type="checkbox" name="singlecheck" (change)="
+                    selectRecord(
+                      $event,
+                      'singlecheck',
+                      item.paymentId,
+                      item.paymentStatus
+                    )
+                  " />
+                    <label for="singleCheck_{{ item.paymentId }}"></label>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h4 class="left-content donor-name">{{ item.fullNameJewish }}</h4>
+                    <span class="right-content donor-amt"> {{ commonMethodService.formatAmount(item.amount) }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="left-content donor-time">
+                        <span class="donor-date">{{ item.paymentDateTime | donaryDateFormat: "short" }}</span>
+                        <span class="donor-location">{{ item.locationName }}</span>
+                    </div>
+                    <div class="right-content">
+                        <span class="donor-payment"> {{item.paymentType}} </span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="left-content payment-category d-flex flex-wrap">
+                        <div class="payment-campaign">
+                            <div>
+                                <label>CAMPAIGN:</label>
+                                <span class="hebrew-text"> {{ item.campaignName }}</span>
+                            </div>
+                        </div>
+                        <div class="payment-reason">
+                            <label>REASON:</label>
+                            <span>{{ item.reasonName }}</span>
+                        </div>
+                    </div>
+                    <div class="right-content">
+                        <span class="payment-currency"> #{{ item.receiptNum }} </span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

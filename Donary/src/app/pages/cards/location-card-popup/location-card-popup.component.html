@@ -1,0 +1,183 @@
+<div class="modal_wrap location_popup updated_card_dsgn" style="display: block;" ngbAutofocus tabindex="-1">
+  <div class="diglog_header modal__custom_header" style="cursor: grab;">
+    <div class="titlebar">
+      <h4>{{'LOCATIONCARD'|translate}}</h4>
+    </div>
+    <div class="header_actions popup-header">
+      <div class="filter_field">
+        <button type="button" (click)="openSearchFilterPopup()" class="btn btn-default">
+          <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
+          <span class="filter_text">{{'FILTER'|translate}}</span>
+        </button>
+      </div>
+
+      <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
+          [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+      </ng-template>
+      <div class="input-group dnr-datepicker-container date_picker" (clickOutside)="onClickedOutsidePopover(p1)"
+        container="body" #p1="ngbPopover" (click)="openHebrewCalendarPopup()" [ngbPopover]="popContent"
+        popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+        placement="bottom left right start end bottom-start bottom-end end-top end-bottom" id="dynamicsCalender">
+        <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
+          </span>
+        </div>
+      </div>
+      <!-- Calendar code ended -->
+
+      <button class="b_tn hidden-mobile" type="button" data-toggle="dropdown" aria-haspopup="true" *ngIf="isDevEnv"
+        aria-expanded="false">
+        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu action_opts donor_drp" role="menu" aria-labelledby="dropdownMenu">
+
+        <li>
+          <a class="dropdown-item" style="cursor: pointer" (click)="SaveLayout()">
+            <i class="fa fa-tags"></i> {{"SAVELAYOUT"| translate}}
+          </a>
+        </li>
+      </ul>
+      <button class="b_tn" *ngIf="newLocationPermission" appDataHover labelText="{{'NEWLOCATION' | translate}}"
+        type="button" (click)="openSaveLocationPopup()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+
+
+
+
+      <!-- Edit default location -->
+      <ng-template *ngIf="canEditGlobalLocation();then editButtonTmp else disableEditButtonTmp"></ng-template>
+
+      <ng-template #editButtonTmp>
+        <button class="b_tn" type="button" (click)="openEditLocationPopup(locationId)">
+          <i class="fa fa-edit" aria-hidden="true"></i>
+        </button>
+      </ng-template>
+
+      <ng-template #disableEditButtonTmp>
+        <button class="b_tn edit_icon " type="button" disabled data-toggle="tooltip" appHoverTooltip
+          labelText="{{'CANTGLOBAL' | translate}}" style="background: rgba(123, 91, 196, 0.5)">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </button>
+      </ng-template>
+      <!--  -->
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+  </div>
+
+  <div class="modal__custom_content">
+    <div class="cards_secton">
+      <div class="card" id="card-payment">
+        <a style="cursor: pointer" (click)="openPaymentListCardPopup(locationId)">
+          <span class="data">
+            <p> <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '70px', height: '8px' }">{{'PAYMENTS'|translate}}</app-skeleton-loader-component></p>
+            <h6> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{
+                commonMethodService.formatAmount(payments) || commonMethodService.formatAmount(0.00)
+                }}</app-skeleton-loader-component></h6>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card" id="card-pledge">
+        <a style="cursor: pointer" (click)="openPledgeListCardPopup(locationId)">
+          <span class="data">
+            <p> <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '70px', height: '8px' }">{{'OPENPLEDGES'|translate}}</app-skeleton-loader-component>
+            </p>
+            <h6> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{
+                commonMethodService.formatAmount(openPledges) || commonMethodService.formatAmount(0.00)
+                }}</app-skeleton-loader-component></h6>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card" id="card-shedule">
+        <a style="cursor: pointer" (click)="openScheduleListCardPopup(locationId)">
+          <span class="data">
+            <p> <app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '70px', height: '8px' }">{{'SCHEDULED'|translate}}</app-skeleton-loader-component></p>
+            <h6> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{
+                commonMethodService.formatAmount(scheduled) || commonMethodService.formatAmount(0.00)
+                }}</app-skeleton-loader-component></h6>
+          </span>
+          <span class="right-arrow action_btn"></span>
+        </a>
+      </div>
+      <div class="card total_raised">
+        <span class="data">
+          <p>{{'TOTALRAISED'|translate}}</p>
+          <h6>{{ commonMethodService.formatAmount(raised) || commonMethodService.formatAmount(0.00) }}</h6>
+        </span>
+      </div>
+    </div>
+    <div class="donor_information">
+      <div class="donor_name" (click)="CopyText($event)" style="cursor: text;">
+        <p> <app-skeleton-loader-component [isLoading]="isloading"
+            [theme]="{ width: '190px', height: '20px' }">{{locationName}}</app-skeleton-loader-component></p>
+        <h5 class="lang_hebrew"> <app-skeleton-loader-component [isLoading]="isloading"
+            [theme]="{ width: '170px', height: '15px' }">{{locationJewishName}}</app-skeleton-loader-component></h5>
+      </div>
+      <div class="right_col">
+        <div class="sort_num" (click)="CopyShortText($event)" style="cursor: text;">
+          <p> <app-skeleton-loader-component [isLoading]="isloading"
+              [theme]="{ width: '70px', height: '30px' }">{{'SHORTNAME'|translate}}:</app-skeleton-loader-component></p>
+          <h5> <app-skeleton-loader-component [isLoading]="isloading"
+              [theme]="{ width: '70px', height: '30px' }">{{locationNameShort}}</app-skeleton-loader-component></h5>
+        </div>
+        <div class="sort_num btn_div">
+          <button class="btn">{{'SUGGESTNEWMINYAN'|translate}}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content_info">
+      <div class="sub_tab_wrap">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#locationinfo" class="active" data-toggle="tab">{{'LOCATIONINFO'|translate}}</a>
+          </li>
+        </ul>
+        <div class="tab-content sub_tab">
+          <div class="tab-pane active" id="locationinfo">
+            <div class="row">
+              <div class="col-md-12">
+                <ng-container *ngFor="let item of skeletonitems">
+                  <div style="margin-bottom: 10px;">
+                    <app-list-card-skeleton-loader [isLoader]="isloading"></app-list-card-skeleton-loader>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="!isloading">
+                  <div class="block_col">
+                    <span class="icon">
+
+                      <i class="build_icon"></i>
+                    </span>
+                    <span class="text">
+
+                      <h6>{{'STREETADDRESS'|translate}}:</h6>
+                      <p>{{address}} {{this.cityStateZip}} </p>
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="map_area" *ngIf="isMapShow">
+                <iframe width="100%" height="150" style="border:0" frameborder="0" allowfullscreen="true"
+                  aria-hidden="false" tabindex="0" [attr.src]="iFrameUrl">
+                </iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

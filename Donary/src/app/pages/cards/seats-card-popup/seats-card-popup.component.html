@@ -1,0 +1,308 @@
+<div
+  class="reason_card_modal updated_card_dsgn"
+  style="display: block"
+  ngbAutofocus
+  tabindex="-1"
+>
+  <div class="diglog_header modal__custom_header">
+    <div class="titlebar">
+      <h4>{{ "SEATID" | translate }}  {{ seatId }}</h4>
+      <span class="{{ paidStatus | lowercase }}-status-seat-card">{{
+        paidStatus
+      }}</span>
+      <p>
+        {{ "SEASON" | translate }}:
+        <span class="lng_hebrew"> {{ season }}</span>
+      </p>
+    </div>
+    <div class="header_actions">
+      <button
+        class="b_tn edit_icon"
+        appDataHover labelText="{{'EDIT' | translate}}"
+        type="button"
+        (click)="EditSeatPopup()"
+      >
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </button>
+      <!-- <button class="b_tn bg-light-gray" data-hover="Add Seat" (click)="SaveSeatPopup()" type="button">
+		<i class="fa fa-plus" aria-hidden="true" ></i>
+	  </button> -->
+      <button
+        class="b_tn bg-light-gray"
+        appDataHover labelText="{{'NEWTRANSACTION' | translate}}"
+        type="button"
+      >
+        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+      </button>
+      <button class="dismiss" (click)="closePopup()">&times;</button>
+    </div>
+  </div>
+
+  <div class="modal__custom_content">
+    <div class="seat-info-top">
+      <div class="seat-info-left">
+        <div class="column-one">
+          <label> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ "LOCATION" | translate }}:</app-skeleton-loader-component></label>
+          <h3> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ location }}</app-skeleton-loader-component></h3>
+          <label> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ "SECTION" | translate }}:</app-skeleton-loader-component></label>
+          <h3> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ section }}</app-skeleton-loader-component></h3>
+        </div>
+        <div class="column-two">
+          <label> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ "ROW" | translate }}:</app-skeleton-loader-component></label>
+          <h3> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ rowNum }}</app-skeleton-loader-component></h3>
+          <label> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ "SEAT#" | translate }}:</app-skeleton-loader-component></label>
+          <h3> <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ seatNum }}</app-skeleton-loader-component></h3>
+        </div>
+        <div class="column-three">
+          <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">{{ "AISLE" | translate }}:</app-skeleton-loader-component></label>
+          <!--  <span class="icon-aisle"><i class="fa fa-times" aria-hidden="true"></i></span>-->
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '11px' }">
+          <span class="icon-aisle"
+            ><i class="fa fa-check" *ngIf="aisle"></i
+            ><i class="fa fa-times" *ngIf="!aisle"></i
+          ></span>
+        </app-skeleton-loader-component>
+        </div>
+      </div>
+      <div class="seat-info-right">
+        <div
+          class="seat-price"
+          [ngClass]="paidStatus == 'Open' ? 'seat-pay-block' : ''"
+        >
+          <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "SEATPRICE" | translate }}:</app-skeleton-loader-component></label>
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">  <h3 *ngIf="paidStatus != 'Open' && !isPartiallyPaid">${{ price }}</h3>
+          <div class="seat-pay" *ngIf="paidStatus == 'Open' || isPartiallyPaid">
+            <h3>${{ price }}</h3>
+          <div *ngIf="accountNum !== null">
+            <button
+              class="btn btn-primary btn-sm"
+              (click)="makeTransactionPopup()"
+            >
+              Pay Seat
+            </button>
+          </div>
+          </div>
+        </app-skeleton-loader-component>
+        </div>
+      </div>
+    </div>
+    <div class="seat-tabs-info">
+      <div class="tabs__wrap">
+        <ul class="nav nav-tabs">
+          <li>
+            <a data-toggle="tab" class="active" href="#seat-info">{{
+              "INFO" | translate
+            }}</a>
+          </li>
+          <li>
+            <a data-toggle="tab" href="#seat-payment">{{
+              "PAYMENTS&PLEDGES" | translate
+            }}</a>
+          </li>
+          <li>
+            <a data-toggle="tab" href="#seat-owner">{{
+              "OWNERRENTERHISTORY" | translate
+            }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="seat-info">
+            <div class="content__inside_wrap d-flex">
+              <div class="current-renter-wrap">
+                <div class="renter-left">
+                  <div class="renter-row">
+                    <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "CURRENTRENTER" | translate }}:</app-skeleton-loader-component></label>
+                    <!-- <span>X</span> -->
+                  </div>
+                  <div class="renter-info-box">
+                    <div class="renter-top">
+                      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }"> <span>#{{ accountNum }}</span></app-skeleton-loader-component>
+                      <!-- <span class="lng_hebrew">סאטמאר מוירטל</span>-->
+                    </div>
+                    <div class="renter-mid">
+                      <h3><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '15px' }">{{ fullName }}</app-skeleton-loader-component></h3>
+                      <h3 class="lng_hebrew">{{ fullNameJewish }}</h3>
+                      <div class="text_right_col seat-renter-list">
+                        <p
+                          style="cursor: pointer"
+                          (click)="OpenDonorCard(fatherId, 1)"
+                        >
+                        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }"> <span class="name lng_hebrew">בן:</span></app-skeleton-loader-component>
+                          <span
+                            class="text {{ class_fatherId }}"
+                            [ngClass]="
+                              contains_heb_fatherId(father, fatherId)
+                                ? 'lng_hebrew'
+                                : 'lng_eng'
+                            "
+                            ><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ father }}</app-skeleton-loader-component></span
+                          >
+                        </p>
+                        <p
+                          style="cursor: pointer"
+                          (click)="OpenDonorCard(fatherInLawId, 2)"
+                        >
+                        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }"> <span class="name lng_hebrew">חתן: </span></app-skeleton-loader-component>
+                          <span
+                            class="text {{ class_fatherInLawId }}"
+                            [ngClass]="
+                              contains_heb_fatherInLawId(
+                                fatherInLaw,
+                                fatherInLawId
+                              )
+                                ? 'lng_hebrew'
+                                : 'lng_eng'
+                            "
+                            >{{ fatherInLaw }}</span
+                          >
+                        </p>
+                      </div>
+                      <!-- <span class="lng_hebrew">
+                                                <span class="field_value">
+                                                    <span class="father_lbl 123" *ngIf="father!=null">:בן</span>
+                                                    <span>{{father}}</span>
+                                                </span>
+                                                <span class="field_value">
+                                                    <span class="father_lbl" *ngIf="fatherInLaw!=null">:חתן </span>
+                                                    <span>{{fatherInLaw}}</span>
+                                                </span>
+                                            </span> -->
+                    </div>
+                    <div class="renter-bottom">
+                      <div class="renter-phone">
+                        <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "PHONE" | translate }}:</app-skeleton-loader-component></span>
+                        <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ phoneNumber }}</app-skeleton-loader-component></label>
+                      </div>
+                      <div class="renter-address">
+                        <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "ADDRESS" | translate }}:</app-skeleton-loader-component></span>
+                        <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ address }}</app-skeleton-loader-component></label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="renter-status">
+                    <div class="reserved-status">
+                      <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "RESERVEDSTATUS" | translate }}:</app-skeleton-loader-component></span>
+                      <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ seatReservedType }}</app-skeleton-loader-component></label>
+                    </div>
+                    <div class="reserved-note">
+                      <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ "NOTE" | translate }}:</app-skeleton-loader-component></span>
+                      <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '8px' }">{{ seatNote }}</app-skeleton-loader-component></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="renter-right">
+                  <div class="renter-right-top">
+                    <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ "CREATEDBY" | translate }}:</app-skeleton-loader-component></span>
+                    <label class="lng_hebrew"><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ createdBy }}</app-skeleton-loader-component></label>
+                  </div>
+                  <div class="renter-right-mid">
+                    <span><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ "SOURCE" | translate }}:</app-skeleton-loader-component></span>
+                    <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ source }}</app-skeleton-loader-component></label>
+                  </div>
+                  <div class="renter-right-bottom">
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }"><span>{{ "DATE&TIMECREATED" | translate }}:</span></app-skeleton-loader-component>
+                    <label><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{
+                      createdDate | donaryDateFormat: "long"
+                    }}</app-skeleton-loader-component></label>
+                    <label class="lng_hebrew"><app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '70px', height: '13px' }">{{ jewishCreatedDate }}</app-skeleton-loader-component></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="seat-payment">
+            <div class="content__inside_wrap d-flex table__main">
+              <table
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                [svData]="pledgePayments"
+                #sv="svDataTable"
+                [svRowsOnPage]="10"
+                svSortBy="date"
+                svSortOrder="asc"
+              >
+                <thead>
+                  <tr>
+                    <th>{{ "TYPE" | translate }}</th>
+                    <th>{{ "ID#" | translate }}</th>
+                    <th>{{ "DONOR" | translate }}</th>
+                    <th>{{ "DATE" | translate }}</th>
+                    <th>{{ "AMOUNT" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="pledgePayments?.length > 0">
+                  <tr *ngFor="let item of pledgePayments; let i = index">
+                    <td>{{ item.type }}</td>
+                    <td
+                      style="color: #8a2be2; cursor: pointer"
+                      (click)="openPopupByType(item.transactionId, item)"
+                    >
+                      {{ item.num }}
+                    </td>
+                    <td>{{ item.fullNameJewish }}</td>
+                    <td>{{ item.date | donaryDateFormat : "name" }}</td>
+                    <td>{{ commonMethodService.formatAmount(item.amount) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane" id="seat-owner">
+            <div class="content__inside_wrap d-flex table__main">
+              <div class="table-scroller">
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  [svData]="ownerRenterHistory"
+                  #sv="svDataTable"
+                  [svRowsOnPage]="10"
+                  svSortBy="date"
+                  svSortOrder="asc"
+                >
+                  <thead>
+                    <tr>
+                      <th>{{ "DONOR" | translate }}</th>
+                      <th>{{ "SEASON" | translate }}</th>
+                      <th>{{ "TYPE" | translate }}</th>
+                      <th>{{ "STARTDATE" | translate }}</th>
+                      <!--	<th>END DATE</th>-->
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="ownerRenterHistory?.length > 0">
+                    <tr *ngFor="let item of ownerRenterHistory; let i = index">
+                      <td
+                        (click)="openDonorCardPopup(item.accountId)"
+                        style="color: #8a2be2; cursor: pointer"
+                      >
+                        {{
+                          item.fullNameJewish
+                            ? item.fullNameJewish
+                            : item.fullName
+                        }}
+                      </td>
+                      <td>{{ item.season }}</td>
+                      <td>{{ item.seatReservedType }}</td>
+                      <td>
+                        <span class="owner-startdate">{{
+                          item.startDate | donaryDateFormat : "name"
+                        }}</span>
+                        <span class="owner-jewish-startdate">{{
+                          item.jewishStartDate
+                        }}</span>
+                      </td>
+                      <!--<td> <span class="owner-enddate">{{item.endDate | donaryDateFormat: 'name'}}</span>
+                                    <span class="owner-jewish-enddate">{{item.jewishEndDate}}</span></td>-->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

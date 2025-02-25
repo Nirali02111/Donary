@@ -1,0 +1,363 @@
+<div class="filter_modal_popup" ngbAutofocus tabindex="-1">
+    <div class="modal-body modal__custom_content">
+        <div class="card" style="box-shadow: none !important;">
+            <div class="close_btn">
+                <h4 class="large d-block d-md-none">Filter</h4>
+                <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row" *ngIf="!isTotalPanelVisible">
+                <div class="label-group col-4 mb-2">
+                    <label for="lblDonor">
+                        {{'ADVANCEDFIELDS'|translate}}:
+                    </label>
+                </div>
+                <div class="input-field-group col-8 mb-2">
+                    <div class="dropdown">
+
+                        <angular2-multiselect id="ddlAdvanceField"
+                            [settings]="commonMethodService.setDropDownSettings('Add Field',2,false,false,true)"
+                            [data]="getAdvanceFieldList"
+                            [(ngModel)]="selectAdvanceField"
+                            (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="onItemDeselect($event)"
+                            (onDeSelectAll)="onDeselectAll()">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+            </div>
+                <div *ngIf="getAdvanceFieldList && getAdvanceFieldList.length !=0 ">
+                <div class="row" *ngFor="let data of getAdvanceFieldList; let i = index;">
+                    <div *ngIf="data.isDisplayed==true" class="child-row">
+                    <div class="input-group col-4 mb-2">
+                        <label>{{data.itemName}}</label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <div  *ngIf="data.type=='text'">
+                            <input type="text" name="data.fieldName" class="form-control" [(ngModel)]="data.filtervalue">
+                        </div>
+                        <div  *ngIf="data.type=='dropdown'">
+                            <!-- <select [(ngModel)]="data.filtervalue" name="data.fieldName" class="form-control">
+                            <option value="null">Select</option>
+                            <option *ngFor="let item of data.options" [value]="item">{{item}}</option>
+                            </select>-->
+                            <angular2-multiselect id="ddlAdvanceField"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="data.options"
+                            [(ngModel)]="data.filtervalue"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('AdvanceFieldList')">
+                        </angular2-multiselect>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+                <div *ngIf="!isTotalPanelVisible">
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                        {{'ACCT#'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" [(ngModel)]="accountNo" class="form-control" name="txtAccountNo"
+                            id="input-accountno" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'FULLNAME'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" [(ngModel)]="fullName" class="form-control" name="txtFullName"
+                            id="input-fullname" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'FULLNAMEJEWISH'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" [(ngModel)]="fullNameJewish" class="form-control" name="txtFullNameJewish"
+                            id="input-fullname" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'ADDRESS'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2 d-flex justify-content-between">
+                        <!-- <input type="text" [(ngModel)]="address" class="form-control" name="txtAddress"
+                            id="input-address" /> -->
+                            <div class="city-dpwn" >
+								<angular2-multiselect id="ddlCity"
+									[settings]="commonMethodService.setDropDownSettings('Select City',2,true,false, true,false,'')"
+									[data]="citysList" [(ngModel)]="citysSelected"
+									(onDeSelectAll)="onDeleteCitys()" (onSelect)="onCitysSelect()" (onDeSelect)="enableCityDpw()">
+								</angular2-multiselect>
+							</div>
+							<div class="zip-dpwn" >
+								<angular2-multiselect id="ddlZip"
+									[settings]="commonMethodService.setDropDownSettings('Select ZIP',2,true,false, true,false,'')"
+									[data]="zipsList" [(ngModel)]="zipsSelected"
+									(onDeSelectAll)="onDeleteZips()" (onSelect)="onZipsSelect()" (onDeSelect)="enableZipDpw()">
+								</angular2-multiselect>
+							</div>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'CITY'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="city" name="txtCity" id="input-city" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'STATE'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="state" name="txtState" id="input-state" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'ZIP'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="zip" name="txtZip" id="input-zip" />
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'DEFAULTLOCATION'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <angular2-multiselect id="ddlPaymentLocation"
+                            [settings]="commonMethodService.setDropDownSettings('Select Default Location',2,false,true)"
+                            [data]="commonMethodService.paymentLocationList" [(ngModel)]="defaultLocations">
+                        </angular2-multiselect>
+                        <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'GROUP'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="group" name="txtGroup" id="input-group" />
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            Class
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="class" name="txtClass" id="input-class" />
+                    </div>
+                </div>           -->
+
+
+
+
+
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'PHONE'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="phone" name="txtphone" id="input-phone" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'EMAIL'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="email" name="txtEmail" id="input-email" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'FATHER'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="father" name="txtFather" id="input-Father" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                            {{'FATHERINLAW'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="fatherInLaw" name="txtFatherInLaw" id="input-fatherinlaw" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label for="lblDonor">
+                        {{'STATUS'|translate}}
+                        </label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <select class="form-control" [(ngModel)]="status" name="slctStatus" id="input-status">
+                            <option value="">{{'ALL'|translate}}</option>
+                            <option value="0">{{'ACTIVE'|translate}}</option>
+                            <option value="-1">{{'INACTIVE'|translate}}</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="isTotalPanelVisible">
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                        <label>{{'REASON'|translate}}:</label>
+                    </div>
+                    <div class="input-group col-8 mb-2">
+                        <angular2-multiselect id="ddlPaymentReason"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="commonMethodService.localReasonList"
+                            [(ngModel)]="commonMethodService.selectedPaymentReasons"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentReasonList')">
+                            <c-item>
+                                <ng-template let-item="item">
+                                    <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                        {{item.itemName}}
+                                    <span [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-num' : 'simple-dropdown-num' ">{{item.num}}</span></label>
+                                </ng-template>
+                            </c-item>
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+                <div class="row">
+                <div class="input-group col-4 mb-2">
+                <label>{{'CAMPAIGN'|translate}}:</label>
+                </div>
+                <div class="input-group col-8 mb-2">
+                        <angular2-multiselect id="ddlCampaign"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="commonMethodService.localCampaignList"
+                            [(ngModel)]="commonMethodService.selectedFromCampaignList"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('CampaignList')">
+                            <c-item>
+                                <ng-template let-item="item">
+                                  <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                                      {{item.itemName}}
+                                      <span [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-num' : 'simple-dropdown-num' ">{{item.num}}</span></label>
+                                      <span class="heb-dropdown-status">{{item.status}}</span>
+                                </ng-template>
+                        </c-item>
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label>{{'LOCATION'|translate}}:</label>
+                </div>
+                    <div class="input-group col-8 mb-2">
+                        <angular2-multiselect id="ddlPaymentLocation"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="commonMethodService.localLocationList"
+                            [(ngModel)]="commonMethodService.selectedPaymentLocations"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentLocationList')">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group col-4 mb-2">
+                    <label>{{'COLLECTOR'|translate}}:</label>
+                </div>
+                <div class="input-group col-8 mb-2">
+                    <angular2-multiselect id="ddlCollector"
+                            [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                            [data]="commonMethodService.localCollectorList"
+                            [(ngModel)]="commonMethodService.selectedPaymentCollectors"
+                            (onDeSelectAll)="commonMethodService.onDeSelectAll('paymentCollectorList')">
+                        </angular2-multiselect>
+                </div>
+                </div>
+            </ng-container>
+
+
+            <!-- Tags dropdown-->
+            <div class="row" *ngIf="!isTotalPanelVisible">
+                <div class="input-group col-4 mb-2">
+                    <label for="ddltagsType">
+                        {{'TAGS'|translate}}
+                    </label>
+                </div>
+                <div class="input-group col-8 mb-2">
+                    <angular2-multiselect id="ddltagsType"
+                        [settings]="tagSelectSettings"
+                        [data]="tagsList"
+                        [(ngModel)]="selectedTaglist"
+                        (onDeSelectAll)="onDeleteTags()">
+                    >
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <!-- Tags dropdown -->
+            <!-- label -->
+            <div class="row" *ngIf="!isTotalPanelVisible">
+                <div class="input-group col-4 mb-2">
+                    <label for="ddltagsType">
+                        Label
+                    </label>
+                </div>
+                <div class="input-group col-8 mb-2">
+                    <angular2-multiselect id="ddlLabel"
+                    [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
+                        [data]="labelsList"
+                        [(ngModel)]="selectedlabelList"
+                        (onDeSelectAll)="onDeleteLabels()">
+                    >
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <!-- label -->
+            <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer justify-content-between modal__custom_footer">
+        <div class="left_part"></div>
+        <div class="right_part">
+            <button class="btn btn-primary" (click)="searchDonors()">{{'SEARCH'|translate}}</button>&nbsp;&nbsp;
+            <button class="btn btn-default" (click)="clearFilter()">{{'CLEARALLFILTERS'|translate}}</button>
+        </div>
+    </div>
+</div>

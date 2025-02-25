@@ -1,0 +1,36 @@
+
+<div class="donorlst_lbl">
+   <div  class="donorInfo_content">
+      <div  class="col__left">
+         <div  class="top_header">
+            <div  class="left_col">
+               <h6  class="hebrew_lng"> {{ displayName() }} </h6>
+               <h6 class="eng_lng">{{displayEngName()}}</h6>
+            </div>
+            <div  class="right_col">
+               <h6 class="hebrew_lng"></h6>
+            </div>
+         </div>
+         <div  class="mid_content">
+            <div class="p_address address-number"> <p>{{donorObj.address}}</p>  <h6> {{ displayAccountInfo() }} </h6></div>
+            <div  class="contant_info">
+               <span class="contact">  
+                 <ng-container *ngFor="let phoneItem of phoneList">
+                    <span class="formt_lbl">{{ phoneItem.label  }} </span> :
+                    <strong>{{ phoneItem.phone }}</strong>
+                    <br/>
+                 </ng-container>
+              </span>
+             </div>
+         </div>
+         <div  class="bottom_info">
+            <div  class="left_col">
+               <h6  class="hebrew_lng"> {{ displayFather() }}  {{donorObj.fatherInLaw}} </h6>
+            </div>
+            <div  class="right_col">
+              
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,20 @@
+<div [formGroup]="parentFormGroup">
+    <div formGroupName="checkType">
+        <div class="row g-3">
+            <div class="col-12 mb-3">
+                <label for="checkRefNumber" class="form-label">
+                    {{"REFRENCE" | translate }}
+                </label>
+                <input type="text" id="checkRefNumber" class="form-control" formControlName="refNumber" />
+
+                @if (RefNumber?.touched && RefNumber?.invalid) {
+                    <app-input-error [errors]="RefNumber?.errors"></app-input-error>
+                } 
+            </div>
+            <div class="col-12">
+                <label for="checkNote" class="form-label">{{ "NOTE" | translate }}</label>
+                <input type="text" id="checkNote" class="form-control" formControlName="note" />
+            </div>
+        </div>
+    </div>
+</div>

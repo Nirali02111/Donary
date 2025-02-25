@@ -1,0 +1,176 @@
+<div class="modal-header d-flex justify-content-between">
+  <div class="modal-left">
+    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '50px' }"><h4 class="modal-title">{{gatewayName}} - Batch# {{gatewayBatchNum}} </h4></app-skeleton-loader-component>
+    <span class="badge badge-unbatched"></span>
+  </div>
+  <div class="modal-right d-flex justify-content-end">
+    <div class="form-group mb-0 me-3 form-tag batch_card">
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '20px' }"><label class="form-label">BANK TAG:</label></app-skeleton-loader-component> 
+      <!-- <div class="form-control-select position-relative">
+        <select class="form-control" [(ngModel)]="tagId">
+          <option value="" disabled>Select bank tag</option>
+          <option [value]="tag['tagId']" *ngFor="let tag of tagsList" [ngStyle]="{'color': tag['tagColor']}">
+            {{tag.tagName}}</option>
+        </select>
+      </div> -->
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '20px' }">
+        <div class="bg-new-tag dropdown" (clickOutside)="CloseDropdown($event)">
+          <span class="form-control d-flex align-items-center justify-content-between"
+            (click)="badgeToggle = !badgeToggle">
+            {{tagName || 'Select bank tag'}}
+  
+            <span class="material-icons" *ngIf="!badgeToggle">keyboard_arrow_down</span>
+            <span class="material-icons" *ngIf="badgeToggle">keyboard_arrow_up</span>
+          </span>
+  
+          <div class="dropdown-menu tabg_dropdown" [class.show]="badgeToggle">
+            <div class="search_box position-relative">
+              <input class="form-control" type="text" placeholder="Search Tag" />
+            </div>
+            <ul>
+              <ng-container *ngFor="let itemTag of tagsList">
+                <li [ngClass]="
+              commonMethodService.getTagTextColor(itemTag.tagColor)
+            " [class.active]="activeTab === itemTag.tagId" (click)="onSelectTag(itemTag.tagId, itemTag.tagName)">
+                  <span class="bg-badge" [ngClass]="
+                commonMethodService.getTagBackgroundColor(
+                  itemTag.tagColor
+                )
+              "></span>
+                  <span class="text"> {{itemTag.tagName}}</span>
+                </li>
+              </ng-container>
+            </ul>
+            <span class="add-new-tag" (click)="AddNewTag()">+ Add New Tag</span>
+          </div>
+        </div>
+      </app-skeleton-loader-component>
+    </div>
+    <div class="form-group mb-0 form-note">
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '20px' }"><label class="form-label">{{'NOTE:' | translate}}</label></app-skeleton-loader-component>
+      @if(isloading) {
+        <br>
+      }
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '290px', height: '20px' }">  <input type="text" class="form-control" placeholder="{{'WRITENOTE' | translate}}" name="note"
+        [(ngModel)]="note" /></app-skeleton-loader-component>
+    </div>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="batch-payment d-flex justify-content-between filters__options">
+    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '290px', height: '30px' }">
+    <div class="search-block input-group search_input">
+      <input type="text" name="advanceSearch" id="localsearch1" class="form-control float-right"
+        (keyup)="search($event.target.value)" placeholder="{{'SEARCH' | translate}} {{'PAYMENTS' | translate}}" />
+    </div>
+  </app-skeleton-loader-component>
+    <ul class="batch-block d-flex justify-content-end align-items-center pr-4 pl-3">
+      <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '120px', height: '20px' }"><li class="batch-selected">{{checkedData}} {{'SELECTED' | translate}}</li></app-skeleton-loader-component>
+      <li class="batch-detail d-flex align-items-center">
+        <div class="batch-payment" [style.margin-right]="isloading?'20px':'0px'">
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '80px', height: '20px' }"><h4>{{'PAYMENTS' | translate}}:</h4></app-skeleton-loader-component> 
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '20px' }">  <span>{{ commonMethodService.formatAmount(amountPositive) }}</span></app-skeleton-loader-component>
+        </div>
+        <div class="batch-minuses" >
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '80px', height: '20px' }"><h4>{{'MINUSES' | translate}}:</h4></app-skeleton-loader-component>
+          <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '20px' }"> <span>{{ commonMethodService.formatAmount(amountMinus) }}</span></app-skeleton-loader-component>
+        </div>
+      </li>
+      <li class="batch-total">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '80px', height: '20px' }"><h4>{{'TOTAL' | translate}}:</h4></app-skeleton-loader-component> 
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '100px', height: '20px' }"><span>{{ commonMethodService.formatAmount(amount) }}</span></app-skeleton-loader-component>
+      </li>
+    </ul>
+  </div>
+  @if(isloading){
+    <ng-container *ngFor="let item of skeletonitems">
+        <div class="row" style="margin-left: -7.5px; margin-right: -7.5px;">
+          <span style="width: 100%; padding: 0 7.5px;">
+            <app-skeleton-loader-component
+              [isLoading]="isloading"
+              [theme]="{ width: '100%', height: '25px' }">
+            </app-skeleton-loader-component>
+          </span>
+        </div>
+      </ng-container>
+
+
+}@else {
+  <div class="batch-table transaction__table">
+    <table class="table-resizable table-striped" [svData]="gridFilterData" #sv="svDataTable">
+      <thead>
+        <tr>
+          <th>
+            <div class="ae-checkbox">
+              <input type="checkbox" name="selectAll" id="select_all"  (change)="
+                selectRecord(
+                  $event,
+                  'selectAll',
+                  null,
+                  null
+                ) 
+              " />
+              <label for="select_all" class="custom-checkbox"></label>
+            </div>
+          </th>
+
+          <th><sv-default-sorter by="receiptNum">{{'RECEIPTNO' | translate}}
+            </sv-default-sorter></th>
+          <th><sv-default-sorter by="paymentDateTime">{{'DATE&TIME' | translate}}
+            </sv-default-sorter></th>
+          <th><sv-default-sorter by="paymentType">{{'PAYMENTMETHOD' | translate}}
+            </sv-default-sorter></th>
+          <th><sv-default-sorter by="refNum">{{'REFERENCENO' | translate}}
+            </sv-default-sorter></th>
+          <th><sv-default-sorter by="fullName">{{'DONORNAME' | translate}}
+            </sv-default-sorter></th>
+          <th><sv-default-sorter by="amount">{{'AMOUNT' | translate}}
+            </sv-default-sorter></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="sv.data?.length > 0">
+        <tr *ngFor="let item of sv.data" [class.tr-selected]="item.isRowsSelected">
+          <td class="position-relative">
+            <div class="ae-checkbox">
+              <input #checkboxes id="batch_{{item.gatewayTransactionId}}" type="checkbox" name="singlecheck" (change)="
+                selectRecord(
+                  $event,
+                  'singlecheck',
+                  item.gatewayTransactionId,
+                  item.paymentId
+                )
+              " [checked]="checkselectRecord(item.gatewayTransactionId,item.paymentId)" />
+              <label for="batch_{{item.gatewayTransactionId}}" class="custom-checkbox"></label>
+              <span class="tooltip-custom">{{
+                "SELECT" | translate
+                }}</span>
+            </div>
+          </td>
+          <td style="color: #7B5BC4; cursor: pointer;" (click)="openPaymentCardPopup(item.paymentId)">
+            {{item.receiptNum}}</td>
+          <td>{{item.createdDate | donaryDateFormat: "long"}}</td>
+          <td>{{item.paymentType}}</td>
+          <td>{{item.refNum}}</td>
+          <td (click)="OpenDonorCardPopup(item.accountId,item.fullNameJewish,item.fullName)"
+            style="color: #8568CA; cursor: pointer;">
+            <span *ngIf="item.fullNameJewish">{{ item.fullNameJewish }}</span>
+            <span *ngIf="!item.fullNameJewish && item.fullName">{{ item.fullName }}</span>
+          </td>
+          <td><span [class.text-danger]="item.amount<0"><span class="text-danger" *ngIf="item.amount<0 "></span>{{commonMethodService.formatAmount(item.amount)}} </span> <span
+              class="badge badge-split" *ngIf="item.isSplit">Splitted</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+}
+</div>
+
+<div class="modal-footer d-flex justify-content-end">
+  <button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+  @if(this.commonMethodService.isfeatureSetting){
+    <button class="btn btn-primary" [disabled]="!isSaveBatchEnabled" (click)="SaveBatch()">{{'SAVE' | translate}}
+      {{'BATCH' | translate}}</button>
+  }@else {
+    <button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="commonMethodService.onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+  }
+</div>

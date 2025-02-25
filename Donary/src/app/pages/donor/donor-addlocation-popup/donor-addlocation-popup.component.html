@@ -1,0 +1,61 @@
+<div class="donor-add-location-wrap" ngbAutofocus tabindex="-1">
+    <div class="modal-header modal__custom_header donor-addlocation-header">
+        {{'ADDLOCATION' | translate}}
+        <div class="close_trans" (click)="closePopup()"><span>×</span></div>
+    </div>
+    <div class="donor-addlocation-body">
+        <form class="form--wrap"  name="donorInfoForm" #f="ngForm" >
+        <div class="form-group-block location-title">
+            <div class="block_label">
+                {{'TITLE' | translate}}:
+            </div>
+            <div class="block_inputs">
+                <input type="text" [(ngModel)]="title" #txttitle="ngModel" class="form-control" 
+                name="txttitle" [ngClass]="{ 'is-invalid': f.submitted && txttitle.invalid }" required
+               id="txttitle" class="input-text">
+            </div>
+        </div>
+        <div class="form-group-block street-address">
+            <div class="block_label text-upppercase">
+                {{'STREETADDRESS' | translate}}
+            </div>
+            <div class="block_inputs">
+                <input type="text" [(ngModel)]="streetAddress" #txtstreetAddress="ngModel" class="form-control" 
+                name="txtstreetAddress" [ngClass]="{ 'is-invalid': f.submitted && txtstreetAddress.invalid }" required
+               id="txtstreetAddress" class="input-text">
+            </div>
+        </div>
+        <div class="donor-addlocation-field">
+            <div class="addlocation-city">
+                <div class="block_label">{{'CITY' | translate}}:</div>
+                <div class="block_inputs">
+                    <input type="text" [(ngModel)]="city" #txtcity="ngModel" class="form-control" 
+                name="txtcity" [ngClass]="{ 'is-invalid': f.submitted && txtcity.invalid }" required
+               id="txtcity" class="input-text">
+                </div>
+            </div>
+            <div class="addlocation-state">
+                <div class="block_label">{{'STATE' | translate}}:</div>
+                <div class="block_inputs">
+                    <select  class="input-text" name="txtstate"   [(ngModel)]="state">
+                        <option value=null [selected]="true" >{{'STATE' | translate}}</option>
+                        <option *ngFor="let initial of commonMethodService.stateList" [value]="initial.id">{{initial.id}}</option>
+                      </select>
+                </div>
+            </div>
+            <div class="addlocation-zip">
+                <div class="block_label">{{'ZIP' | translate}}:</div>
+                <div class="block_inputs">
+                    <input type="text" [(ngModel)]="zipCode" #txtzipCode="ngModel" class="form-control" 
+                name="txtzipCode" [ngClass]="{ 'is-invalid': f.submitted && txtzipCode.invalid }" required
+               id="txtzipCode" class="input-text">
+                </div>
+            </div>
+        </div>
+        <div class="addlocation-footer">
+            <button class="btn btn-cancel" (click)="closePopup()">{{'CANCEL' | translate}}</button>
+            <button class="btn btn-primary" (click)="AddLocation()">{{'SAVE' | translate}}</button>
+        </div>
+    </form>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+<div class="content-wrapper position-relative">
+  <div class="add_new_button trans_add">
+    <app-add-new-dropdown></app-add-new-dropdown>
+  </div>
+
+  <div class="top-bar">
+    <div class="d-flex">
+      <a href="javascript:void(0)" class="link-back" [routerLink]="['/report']">
+        <i><svg xmlns="http://www.w3.org/2000/svg" width="7.998" height="13.871" viewBox="0 0 7.998 13.871">
+            <path id="Path_18013" data-name="Path 18013" d="M0,0,5.875,5.877,11.75,0"
+              transform="translate(1.061 12.811) rotate(-90)" fill="none" stroke="#434246" stroke-linecap="round"
+              stroke-width="1.5" opacity="1" />
+          </svg>
+        </i>
+
+        <span>{{ reportName }}</span>
+      </a>
+    </div>
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
+
+
+      <div class="d-flex mb-2 mb-md-0">
+        <input type="text" [formControl]="reportSearch" name="advanceSearch" id="localsearch" class="form-control"
+          placeholder="{{
+                ('SEARCH' | translate) + ' in ' + ('REPORTS' | translate)
+              }} " />
+
+        <button class="btn btn-default" (click)="open(content)" [disabled]="this.columnNames.length==0">Customize
+          fields</button>
+        <ng-template #content let-offcanvas>
+          <div class="offcanvas-header">
+            <h2 class="offcanvas-title" id="offcanvas-basic-title">Customize fields</h2>
+            <span type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')">
+              <svg _ngcontent-ng-c2128500248="" xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5"
+                viewBox="0 0 15.5 15.5">
+                <g _ngcontent-ng-c2128500248="" id="Group_2865" data-name="Group 2865"
+                  transform="translate(1.214 0.75)">
+                  <path _ngcontent-ng-c2128500248="" id="Union_42" data-name="Union 42"
+                    d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z" transform="translate(-0.464)" fill="none" stroke="#434246"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" opacity="0.45"></path>
+                </g>
+              </svg>
+            </span>
+          </div>
+          <div class="offcanvas-body">
+            <h5>Select fields to display:</h5>
+            <form>
+              <app-standard-report-sidebar [sidebarOptions]="sidebarOptions" [phoneLabelArray]="phoneLabelArray"
+                [selectedPhoneData]="selectedPhoneData" [addressLabelArray]="addressLabelArray"
+                [selectedAddressData]="selectedAddressData" [selectedEmailAddressData]="selectedEmailAddressData"
+                [emailLabelArray]="emailLabelArray" (emitData)="setData($event)"
+                (emitSelectedData)="handleSelectionChange($event)" (emitSwitchData)="handleSwitch($event)"
+                [isSwitchOn]="isSwitchOn"></app-standard-report-sidebar>
+            </form>
+
+          </div>
+        </ng-template>
+
+
+
+
+        <button type="button" (click)="openFilterPopup()" class="btn btn-default">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15.335" height="14.135" viewBox="0 0 15.335 14.135">
+            <g id="Group_1442" data-name="Group 1442" transform="translate(0.6 0.001)" opacity="0.32">
+              <line id="Line_1329" data-name="Line 1329" x2="14.135" transform="translate(0 2.119)" fill="none"
+                stroke="#434246" stroke-linecap="round" stroke-width="1.2" />
+              <line id="Line_1330" data-name="Line 1330" x2="14.135" transform="translate(0 7.066)" fill="none"
+                stroke="#434246" stroke-linecap="round" stroke-width="1.2" />
+              <line id="Line_1331" data-name="Line 1331" x2="14.135" transform="translate(0 12.014)" fill="none"
+                stroke="#434246" stroke-linecap="round" stroke-width="1.2" />
+              <g id="Ellipse_507" data-name="Ellipse 507" transform="translate(1.413 -0.001)" fill="#f1f1f2"
+                stroke="#434246" stroke-width="1.2">
+                <circle cx="2.12" cy="2.12" r="2.12" stroke="none" />
+                <circle cx="2.12" cy="2.12" r="1.52" fill="none" />
+              </g>
+              <g id="Ellipse_508" data-name="Ellipse 508" transform="translate(8.481 4.946)" fill="#f1f1f2"
+                stroke="#434246" stroke-width="1.2">
+                <circle cx="2.12" cy="2.12" r="2.12" stroke="none" />
+                <circle cx="2.12" cy="2.12" r="1.52" fill="none" />
+              </g>
+              <g id="Ellipse_509" data-name="Ellipse 509" transform="translate(4.24 9.893)" fill="#f1f1f2"
+                stroke="#434246" stroke-width="1.2">
+                <circle cx="2.12" cy="2.12" r="2.12" stroke="none" />
+                <circle cx="2.12" cy="2.12" r="1.52" fill="none" />
+              </g>
+            </g>
+          </svg>
+
+          <span class="filter_text">{{ "FILTER" | translate }}</span>
+          <span class="filter_count" *ngIf="filterCount && filterCount != 0">{{
+            filterCount
+            }}</span>
+          <i class="d-none d-sm-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="7.998" height="13.871"
+              viewBox="0 0 7.998 13.871">
+              <path id="Path_18013" data-name="Path 18013" d="M0,0,5.875,5.877,11.75,0"
+                transform="translate(1.061 12.811) rotate(-90)" fill="none" stroke="#434246" stroke-linecap="round"
+                stroke-width="1.5" opacity="1" />
+            </svg>
+          </i>
+        </button>
+      </div>
+
+
+      <div class="d-flex">
+        <button class="btn btn-primary" (click)="printReports()" [disabled]="reportArray && reportArray.length == 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+            <g id="print" transform="translate(-18.24 -18.24)" opacity="0.6">
+              <path id="Path_17978" data-name="Path 17978"
+                d="M33.817,42.56H20.75a2.5,2.5,0,0,0-2.51,2.495v6.8a2.416,2.416,0,0,0,2.423,2.409h.346v1.707A1.739,1.739,0,0,0,22.754,57.7h8.972a1.739,1.739,0,0,0,1.745-1.734V54.259h.346A2.416,2.416,0,0,0,36.24,51.85V44.969A2.416,2.416,0,0,0,33.817,42.56ZM32.086,55.966a.36.36,0,0,1-.36.358H22.754a.36.36,0,0,1-.36-.358V49.111a.36.36,0,0,1,.36-.358h8.972a.36.36,0,0,1,.36.358Zm1.125-9.28a1.039,1.039,0,0,1-1.026-.6,1.028,1.028,0,0,1,.208-1.163,1.043,1.043,0,0,1,1.17-.207,1.031,1.031,0,0,1-.352,1.966Z"
+                transform="translate(0 -21.46)" fill="#fff" />
+              <path id="Path_17979" data-name="Path 17979"
+                d="M52.646,18.24h-7.5a2.43,2.43,0,0,0-2.362,2.145H55.008A2.43,2.43,0,0,0,52.646,18.24Z"
+                transform="translate(-21.654)" fill="#fff" />
+            </g>
+          </svg>
+          {{ "PRINT" | translate }} {{ "REPORT" | translate }}
+        </button>
+        <button class="btn btn-primary" (click)="downloadCSV()" [disabled]="reportArray && reportArray.length == 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13.091" height="18" viewBox="0 0 13.091 18">
+            <g id="googlesheets" transform="translate(-26.184)" opacity="0.6">
+              <path id="Path_17977" data-name="Path 17977"
+                d="M32.218,9.409H29.662V7.977h2.557V9.41ZM34.775,0V4.5h4.5L34.775,0ZM35.8,7.977H33.24V9.41H35.8Zm0,2.455H33.24v1.432H35.8Zm3.477-5.557v11.9A1.227,1.227,0,0,1,38.047,18H27.411a1.227,1.227,0,0,1-1.227-1.227V1.227A1.227,1.227,0,0,1,27.411,0H34.4V4.875ZM36.82,6.955H28.638v5.932H36.82V6.954Zm-4.6,3.477H29.662v1.432h2.557V10.432Z"
+                fill="#fff" />
+            </g>
+          </svg>
+          {{ "DOWNLOAD" | translate }} CSV
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="table-report">
+    <app-skeleton-loader-component [count]="skeletonRows" [isLoading]="isloading"></app-skeleton-loader-component>
+    <div class="table-Row">
+
+      <div class="table-Column">
+        <app-tabulator-table *ngIf="!isloading" [currentRowHeightFromTable]="currentRowHeight"
+          [columnNames]="columnNames" [tableData]="reportArray" (pageChanged)="onPageChanged($event)"
+          (pageSizeChanged)="onPageSizeChanged($event)" [search]="reportSearch?.value"></app-tabulator-table>
+      </div>
+      <div class="table-Column" style="flex: 0 0 auto; max-width: 50%;"
+        [style.width]=" 'calc(' + columnNames2.length + ' * 12.5%)'" *ngIf="columnNames2.length>0">
+
+        <app-tabulator-table *ngIf="!isloading" [columnNames]="columnNames2" [tableData]="reportArray"
+          [isStandardReport]="true" [currentPage]="currentPageFromTable" [currentPageSize]="currentPageSizeFromTable"
+          [iscustomTable]='true' (rowHeightChanged)="rowHeightChanged($event)"
+          [search]="reportSearch?.value"></app-tabulator-table>
+      </div>
+    </div>
+  </div>
+  
+   @if(!this.commonMethodService.isfeatureSetting){
+     <span class="upgrade-backdrop"></span>
+     <div class="upgrade-bar">
+       <h6>You need to upgrade to Standard plan to use this feature.</h6>
+       <button class="btn btn-primary" (click)="onUpgrade()">Upgrade now</button>
+     </div>
+   }
+</div>

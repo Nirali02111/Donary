@@ -1,0 +1,40 @@
+<div class="modal-head">
+    <h4>New pledge <sup>Beta</sup></h4>
+    <a class="modal-close" href="javascript:void(0)" (click)="closePopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14.809" height="14.808" viewBox="0 0 14.809 14.808">
+            <g id="Group_1382" data-name="Group 1382" transform="translate(7.404 -4.575) rotate(45)" opacity="0.55">
+                <line id="Line_185" data-name="Line 185" y2="16.942" transform="translate(8.471 0)" fill="none"
+                    stroke="#727272" stroke-linecap="round" stroke-width="2" />
+                <line id="Line_186" data-name="Line 186" x2="16.942" transform="translate(0 8.471)" fill="none"
+                    stroke="#727272" stroke-linecap="round" stroke-width="2" />
+            </g>
+        </svg>
+    </a>
+</div>
+<div class="modal-body">
+    <div [formGroup]="formGroup">
+        <div class="modal-grid d-flex">
+            <div class="w-100">
+
+                <app-donor-dropdown-of-transaction></app-donor-dropdown-of-transaction>
+
+                <div class="form-group mb-4">
+                    <h6>{{ 'AMOUNT' | translate }}</h6>
+                    <app-amount-of-transaction></app-amount-of-transaction>
+                </div>
+                <div class="mb-4 modal-form position-relative">
+                    <app-schedule-of-transaction></app-schedule-of-transaction>
+                </div>
+
+                <div class="mb-2">
+                    <app-details-of-transaction></app-details-of-transaction>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closePopup()">{{ 'CANCEL' | translate }}</button>
+    <button type="button" class="btn btn-primary" (click)="processTransaction()">{{ 'NEXT' | translate }}</button>
+</div>

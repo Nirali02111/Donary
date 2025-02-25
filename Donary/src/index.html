@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title id="PageTitle">Donary</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Cache-control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+    <!-- Ionicons -->
+    <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+    <!-- Google Font: Source Sans Pro -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/> -->
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <link
+      rel="preload"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+      />
+    </noscript>
+
+    <link
+      rel="preload"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+      />
+    </noscript>
+
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      />
+    </noscript>
+
+    <link
+      rel="preload"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+      />
+    </noscript>
+
+    <script
+      type="text/javascript"
+      src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"
+    ></script>
+    <script>
+      !(function (w, d, i, s) {
+        function l() {
+          if (!d.getElementById(i)) {
+            var f = d.getElementsByTagName(s)[0],
+              e = d.createElement(s);
+            (e.type = "text/javascript"),
+              (e.async = !0),
+              (e.src = "https://canny.io/sdk.js"),
+              f.parentNode.insertBefore(e, f);
+          }
+        }
+        if ("function" != typeof w.Canny) {
+          var c = function () {
+            c.q.push(arguments);
+          };
+          (c.q = []),
+            (w.Canny = c),
+            "complete" === d.readyState
+              ? l()
+              : w.attachEvent
+              ? w.attachEvent("onload", l)
+              : w.addEventListener("load", l, !1);
+        }
+      })(window, document, "canny-jssdk", "script");
+    </script>
+
+    <style>
+      /* width */
+      ::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 5px;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #6c757d;
+        border-radius: 5px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6c757d;
+      }
+
+      /* .main_loader_img {
+      position: fixed;
+      top: 0;
+      background: rgb(255 255 255 / 80%);
+      width: 100%;
+      height: 100%;
+      left: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main_loader_img i {
+      color: #6963c1;
+      z-index: 9;
+    }  */
+
+      .donary_loader {
+        top: 0;
+        left: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url("assets/dist/images/Donary-Animation-640-480.gif")
+          no-repeat center;
+        background-color: #eeeeee;
+      }
+
+      .lottie {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* UI Properties */
+        background: #ffffff 0% 0% no-repeat padding-box;
+        opacity: 1;
+      }
+      .donary-icon-lottie {
+        position: absolute;
+        bottom: 60px;
+      }
+      .donary-icon-lottie img {
+        max-width: 180px;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
+  </head>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+  </script>
+  
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      <app-root>
+        <!-- <div class="main_loader_img">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+      </div> -->
+        <!-- <div class="donary_loader"></div> -->
+        <div class="lottie">
+          <lottie-player
+            src="/assets/dist/data/fbc68153-b8cc-49bf-80e1-d07b1df1019c.json"
+            background="transparent"
+            speed="1"
+            style="width: 199px; height: 199px"
+            loop
+            autoplay
+          ></lottie-player>
+          <div class="donary-icon-lottie">
+            <img src="/assets/dist/img/donary-icon.png" alt="" />
+          </div>
+        </div>
+      </app-root>
+    </div>
+    <link href="assets/dist/css/donate/main.css" rel="stylesheet" />
+    <link href="assets/dist/css/donate/custom.css" rel="stylesheet" />
+    <link href="assets/dist/css/donate/responsive.css" rel="stylesheet" />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- For Draggable-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.umd.min.js"></script>
+    <!-- <script src="https://dev-api.donary.com/jewishdates.js?v=1"></script>   -->
+
+    <!-- Calendly link widget begin -->
+    <link
+      href="https://assets.calendly.com/assets/external/widget.css"
+      rel="stylesheet"
+    />
+    <script
+      type="application/javascript"
+      src="https://assets.calendly.com/assets/external/widget.js"
+    ></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.2.1/jquery.floatThead.js" integrity="sha512-kBvoZVF+tXbN40CoGPeUGPIhIPsVf9Idu8uhNCFifO+dNXrbERzSAyNpzlBqn6Ix/JgPirAHFqfRBCDr6peqRQ==" crossorigin="anonymous"></script>   -->
+    <!-- <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>  -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>           -->
+  </body>
+</html>

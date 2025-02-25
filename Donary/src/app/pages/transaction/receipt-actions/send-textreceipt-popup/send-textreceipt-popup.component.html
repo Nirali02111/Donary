@@ -1,0 +1,75 @@
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+    <div class="modal-header-custom modal__custom_header">
+       <h4>{{'SEND' | translate}} {{'TEXT' | translate}} {{'RECEIPT' | translate}}</h4>
+       <span class="close_trigger" (click)="closePopup()" data-dismiss="modal"
+          >&times;</span
+          >
+    </div>
+    <div class="modal-content-custom modal__custom_content overflow-initial">
+       <form>
+          <div class="data-set-form send_sms">
+            <div class="data-set d-flex align-items-end">
+               <div class="form-group d-flex flex-column flex-fill">
+                  <label>{{'PHONENUMBER' | translate}}:</label>
+                  <div class="input-group colm-number " [ngClass]="isDefaultDonor? 'no-add-button' : ''">
+                     <div class="d-flex align-items-stretch">
+                        <div class="dropdown">
+                               <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class={{selectedFlag}}></i>{{dailingCode}}</a>
+                               <div class="dropdown-menu">
+                                 <div class="form-check" *ngFor="let country of countries">
+                                    <input type="radio" name="cellcountry" class="form-check-input d-none" id="{{country.countryCodeID}}" [value]="'Phone_'+country.countryCodeID" [(ngModel)]="selectedCountry" (change)="onCountryChange(country.countryCodeID,country.dialingCode)">
+                                    <label class="form-check-label" for="{{country.countryCodeID}}"><i [class]="getFlagClass(country.countryCodeID)"></i>{{ country.countryCode }} <span>{{ country.dialingCode }}</span></label>		
+                                    </div>	
+                               </div>
+                             </div>
+                        <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="inputPhoneNumber"
+                        name="receipt_phoneNumber"
+                        mask="(000) 000-0*"
+                        (focusout)="ValidPhone($event)"
+                        (keypress)="commonMethodService.numberOnly($event)"
+                        (keyup)="EnableAddButton($event)"
+                        />
+                     </div>
+
+                     <!-- <span class=" phone_validation text-danger" *ngIf="!isPhoneValid">{{'INVALID' | translate}} {{'PHONENUMBER' | translate}}</span> -->
+                     </div>
+               </div>
+               <div class="form-group d-flex flex-column form-label">
+                  <label>{{'LABEL' | translate}}:</label>
+                  <div class="input-group" [class.validation_border]="!isLabelSelected">
+                    <angular2-multiselect id="ddlPhone"
+                    [settings]="commonMethodService.setDropDownSettings('Choose',2,false,true,true)"
+                    [data]="phoneLabelArray"
+                    name="phoneArray"
+                    (onSelect)="onLabelSelect($event)"
+                    (onDeSelectAll)="onLabelDeSelect($event)"
+                    [(ngModel)]="selectedLabelArray">
+                </angular2-multiselect>
+                  </div>
+               </div>
+               <button type="button" class="btn btn-primary btn-add" *ngIf="!isDefaultDonor" [disabled]="isAdd" (click)="AddPhoneNumber(accountId)">{{'ADD' | translate}}</button>
+            </div>
+            <div class="form-group d-flex flex-column">
+               <label class="mt-0 mb-0">{{'SELECT' | translate}} {{'TEXT' | translate}}:</label>
+               <div class="from-scroll">
+                  <div class="email-list" *ngFor="let item of phoneNumberList">
+                     <input type="checkbox" name="singlecheck"  [checked]="phoneNumber==item.value" (change)="SelectphoneNumberList($event,item)" id="check_{{item.value}}" />
+                     <label for="check_{{item.value}}">
+                        {{item.dialingCode}}  {{ item.value }}
+                        <span class="email-label">({{ item.label }})</span>
+                     </label>
+                  </div>
+               </div>
+             </div>
+          </div>
+       </form>
+    </div>
+    <div class="modal-custom-footer space-between modal__custom_footer">
+       <span class="sending_txt" *ngIf="isSending">{{'SENDING' | translate}}...</span>
+       <button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}} </button>
+       <button class="btn btn-primary" [disabled]="isDisabled || phoneNumberList.length==0"  (click)="SendReceipt()">{{'SEND' | translate}}</button>
+    </div>
+ </div>

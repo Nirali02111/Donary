@@ -1,0 +1,220 @@
+<div class="setup_schedule_pop schedule_payment_content">
+  <div class="topHeader_sections">
+    <div class="schedule_showall">
+      <span class="show_all">{{ "SETSCHEDULE" | translate }} &nbsp;</span>
+      <label class="switch">
+        <input
+          type="checkbox"
+          id="setschedule"
+          (change)="OnCheckboxChange($event.target.checked)"
+        />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div *ngIf="showForm">
+    <form
+      name="scheduleForm"
+      (ngSubmit)="f.form.valid && SubmitSchedule()"
+      #f="ngForm"
+    >
+      <div class="saveDefualtAction" [ngClass]="savedDefault? 'active' : ''">
+        <span
+          >{{ "SAVE_SETTING_AS_DEFAULT" | translate }}
+          <span (click)="saveScheduleLayout()">
+            <i *ngIf="!savedDefault" class="fa fa-star-o"></i>
+            <i *ngIf="savedDefault" class="fa fa-star"></i>
+          </span>
+        </span>
+      </div>
+      <div class="schedule-sticky-pop">
+
+        <div class="form-group d-flex donation_amount">
+          <label>{{ "DONATIONAMOUNT" | translate }}:</label>
+          <div class="input_group">
+            <span [ngClass]="commonMethodService.currencyClass"></span>
+            <input
+              type="text"
+              name="txtdonationamt"
+              placeholder="0.00"
+              #txtdonationamt="ngModel"
+              maxlength="16"
+              (keypress)="commonMethodService.numberOnly($event)"
+              class="form-control"
+              [(ngModel)]="donationAmount"
+              (focusout)="FormatAmt()"
+              (keyup)="ChangeDonationAmount($event)"
+              require
+            />
+            <span class="text-danger error_message" *ngIf="isAmountError"
+              >{{ "DONATIONAMOUNT" | translate }}
+              {{ "ISREQUIRED" | translate }}</span
+            >
+          </div>
+        </div>
+        <div class="grey_box">
+          <div class="form-group d-flex">
+            <label>{{ "COUNT" | translate }}:</label>
+            <div class="input_group">
+              <span class="icon"
+                ><img
+                  src="/assets/dist/img/count_icon.svg"
+                  width="20"
+                  height="20"
+                  alt=""
+              /></span>
+              <input
+                type="text"
+                maxlength="2"
+                name="txtcount"
+                #txtcount="ngModel"
+                required
+                (input)="idCountZero($event)"
+                (keypress)="commonMethodService.numberOnly($event)"
+                class="form-control"
+                [(ngModel)]="count"
+                (change)="ChangeCount($event)"
+              />
+              <span class="text-danger error_message" *ngIf="isCountError"
+                >{{ "COUNT" | translate }} {{ "ISREQUIRED" | translate }}</span
+              >
+            </div>
+            <!-- <div class="chck_always">
+            <input type="checkbox" class="chckCount">Always
+        </div> -->
+          </div>
+          <div class="form-group d-flex">
+            <label>{{ "AMOUNTPERPAYMENT" | translate }}:</label>
+            <div class="input_group">
+              <span [ngClass]="commonMethodService.currencyClass"></span>
+              <input
+                type="text"
+                maxlength="16"
+                name="txtamtperpay"
+                #txtamtperpay="ngModel"
+                required
+                (keypress)="commonMethodService.numberOnly($event)"
+                class="form-control"
+                [(ngModel)]="amtPerPayment"
+                (change)="ChangeAmtPerPayment($event)"
+              />
+              <span
+                class="text-danger error_message"
+                *ngIf="isAmtPerPaymentError"
+                >{{ "AMOUNTPERPAYMENT" | translate }}
+                {{ "ISREQUIRED" | translate }}</span
+              >
+            </div>
+          </div>
+          <div class="form-group d-flex">
+            <label>{{ "FREQUENCY" | translate }}:</label>
+            <div class="input_single">
+              <angular2-multiselect
+                id="ddlScheduleRepeatType"
+                [settings]="
+                  commonMethodService.setDropDownSettings('', 2, false, true)
+                "
+                [data]="commonMethodService.localscheduleRepatTypeList"
+                [(ngModel)]="commonMethodService.selectedScheduleRepeatTypes"
+                (onDeSelect)="OnItemDeSelect($event)"
+                required
+                name="drpfrequency"
+                (onSelect)="ChangeFrequency($event)"
+                #drpfrequency="ngModel"
+              >
+              </angular2-multiselect>
+
+              @if (isFrequencyError) {
+                <span class="text-danger error_message">
+                  {{ "FREQUENCY" | translate }}
+                  {{ "ISREQUIRED" | translate }}
+                </span>
+              }
+              
+            </div>
+          </div>
+          <div class="form-group d-flex">
+            <label>{{ "STARTDATE" | translate }}:</label>
+            <div class="input_group">
+              <span class="icon"
+                ><img
+                  src="/assets/dist/img/calendar-icon.svg"
+                  width="20"
+                  height="20"
+                  alt=""
+              /></span>
+              <div class="searchbar">
+                <ng-template #popContent 
+                ><app-common-hebrew-english-calendar [isSchedule]="true" [pageName]="PageName" [data]="selectedStartDate" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                </ng-template>
+                <!-- Calendar code started -->
+                <div (click)="openHebrewCalendarPopup(p1)" popoverClass="calender-modal" [ngbPopover]="popContent" container="body" (clickOutside)="onClickedOutsidePopover(p1)" container="body" #p1="ngbPopover"  [popoverTitle]="popTitle"  [autoClose]="false" placement="bottom left right start end bottom-start bottom-end end-top end-bottom"  id="transactionScheduleCalender">
+                  <input type="text" class="form-control" value="" id="calendar_input_make_transaction"
+                    [placeholder]="EngHebCalPlaceholder" />
+                </div>
+              <!-- Calendar code ended -->
+              </div>
+              <span class="text-danger error_message" *ngIf="isDateError"
+                >{{ "DATE" | translate }} {{ "ISREQUIRED" | translate }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- <div class="accordions_wrapper">
+<div class="accordion_label">
+<span class="text">Send alert one day before schedule</span>  <span class="down_arrow"></span>
+</div>
+<div class="accordion_label">
+<span class="text">Send receipt after charge</span>  <span class="down_arrow"></span>
+</div>
+</div>     -->
+        <!-- <div class="schedule-preview">
+<h6></h6>
+ <ul>
+<li>
+    <span class="amount">$50.00</span>
+    <span class="text">
+        <h6>ר’ חיים הלל פריעדמאן  </h6>
+         <p>Oct 30,2021 </p>
+    </span>
+</li>
+<li>
+    <span class="amount">$50.00</span>
+    <span class="text">
+        <h6>ר’ חיים הלל פריעדמאן  </h6>
+         <p>Oct 30,2021 </p>
+    </span>
+</li>
+<li>
+    <span class="amount">$50.00</span>
+    <span class="text">
+        <h6>ר’ חיים הלל פריעדמאן  </h6>
+         <p>Oct 30,2021 </p>
+    </span>
+</li>
+<li>
+    <span class="amount">$50.00</span>
+    <span class="text">
+        <h6>ר’ חיים הלל פריעדמאן  </h6>
+         <p>Oct 30,2021 </p>
+    </span>
+</li>
+<li>
+    <span class="amount">$50.00</span>
+    <span class="text">
+        <h6>ר’ חיים הלל פריעדמאן  </h6>
+         <p>Oct 30,2021 </p>
+    </span>
+</li>
+</ul>
+</div>  -->
+      </div>
+      <div class="schedule_payment_footer">
+        <button class="btn btn-primary" [disabled]="true">
+          {{ "SCHEDULEPREVIEW" | translate }}
+        </button>
+        <!-- <button class="btn btn-primary" (click)="ClearData()"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+      </div>
+    </form>
+  </div>
+</div>

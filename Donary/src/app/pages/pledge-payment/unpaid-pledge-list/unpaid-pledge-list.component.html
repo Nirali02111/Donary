@@ -1,0 +1,706 @@
+<!-- Navbar -->
+<div class="main-header navbar navbar-expand navbar-white navbar-light donary-pay-header" NgbAutoFocus tabindex="-1">
+    <div class="container">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="brand-link" >
+                    <img src="assets/dist/img/donary-logo.svg" alt="AdminLTE Logo" class="brand-image">
+                    <span class="pay_text">Pay</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- /.navbar -->
+
+<div class="pay-wrapper" style="margin-left: 0 !important">
+
+    <!-- Content Header (Page header) -->
+    <!-- <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Open Pledges</h1>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Main content -->
+    <section class="content pay-page-wrapper">
+        <div class="container  pay-top-wrap">
+            <div class="top-info--section">
+                <div class="row">
+                    <div class="col-sm-9 col--left">
+                        <div class="row pay-address-wrap" *ngIf="!isloading">
+                            <div class="bill-from col-sm-7">
+                                <div class="lbl--text">
+                                   Bill From :
+                                </div>
+                                <div class="txt--value d-flex">
+                                    <div class="billfrom_img">
+                                        <img src="{{eventLogo}}" width="50px" height="50px">
+                                    </div>
+                                    <div class="data_content">
+                                        <h4 class="customlabel lng_hebrew">{{OrganizationNameJewish}}</h4>
+                                        <h4 class="customlabel">
+                                            {{OrganizationName}}
+                                        </h4>
+
+                                        <p>
+                                            {{OrganizationAddressInfo}} , {{OrganizationCityStateZip}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bill-to col-sm-5">
+                                <div class="lbl--text">
+                                    Bill To:
+                                </div>
+                                <div class="txt--value">
+                                    <h4 class="customlabel lng_hebrew">{{FullNameJewish}}</h4>
+                                    <h4 class="customlabel">
+                                        {{FullName}}
+                                    </h4>
+
+                                    <p>
+                                        {{UserAddress}} , {{UserCityStateZip}}
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pledge-search">
+                            <h3>Open Pledges</h3>
+                            <div class="search--input">
+                                <div class="custom--checkbox select-all">
+                                    <input type="checkbox" id="c-check" [checked]="isChecked" name="selectAll" class="custom-checkbox" (change)="selectRecord($event,'selectAll',null)">
+                                    <label for="c-check"></label>
+                                </div>
+                                <div class="pledge-search-box">
+                                    <input name="gridSearchText" class="form-control" id="gridSearchText"
+                                placeholder="Search" (keyup)='search($event.target.value)' autofocus>
+                                <span class="right--arrow-icon"><img src="/assets/dist/img/arrow-right--icon.svg" alt="" /></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col--right">
+                        <div class="card--section pay_total card">
+                            <h4>Pay Total :</h4>
+                            <div class="totol_amount">
+                                {{totalPayableAmount}}
+                            </div>
+                            <button class="btn btn-primary btn--pay" status="primary"
+                                [disabled]="totalPayableAmount==='$0.00'"
+                                (click)="OpenPledgePaymentPopupPage()">
+                                Pay Pledges
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="container">
+            <div class="table--wrapper">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12" *ngIf="!isloading">
+                        <!-- col-md-12 -->
+                        <div class="table-responsive pay-pledge--table">
+                            <table class="table table-striped table-pay-responsive" [svData]="filterData"
+                                #sv="svDataTable" [svRowsOnPage]="10" svSortBy="pledgeDate"
+                                svSortOrder="desc">
+                                <thead>
+                                    <tr>
+                                        <th class="custom--checkbox">
+                                            <input type="checkbox" id="c-check" [checked]="isChecked" name="selectAll" class="custom-checkbox" (change)="selectRecord($event,'selectAll',null)">
+                                            <label class="checkbox-label" for="c-check"></label>
+                                        </th>
+
+                                        <th>
+                                            <sv-default-sorter by="pledgeNum">Pledge #
+                                            </sv-default-sorter>
+                                        </th>
+                                            <th>
+                                            <sv-default-sorter by="pledgeDate">Date
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th>
+                                            <sv-default-sorter by="campaignName">Campaign
+                                            </sv-default-sorter>
+                                        </th>
+
+                                        <th>
+                                            <sv-default-sorter by="externalNote">Description
+                                            </sv-default-sorter>
+                                        </th>
+
+                                        <th class="text-right">
+                                            <sv-default-sorter by="pledgeTotalAmount">Total
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th class="text-right">
+                                            <sv-default-sorter by="pledgeTotalAmount">Paid
+                                            </sv-default-sorter>
+                                        </th>
+
+                                        <th class="text-right">
+                                            <sv-default-sorter by="pledgeRemainingAmount">Remaining
+                                            </sv-default-sorter>
+                                        </th>
+                                        <th class="text-center" width="30">
+                                            <sv-default-sorter by="pledgeDefaultDisplayAmount">Pay Now
+                                            </sv-default-sorter>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="sv.data?.length > 0">
+                                    <tr *ngFor="let item of sv.data; let i=index">
+                                        <div class="campaign-name-for-mobile" style="display: none;">{{ item.campaignName }}</div>
+                                        <td class="custom--checkbox">
+                                            <input type="checkbox" id="{{i}}" [checked]="checkselectRecord(item.pledgeId)" #checkboxes name="singlecheck" class="custom-checkbox" (change)="selectRecord($event,'singlecheck',item.pledgeId)">
+                                            <label class="checkbox-label" for="{{i}}" ></label>
+                                        </td>
+                                        <td div class="amount-number">{{ item.pledgeNum }}</td>
+
+                                        <td class="pay-date-col">
+                                            {{ item.pledgeDate }} <br />
+                                            <p class="hebrew_lang">{{ item.pledgeJewishDate }}</p>
+                                        </td>
+
+
+
+                                        <!--
+                                        <td class="campaign-name">{{ item.externalNote }}</td> -->
+
+                                        <td class="campaign-name">{{ item.campaignName }}</td>
+                                        <td class="pay-description">{{ item.externalNote }}
+                                        <td class="text-right pay-total" data-title="TOTAL">{{ commonMethodService.formatAmount(item.pledgeTotalAmount) }}
+                                        </td>
+                                        <td class="text-right pay-paid" data-title="PAID">{{ commonMethodService.formatAmount(item.pledgePaidAmount) }}
+                                        </td>
+
+                                        <!-- <td class="text-right remaining_amount" data-title="REMAINING">{{ commonMethodService.formatAmount(item.pledgeRemainingAmount) }}
+                                        </td> -->
+                                        <td class="text-right remaining_amount" data-title="REMAINING">
+                                            {{ commonMethodService.formatAmount(item.pledgeTotalAmount-item.pledgePaidAmount) }}
+                                        </td>
+                                        <td class="text-right pay-paynow" data-title="PAY NOW">
+                                            <input type="text" class="form-control"
+                                                (input)="getUpdatedTotalPayableAmount(item,amountInput.value)"
+                                                style="text-align:right;"
+                                                #amountInput
+                                                [(ngModel)]="item.pledgeDefaultDisplayAmount"
+                                                prefix="$" mask="separator.2"
+                                                thousandSeparator=","
+                                                pattern="[0-9]*" inputmode="numeric"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="sv.data?.length == 0">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center;">No Data Found
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="9"
+                                            style="border-left: none !important;border-right: none !important;">
+                                            <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 25]">
+                                            </sv-bootstrap-paginator>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="col-sm-3 col--right for-mobile-only" >
+                            <div class="card--section pay_total card">
+                                <h4>Pay Total :</h4>
+                                <div class="totol_amount">
+                                    {{totalPayableAmount}}
+                                </div>
+                                <button class="btn btn-primary btn--pay" status="primary"
+                                    [disabled]="totalPayableAmount==='$0.00'"
+                                    (click)="OpenPledgePaymentPopupPage()">
+                                    Pay Pledges
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-12" *ngIf="isloading">
+                        <!-- col-md-12 -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <!-- col-md-12 -->
+                                        <div *ngIf="isloading" class="overlay">
+                                            <i class="fas fa-2x fa-sync-alt fa-spin">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="card">
+                        <div class="show-in-mobile">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-lg-12 boxoutlook">
+
+                                    <div class="row" *ngIf="!isloading">
+                                        <div class="col-8 col-sm-8 col-lg-7">
+
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationName" class="customlabel">
+                                                        {{OrganizationName}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationAddress" class="customlabel">
+                                                        {{OrganizationAddressInfo}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationCityStateZip"
+                                                        class="customlabel">
+                                                        {{OrganizationCityStateZip}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationEventName" class="customlabel">
+                                                        {{EventName}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 col-sm-4 col-lg-5" style="text-align: right;">
+
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationNameJewish"
+                                                        class="customlabel rtlText lng_hebrew">
+                                                        {{OrganizationNameJewish}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                &nbsp;
+                                            </div>
+                                            <div class="row">
+                                                &nbsp;
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <label for="lblOrganizationEventNameJewish"
+                                                        class="customlabel rtlText lng_hebrew">
+                                                        {{EventNameJewish}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="isloading">
+                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                            <div *ngIf="isloading" class="overlay">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-lg-12 boxoutlook">
+                                    <div class="row" *ngIf="!isloading">
+                                        <div class="col-12 col-sm-12 col-lg-12">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <label for="lblFullNameJewish" class="customlabel rtlText lng_hebrew">
+                                                        {{FullNameJewish}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <label for="lblFullName" class="customlabel">
+                                                        {{FullName}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <label for="lblUserAddress" class="customlabel">
+                                                        {{UserAddress}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <label for="lblUserCityStateZip" class="customlabel">
+                                                        {{UserCityStateZip}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="isloading">
+                                        <div class="col-12 col-sm-12 col-lg-12">
+                                            <div *ngIf="isloading" class="overlay">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-5 col-sm-6 col-lg-4">
+
+                                    <h3>Open Pledges</h3>
+                                </div>
+                                <div class="col-1 col-sm-1 col-lg-5">
+
+                                    &nbsp;
+                                </div>
+                                <div class="col-6 col-sm-5 col-lg-3">
+
+                                    <input name="gridSearchText" class="form-control" id="gridSearchText"
+                                        placeholder="{{'SEARCH'  |translate}}" (keyup)='search($event.target.value)' autofocus>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                 <div class="hide-in-mobile">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-lg-12 boxoutlook">
+
+                                            <div class="row" *ngIf="!isloading">
+                                                <div class="col-8 col-sm-8 col-lg-7">
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationName" class="customlabel">
+                                                                {{OrganizationName}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationAddress" class="customlabel">
+                                                                {{OrganizationAddressInfo}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationCityStateZip"
+                                                                class="customlabel">
+                                                                {{OrganizationCityStateZip}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationEventName" class="customlabel">
+                                                                {{EventName}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 col-sm-4 col-lg-5" style="text-align: right;">
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationNameJewish"
+                                                                class="customlabel rtlText lng_hebrew">
+                                                                {{OrganizationNameJewish}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class="row">
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <label for="lblOrganizationEventNameJewish"
+                                                                class="customlabel rtlText lng_hebrew">
+                                                                {{EventNameJewish}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="isloading">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                                    <div *ngIf="isloading" class="overlay">
+                                                        <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-lg-12 boxoutlook">
+                                            <div class="row" *ngIf="!isloading">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+                                                            <label for="lblFullNameJewish" class="customlabel rtlText lng_hebrew">
+                                                                {{FullNameJewish}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+                                                            <label for="lblFullName" class="customlabel">
+                                                                {{FullName}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+                                                            <label for="lblUserAddress" class="customlabel">
+                                                                {{UserAddress}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+                                                            <label for="lblUserCityStateZip" class="customlabel">
+                                                                {{UserCityStateZip}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="isloading">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <div *ngIf="isloading" class="overlay">
+                                                        <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-lg-12 boxoutlook">
+
+                                            <div class="row" *ngIf="!isloading">
+                                                <div class="col-6 col-sm-6 col-lg-6">
+
+                                                    <label for="lblOrganization" class="customlabel">
+                                                        Total
+                                                    </label>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-6" style="text-align: right;">
+
+                                                    <label for="lblOrganization" class="customlabel">
+                                                        {{totalPayableAmount}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="isloading">
+                                                <div class="col-12 col-sm-12 col-lg-12">
+                                                    <div *ngIf="isloading" class="overlay">
+                                                        <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">&nbsp;</div>
+                                            <div class="row">
+                                                <div class="col-2 col-sm-2 col-lg-1">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="col-1 col-sm-1 col-lg-1">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="col-1 col-sm-1 col-lg-1">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="col-4 col-sm-4 col-lg-5">
+                                                    <button class="btn btn-primary btn-block" status="primary"
+                                                        [disabled]="totalPayableAmount==='$0.00'"
+                                                        (click)="OpenPledgePaymentPopupPage()">
+                                                        Pay
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-lg-12">
+
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-lg-12" *ngIf="!isloading">
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped" [svData]="filterData"
+                                                    #sv="svDataTable" [svRowsOnPage]="10" svSortBy="pledgeNum"
+                                                    svSortOrder="asc">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                <sv-default-sorter by="pledgeNum">Pledge #
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="refNum">Ref#</sv-default-sorter>
+                                                            </th>
+
+                                                            <th>
+                                                                <sv-default-sorter by="description">Description
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="pledgeTotalAmount">Total
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="pledgeTotalAmount">Paid
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="campaignName">Campaign
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="pledgeRemainingAmount">Remaining
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <sv-default-sorter by="pledgeDefaultDisplayAmount">Pay
+                                                                    Now
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                            <th>
+                                                                <i class="fas fa-trash" title="Reset all pledge amount" style="cursor: pointer;"
+                                                                    (click)="resetAllPledgeAmount()"></i>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="sv.data?.length > 0">
+                                                        <tr *ngFor="let item of sv.data; let i=index">
+                                                            <td>{{ item.pledgeNum }}</td>
+                                                            <td>{{ item.refNum }}</td>
+
+                                                            <td>{{ item.description }}</td>
+                                                            <td>{{ commonMethodService.formatAmount(item.pledgeTotalAmount) }}
+                                                            </td>
+                                                            <td>{{ commonMethodService.formatAmount(item.pledgePaidAmount) }}
+                                                            </td>
+                                                            <td>{{ item.campaignName }}</td>
+                                                            <td>{{ commonMethodService.formatAmount(item.pledgeRemainingAmount) }}
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control"
+                                                                    (input)="getTotalPayableAmount()"
+                                                                    style="text-align:right;"
+                                                                    [(ngModel)]="item.pledgeDefaultDisplayAmount"
+                                                                    prefix="$" mask="separator.2"
+                                                                    thousandSeparator="," />
+                                                            </td>
+                                                            <td>
+                                                                <div
+                                                                    style="cursor: pointer; margin-top:5px;padding-left: 0 !important;">
+                                                                    <i class="fas fa-trash"
+                                                                        (click)="resetPayAmount(item.pledgeId)"></i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody *ngIf="sv.data?.length == 0">
+                                                        <tr>
+                                                            <td colspan="9" style="text-align: center;">No data found
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="9"
+                                                                style="border-left: none !important;border-right: none !important;">
+                                                                <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 25]">
+                                                                </sv-bootstrap-paginator>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-lg-12" *ngIf="isloading">
+
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row" style="text-align: center;">
+                                                        <div class="col-12 col-sm-12 col-lg-12">
+
+                                                            <div *ngIf="isloading" class="overlay">
+                                                                <i class="fas fa-2x fa-sync-alt fa-spin">
+                                                                </i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

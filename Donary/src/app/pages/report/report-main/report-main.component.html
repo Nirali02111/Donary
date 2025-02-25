@@ -1,0 +1,499 @@
+<div class="content-wrapper report_tabs" style="position: relative;">
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <div class="add_new_button trans_add">
+        <app-add-new-dropdown></app-add-new-dropdown>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="tabs__wrapper head__tabs">
+                <div class="card card__tabs list_tab">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                            
+                            @if(isStandardReportRelease){
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-standard-tab" data-toggle="pill"
+                                    href="#custom-tabs-standard" role="tab"
+                                    (click)="ScheduleSubMenu('standardReport',false)"
+                                    aria-controls="custom-tabs-standard" aria-selected="false">Standard Report</a>
+                            </li> 
+
+                            @if (queryReportPermission) {
+                                <li class="nav-item">
+                                    <a class="nav-link"  id="custom-tabs-queries-report-tab" data-toggle="pill"
+                                        href="#custom-tabs-queries-report" role="tab" (click)="ScheduleSubMenu('customReport',true)"
+                                        aria-controls="custom-tabs-queries" aria-selected="false">{{'CUSTOMREPORT' | translate}}</a>
+                                </li>
+                            }
+                            
+                            } @else {
+
+                                @if (queryReportPermission) {
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="custom-tabs-queries-tab" data-toggle="pill"
+                                            href="#custom-tabs-queries" role="tab" (click)="ScheduleSubMenu('queryReport',true)"
+                                            aria-controls="custom-tabs-queries" aria-selected="false">{{'QUERYREPORT' | translate}}</a>
+                                    </li>
+                                }
+
+                                @if (customReportPermission) {
+                                    <li class="nav-item query-report-tab">
+                                        <a class="nav-link" [class.active]="!isStandardReportRelease && !queryReportPermission" id="custom-tabs-queries-report-tab" data-toggle="pill"
+                                            href="#custom-tabs-queries-report" role="tab" (click)="ScheduleSubMenu('customReport',false)"
+                                            aria-controls="custom-tabs-queries" aria-selected="false">{{'CUSTOMREPORT' | translate}}</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-body list_body report_query">
+                        <div class="tab-content" id="custom-tabs-three-tabContent">
+                            
+                            @if(isStandardReportRelease){
+                            <div class="tab-pane fade show active" id="custom-tabs-standard" role="tabpanel"
+                                aria-labelledby="custom-tabs-standard-tab">
+                                <app-standard-report></app-standard-report>
+                            </div>
+                            @if (customReportPermission) {
+                                <div class="tab-pane fade show" [class.active]="!queryReportPermission" id="custom-tabs-queries-reports" role="tabpanel"
+                                aria-labelledby="custom-tabs-queries-tab">
+                                <div class="query-report-inside">
+                                    <div class="query-report-data {{addClass}}">
+                                        <div class="query-report-header">
+                                            <div class="query-report-left">
+                                                <div class="choose-report">
+                                                    <label>{{'CHOOSEREPORT' | translate}}</label>
+                                                    <div class="input-group ">
+                                                        <angular2-multiselect id="ddldynamicAll"
+                                                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                                            [data]="allDyanamicReportList"
+                                                            [(ngModel)]="selectedAllDynamicList"
+                                                            (onSelect)="onSelect($event)"
+                                                            (onDeSelectAll)="onDeSelectAll('selectedAllDynamicList')">
+                                                        </angular2-multiselect>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngFor="let item of getParamsList; let i=index">
+
+
+                                                    <div class="choose-report" *ngIf="item.paramName!='EventID'">
+                                                        <label>{{item.parameterDisplayName}}</label>
+                                                        <div class="input-group col-8 mb-2"
+                                                            *ngIf="item.uiDataType !='DateTime'">
+                                                            <input class="form-control" type="text"
+                                                                [(ngModel)]="item.value">
+                                                            <span class="text-danger"
+                                                                *ngIf="item.validation">{{'REQUIRED' | translate}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="input_group date_picker"
+                                                            *ngIf="item.uiDataType=='DateTime' && (item.type==='from1' || item.type==='from2' || item.type==='singleFromDate')">
+                                                            <ng-template #popContent><app-common-hebrew-english-calendar
+                                                                    [pageName]="FromPageName" [data]="selectedDateRange"
+                                                                    [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                                            </ng-template>
+                                                            <div class="searchbar applybtn_blink"
+                                                                (click)="openFromHebrewCalendarPopup(p1)"
+                                                                (clickOutside)="onClickedOutsidePopover(p1)"
+                                                                container="body" #p1="ngbPopover"
+                                                                popoverClass="calender-modal" container="body"
+                                                                [ngbPopover]="popContent" [popoverTitle]="popTitle"
+                                                                [autoClose]="false"
+                                                                placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                                                id="dynamicsCalender">
+                                                                <input type="text" class="form-control" value=""
+                                                                    [placeholder]="FromEngHebCalPlaceholder" />
+                                                            </div>
+                                                            <!-- Calendar code ended -->
+                                                        </div>
+                                                        <div class="input_group date_picker"
+                                                            *ngIf="item.uiDataType=='DateTime' && (item.type==='to1' || item.type==='to2' || item.type==='singleToDate')  ">
+                                                            <!-- <div class="searchbar applybtn_blink">
+                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
+                                                            [singleDatePicker]="true" [(ngModel)]="tempTd"
+                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                            [showClearButton]="commonMethodService.showClearButton"
+                                                            (focus)="OnDatePickerToOpen()" #toDate  (datesUpdated)="datesToUpdated($event)"
+                                                             (keypress)="dateSetValue($event,item.paramName);"
+                                                             (keyup)="passValueToDate($event,item.paramName)" maxlength="10"
+                                                             (blur)="clearTo()" />
+                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}{{'REQUIRED' | translate}}</span>
+                                                    </div> -->
+                                                            <!-- Calendar code started -->
+                                                            <ng-template #popContent><app-common-hebrew-english-calendar
+                                                                    [pageName]="ToPageName" [data]="selectedDateRange"
+                                                                    [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                                            </ng-template>
+                                                            <div class="searchbar applybtn_blink"
+                                                                (click)="openToHebrewCalendarPopup(p2)"
+                                                                (clickOutside)="onClickedOutsidePopover(p2)"
+                                                                container="body" #p2="ngbPopover" container="body"
+                                                                [ngbPopover]="popContent" popoverClass="calender-modal"
+                                                                [popoverTitle]="popTitle" [autoClose]="false"
+                                                                placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                                                id="dynamicsCalender">
+                                                                <input type="text" class="form-control" value=""
+                                                                    [placeholder]="ToEngHebCalPlaceholder" />
+                                                            </div>
+                                                            <!-- Calendar code ended -->
+                                                        </div>
+                                                        <!--not from and to date-->
+                                                        <!-- <div class="input_group date_picker dynamic_date_picker" *ngIf="item.uiDataType=='DateTime' && item.paramName!='DtTo' && item.paramName!='DtFrom'">
+                                                    <div class="searchbar applybtn_blink">
+                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
+                                                            [singleDatePicker]="true" [(ngModel)]="testDate"
+                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                            [showClearButton]="commonMethodService.showClearButton"
+                                                            (focus)="OnDatePickerToOpen()" #item.value  (datesUpdated)="datesToUpdated($event)"
+                                                             (keyup)="passTestDate($event)" maxlength="10"
+                                                             />
+                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}</span>
+                                                    </div>
+                                                </div> -->
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- <div class="query-report-dates" *ngIf="isDateFrom">
+                                            <label>From Date</label>
+
+                                            <div class="input_group date_picker">
+                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                                        alt="" /></span>
+                                                <div class="searchbar applybtn_blink">
+                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
+                                                        [singleDatePicker]="true" [(ngModel)]="selecteFromdDate" autoUpdateInput="false"
+                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                        [showClearButton]="commonMethodService.showClearButton" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="query-report-dates" *ngIf="isDateTo">
+                                            <label>To Date</label>
+                                            <div class="input_group date_picker">
+                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                                        alt="" /></span>
+                                                <div class="searchbar applybtn_blink">
+                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
+                                                        [singleDatePicker]="true" [(ngModel)]="selecteTodDate" autoUpdateInput="false"
+                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                        [showClearButton]="commonMethodService.showClearButton" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="report-device-name" *ngIf="isDnyText">
+                                            <label>{{dnyParam}}</label>
+                                            <div class="input-group col-8 mb-2">
+                                               <input type="text" [(ngModel)]="dnyText">
+                                            </div>
+                                        </div> -->
+                                            </div>
+                                            <div class="query-report-action">
+                                                <button class="btn btn-primary btn-run" (click)="onRun()"
+                                                    *ngIf="this.commonMethodService.isfeatureSetting">{{'RUN' |
+                                                    translate}} </button>
+                                                <button class="btn btn-primary btn-run btn-core" (click)="onUpgrade()"
+                                                    *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'
+                                                    | translate}}</button>
+                                                <button class="btn btn-primary btn-export"
+                                                    (click)="exportToExcel()">{{'EXPORT' | translate}} </button>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="query-report-table" *ngIf="isQueryReportTable">
+                                            <div id="div_report_search" class="colm searcg_txt report_search">
+                                                <input type="text" name="advanceSearch" class="form-control float-right"
+                                                    placeholder="{{'SEARCH' | translate}}"
+                                                    (keyup)="search($event.target.value)">
+                                            </div>
+                                            <div class="query-data-table {{setClsTableTestTreport}}"
+                                                id="customReportScroll">
+                                                <!-- <table class="table-striped table-resizable table-campaign" id="queryreporttable" [svData]="tableExecute" #sv="svDataTable" [svRowsOnPage]="50" svSortBy="createdDate" svSortOrder="desc"> -->
+                                                <table class="table-striped table-resizable table-campaign"
+                                                    id="queryreporttable" [svData]="tableExecute" #sv="svDataTable"
+                                                    [svRowsOnPage]="50">
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th *ngFor="let item of sv.data; index as i">{{item}}</th> -->
+                                                            <!-- <th *ngFor="let header of getHeaders()">{{header}}</th> -->
+                                                            <th *ngFor="let header of getHeaders()">
+                                                                <sv-default-sorter [by]="header">{{header}}
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of sv.data  let i=index"
+                                                            class="table-row table-row-{{i}}">
+                                                            <td *ngFor="let key of getHeaders(); index as i">{{item[key]
+                                                                }}</td>
+                                                            <!-- <td *ngFor="let key of getHeaders(); index as i">{{key=='last Payment Date' || key=='lastDate'? (item[key] | donaryDateFormat: "short") : item[key]}}</td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody *ngIf="sv.data?.length == 0">
+                                                        <tr>
+                                                            <td colspan="15" style="text-align: center;">{{'NODATAFOUND'
+                                                                | translate}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <div class="pagination-inside">
+                                                            <sv-bootstrap-paginator
+                                                                [rowsOnPageSet]="[25, 50, 100]"></sv-bootstrap-paginator>
+                                                        </div>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            
+                            } @else {
+
+                                @if (queryReportPermission) {
+                                <div class="tab-pane fade show active" id="custom-tabs-queries" role="tabpanel"
+                                    aria-labelledby="custom-tabs-queries-tab">
+                                    <app-report-list></app-report-list>
+                                </div>
+                                }
+                                @if (customReportPermission) {
+                                    <div class="tab-pane fade show" [class.active]="!queryReportPermission" id="custom-tabs-queries-reports" role="tabpanel"
+                                aria-labelledby="custom-tabs-queries-tab">
+                                <div class="query-report-inside">
+                                    <div class="query-report-data {{addClass}}">
+                                        <div class="query-report-header">
+                                            <div class="query-report-left">
+                                                <div class="choose-report">
+                                                    <label>{{'CHOOSEREPORT' | translate}}</label>
+                                                    <div class="input-group ">
+                                                        <angular2-multiselect id="ddldynamicAll"
+                                                            [settings]="commonMethodService.setDropDownSettings('',2,false,true,true)"
+                                                            [data]="allDyanamicReportList"
+                                                            [(ngModel)]="selectedAllDynamicList"
+                                                            (onSelect)="onSelect($event)"
+                                                            (onDeSelectAll)="onDeSelectAll('selectedAllDynamicList')">
+                                                        </angular2-multiselect>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngFor="let item of getParamsList; let i=index">
+
+
+                                                    <div class="choose-report" *ngIf="item.paramName!='EventID'">
+                                                        <label>{{item.parameterDisplayName}}</label>
+                                                        <div class="input-group col-8 mb-2"
+                                                            *ngIf="item.uiDataType !='DateTime'">
+                                                            <input class="form-control" type="text"
+                                                                [(ngModel)]="item.value">
+                                                            <span class="text-danger"
+                                                                *ngIf="item.validation">{{'REQUIRED' | translate}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="input_group date_picker"
+                                                            *ngIf="item.uiDataType=='DateTime' && (item.type==='from1' || item.type==='from2' || item.type==='singleFromDate') ">
+                                                            <ng-template #popContent><app-common-hebrew-english-calendar
+                                                                    [pageName]="FromPageName" [data]="selectedDateRange"
+                                                                    [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                                            </ng-template>
+                                                            <div class="searchbar applybtn_blink"
+                                                                (click)="openFromHebrewCalendarPopup(p1)"
+                                                                (clickOutside)="onClickedOutsidePopover(p1)"
+                                                                container="body" #p1="ngbPopover"
+                                                                popoverClass="calender-modal" container="body"
+                                                                [ngbPopover]="popContent" [popoverTitle]="popTitle"
+                                                                [autoClose]="false"
+                                                                placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                                                id="dynamicsCalender">
+                                                                <input type="text" class="form-control" value=""
+                                                                    [placeholder]="FromEngHebCalPlaceholder" />
+                                                            </div>
+                                                            <!-- Calendar code ended -->
+                                                        </div>
+                                                        <div class="input_group date_picker"
+                                                            *ngIf="item.uiDataType=='DateTime' && (item.type==='to1' || item.type==='to2' || item.type==='singleToDate') ">
+                                                            <!-- <div class="searchbar applybtn_blink">
+                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
+                                                            [singleDatePicker]="true" [(ngModel)]="tempTd"
+                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                            [showClearButton]="commonMethodService.showClearButton"
+                                                            (focus)="OnDatePickerToOpen()" #toDate  (datesUpdated)="datesToUpdated($event)"
+                                                             (keypress)="dateSetValue($event,item.paramName);"
+                                                             (keyup)="passValueToDate($event,item.paramName)" maxlength="10"
+                                                             (blur)="clearTo()" />
+                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}{{'REQUIRED' | translate}}</span>
+                                                    </div> -->
+                                                            <!-- Calendar code started -->
+                                                            <ng-template #popContent><app-common-hebrew-english-calendar
+                                                                    [pageName]="ToPageName" [data]="selectedDateRange"
+                                                                    [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                                                            </ng-template>
+                                                            <div class="searchbar applybtn_blink"
+                                                                (click)="openToHebrewCalendarPopup(p2)"
+                                                                (clickOutside)="onClickedOutsidePopover(p2)"
+                                                                container="body" #p2="ngbPopover" container="body"
+                                                                [ngbPopover]="popContent" popoverClass="calender-modal"
+                                                                [popoverTitle]="popTitle" [autoClose]="false"
+                                                                placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                                                                id="dynamicsCalender">
+                                                                <input type="text" class="form-control" value=""
+                                                                    [placeholder]="ToEngHebCalPlaceholder" />
+                                                            </div>
+                                                            <!-- Calendar code ended -->
+                                                        </div>
+                                                        <!--not from and to date-->
+                                                        <!-- <div class="input_group date_picker dynamic_date_picker" *ngIf="item.uiDataType=='DateTime' && item.paramName!='DtTo' && item.paramName!='DtFrom'">
+                                                    <div class="searchbar applybtn_blink">
+                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
+                                                            [singleDatePicker]="true" [(ngModel)]="testDate"
+                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                            [showClearButton]="commonMethodService.showClearButton"
+                                                            (focus)="OnDatePickerToOpen()" #item.value  (datesUpdated)="datesToUpdated($event)"
+                                                             (keyup)="passTestDate($event)" maxlength="10"
+                                                             />
+                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}</span>
+                                                    </div>
+                                                </div> -->
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- <div class="query-report-dates" *ngIf="isDateFrom">
+                                            <label>From Date</label>
+
+                                            <div class="input_group date_picker">
+                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                                        alt="" /></span>
+                                                <div class="searchbar applybtn_blink">
+                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
+                                                        [singleDatePicker]="true" [(ngModel)]="selecteFromdDate" autoUpdateInput="false"
+                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                        [showClearButton]="commonMethodService.showClearButton" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="query-report-dates" *ngIf="isDateTo">
+                                            <label>To Date</label>
+                                            <div class="input_group date_picker">
+                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                                        alt="" /></span>
+                                                <div class="searchbar applybtn_blink">
+                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
+                                                        [singleDatePicker]="true" [(ngModel)]="selecteTodDate" autoUpdateInput="false"
+                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
+                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
+                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
+                                                        [showClearButton]="commonMethodService.showClearButton" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="report-device-name" *ngIf="isDnyText">
+                                            <label>{{dnyParam}}</label>
+                                            <div class="input-group col-8 mb-2">
+                                               <input type="text" [(ngModel)]="dnyText">
+                                            </div>
+                                        </div> -->
+                                            </div>
+                                            <div class="query-report-action">
+                                                <button class="btn btn-primary btn-run" (click)="onRun()"
+                                                    *ngIf="this.commonMethodService.isfeatureSetting">{{'RUN' |
+                                                    translate}} </button>
+                                                <button class="btn btn-primary btn-run btn-core" (click)="onUpgrade()"
+                                                    *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'
+                                                    | translate}}</button>
+                                                <button class="btn btn-primary btn-export"
+                                                    (click)="exportToExcel()">{{'EXPORT' | translate}} </button>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="query-report-table" *ngIf="isQueryReportTable">
+                                            <div id="div_report_search" class="colm searcg_txt report_search">
+                                                <input type="text" name="advanceSearch" class="form-control float-right"
+                                                    placeholder="{{'SEARCH' | translate}}"
+                                                    (keyup)="search($event.target.value)">
+                                            </div>
+                                            <div class="query-data-table {{setClsTableTestTreport}}"
+                                                id="customReportScroll">
+                                                <!-- <table class="table-striped table-resizable table-campaign" id="queryreporttable" [svData]="tableExecute" #sv="svDataTable" [svRowsOnPage]="50" svSortBy="createdDate" svSortOrder="desc"> -->
+                                                <table class="table-striped table-resizable table-campaign"
+                                                    id="queryreporttable" [svData]="tableExecute" #sv="svDataTable"
+                                                    [svRowsOnPage]="50">
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th *ngFor="let item of sv.data; index as i">{{item}}</th> -->
+                                                            <!-- <th *ngFor="let header of getHeaders()">{{header}}</th> -->
+                                                            <th *ngFor="let header of getHeaders()">
+                                                                <sv-default-sorter [by]="header">{{header}}
+                                                                </sv-default-sorter>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of sv.data  let i=index"
+                                                            class="table-row table-row-{{i}}">
+                                                            <td *ngFor="let key of getHeaders(); index as i">{{item[key]
+                                                                }}</td>
+                                                            <!-- <td *ngFor="let key of getHeaders(); index as i">{{key=='last Payment Date' || key=='lastDate'? (item[key] | donaryDateFormat: "short") : item[key]}}</td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody *ngIf="sv.data?.length == 0">
+                                                        <tr>
+                                                            <td colspan="15" style="text-align: center;">{{'NODATAFOUND'
+                                                                | translate}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <div class="pagination-inside">
+                                                            <sv-bootstrap-paginator
+                                                                [rowsOnPageSet]="[25, 50, 100]"></sv-bootstrap-paginator>
+                                                        </div>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    <div *ngIf="isloading" class="overlay query-report-loader">
+        <div class="report-loader"></div>
+        <button *ngIf="isRunLoader" (click)="stopRun()"><span class="icon-close">X</span> {{'CLEAR'
+            |translate}}</button>
+    </div>
+</div>

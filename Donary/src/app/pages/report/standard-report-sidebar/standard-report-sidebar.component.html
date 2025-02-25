@@ -1,0 +1,52 @@
+@if(sidebarOptions.length> 0){
+@for(item of sidebarOptions;track $index){
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" [(ngModel)]="item.checked" (change)="onCheckboxChange(item)" [id]="'checkbox-' + item.label">
+  <label class="form-check-label" [for]="'checkbox-' + item.label">{{item.label}}
+
+    @if(item.label == "Address"){
+      <ng-select [items]="addressLabelArray" bindLabel="labelName" [(ngModel)]="selectedAddressLabel" [multiple]="true" (click)="onCheckboxClick($event)"
+      [closeOnSelect]="false" [searchable]="true" [selectableGroup]="true" (change)="onSelectionChange('address',selectedAddressLabel)"
+      placeholder="Select label" class="multi-select-checkbox">
+      <ng-template ng-option-tmp let-item="item">
+        <div class="custom-item">
+          <input type="checkbox" [checked]="selectedAddressLabel.includes(item)" /> {{ item.labelName }}
+        </div>
+      </ng-template>
+    </ng-select>
+    <div class="form-check form-switch" >
+      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [checked]="isSwitchOn" (change)="onSwitchChange($event)">
+      <label class="form-check-label" for="flexSwitchCheckDefault" >Split columns</label>
+    </div>
+    }
+
+    @if(item.label == "Email Address"){
+      <ng-select [items]="emailLabelArray" bindLabel="labelName" [(ngModel)]="selectedEmailLabel" [multiple]="true" (click)="onCheckboxClick($event)"
+      [closeOnSelect]="false" [searchable]="true" [selectableGroup]="true" (change)="onSelectionChange('emailAddress',selectedEmailLabel)"
+      placeholder="Select label" class="multi-select-checkbox">
+      <ng-template ng-option-tmp let-item="item">
+        <div class="custom-item" (click)="onCheckboxClick($event)">
+          <input type="checkbox" [checked]="selectedEmailLabel.includes(item)" /> {{ item.labelName }}
+        </div>
+      </ng-template>
+    </ng-select>
+
+    }
+    @if(item.label == "Phone number"){
+    <ng-select [items]="phoneLabelArray" bindLabel="labelName" [(ngModel)]="selectedPhoneLabel" [multiple]="true" (click)="onCheckboxClick($event)"
+      [closeOnSelect]="false" [searchable]="true" [selectableGroup]="true" (change)="onSelectionChange('Phone',selectedPhoneLabel)"
+      placeholder="Select label" class="multi-select-checkbox">
+      <ng-template ng-option-tmp let-item="item">
+        <div class="custom-item">
+          <input type="checkbox" [checked]="selectedPhoneLabel.includes(item)" /> {{ item.labelName }}
+        </div>
+      </ng-template>
+    </ng-select>
+
+  
+    }
+  </label>
+</div>
+
+}
+}

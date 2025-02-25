@@ -1,0 +1,822 @@
+<div class="create_reason" style="display: block" ngbAutofocus tabindex="-1">
+  <div class="modal-header modal__custom_header">
+    <h4>{{ title |translate}}</h4>
+    <div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
+  </div>
+
+  <div class="campaign-modal-tabs">
+    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+       @if(isloading){
+
+         <ng-container *ngFor="let item of skeletonitems"  >
+         <span [ngStyle]="{'margin-left': isloading ? '10px' : '0px','margin-top': isloading ? '10px' : '0px'}">
+
+           <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"></app-skeleton-loader-component>
+         </span>
+        </ng-container>
+       }@else {
+        <li class="nav-item">
+      
+          <a
+           class="nav-link active"
+           id="custom-tabs-queries-tab"
+           data-toggle="pill"
+           href="#campaigninfotab"
+           role="tab"
+           aria-controls="campaigninfotab"
+           aria-selected="false"
+           >{{'CAMPAIGNINFO' | translate}}</a
+         >
+       </li>
+       <li class="nav-item query-report-tab" *ngIf="isEditMode" >
+        
+         <a
+           class="nav-link"
+           id="custom-tabs-preset-amount"
+           data-toggle="pill"
+           href="#preset-amount"
+           role="tab"
+           aria-controls="preset-amount"
+           aria-selected="false"
+           >{{'PRESETAMOUNT' | translate}}</a
+         >
+       </li>
+       <li class="nav-item query-report-tab" *ngIf="isEditMode" >
+        <a
+           class="nav-link"
+           id="custom-tabs-queries-report-tab"
+           data-toggle="pill"
+           href="#campaign-banner"
+           role="tab"
+           aria-controls="campaign-banner"
+           aria-selected="false"
+           >{{'DONATEPLUS' | translate}}</a
+         >
+       </li>
+       <li class="nav-item query-report-tab" *ngIf="isEditMode" [ngStyle]="{'margin-left': isloading ? '10px' : '0px','margin-top': isloading ? '10px' : '0px'}">
+         <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"> <a
+           class="nav-link"
+           id="custom-tabs-shul-kiosk"
+           data-toggle="pill"
+           href="#shul-kiosk"
+           role="tab"
+           aria-controls="shul-kiosk"
+           aria-selected="false"
+           >{{'SHULKIOSK' | translate}}</a
+         ></app-skeleton-loader-component>
+       </li>
+       }
+
+     
+
+    </ul>
+  </div>
+  <div class="card-body edit-campaign-tabs-body">
+    <form
+      name="reasonInfoForm"
+      (ngSubmit)="f.form.valid && SaveCampaignInfo()"
+      #f="ngForm"
+    >
+      <div class="tab-content">
+        @if(isloading){
+          <ng-container *ngFor="let item of skeletonitems">
+                  <app-edit-skeleton-loader [theme1]="{ width: '150px', height: '35px' }" [theme2]="{ width: '400px', height: '35px' }"></app-edit-skeleton-loader>
+            </ng-container>
+      }@else {
+        <div
+          class="tab-pane fade show active"
+          id="campaigninfotab"
+          role="tabpanel"
+          aria-labelledby="custom-tabs-queries-tab"
+        >
+          <div class="reason_wrap">
+            <div class="inside_wrap modal__custom_content">
+              <div class="form-group-block">
+                <div class="block_label">{{'CAMPAIGNNAME' | translate}}:</div>
+                <div class="block_inputs">
+                  <input
+                    type="text"
+                    class="input-text"
+                    required
+                    [ngClass]="[
+                      txtCampaignName.touched && txtCampaignName.invalid
+                        ? 'error-field'
+                        : ''
+                    ]"
+                    [ngClass]="{
+                      'is-invalid': f.submitted && txtCampaignName.invalid
+                    }"
+                    (keypress)="
+                      commonMethodService.SpecificSpecialCharOnly($event)
+                    "
+                    id="txtCampaignName"
+                    [(ngModel)]="campaignName"
+                    autofocus
+                    #txtCampaignName="ngModel"
+                    name="txtCampaignName"
+                  />
+                  <div
+                    *ngIf="txtCampaignName.touched && txtCampaignName.invalid"
+                    class="row text-danger"
+                  >
+                    <div class="val-error">{{'CAMPAIGNNAMEREQUIRED' | translate}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-block" *ngIf="isEditMode">
+                <div class="block_label">{{'CAMPAIGNNUMBER' | translate}}:</div>
+                <div class="block_inputs">
+                  <input
+                    type="text"
+                    class="input-text  {{isSetBorderCls}}"
+                    required
+                    id="txtCampaignNumber"
+                    [(ngModel)]="campaignNumber"
+                    autofocus
+                    [ngClass]="{ 'is-invalid':txtCampaignNumber.invalid }"
+                    (keyup)="duplicateCampNumber($event)"
+                    #txtCampaignNumber="ngModel"
+                    name="txtCampaignNumber"
+                  />
+                  <span *ngIf="isDuplicateCampNumber" class="account-duplicate" style="color: red;font-style: italic;">{{'DUPLICATECAMPAIGN' | translate}}</span>
+                </div>
+              </div>
+              <div class="form-group-block">
+                <div class="block_label">{{'FRIENDLYNAME' |translate}}:</div>
+                <div class="block_inputs">
+                  <input
+                    type="text"
+                    class="input-text"
+                    [ngClass]="{
+                      'is-invalid': f.submitted && txtFriendlyName.invalid
+                    }"
+                    id="txtFriendlyName"
+                    [(ngModel)]="friendlyName"
+                    #txtFriendlyName="ngModel"
+                    name="txtFriendlyName"
+                    [attr.maxlength]="80"
+                  />
+                </div>
+              </div>
+              <div class="form-group-block">
+                <div class="block_label">{{'PARENTCAMPAIGN' |translate}}:</div>
+                <div class="block_inputs">
+                  <div class="input_single">
+                    <angular2-multiselect
+                      id="ddlCampaign"
+                      [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          2,
+                          false,
+                          true,
+                          true
+                        )
+                      "
+                      [data]="commonMethodService.localCampaignList"
+                      #drpCampaign="ngModel"
+                      name="drpCampaign"
+                      [(ngModel)]="parentCampaignId"
+                      (onDeSelect)="OnCampaignDeSelect()"
+                      (onDeSelectAll)="OnCampaignDeSelect()"
+                    >
+                    <c-item>
+                      <ng-template let-item="item">
+                          <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
+                              {{item.itemName}}
+                              <span class="heb-dropdown-status">{{item.status}}</span></label>
+                        </ng-template>
+                      </c-item>
+                    </angular2-multiselect>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="campaign-banner"
+          role="tabpanel"
+          aria-labelledby="custom-tabs-queries-report-tab"
+        >
+          <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+            <li class="nav-item query-report-tab" *ngIf="isEditMode">
+              <a
+                class="nav-link active"
+                id="custom-tabs-display-tab"
+                data-toggle="pill"
+                href="#campaign-display-tab"
+                role="tab"
+                aria-controls="campaign-display-tab"
+                aria-selected="false"
+                >{{'DISPLAY' |translate}}</a
+              >
+            </li>
+            <li class="nav-item query-report-tab">
+              <a
+                class="nav-link"
+                id="custom-tabs-queries-branding-tab"
+                data-toggle="pill"
+                href="#campaign-branding-tab"
+                role="tab"
+                aria-controls="campaign-branding-tab"
+                aria-selected="false"
+                >{{'BRANDING' |translate}}</a
+              >
+            </li>
+            <li class="nav-item query-report-tab" *ngIf="isEditMode">
+              <a
+                class="nav-link"
+                id="custom-tabs-queries-options-tab"
+                data-toggle="pill"
+                href="#options-tab"
+                role="tab"
+                aria-controls="options-tab"
+                aria-selected="false"
+                >{{'OPTIONS' |translate}}</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content tabs-inside-edit-campaign">
+            <div
+              class="tab-pane fade show active"
+              id="campaign-display-tab"
+              role="tabpanel"
+              aria-labelledby="custom-tabs-display-tab"
+            >
+              <div class="reason_wrap">
+                <div class="inside_wrap modal__custom_content">
+                  <div class="form-group-block">
+                    <div class="block_label">
+                      {{ "DISPLAYNAME" | translate }}:
+                    </div>
+                    <div class="block_inputs">
+                      <input
+                        type="text"
+                        class="input-text"
+                        id="txtDonateDisplayName"
+                        [(ngModel)]="donateDisplayName"
+                        #txtDonateDisplayName="ngModel"
+                        name="txtDonateDisplayName"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group-block">
+                    <div class="block_label">{{'DESCRIPTION' |translate}}:</div>
+                    <div class="block_inputs edit-campaign-description">
+                      <textarea
+                        class="input-text"
+                        [(ngModel)]="DonateDescription"
+                        #txtDonateDescription="ngModel"
+                        name="txtDonateDescription"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group-block">
+                    <div class="block_label text-uppercase">{{ "GOAL" | translate }}:</div>
+                    <div class="block_inputs edit-campaign-field-icon">
+                      <div class="dollar-icon"></div>
+                      <input
+                        type="text"
+                        class="input-text"
+                        [(ngModel)]="Goal"
+                        #txtGoal="ngModel"
+                        name="txtGoal"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group-block">
+                    <div class="block_label">
+                      {{ "BONUSGOAL" | translate }}:
+                    </div>
+                    <div class="block_inputs edit-campaign-field-icon">
+                      <div class="dollar-icon"></div>
+                      <input
+                        type="text"
+                        class="input-text"
+                        [(ngModel)]="BonusGoal"
+                        #txtBonusGoal="ngModel"
+                        name="txtBonusGoal"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group-block field-col-two">
+                    <div class="block_label">
+                      {{ "STARTINGAT" | translate }}:
+                    </div>
+                    <div class="block_inputs">
+                      <div class="field-col edit-campaign-field-icon">
+
+                      <div class="input_group"></div>
+                        <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
+                                [data]="startselectedDate" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                        </ng-template>
+                        
+                          <div class="searchbar" (clickOutside)="onClickedOutsidePopover(p1)" container="body"
+                              #p1="ngbPopover" (click)="openHebrewCalendarPopup('start',p1)" [ngbPopover]="popContent"
+                              container="body" popoverClass="calender-modal" [popoverTitle]="popTitle"
+                              [autoClose]="false"
+                              placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                              id="editPaymentDynamicsCalender">
+                              <span class="icon cursor-pointer icon-calander"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
+                                  alt="" /></span>
+                              <!-- <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                                                              -->
+                              <!-- Use the ternary operator to display a value if EngHebCalPlaceholder is not empty -->
+                              <input type="text" class="form-control input-text" [value]="startdate ? startdate : ''"
+                                [placeholder]="startdate || 'Select Date'" />
+                              
+                              </div>
+                        
+                        <!-- Calendar code ended -->
+                    </div>
+                      <div class="field-col edit-campaign-field-icon">
+                        <div class="icon-clock" (click)="selectpkr()"></div>
+                        <input
+                          class="input-text"
+                          [(ngModel)]="StartDateTime"
+                          #txtStartDateTime="ngModel"
+                          id="txtStartDateTime"
+                          name="txtStartDateTime"
+                          aria-label="default time"
+                          [ngxTimepicker]="defaultValue"
+                          [value]="'12:00 am'"
+                          readonly
+                        />
+                        <ngx-material-timepicker
+                          #defaultValue
+                        ></ngx-material-timepicker>
+                      </div> 
+                   
+                      
+                    </div>
+                  </div>
+                  <div class="form-group-block field-col-two">
+                    <div class="block_label">{{ "ENDINGAT" | translate }}:</div>
+                    <div class="block_inputs">
+                      <div class="field-col edit-campaign-field-icon">
+
+                        <div class="input_group"></div>
+                          <ng-template #popContent2><app-common-hebrew-english-calendar [pageName]="PageName" [data]="endselectedDate"
+                              [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
+                          </ng-template>
+                          <div class="searchbar" (clickOutside)="onClickedOutsidePopover(p2)" container="body" #p2="ngbPopover"
+                            (click)="openHebrewCalendarPopup('end',p2)" [ngbPopover]="popContent2" container="body"
+                            popoverClass="calender-modal" [popoverTitle]="popTitle" [autoClose]="false"
+                            placement="bottom left right start end bottom-start bottom-end end-top end-bottom"
+                            id="editPaymentDynamicsCalender">
+                            <span class="icon cursor-pointer icon-calander"><img src="/assets/dist/img/calendar-icon.svg" width="20"
+                                height="20" alt="" /></span>
+                            <!-- <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
+                                                    -->
+                            <!-- Use the ternary operator to display a value if EngHebCalPlaceholder is not empty -->
+                            <input type="text" class="form-control input-text" [value]="endDate ? endDate : ''"
+                              [placeholder]="endDate || 'Select Date'" />
+                      
+                          </div>
+                      </div>
+                        <!-- Calendar code ended -->
+                      
+                      <div class="field-col edit-campaign-field-icon">
+                        <div class="icon-clock" (click)="selectpkr1()"></div>
+                        <input class="input-text" [(ngModel)]="EndDateTime" #txtEndDateTime="ngModel" id="txtEndDateTime"
+                          name="txtEndDateTime" aria-label="default time" [ngxTimepicker]="defaultValue1" [value]="'12:00 am'" readonly />
+                        <ngx-material-timepicker #defaultValue1></ngx-material-timepicker>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group-block field-col-two">
+                  <div class="block_label">{{ "NOTETITLE" | translate }}:</div>
+                  <div class="block_inputs">
+                    <input
+                      type="text"
+                      class="input-text"
+                      id="noteTitleVal"
+                      [(ngModel)]="noteTitle"
+                      #txtDonateDisplayName="ngModel"
+                      name="txtNoteTitle"
+                    />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="campaign-branding-tab"
+              role="tabpanel"
+              aria-labelledby="custom-tabs-queries-branding-tab"
+            >
+              <div class="form-group-block file-banner">
+                <div class="block_label">
+                  {{ "DONATEBANNER" | translate }}:
+                  <span class="campaign-tooltip"  appHoverTooltip labelText="{{'DONATEBANNER' | translate}}"
+                    >?</span
+                  >
+                </div>
+                <div class="block_inputs upload-your-campaign-banner">
+                  <div class="campaign-banner-wrap">
+                    <div class="inside-campaing-banner" *ngIf="!imageUrl2">
+                      <img src="/assets/dist/img/cloud-upload.svg" />
+                      <button class="selct_file">{{ "SELECTFILE" | translate }}</button>
+                      <input
+                        class="file-input"
+                        type="file"
+                        name="doc_file"
+                        id="org_file"
+                        placeholder='{{ "UPLOADFILE" | translate }}'
+                        (change)="getBase64StringNew($event)"
+                        accept=".png,.JPG,.Svg"
+                      />
+                      <p>{{ "DRAGFILE" | translate }}</p>
+                      <p>{{ "FILESUPPORT" | translate }}</p>
+                      <p>
+                        {{ "FILESIZE" | translate }}
+                      </p>
+                    </div>
+                    <!---->
+                    <div class="camping-uploaded-preview-img" *ngIf="imageUrl2">
+                      <img src="{{ imageUrl2 }}" *ngIf="fromDbImg_2"/>
+                      <span *ngIf="fromDbImg_2" class="title-camping-imageUrlName">{{
+                        imageUrl2Name
+                      }}</span>
+                      <section *ngIf="!fromDbImg_2">
+                       <image-cropper
+                        [imageChangedEvent]="imageChangedEvent_2"
+                        [maintainAspectRatio]="true"
+                        [resizeToWidth]='1030'
+                        [resizeToHeight]='535'
+                        [aspectRatio]="1.925233644859813"
+                        format="png"
+                        [containWithinAspectRatio]="false"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                        [transform]="transform_2"
+                        [hideResizeSquares]="true"
+                    ></image-cropper>
+                    <span *ngIf="!fromDbImg_2" class="title-camping-imageUrlName">{{
+                        imageUrl2Name
+                      }}</span>
+                    </section>
+                    </div>
+                    <!---->
+                  </div>
+                  <div class="file-action" *ngIf="imageUrl2">
+                    <button class="btn btn-red">
+                      <i class="fa fa-trash" (click)="deleteUploadedImage()" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <div *ngIf="!fromDbImg_2 && imageUrl2" class="cropp-action">
+                 <button (click)="zoomOut($event,2)" class="mr-4 btn btn-success zoom-btn">{{ 'ZOOM' | translate }} <span class="material-icons">
+                    zoom_out
+                    </span></button>
+            <button (click)="zoomIn($event,2)"class="mr-2 btn btn-success">{{ 'ZOOM' | translate }} <span class="material-icons">
+                zoom_in
+                </span></button>
+            </div>
+                </div>
+              </div>
+              <div class="form-group-block record-file">
+                <div class="block_label">
+                  {{ 'RECORDMOISEDNAME' | translate }}:
+                  <span class="campaign-tooltip" appHoverTooltip labelText="{{'RECORDMOISEDNAME' | translate}}"
+                    >?</span
+                  >
+                </div>
+                <div class="block_inputs">
+                  <div class="audio-title">{{ 'UPLOADFILE' | translate }}</div>
+                  <div class="audio-file-wrap" *ngIf="!isAudioFileSelected">
+                    <button
+                      class="selct_file"
+                      id="btn_select_audio"
+                      *ngIf="!isAudioFileSelected"
+                    >
+                    {{ 'SELECTFILE' | translate }}
+                    </button>
+                    <input
+                      class="file-input"
+                      type="file"
+                      name="doc_file"
+                      id="aud_file"
+                      (change)="getBase64AudioString($event)"
+                      placeholder='{{ "UPLOADFILE" | translate }}'
+                      accept=".WAV"
+                      *ngIf="!isAudioFileSelected"
+                    />
+                  </div>
+                  <div class="col-sm-12 inline_colm reg-audio-wrap">
+                    <audio
+                      #myAudio
+                      controls
+                      class="controls-audio"
+                      style="height: 30px; width: 500px; display: none"
+                    ></audio>
+                    <span
+                      class="delete_btn controls-audio"
+                      *ngIf="isAudioFileSelected"
+                      (click)="deleteAudioFile()"
+                      style="display: block"
+                    >
+                      <i class="fa fa-trash"></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="options-tab"
+              role="tabpanel"
+              aria-labelledby="custom-tabs-queries-options-tab"
+            >
+              <div
+                class="inside_wrap modal__custom_content edit-campaing-content"
+              >
+                <div class="edit-campaign-options">
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "BACKALLTEAM" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="backToAllTeams"
+                          (change)="backToAllTeamsCheck($event)"
+                          name="chckBackToAllTeams"
+                          [checked]="backToAllTeams"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "EXPANDTEAMSHOWDONOR" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="expandTeamToShowDonors"
+                          (change)="expandTeamToShowDonorsCheck($event)"
+                          name="chckExpandTeamToShowDonors"
+                          [checked]="expandTeamToShowDonors"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "SHOWTOTALPANEL" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="showTotalsPanel"
+                          (change)="showTotalsPanelCheck($event)"
+                          name="chckshowTotalsPanel"
+                          [checked]="showTotalsPanel"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "SHOWGROUPPANEL" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="showGroupPanel"
+                          (change)="showGroupPanelCheck($event)"
+                          name="chckshowGroupPanel"
+                          [checked]="showGroupPanel"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "SHOWDONORPANEL" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="showDonorPanel"
+                          (change)="showDonorPanelCheck($event)"
+                          name="chckshowDonorPanel"
+                          [checked]="showDonorPanel"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "SHOWTEAMPANEL" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="showTeamPanel"
+                          (change)="showTeamPanelCheck($event)"
+                          name="chckshowTeamPanel"
+                          [checked]="showTeamPanel"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="edit-campaign-row">
+                    <div class="option-item">
+                      <h3>{{ "SHOWTEAMDETAILS" | translate }}</h3>
+                    </div>
+                    <div class="option-toggle switch-toogle">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="hideTeamDetails"
+                          (change)="hideTeamDetailsCheck($event)"
+                          name="chckhideTeamDetails"
+                          [checked]="hideTeamDetails"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="preset-amount-tab"
+          role="tabpanel"
+          aria-labelledby="custom-tabs-queries-preset-tab"
+        >
+          <div class="inside-priset-amount">
+            <div class="preset-amount-row">
+              <div class="label-preset"><label>{{ "PRESETAMO" | translate }} 1:</label></div>
+              <div class="preset-amount-fields">
+                <div class="filed-preset-amont">
+                  <div class="icon-dollar"></div>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="info-preset-amount">
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="preset-amount-row">
+              <div class="label-preset"><label>{{ "PRESETAMO" | translate }} 2:</label></div>
+              <div class="preset-amount-fields">
+                <div class="filed-preset-amont">
+                  <div class="icon-dollar"></div>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="info-preset-amount">
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="preset-amount-row">
+              <div class="label-preset"><label>{{ "PRESETAMO" | translate }} 3:</label></div>
+              <div class="preset-amount-fields">
+                <div class="filed-preset-amont">
+                  <div class="icon-dollar"></div>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="info-preset-amount">
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+		<div class="tab-pane fade " id="shul-kiosk" role="tabpanel" aria-labelledby="custom-tabs-shul-kiosk">
+		<!--  -->
+    <div class="edit-shul-kiosk">
+		<div class="edit-campaign-row">
+			<div class="option-item">
+			  <h6>{{ "DISPLAYINSHULKIOSK" | translate }}</h6>
+			</div>
+			<div class="option-toggle">
+			  <label class="switch">
+				<input
+				  type="checkbox"
+				  [(ngModel)]="displayInShulKiosk"
+				  (change)="displayInShulKioskCheck($event)"
+				  name="chckDisplayInShulKiosk"
+				  [checked]="displayInShulKiosk"
+				/>
+				<span class="slider round"></span>
+			  </label>
+			</div>
+		  </div>
+      <div class="form-group-block" *ngIf="isDisplayImage">
+                <div class="block_label">{{'DISPLAYIMAGE' |translate}}: <span><i
+                  class="fas fa-question-circle" [ngbTooltip]="tipContent"></i></span></div>
+                 <!-- end SHUL KIOSK MAIN IMAGE -->
+              <ng-template #tipContent>
+                <p class="isDisplayImage-text">Campaigns are being sorted by campaign number. To edit the campaign number, go to the Campaign Info tab.</p>
+             </ng-template>
+                  <div class="block_inputs">
+                  <div class="input_single">
+                    <angular2-multiselect
+                      id="ddlDisplayImage"
+                      [settings]="
+                        commonMethodService.setDropDownSettings(
+                          '',
+                          2,
+                          false,
+                          true,
+                          true
+                        )
+                      "
+                      [data]="displayImageList"
+                      #drpDisplayImage="ngModel"
+                      name="drpDisplayImage"
+                      [(ngModel)]="displayImageId"
+                      (onDeSelectAll)="displayImageId=[]"
+                    >
+                    </angular2-multiselect>
+                  </div>
+                </div>
+              </div>
+            </div>
+		<!--  -->
+</div>
+
+<div class="tab-pane fade " id="preset-amount" role="tabpanel" aria-labelledby="custom-tabs-preset-amount">
+  <div class="form-group-block require-phone">
+    <div class="block_label">{{'REQUIRE PHONE IF AMOUNT IS ABOVE' |translate}}:</div>
+    <div class="block_inputs">
+      <div class="input_single">
+        <input
+          type="number"
+          [(ngModel)]="requireDonorsInfoAbove"
+          name="txtrequireDonorsInfoAbovesss"
+          #txtrequireDonorsInfoAbovesss="ngModel"
+          class="input-text"
+          placeholder="{{'ENTERAMOUNT' |translate}}"
+        />
+        <span class="icon-grey" [ngClass]="commonMethodService.currencyClass"></span>
+      </div>
+    </div>
+  </div>
+  <div class="preset-amount-data">
+    <div class="preset-form-inside">
+      <div class="row-preset-data"  *ngFor="let item of presetAmounts;let j=index">
+        <label>{{ "PRESETAMO" | translate }} {{j+1}}:</label>
+        <div class="preset-amount-left">
+          <input type="number" class="form-control"  (focusout)="convertDecimal(j)" [(ngModel)]="item.amount" name="amount_{{j+1}}">
+          <span class="icon-doller"></span>
+        </div>
+        <div class="preset-amount-right">
+          <input type="text" placeholder="" class="form-control" [(ngModel)]="item.text" name="text_{{j+1}}">
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+      
+       } 
+       <div class="btn_info modal__custom_footer">
+        <div class="left_part">
+          <button
+            class="btn btn-remove"
+            type="button"
+            (click)="deleteCampaign()"
+            *ngIf="isEditMode">
+            {{ "REMOVECAMPAIGN" | translate }}
+          </button>
+        </div>
+        <div class="right_part">
+          <button class="close_trans btn btn-default" (click)="closePopup()">
+            {{ "CANCEL" | translate }}
+          </button>
+          <button class="btn btn-primary" [disabled]="!f.form.valid || isDuplicateCampNumber" *ngIf="this.commonMethodService.isfeatureSetting">
+            {{ "SAVECHANGES" | translate }}
+          </button>
+          <button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="onUpgrade()">
+            {{ "UPGRADETOSAVE" | translate }}
+          </button>
+        </div>
+      </div></div>
+    </form>
+  </div>
+</div>

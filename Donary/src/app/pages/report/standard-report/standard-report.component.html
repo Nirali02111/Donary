@@ -1,0 +1,88 @@
+<section class="section-tab">
+
+
+  <ul class="nav nav-tabs mt-0 " ngbNav #nav="ngbNav" [(activeId)]="activeId">
+    <li [ngbNavItem]="1" [destroyOnHide]="true">
+      <!-- <a ngbNavLink>All reports</a> -->
+      <ng-template ngbNavContent>
+
+        <div ngbAccordion [closeOthers]="true">
+          @for(group of groupNames; track $index ){
+          <div ngbAccordionItem>
+            <div ngbAccordionHeader #header [id]="group.sectionID"><button ngbAccordionButton
+                (click)="setSelectedGroup(group.sectionID)"><i><svg xmlns="http://www.w3.org/2000/svg" width="7.998"
+                    height="13.871" viewBox="0 0 7.998 13.871">
+                    <path id="Path_18013" data-name="Path 18013" d="M0,0,5.875,5.877,11.75,0"
+                      transform="translate(1.061 12.811) rotate(-90)" fill="none" stroke="#434246"
+                      stroke-linecap="round" stroke-width="1.5" opacity="0.4" />
+                  </svg>
+                </i> {{group?.sectionName}}</button></div>
+
+            <div ngbAccordionCollapse #collapseshow [id]="'collapsed-' + group.sectionID">
+              <div ngbAccordionBody>
+
+                <div class="row">
+
+                  @for (item of donorsReportList(); track $index) {
+
+                  @if (item) {
+
+                  <div class="col-md-6 col-xl-4">
+                    <a class="d-flex align-items-center" href="javascript:void(0)" [title]="item.reportName"
+                      (click)="OpenReport(item.reportId,item.isAutoRun)">
+                      <span class="flex-fill">{{item.reportName }}</span>
+                      <i><svg xmlns="http://www.w3.org/2000/svg" width="10.176" height="14" viewBox="0 0 10.176 14">
+                          <g id="bookmark_outline" transform="translate(-47.5 -31.5)" opacity="0.35">
+                            <path id="Path_18069" data-name="Path 18069"
+                              d="M48,33.529A1.529,1.529,0,0,1,49.529,32h6.118a1.529,1.529,0,0,1,1.529,1.529V45l-4.588-4.588L48,45Z"
+                              transform="translate(0)" fill="none" stroke="#434246" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="1" />
+                          </g>
+                        </svg>
+                      </i>
+                      <i><svg xmlns="http://www.w3.org/2000/svg" width="7.998" height="13.871"
+                          viewBox="0 0 7.998 13.871">
+                          <path id="Path_18013" data-name="Path 18013" d="M0,0,5.875,5.877,11.75,0"
+                            transform="translate(1.061 12.811) rotate(-90)" fill="none" stroke="#434246"
+                            stroke-linecap="round" stroke-width="1.5" opacity="0.4" />
+                        </svg>
+                      </i>
+                    </a>
+                  </div>
+                  }
+                  } @empty {
+                  <div class="col-md-12">
+                    <div class="alert alert-primary">
+                      <span>This report group doesn't have any reports now. More reports are coming soon!</span>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+
+        </div>
+
+      </ng-template>
+    </li>
+    <!-- <li [ngbNavItem]="2" [destroyOnHide]="true">
+      <a ngbNavLink>BookMarked</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3" [destroyOnHide]="true">
+      <a ngbNavLink>Recent Users</a>
+      <ng-template ngbNavContent>
+        
+      </ng-template>
+    </li> -->
+  </ul>
+
+  <ng-select [items]="reportList()" bindLabel="reportName" bindValue="reportId" placeholder="Search a report type"
+    [searchable]="true" [(ngModel)]="selectedReport" (change)="OpenReport($event.reportId,$event.isAutoRun)">
+    >
+  </ng-select>
+  <div [ngbNavOutlet]="nav"></div>
+</section>

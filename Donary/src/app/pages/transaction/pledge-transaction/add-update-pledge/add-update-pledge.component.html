@@ -1,0 +1,103 @@
+<div class="modal-header" style="display: block;" ngbAutofocus tabindex="-1">
+    <div class="row">
+        <div class="input-group col-4">
+            <h4 class="modal-title">{{'Add' | translate}} {{'PLEDGE' | translate}}</h4>
+        </div>
+        <div class="input-group col-2">
+            &nbsp;
+        </div>
+        <div class="input-group col-5">
+            <angular2-multiselect id="ddlPaymentCollector"
+                [settings]="commonMethodService.setDropDownSettings('Select Collector',2,false,true)"
+                [data]="commonMethodService.paymentCollectorList"
+                [(ngModel)]="commonMethodService.selectedPaymentCollectors">
+            </angular2-multiselect>
+        </div>
+        <div class="input-group col-1">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body">
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'CAMPAIGN' | translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlCampaign"
+                        [settings]="commonMethodService.setDropDownSettings('Select Campaign',2,false,true)"
+                        [data]="commonMethodService.CampaignList"
+                        [(ngModel)]="commonMethodService.selectedFromCampaignList">
+                    </angular2-multiselect>
+                </div>                
+            </div>            
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'REASON' | translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentReason"
+                        [settings]="commonMethodService.setDropDownSettings('Select Payment Reason',2,false,true)"
+                        [data]="commonMethodService.paymentReasonList"
+                        [(ngModel)]="commonMethodService.selectedPaymentReasons">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'DONOR' | translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect [data]="commonMethodService.donorList"
+                        [(ngModel)]="commonMethodService.selectedDonors"
+                        [settings]="commonMethodService.setDropDownSettings('Select Donor',2,false,true)"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+                        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                        [loading]="commonMethodService.loaderSearch">
+                        <c-badge>
+                            <ng-template let-item="item">
+                                <span style="margin: 0px;">{{item.displayText}}</span>
+                            </ng-template>
+                        </c-badge>
+                        <c-search>
+                            <ng-template>
+                                <input type="text" [(ngModel)]="commonMethodService.txtQuery"
+                                    (ngModelChange)="commonMethodService.onDonorSearchFieldChange($event)"
+                                    placeholder="min 3 words (Search by FullName, Jewish name, Account#, Phone, Email)"
+                                    style="border: none;width: 100%; height: 100%;outline: none;">
+                            </ng-template>
+                        </c-search>
+                        <c-item>
+                            <ng-template let-item="item">
+                                <label class="angular2-multiselectDataLabel">{{item.itemName}}</label>
+                            </ng-template>
+                        </c-item>
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'LOCATION' | translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <angular2-multiselect id="ddlPaymentLocation"
+                        [settings]="commonMethodService.setDropDownSettings('Select Location',2,false,true)"
+                        [data]="commonMethodService.paymentLocationList"
+                        [(ngModel)]="commonMethodService.selectedPaymentLocations">
+                    </angular2-multiselect>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE' | translate}}</button>&nbsp;&nbsp;
+    <button class="btn btn-primary">{{'ADD' | translate}}</button>
+</div>

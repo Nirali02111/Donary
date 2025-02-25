@@ -1,0 +1,61 @@
+<div class="modal_wrap" style="display: block;" ngbAutofocus tabindex="-1">
+<div class="modal-header modal__custom_header" style="display: block;">
+    <div class="row">
+        <div class="input-group col-4">
+            <h4 class="modal-title" *ngIf="!isEdit">{{'ADDDONOR'|translate}} {{'EMAIL'|translate}}</h4>
+            <h4 class="modal-title" *ngIf="isEdit">{{'EDITDONOR'|translate}} {{'EMAIL'|translate}}</h4>
+        </div>
+        <div class="input-group col-7">
+            &nbsp;
+        </div>       
+        <div class="input-group col-1">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<form name="donorform" (ngSubmit)="f.valid && UpsertDonorEmail()" #f="ngForm" novalidate>
+<div class="modal-body modal__custom_content">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body">
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'EMAIL'|translate}} {{'LABEL'|translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text"  [(ngModel)]="emailLabel" #demailLabel="ngModel" class="form-control" 
+                    name="demailLabel" [ngClass]="{ 'is-invalid': f.submitted && demailLabel.invalid }" required
+                   id="demailLabel" />  
+                </div>
+                <div *ngIf="f.submitted && demailLabel.invalid" class="row text-danger">
+                    <div *ngIf="demailLabel.errors.required" class="val-error">{{'EMAIL'|translate}} {{'LABELREQUIRED'|translate}}</div>
+                </div>                  
+            </div>  
+            <div class="row">
+                <div class="input-group col-3 mb-2">
+                    <label>{{'EMAILADDRESS'|translate}}</label>
+                </div>
+                <div class="input-group col-9 mb-2">
+                    <input type="text" [(ngModel)]="emailAddress" #demailAddress="ngModel" class="form-control" name="demailAddress" [ngClass]="{ 'is-invalid': f.submitted && demailAddress.invalid }" required
+                    id="demailAddress" emailaddress />                     
+                </div>  
+                <div *ngIf="f.submitted && demailAddress.invalid" class="row text-danger">
+                    <div *ngIf="demailAddress.errors.required" class="val-error">{{'EMAILADDRESS'|translate}} {{'ISREQUIRED'|translate}}</div>
+                </div>                                          
+            </div>                                               
+            </div>
+        </div>
+       
+    </div>
+
+<div class="modal-footer modal__custom_footer">
+    <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE'|translate}}</button>&nbsp;&nbsp;
+    <button class="btn btn-primary" *ngIf="!isEdit">{{'ADD'|translate}}</button>
+    <button class="btn btn-primary" *ngIf="isEdit">{{'UPDATE'|translate}}</button>
+</div>
+</form>
+<div *ngIf="isloading" class="card-overlay">
+    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+</div>
+</div>

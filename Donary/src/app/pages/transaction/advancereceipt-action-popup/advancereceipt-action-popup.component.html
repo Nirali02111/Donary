@@ -1,0 +1,515 @@
+<div class="diglog_modal modal_custom" ngbAutofocus tabindex="-1">
+	<div class="modal_custom_header modal__custom_header">
+		<h4>{{'ADVANCEDRECEIPTACTIONS'|translate}}</h4>
+
+		<div class="filter_section">
+			<!-- first dropdown -->
+			<div class="filter__by">
+				<label>FILTER BY SENT STATUS:</label>
+				<div class="dropdown">
+					<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+						{{'FILTERBYSTATUS'|translate}}:
+					</a>
+					<div class="dropdown-menu">
+						<form class="accordion" id="accordionSentExample">
+							<div>
+								<div class="form-check-status">
+									<ul class="filter-upper">
+										<li>
+											<div class="form-check">
+												<input type="radio" class="form-check-input" id="idsent"
+													name="sentStatus" (change)="endStatusFilter($event)"
+													value="sentStatus">
+												<label for="idsent"
+													class="form-check-label">{{'SENT'|translate}}</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input type="radio" class="form-check-input" id="idnotsent"
+													name="sentStatus" value="notSentStatus" checked
+													(change)="endStatusFilter($event)">
+												<label for="idnotsent"
+													class="form-check-label">{{'NOTSENT'|translate}}</label>
+											</div>
+										</li>
+									</ul>
+									<ul (click)="$event.stopPropagation();">
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													(change)="sendStatusByEmail($event)" [checked]="isSentEmailChecked"
+													value="" id="chcbxSentEmail">
+												<label class="form-check-label" for="chcbxSentEmail">
+													{{'EMAIL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													(change)="sendStatusBySMS($event)" [checked]="isSentTextChecked"
+													value="" id="chcbxSentText">
+												<label class="form-check-label" for="chcbxSentText">
+													{{'TEXT'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													(change)="sendStatusByMail($event)" [checked]="isSentMailChecked"
+													value="" id="chcbxSentMail">
+												<label class="form-check-label" for="chcbxSentMail">
+													{{'MAIL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													(change)="sendStatusByPrint($event)" [checked]="isSentPrintChecked"
+													value="" id="chcbxSentPrint">
+												<label class="form-check-label" for="chcbxSentPrint">
+													{{'PRINT'|translate}}
+												</label>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</form>
+
+
+					</div>
+				</div>
+			</div>
+			<!-- first dropdown end -->
+
+
+
+			<!-- Second dropdown -->
+			<div class="filter__by">
+				<label>FILTER BY MISSING DATA:</label>
+				<div class="dropdown">
+					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
+						{{'FILTERBY'|translate}}:
+					</a>
+					<div class="dropdown-menu">
+						<form class="accordion" id="accordionMissingExample">
+							<div>
+								<div class="form-check">
+									<input class="advance_filter_chkbx" type="checkbox" [disabled]="isHasDisabled"
+										(change)="OnHasCheckboxChange($event)" [checked]="isHasChecked" value=""
+										id="chckbxHas">
+									<span class="toggle_arrow collapsed" data-toggle="collapse"
+										data-target="#collapseHasStatus" aria-expanded="false"
+										aria-controls="collapseHasStatus" role="button">
+										<label class="form-check-label">
+											{{'HAS'|translate}}
+										</label>
+									</span>
+								</div>
+
+								<div id="collapseHasStatus" class="collapse px-4" aria-labelledby="headingTwo"
+									data-parent="#accordionMissingExample">
+									<ul (click)="$event.stopPropagation();">
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isHasTextDisabled"
+													(change)="OnHasTextCheckboxChange($event)"
+													[checked]="isHasTextChecked" value="" id="chckbxHasText">
+												<label class="form-check-label" for="chckbxHasText">
+													{{'CELL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isHasEmailDisabled"
+													(change)="OnHasEmailCheckboxChange($event)"
+													[checked]="isHasEmailChecked" value="" id="chckbxHasEmail">
+												<label class="form-check-label" for="chckbxHasEmail">
+													{{'EMAIL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isHasMailDisabled"
+													(change)="OnHasMailCheckboxChange($event)"
+													[checked]="isHasMailChecked" value="" id="chckbxHasMail">
+												<label class="form-check-label" for="chckbxHasMail">
+													{{'MAIL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isHasPrintDisabled"
+													(change)="OnHasPrintCheckboxChange($event)"
+													[checked]="isHasPrintChecked" value="" id="chckbxHasPrint">
+												<label class="form-check-label" for="chckbxHasPrint">
+													{{'PRINT'|translate}}
+												</label>
+											</div>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+
+							<div class="dropdown-divider"></div>
+
+							<div>
+								<div class="form-check">
+									<input class="advance_filter_chkbx" type="checkbox" [disabled]="isMissingDisabled"
+										(change)="OnMissingCheckboxChange($event)" [checked]="isMissingChecked" value=""
+										id="chckbxMissing">
+									<span class="toggle_arrow collapsed" data-toggle="collapse"
+										data-target="#collapseMissingStatus" aria-expanded="false"
+										aria-controls="collapseMissingStatus" role="button">
+										<label class="form-check-label">
+											{{'MISSING'|translate}}
+										</label>
+									</span>
+								</div>
+
+								<div id="collapseMissingStatus" class="collapse px-4" aria-labelledby="headingTwo"
+									data-parent="#accordionMissingExample">
+									<ul (click)="$event.stopPropagation();">
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isMissingTextDisabled"
+													(change)="OnMissingTextCheckboxChange($event)"
+													[checked]="isMissingTextChecked" value="" id="chckbxMissingText">
+												<label class="form-check-label" for="chckbxMissingText">
+													{{'CELL'|translate}}
+												</label>
+											</div>
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isMissingEmailDisabled"
+													(change)="OnMissingEmailCheckboxChange($event)"
+													[checked]="isMissingEmailChecked" value="" id="chckbxMissingEmail">
+												<label class="form-check-label" for="chckbxMissingEmail">
+													{{'EMAIL'|translate}}
+												</label>
+											</div>
+
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isMissingMailDisabled"
+													(change)="OnMissingMailCheckboxChange($event)"
+													[checked]="isMissingMailChecked" value="" id="chckbxMissingMail">
+												<label class="form-check-label" for="chckbxMissingMail">
+													{{'MAIL'|translate}}
+												</label>
+											</div>
+
+										</li>
+										<li>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													[disabled]="isMissingPrintDisabled"
+													(change)="OnMissingPrintCheckboxChange($event)"
+													[checked]="isMissingPrintChecked" value="" id="chckbxMissingPrint">
+												<label class="form-check-label" for="chckbxMissingPrint">
+													{{'PRINT'|translate}}
+												</label>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Second dropdown end -->
+			<button class="dismiss" (click)="closePopup()">&times;</button>
+		</div>
+	</div>
+	<div class="modal_custom_content modal__custom_content">
+		<div class="table_wrapper">
+			<table cellpadding="0" cellspacing="0" id="advancereceipttbl" [svData]="dataList" #sv="svDataTable"
+				[svRowsOnPage]="25" svSortBy="fullNameJewish" svSortOrder="desc">
+				<thead>
+					<tr>
+						<th style="min-width: 170px">
+							<sv-default-sorter by="fullNameJewish">
+								<span>{{'DONORNAME'|translate}} </span>
+							</sv-default-sorter>
+						</th>
+
+						<th>
+							<sv-default-sorter by="receiptNum">
+								<span>{{'RECEIPT'|translate}}</span>
+							</sv-default-sorter>
+						</th>
+						<th style="min-width: 250px;">
+
+							<div class="d-flex align-items-center">
+								<sv-default-sorter by="phone" class="mr-5"><span>Cell Number</span></sv-default-sorter>
+								<div class="label-block">
+									<button class="select-label" (click)="betaMenu($event)" [class.arrowup]="arrowUp">
+										Select labels <span class="arrow"></span>
+									</button>
+									<div class="label-dropdown" *ngIf="isBetaOpen">
+										<h4>Select Cell Numbers</h4>
+										<ul>
+											<li *ngFor="let phoneLabel of allPhoneLabelsArray; let i = index">
+												<input #labelCheckboxes type="checkbox" id="{{phoneLabel.labelName}}"
+													class="checkbox"
+													(change)="selecCellNumbertLabels($event,phoneLabel.labelName,i,phoneLabel.labelType)"
+													[checked]="phoneLabel.isLabelNameChecked" />
+												<label for="{{phoneLabel.labelName}}">{{phoneLabel.labelName}}</label>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</th>
+						<th style="min-width: 250px;">
+							<div class="d-flex align-items-center">
+								<sv-default-sorter by="email"
+									class="mr-5"><span>{{'EMAILADDRESS'|translate}}</span></sv-default-sorter>
+								<div class="label-block">
+									<button class="select-label" (click)="betaMenuEmail($event)"
+										[class.arrowup]="arrowUpEmail">
+										Select labels <span class="arrow"></span>
+									</button>
+									<div class="label-dropdown" *ngIf="isBetaOpenEmail">
+										<h4>Select Email Address</h4>
+										<ul>
+											<li *ngFor="let emailLabel of allEmailLabelsArray; let i = index">
+												<input type="checkbox" id="{{emailLabel.labelName}}" class="checkbox"
+													[checked]="emailLabel.isLabelNameChecked"
+													(change)="selectEmailLabels($event,emailLabel.labelName,i,emailLabel.labelType)" />
+												<label for="{{emailLabel.labelName}}">{{emailLabel.labelName}}</label>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</th>
+						<th>
+							<div class="d-flex align-items-center">
+								<sv-default-sorter by="address">
+									<span>{{'MAILINGADDRESS' | translate}}</span>
+								</sv-default-sorter>
+								<div class="label-block">
+									<button class="select-label" (click)="betaMenuAddress($event)"
+										[class.arrowup]="isBetaOpenAddress">
+										Select labels <span class="arrow"></span>
+									</button>
+									<div class="label-dropdown" *ngIf="isBetaOpenAddress">
+										<h4>Select Address</h4>
+										<ul>
+											<li *ngFor="let addressLabel of allAddressLabelsArray; let i = index">
+												<input type="checkbox" [id]="addressLabel.labelName" class="checkbox"
+													[checked]="addressLabel.isLabelNameChecked"
+													(change)="selectAddressLabels($event,addressLabel.labelName,i,addressLabel.labelType)" />
+												<label [for]="addressLabel.labelName">{{addressLabel.labelName}}</label>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</th>
+
+						<th style="min-width: 90px">
+							<div class="ae-checkbox">
+								<input type="checkbox" name="selectAllPrints"
+									(change)="selectPrints($event,'selectAll',null)" id="select-all">
+								<label for="select-all">
+									<sv-default-sorter>
+										<span>{{'PRINT'|translate}}</span>
+									</sv-default-sorter>
+								</label>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="sv.data?.length > 0">
+					<tr *ngFor="let item of sv.data; let i=index">
+						<td class="blk-td-donor-box" [ngClass]="item.globalId==688008 ? 'edit-disabled' : '' ">
+							<div class="d-flex justify-content-between align-items-center">
+								<span *ngIf="item.globalId==688008" class="lng_hebrew hebrew_font">{{
+									(item.fullNameJewish != null && item.fullNameJewish.length > 18) ?
+									(item.fullNameJewish
+									| slice:0:18)+'..': (item.fullNameJewish) }}</span>
+								<span *ngIf="item.globalId==688008" class="edit text-info"
+									[ngClass]="item.globalId==688008 ? 'edit-tooltip-wrap' : '' " appDataHover
+									labelText="{{'EDITDUFUELEDDONOR' | translate}}">
+									<i class="material-icons">edit</i></span>
+								<!--conditon span -->
+								<span (click)="editDonor(item.accountId)" *ngIf="item.globalId !=688008"
+									class="lng_hebrew hebrew_font">{{
+									(item.fullNameJewish != null && item.fullNameJewish.length > 18) ?
+									(item.fullNameJewish
+									| slice:0:18)+'..': (item.fullNameJewish) }}</span>
+								<span (click)="editDonor(item.accountId)" *ngIf="item.globalId !=688008"
+									class="edit text-info">
+									<i class="material-icons">edit</i></span>
+								<!--conditon span -->
+							</div>
+						</td>
+						<td class="blk-td-receipt-box">
+							<span (click)="openPaymentCardPopup(item.paymentId)"
+								class="blueviolet">{{item.receiptNum}}</span>
+						</td>
+						<td>
+							<ul class="bulk-sms-recipt">
+
+								<ng-container *ngFor="let phoneLabel of item.phoneLabelArray; let i_Phone=index">
+									<li *ngIf="isLabelNameShowHide(phoneLabel.labelName)"
+										[class.selected]="isCellLabelChecked(item.accountId, phoneLabel.phoneValue,item.paymentId,phoneLabel.labelName,phoneLabel.labelType)">
+										<div class="inner-div" *ngIf="phoneLabel.phoneValue">
+											<input type="checkbox" [id]="item.receiptNum +'_'+ i_Phone" class="checkbox"
+												(change)="deSelectCellLabel($event,item.accountId, phoneLabel.phoneValue,item.paymentId,phoneLabel.labelName,phoneLabel.labelType)"
+												style="display: block;"
+												[checked]="isCellLabelChecked(item.accountId, phoneLabel.phoneValue,item.paymentId,phoneLabel.labelName,phoneLabel.labelType)" />
+											<label
+												[for]="item.receiptNum +'_'+ i_Phone">{{phoneLabel.labelName}}</label>
+										</div>
+										<div class="inner-div" *ngIf="!phoneLabel.phoneValue">
+											<span>{{phoneLabel.labelName}}</span>
+										</div>
+										<span class="modal-span">{{phoneLabel.phoneValue}}</span>
+									</li>
+								</ng-container>
+							</ul>
+						</td>
+
+						<td class="blk-td-email-box">
+							<ul class="bulk-sms-recipt">
+								<ng-container *ngFor="let emailLabel of item.emailLabelArray; let i_Email=index">
+									<li *ngIf="isEmailLabelNameShowHide(emailLabel.labelName)"
+										[class.selected]="isEmailLabelChecked(item.accountId, emailLabel.emailValue,item.paymentId,emailLabel.labelName,emailLabel.labelType)">
+										<div class="inner-div" *ngIf="emailLabel.emailValue">
+											<input type="checkbox" [id]="item.receiptNum +'__'+ i_Email"
+												class="checkbox" style="display: block;"
+												(change)="deSelectEmailLabel($event,item.accountId, emailLabel.emailValue,item.paymentId,emailLabel.labelName,emailLabel.labelType)"
+												[checked]="isEmailLabelChecked(item.accountId, emailLabel.emailValue,item.paymentId,emailLabel.labelName,emailLabel.labelType)" />
+											<label
+												[for]="item.receiptNum +'__'+ i_Email">{{emailLabel.labelName}}</label>
+
+										</div>
+										<div class="inner-div" *ngIf="!emailLabel.emailValue">
+											<span>{{emailLabel.labelName}}</span>
+										</div>
+										<span class="modal-span">{{emailLabel.emailValue}}</span>
+									</li>
+								</ng-container>
+							</ul>
+						</td>
+						<!-- <td class="blk-td-mail-box">
+							<ul class="bulk-sms-recipt">
+								<ng-container *ngFor="let addressLabel of item.addressLabelArray">
+									<li *ngIf="isAddressLabelNameShowHide(addressLabel.labelName)"
+										[class.selected]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)">
+										<div class="inner-div" *ngIf="addressLabel.labelValue">
+											<input type="checkbox" [id]="addressLabel.labelID" class="checkbox"
+												style="display: block;"[class.showInvalid]="item.validation && !item.validation.isValid"
+												[checked]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)"
+												(change)="deSelectLabel($event,item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)" />
+											<label [for]="addressLabel.labelID">{{addressLabel.labelName}}</label>
+
+
+										</div>
+										<div class="inner-div" *ngIf="!addressLabel.labelValue">
+											<span> {{addressLabel.labelName}}</span>
+										</div>
+										<div>
+											<span [class.showInvalid]="item.validation && !item.validation.isValid"
+												class="modal-span">{{addressLabel.labelValue}}</span>
+											<p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid"
+												class="address_error text-danger"></p><span class="showInvalid ml-1"> <i
+													class="fa fa-info-circle"
+													*ngIf="item.validation && !item.validation.isValid"
+													aria-hidden="true" data-toggle="tooltip" appHoverTooltip
+													labelText={{item?.validation?.message}}
+													t-title="Tooltip"></i></span>
+										</div>
+									</li>
+								</ng-container>
+							</ul>
+
+						</td> -->
+						<td class="blk-td-mail-box">
+							<ul class="bulk-sms-recipt">
+								<ng-container *ngFor="let addressLabel of item.addressLabelArray">
+								<li *ngIf="isAddressLabelNameShowHide(addressLabel.labelName)" [class.selected]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)">
+								  <div class="inner-div" *ngIf="addressLabel.labelValue">
+									<input  type="checkbox" [id]="addressLabel.labelID" class="checkbox" style="display: block;"
+									[checked]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)"
+									(change)="deSelectLabel($event,item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)"
+									/>
+									<label [for]="addressLabel.labelID">{{addressLabel.labelName}}</label>
+			  
+			  
+								  </div>
+								  <div class="inner-div" *ngIf="!addressLabel.labelValue">
+									<span> {{addressLabel.labelName}}</span>
+								  </div>
+								  <div>
+								  <span class="modal-span">{{addressLabel.labelValue}}</span>
+								  <!-- <p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid" class="address_error text-danger">{{item.validation.message}}</p> -->
+								  <p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid" class="address_error text-danger">{{item.validation.message}}</p>
+								</div>
+								</li>
+							  </ng-container>
+							</ul>
+			  
+							</td>
+						<td class="blk-td-print-box position-relative">
+							<div class="ae-checkbox">
+								<input #printcheckboxes type="checkbox" name="singlecheck"
+									(change)="selectPrints($event,'singlecheck',item.paymentId)"
+									[checked]="checkPrintIsSelectOrNot(item.paymentId)" [id]="item.paymentId">
+								<label [for]="item.paymentId"></label>
+								<span class="checked_icon" *ngIf="item.printSent==true"></span>
+							</div>
+						</td>
+
+					</tr>
+				</tbody>
+
+
+			</table>
+		</div>
+	</div>
+
+	<div class="modal_custom_footer modal__custom_footer">
+		<div class="new_tblfoot">
+			<div class="show_entry">
+				<div  class="custom_pagination">
+					<sv-bootstrap-paginator [svTable]="sv"></sv-bootstrap-paginator>
+				</div>
+			</div>
+		</div>
+		<button class="btn btn-default" (click)="closePopup()">Cancel</button>
+		<button *ngIf="!isUpdated && this.commonMethodService.isfeatureSetting" class="btn btn-primary" (click)=" sendMail()" [disabled]="totalSelectedShow()==0">{{'SENDRECEIPTS'|translate}}</button>
+		<button *ngIf="!this.commonMethodService.isfeatureSetting" class="btn btn-primary btn-core" (click)=" onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>
+		<button *ngIf="isUpdated" class="btn btn-primary" (click)=" sendMail()" [disabled]="totalSelectedShow()==0">{{'UPDATE'|translate}} {{'AND'|translate}} {{'SENDRECEIPTS'|translate}}</button>
+
+
+	<div *ngIf="isloading" class="card-overlay" >
+
+		<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+
+	</div>
+</div>

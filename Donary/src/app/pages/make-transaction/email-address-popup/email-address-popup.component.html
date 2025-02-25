@@ -1,0 +1,38 @@
+<div class="modal_custom" ngbAutofocus tabindex="-1">
+    <div class="modal-header-custom modal__custom_header">
+        <h4 _ngcontent-qnk-c13="">Add email address</h4>
+      <span class="close_trigger" (click)="closePopup()" data-dismiss="modal"
+        >&times;</span
+      >
+    </div>
+    <div class="modal-content-custom modal__custom_content">     
+        <div class="data-set-form send_email">
+            <div class="data-set d-flex align-items-end">
+                
+                <div class="form-group d-flex flex-column flex-fill" [formGroup]="form">
+                    <label>{{'ADD' | translate}} {{'EMAIL' | translate}}:</label>   
+                    <div class="input-group">
+                        <input type="email" class="form-control"
+                         formControlName = "emailName"
+                        placeholder="{{'ADD' | translate}} {{'EMAIL' | translate}}">                        
+                    </div>           
+                </div>            
+                <div class="form-group d-flex flex-column form-label">
+                    <label>{{'LABEL' | translate}}:</label>
+                    <div class="input-group" [class.validation_border]="!isLabelSelected">
+                        <angular2-multiselect id="ddlEmail"
+                            [settings]="commonMethodService.setDropDownSettings('Choose',2,false,true,true)"
+                            [data]="emailLabelArray"
+                            name="emailArray"
+                            (onSelect)="onLabelSelect($event)"
+                            (onDeSelectAll)="onLabelDeSelect($event)"
+
+                            [(ngModel)]="selectedLabelArray">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-add"  [disabled]="emailNameCtrl.touched && emailNameCtrl.invalid || isEmailAddressPopupClicked" (click)="addEmail()">{{'ADD' | translate}}</button>              
+            </div>
+        </div>
+    </div>
+  </div>

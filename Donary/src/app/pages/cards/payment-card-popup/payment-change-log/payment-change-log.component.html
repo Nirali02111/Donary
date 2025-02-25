@@ -1,0 +1,16 @@
+<!-- Payment log Card -->
+<div class="modal_wrap" style="display: block;" ngbAutofocus tabindex="-1">
+    <div class="modal-header">
+    <h4>{{'PAYMENTLOGS'|translate}}</h4>
+    <button class="close" (click)="closePopup()">&times;</button>
+    </div>
+    <div class="modal_content"> 
+        <span *ngFor="let item of changeLog; let i=index"> 
+       <span><b>{{i+1}}.</b> {{item}}</span><br><br>
+    </span>
+        </div>  
+        <div *ngIf="isloading" class="card-overlay" >
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>    
+</div>
+    <!-- End Payment log Card -->

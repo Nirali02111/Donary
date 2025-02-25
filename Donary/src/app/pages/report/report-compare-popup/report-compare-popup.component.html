@@ -1,0 +1,76 @@
+<div class="modal-header" style="display: block;" ngbAutofocus  tabindex="-1">
+    <div class="row">
+        <div class="input-group col-5">
+            <h4 class="modal-title">{{'COMPARE'  |translate}}</h4>
+        </div>
+        <div class="input-group col-4">
+            &nbsp;
+        </div>
+        <div class="input-group col-2">
+            <div class="dropdown">
+                              
+            </div>
+        </div>
+        <div class="input-group col-1">
+            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="card" style="box-shadow: none !important;">
+        <div class="card-body"> 
+            <div class="row">
+                <div class="input-group col-4 mb-2">
+                    <label for="lblDonor">
+                     {{'NEWCALCULATED'  |translate}}
+                    </label>
+                </div>
+                <div class="input-group col-8 mb-2">
+                    <input type="text" [(ngModel)]="columnName" class="form-control" name="txtColumnName"
+                        id="input-columnname" />
+                </div>
+            </div> 
+            <br/>        
+            <div class="row">
+                <div class="input-group col-8 mb-2">
+                    <label for="lblDonor">
+                       {{'SELECTCOLUMNCOMPARE'  |translate}} :
+                    </label>
+                </div>                
+            </div>
+            <div class="row">             
+                    <div class="input-group col-6 mb-2">
+                        <select  class="form-control"[(ngModel)]="compareColumn1">
+                            <option value="-1">--{{'SELECT'  |translate}}--</option>
+                            <option *ngFor="let columnName of columnNameList" value={{columnName.id}}>
+                              {{columnName.name}}
+                            </option>
+                          </select>                    
+                    </div>
+                    <div class="input-group col-6 mb-2">
+                        <select  class="form-control" [(ngModel)]="compareColumn2">
+                            <option value="-1">--{{'SELECT'  |translate}}--</option>
+                            <option *ngFor="let columnName of columnNameList" value={{columnName.id}}>
+                              {{columnName.name}}
+                            </option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div *ngIf="commonMethodService.isCommonDropDownloading" class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+    </div>
+<div class="modal-footer justify-content-between">
+    <div class="left_part">
+    <button class="btn btn-primary" (click)="clearFilter()" style="float:left;">{{'CLEARALL'  |translate}}</button>
+</div>
+    <div class="right_part">
+    <button type="button" class="btn btn-default" (click)="closePopup()">{{'CLOSE'  |translate}}</button>&nbsp;&nbsp;
+    <button class="btn btn-primary" (click)="CompareColumn()">{{'COMPARE'  |translate}}</button>
+</div>
+</div>

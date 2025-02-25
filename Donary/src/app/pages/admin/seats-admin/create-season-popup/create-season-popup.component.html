@@ -1,0 +1,345 @@
+@if(isAdminSeatCard){
+<ng-container>
+    <ng-template [ngTemplateOutlet]="adminSeatCard"></ng-template>
+</ng-container>
+}
+
+@if(isAddadminSeatCard){
+<ng-container>
+    <ng-template [ngTemplateOutlet]="addadminSeatCard"></ng-template>
+</ng-container>
+}
+
+@if(isUpdateSeatCard){
+<ng-container>
+    <ng-template [ngTemplateOutlet]="updateadminSeatCard"></ng-template>
+</ng-container>
+}
+
+
+@if(isGenerateSeatCard){
+<ng-container>
+    <ng-template [ngTemplateOutlet]="generateadminSeatCard"></ng-template>
+</ng-container>
+}
+
+
+<ng-template #adminSeatCard>
+    <div class="modal-body">
+        <h4>New Season</h4>
+        <a href="javascript:void(0)" aria-label="Close" class="close" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5" viewBox="0 0 15.5 15.5">
+                <g id="Group_2865" data-name="Group 2865" transform="translate(1.214 0.75)">
+                    <path id="Union_42" data-name="Union 42" d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z"
+                        transform="translate(-0.464)" fill="none" stroke="#434246" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" opacity="0.45"></path>
+                </g>
+            </svg>
+        </a>
+        <div class="form-float">
+
+            <div class="form-floating form-floating-add-button mb-4 fill">
+                <label class="float-label" for="">Season name:</label>
+                <ng-select [items]="this.commonMethodService.localCampaignList" bindLabel="itemName" bindValue="id"
+                    [(ngModel)]="selectedItem" placeholder="Select an item" (change)="onItemSelect($event)">
+                </ng-select>
+                <button class="button-add" (mousedown)="AddNewCampaign()" *ngIf="!selectedItem">+ Add new</button>
+            </div>
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center pt-3"
+                [ngStyle]="!selectedItem ? { opacity: '0.5' } : null">
+                <a href="javascript:void(0)" class="session-box d-flex flex-column w-100 h-100"
+                    (click)="selectedItem && openAddSeatDataPopup('CopySeatData')">
+                    <i>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.278 14.444H3.444C2.79581 14.444 2.17417 14.1865 1.71583 13.7282C1.25749 13.2698 1 12.6482 1 12V3.444C1 2.79581 1.25749 2.17417 1.71583 1.71583C2.17417 1.25749 2.79581 1 3.444 1H12C12.6482 1 13.2698 1.25749 13.7282 1.71583C14.1865 2.17417 14.444 2.79581 14.444 3.444V5.277M20.555 9.555H12C11.679 9.555 11.3611 9.61825 11.0645 9.74113C10.7679 9.86402 10.4984 10.0441 10.2715 10.2712C10.0445 10.4982 9.86452 10.7678 9.74175 11.0644C9.61899 11.3611 9.55587 11.679 9.556 12V20.556C9.556 21.2042 9.81349 21.8258 10.2718 22.2842C10.7302 22.7425 11.3518 23 12 23H20.556C21.2042 23 21.8258 22.7425 22.2842 22.2842C22.7425 21.8258 23 21.2042 23 20.556V12C23 11.3518 22.7425 10.7302 22.2842 10.2718C21.8258 9.81349 21.2042 9.556 20.556 9.556L20.555 9.555Z"
+                                stroke="#7B5BC4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </i>
+                    <span>Copy seats data from a previous season</span>
+                </a>
+                <span class="session-devider">or</span>
+                <a href="javascript:void(0)" class="session-box d-flex flex-column w-100 h-100"
+                    (click)="selectedItem && openAddSeatDataPopup('NewSeatData')">
+                    <i>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="12" y1="2" x2="12" y2="22" stroke="#7B5BC4" stroke-width="2" />
+                            <line x1="2" y1="12" x2="22" y2="12" stroke="#7B5BC4" stroke-width="2" />
+                        </svg>
+                    </i>
+                    <span>Add new maps with new data</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+
+
+<ng-template #addadminSeatCard>
+    <div class="modal-body">
+
+
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '250px', height: '30px' }">
+            <h4>New Season</h4>
+        </app-skeleton-loader-component>
+        <a href="javascript:void(0)" aria-label="Close" class="close" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5" viewBox="0 0 15.5 15.5">
+                <g id="Group_2865" data-name="Group 2865" transform="translate(1.214 0.75)">
+                    <path id="Union_42" data-name="Union 42" d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z"
+                        transform="translate(-0.464)" fill="none" stroke="#434246" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" opacity="0.45"></path>
+                </g>
+            </svg>
+        </a>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-float ">
+                <div class="form-floating mb-4 " [ngClass]="{'mt-4':isloading}">
+                    <label class="float-label" for=""> <app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '100px', height: '20px' }"> Season name:</app-skeleton-loader-component>
+                    </label>
+                    @if(isloading){
+                    <br>
+                    }
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '506px', height: '40px' }">
+                        <ng-select [items]="items" [readonly]="true" class="readonly-select" bindLabel="itemName"
+                            bindValue="id" formControlName="seasonName" placeholder="Select an item">
+                        </ng-select></app-skeleton-loader-component>
+                </div>
+                @if(isCopySeatData){
+                <div class="form-floating mb-4 mb-md-5">
+                    <label class="float-label" for=""><app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '100px', height: '20px' }">Copy
+                            from:</app-skeleton-loader-component></label>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <app-skeleton-loader-component [isLoading]="isloading"
+                                [theme]="{ width: '289px', height: '40px' }">
+                                <ng-select [items]=" seasonsList" bindLabel="itemName" bindValue="id"
+                                    formControlName="copyFrom" placeholder="Select an item"
+                                    (change)="onSeasonChange($event)">
+                                </ng-select></app-skeleton-loader-component>
+                        </div>
+                    </div>
+                    @if(isCopyFromRequiredError && !isloading){
+                    <p class="address_error text-danger">Please select a season</p>
+                    }
+                </div>
+                }
+                @if(showLocationMap){
+                <div class="form-floating mb-4 mb-md-5">
+                    <label class="float-label" for=""><app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '100px', height: '20px' }">Select
+                            maps:</app-skeleton-loader-component></label>
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '506px', height: '40px' }">
+                        <ng-select [items]=" locationList" [multiple]="true" groupBy="selectedAllGroup"
+                            [selectableGroup]="true" bindLabel="itemName" bindValue="id" formControlName="selectedMaps"
+                            [(ngModel)]="selectedLocation" placeholder="Select an item">
+                        </ng-select>
+                    </app-skeleton-loader-component>
+                    @if(isInvalid && !isloading){
+                    <p class="address_error text-danger">Please select a map</p>
+                    }
+                </div>
+                }
+
+                <div class="d-flex justify-content-end align-items-center ">
+                    <button class="btn btn-secondary" (click)="close()">Back</button>
+                    <span class="p-2"></span>
+                    <button class="btn btn-primary">Continue</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</ng-template>
+
+<ng-template #updateadminSeatCard>
+    <div class="modal-body">
+        <h4>Seats season: {{data?.selectedSeasonName}}</h4>
+        <a href="javascript:void(0)" aria-label="Close" class="close" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5" viewBox="0 0 15.5 15.5">
+                <g id="Group_2865" data-name="Group 2865" transform="translate(1.214 0.75)">
+                    <path id="Union_42" data-name="Union 42" d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z"
+                        transform="translate(-0.464)" fill="none" stroke="#434246" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" opacity="0.45"></path>
+                </g>
+            </svg>
+        </a>
+        <div class="form-float">
+            <label for="" class="radio-group-label">Update previous data statues</label>
+            <div class="radio-box">
+                <label for="" class="fw-semibold mb-4">One time rentals</label>
+                <div class="radio-group d-flex flex-wrap">
+                    <div class="form-check" *ngFor="let option of radioOptions">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" [id]="'season-' + option.id"
+                            [value]="option.value" [(ngModel)]="selectedOption" [checked]="option.checked || false">
+                        <label class="form-check-label" [for]="'season-' + option.id">
+                            {{ option.label }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            @if(selectedOption == 'One Time Rental'){
+            <small class="float-note">
+                Marking seat status for  "Rented" will save the seats as rented for the donors from the
+                previous season, and will send them a pledge.
+            </small>
+            }
+            @else if (selectedOption == 'Reserved') {
+            <small class="float-note">
+                Marking seat status for "Reserve" will save the seats as reserved for the donors from the 
+                previous season, and will not create a new pledge.
+            </small>   
+            }
+            @else {
+            <small class="float-note">
+                Marking seat status for "Don't Reserve" will save the seats as empty and will not
+                copy the donor info from the previous season
+            </small>
+            }
+            <div class="d-flex justify-content-end align-items-center mt-4 mt-md-5 pt-md-2">
+                <button class="btn btn-secondary" (click)="close()">Back</button>
+                <span class="p-2"></span>
+                <button class="btn btn-primary" (click)="Confirm()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</ng-template>
+
+
+<ng-template #generateadminSeatCard>
+    <div class="modal-body">
+        <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '350px', height: '50px' }">Seats
+            season:<h4>{{data?.selectedSeasonName}}</h4></app-skeleton-loader-component>
+        <a href="javascript:void(0)" aria-label="Close" class="close" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15.5" height="15.5" viewBox="0 0 15.5 15.5">
+                <g id="Group_2865" data-name="Group 2865" transform="translate(1.214 0.75)">
+                    <path id="Union_42" data-name="Union 42" d="M7,7,0,14,7,7,0,0,7,7l7-7L7,7l7,7Z"
+                        transform="translate(-0.464)" fill="none" stroke="#434246" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" opacity="0.45"></path>
+                </g>
+            </svg>
+        </a>
+
+        <div class="block-season position-relative d-flex justify-content-between align-items-end">
+            <div class="flex-fill" [ngClass]="{'mt-3':isloading}">
+                <h2><app-skeleton-loader-component [isLoading]="isloading"
+                        [theme]="{ width: '70px', height: '50px' }">{{totalSeatsCount}}</app-skeleton-loader-component>
+                </h2>
+                <small><app-skeleton-loader-component [isLoading]="isloading"
+                        [theme]="{ width: '100px', height: '20px' }">Seats
+                        selected</app-skeleton-loader-component></small>
+            </div>
+            @if(!isloading){
+            <a href="javascript:void(0)" class="d-flex  align-items-center" [class.error]="isEditSeatRateError" 
+                (click)="close()">
+                <i>
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.591 4.77035C14.7204 4.64723 14.8233 4.49911 14.8937 4.33498C14.9641 4.17086 15.0004 3.99414 15.0004 3.81557C15.0004 3.63699 14.9641 3.46027 14.8937 3.29615C14.8233 3.13202 14.7204 2.9839 14.591 2.86078L12.1391 0.408837C12.016 0.279642 11.8679 0.176789 11.7039 0.106513C11.5398 0.0362367 11.3632 0 11.1848 0C11.0063 0 10.8297 0.0362367 10.6657 0.106513C10.5016 0.176789 10.3536 0.279642 10.2305 0.408837L0 10.6344V14.9979H4.36348L14.591 4.77035ZM11.1809 1.36117L13.6328 3.81311L11.5869 5.85901L9.13495 3.40707L11.1809 1.36117ZM1.36328 13.6307V11.1787L8.18164 4.36039L10.6336 6.81233L3.81816 13.6307H1.36328Z"
+                            fill="currentColor" />
+                    </svg>
+                </i>
+                Edit seat rates
+            </a>
+            @if(isEditSeatRateError){
+            <small class="error">
+                Set up your rates to continue
+            </small>
+            }
+            }
+        </div>
+        @for(item of listData; track $index){
+
+        <h6>{{item.title}} ({{item.seatsCount}})
+            @if(isCopySeat){
+            <span (click)="CopyData(item.title,item.seatsCount)">
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11.2167" height="11.2167"
+                        viewBox="0 0 11.2167 11.2167">
+                        <g id="copy_outline" transform="translate(-23.5 -23.5)">
+                            <path id="Path_18077" data-name="Path 18077"
+                                d="M31.851,29.956h.812a1.083,1.083,0,0,0,1.083-1.083v-3.79A1.083,1.083,0,0,0,32.663,24h-3.79a1.083,1.083,0,0,0-1.083,1.083V25.9m-2.707,1.9h3.79a1.083,1.083,0,0,1,1.083,1.083v3.79a1.083,1.083,0,0,1-1.083,1.083h-3.79A1.083,1.083,0,0,1,24,32.663v-3.79A1.083,1.083,0,0,1,25.083,27.79Z"
+                                fill="none" stroke="#434246" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" />
+                        </g>
+                    </svg>
+                </i> Copying from {{CopySeatValue}}
+            </span>
+            }
+        </h6>
+        <div class="table-responsive">
+            <table class="table" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Section:</th>
+                        <th>Seat rate:</th>
+                        <th>if Aisle add:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(rate of item.rate; track $index){
+                    <tr class="">
+                        <td>{{rate.sectionName}}</td>
+                        <td>{{commonMethodService.formatAmount(rate.seatPrice)}}</td>
+                        <td>
+                            @if(rate.aisleAdditionalFee > 0){
+                            {{commonMethodService.formatAmount(rate.aisleAdditionalFee)}}
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        }
+        @if(isloading){
+        <h6><app-skeleton-loader-component [isLoading]="isloading"
+                [theme]="{ width: '100px', height: '20px' }"></app-skeleton-loader-component>
+        </h6>
+        <div class="table-responsive">
+            <table class="table" cellpadding="0" cellspacing="0">
+
+                @for(item of skeletonItems;track item){
+                <tr>
+                    <th><app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '90px', height: '20px' }"></app-skeleton-loader-component></th>
+                    <th><app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '90px', height: '20px' }"></app-skeleton-loader-component></th>
+                    <th><app-skeleton-loader-component [isLoading]="isloading"
+                            [theme]="{ width: '90px', height: '20px' }"></app-skeleton-loader-component></th>
+
+                </tr>
+                }
+            </table>
+        </div>
+        }
+
+    </div>
+    <div
+        class="form-float modal-footer d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+        @if(!hideSendPledgeButton){
+        <div class="form-check mb-sm-0 mb-2">
+            <input class="form-check-input" type="checkbox" name="checkbox-pledge" id="checkbox-pledge"
+                (change)="ChangePledgeBill()">
+            <label class="form-check-label" for="checkbox-pledge">
+                Send pledge bills
+            </label>
+        </div>
+        }
+        <div class="d-flex ml-auto">
+            <button class="btn btn-secondary" (click)="close()">Cancel</button>
+            <span class="p-2"></span>
+            @if(commonMethodService.isfeatureSetting){
+                <button class="btn btn-primary" [class.opacity-50]="isEditSeatRateError" [disabled]="isEditSeatRateError" id="generateButton"
+                    (click)="generateSeason()">Generate season</button>
+            }@else {
+                <button class="btn btn-primary btn-core" *ngIf="!this.commonMethodService.isfeatureSetting" (click)="commonMethodService.onUpgrade()">{{'UPGRADETOSAVE'|translate}}</button>            }
+        </div>
+    </div>
+</ng-template>
