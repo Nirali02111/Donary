@@ -1,1 +1,1 @@
-# Donary
+# Donary project
