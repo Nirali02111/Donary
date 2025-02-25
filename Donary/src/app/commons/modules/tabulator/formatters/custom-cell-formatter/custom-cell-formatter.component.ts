@@ -6,8 +6,8 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
 @Component({
   selector: "[app-custom-cell-formatter]",
   templateUrl: "./custom-cell-formatter.component.html",
-  styleUrls: ["./custom-cell-formatter.component.scss"],
   standalone: false,
+  styleUrls: ["./custom-cell-formatter.component.scss"],
 })
 export class CustomCellFormatterComponent implements OnInit {
   @Input() cell: any;

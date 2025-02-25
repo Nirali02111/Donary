@@ -34,8 +34,8 @@ declare var $: any;
 @Component({
   selector: "app-send-receipt-popup",
   templateUrl: "./send-receipt-popup.component.html",
-  styleUrls: ["./send-receipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./send-receipt-popup.component.scss"],
 })
 export class SendReceiptPopupComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -61,11 +61,6 @@ export class SendReceiptPopupComponent
   @Input() set List(datalist: Array<SelectedDonorObj>) {
     if (datalist) {
       this.selectedAccountList = datalist;
-      console.log(
-        this.selectedAccountList,
-        "this.selectedAccountList in send receipt"
-      );
-
       this.isEmailSelected = this.getCoubtsOfEmail() !== 0 ? true : false;
       this.isSMSSelected = this.getCoubtsOfPhone() !== 0 ? true : false;
       this.isMailSelected = this.getCoubtsOfMail() !== 0 ? true : false;

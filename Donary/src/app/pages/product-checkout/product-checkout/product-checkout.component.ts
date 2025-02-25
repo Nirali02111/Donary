@@ -33,8 +33,8 @@ interface stateObj {
 @Component({
   selector: "app-product-checkout",
   templateUrl: "./product-checkout.component.html",
-  styleUrls: ["./product-checkout.component.scss"],
   standalone: false,
+  styleUrls: ["./product-checkout.component.scss"],
 })
 export class ProductCheckoutComponent implements OnInit {
   isloading: boolean = false;
@@ -143,71 +143,10 @@ export class ProductCheckoutComponent implements OnInit {
             lastname = lastString.join(" ");
           } else {
             firstname = res.contactName;
-            // lastname = res.contactName;
           }
         }
         this.phone = res.contactPhone;
         this.email = res.contactEmail;
-
-        /* last original
-        this.checkoutForm.patchValue({
-          ShippingAddress: {
-            ContactId: res.contactId,
-            FirstName: firstname,
-            LastName: lastname,
-            Address: res.streetName,
-            City: res.city,
-            State: res.state,
-            Zip: res.zip,
-          },
-          CCDetails: {
-            BillingAddress: {
-              ContactId: res.contactId,
-              FirstName: firstname,
-              LastName: lastname,
-            },
-          },
-        });
-        */
-
-        // when first time ordering and address is blank
-
-        /*if (!res.streetName && !res.city && !res.state && !res.zip) {
-          this.checkoutForm.patchValue({
-            CCDetails: {
-              BillingAddress: {
-                ContactId: res.contactId,
-                FirstName: firstname,
-                LastName: lastname,
-              },
-              IsBillingSameAsShippingAddress: true
-            },
-          });
-
-          this.IsBillingSameAsShippingAddress.disable()
-
-          this.onEditShipping()
-        } else {
-          this.checkoutForm.patchValue({
-            ShippingAddress: {
-              ContactId: res.contactId,
-              FirstName: firstname,
-              LastName: lastname,
-              Address: res.streetName,
-              City: res.city,
-              State: res.state,
-              Zip: res.zip,
-            },
-            CCDetails: {
-              BillingAddress: {
-                ContactId: res.contactId,
-                FirstName: firstname,
-                LastName: lastname,
-              },
-            },
-          });
-        }*/
-
         if (!res.streetName || !res.city || !res.state || !res.zip) {
           //added new logic
           if (res.streetName) {
@@ -248,21 +187,6 @@ export class ProductCheckoutComponent implements OnInit {
 
             this.onEditShipping();
           }
-          //
-          //old code commets
-          // this.checkoutForm.patchValue({
-          //   CCDetails: {
-          //     BillingAddress: {
-          //       ContactId: res.contactId,
-          //       FirstName: firstname,
-          //       LastName: lastname,
-          //     },
-          //     IsBillingSameAsShippingAddress: false
-          //   },
-          // });
-
-          // this.onEditShipping()
-          //end old code commets
         } else {
           this.checkoutForm.patchValue({
             ShippingAddress: {
@@ -465,18 +389,6 @@ export class ProductCheckoutComponent implements OnInit {
   }
 
   getSubTotal() {
-    /*
-    this.subTotalAmount =
-      this.monthlyTotalAmount +
-      this.yearlyTotalAmount +
-      this.deviceTotalAmount +
-      this.taxTotalAmount+
-      this.shippingAmount;
-
-    this.subTotalAmount;
-    this.IsSelfPickup?this.subTotalAmount=this.subTotalAmount-this.shippingAmount:this.subTotalAmount;//added new
-    */
-
     const val =
       this.monthlyTotalAmount +
       this.yearlyTotalAmount +

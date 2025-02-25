@@ -31,8 +31,8 @@ declare var $: any;
 @Component({
   selector: "app-schedulelist-card-popup",
   templateUrl: "./schedulelist-card-popup.component.html",
-  styleUrls: ["./schedulelist-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./schedulelist-card-popup.component.scss"],
 })
 export class SchedulelistCardPopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;
@@ -1608,29 +1608,6 @@ export class SchedulelistCardPopupComponent implements OnInit {
       return donorName.length > 10 ? true : false;
     }
   }
-
-  // openHebrewCalendarPopup(type) {
-  //  this.commonMethodService.openCalendarPopup(this.class_id, this.class_hid, this.selectedPaymentDateRange,false,'scheduleListDynamicsCalender');
-  //  this.commonMethodService.getCalendarArray().subscribe(items => {
-  //   if(items &&  items.pageName=="ScheduleListCardPopup" && this.commonMethodService.isCalendarClicked == true){
-  //     this.commonMethodService.isCalendarClicked = false
-  //    if (this.popContent) {
-  //      this.popContent.close();
-  //    }
-  //    this.EngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
-  //    if(type == "payment"){
-  //      this.selectedPaymentDateRange = items.obj;
-  //      this.searchPaymentListData();
-  //      return
-  //    }
-  //    if(type == "pledge"){
-  //      this.selectedPledgeDateRange = items.obj;
-  //      this.searchPledgeListData();
-  //      return
-  //    }
-  //   }
-  //   });
-  // }
 
   openPaymentHebrewCalendarPopup(p: any) {
     this.commonMethodService.openCalendarPopup(

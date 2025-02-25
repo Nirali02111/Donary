@@ -15,8 +15,8 @@ declare var $: any;
 @Component({
   selector: "app-calender-modal",
   templateUrl: "./calender-modal.component.html",
-  styleUrls: ["./calender-modal.component.scss"],
   standalone: false,
+  styleUrls: ["./calender-modal.component.scss"],
 })
 export class CalenderModalComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

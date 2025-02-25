@@ -11,8 +11,8 @@ const TAG_COLOR_CONTROL_VALUE_ACCESSOR: Provider = {
   selector: "app-tag-color",
   templateUrl: "./tag-color.component.html",
   styleUrls: ["./tag-color.component.scss"],
-  providers: [TAG_COLOR_CONTROL_VALUE_ACCESSOR],
   standalone: false,
+  providers: [TAG_COLOR_CONTROL_VALUE_ACCESSOR],
 })
 export class TagColorComponent implements ControlValueAccessor {
   isOpen: boolean = false;

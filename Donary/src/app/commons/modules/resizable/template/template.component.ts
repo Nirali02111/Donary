@@ -13,9 +13,7 @@ import {
   standalone: false,
 })
 export class TemplateComponent implements OnInit, AfterViewInit {
-  constructor() {
-    // console.log("init")
-  }
+  constructor() {}
   @HostBinding("style.width.px")
   width: number | null = null;
 

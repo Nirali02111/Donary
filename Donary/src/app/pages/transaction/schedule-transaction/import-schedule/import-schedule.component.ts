@@ -8,8 +8,8 @@ import { PledgeTransactionService } from "src/app/services/pledge-transaction.se
 @Component({
   selector: "app-import-schedule",
   templateUrl: "./import-schedule.component.html",
-  styleUrls: ["./import-schedule.component.scss"],
   standalone: false,
+  styleUrls: ["./import-schedule.component.scss"],
 })
 export class ImportScheduleComponent implements OnInit {
   uploadedFileName: string = "Choose file";

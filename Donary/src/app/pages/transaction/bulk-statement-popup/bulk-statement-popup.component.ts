@@ -11,8 +11,8 @@ import { PrintSingleReceiptPopupComponent } from "../receipt-actions/print-singl
 @Component({
   selector: "app-bulk-statement-popup",
   templateUrl: "./bulk-statement-popup.component.html",
-  styleUrls: ["./bulk-statement-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-statement-popup.component.scss"],
 })
 export class BulkStatementPopupComponent implements OnInit {
   modalOptions: NgbModalOptions;

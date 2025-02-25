@@ -9,8 +9,6 @@ abstract class APILoader {
   abstract load(): Promise<void>;
 }
 
-
-
 export interface SocialUser {
   email: string;
   jti: string;
@@ -26,9 +24,11 @@ export class GoogleAuthService extends APILoader {
   protected _documentRef: DocumentRef;
   protected readonly _SCRIPT_ID: string = "donaryGoogleAuthApiScript";
   private readonly _socialUser$ = new BehaviorSubject<SocialUser | null>(null);
-  private readonly _socialUserLogin$ = new BehaviorSubject<SocialUser | null>(null);
+  private readonly _socialUserLogin$ = new BehaviorSubject<SocialUser | null>(
+    null
+  );
 
-  constructor(w: WindowRef, d: DocumentRef,private location: Location) {
+  constructor(w: WindowRef, d: DocumentRef, private location: Location) {
     super();
 
     this._windowRef = w;
@@ -62,30 +62,27 @@ export class GoogleAuthService extends APILoader {
   load(): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-    
         this.loadScript(
           this._SCRIPT_ID,
           `https://accounts.google.com/gsi/client`,
           () => {
             const key = environment.GOOGLE_AUTH_CLIENT_ID;
             const window = this._windowRef.getNativeWindow() as any;
-            
+
             window.google.accounts.id.initialize({
               client_id: key,
               callback: ({ credential }: { credential: string }) => {
                 const socialUser: SocialUser = jwt_decode(credential);
-                const location = this.getCurrentUrl()
-                if(location.includes("set-password")){
+                const location = this.getCurrentUrl();
+                if (location.includes("set-password")) {
                   this._socialUserLogin$.next(socialUser);
-                }else{
+                } else {
                   this._socialUser$.next(socialUser);
                 }
               },
             });
 
-            window.onGoogleLibraryLoad = () => {
-              // console.log(window.google);
-            };
+            window.onGoogleLibraryLoad = () => {};
 
             resolve();
           }

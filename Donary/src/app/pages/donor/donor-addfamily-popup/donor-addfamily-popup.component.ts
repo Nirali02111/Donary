@@ -7,8 +7,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-addfamily-popup",
   templateUrl: "./donor-addfamily-popup.component.html",
-  styleUrls: ["./donor-addfamily-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-addfamily-popup.component.scss"],
 })
 export class DonorAddfamilyPopupComponent implements OnInit {
   familyTypeDrp = [
@@ -225,7 +225,6 @@ export class DonorAddfamilyPopupComponent implements OnInit {
     };
     modalRef.componentInstance.emtOutputDonorTransaction.subscribe(
       (response) => {
-        console.log(response);
         this.isCreateDonorPopup = false;
         this.selectedFamilyMemberId = response.accountId;
         this.familyMemberId =

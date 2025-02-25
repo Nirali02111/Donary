@@ -20,8 +20,8 @@ import { PledgePaymentVerifyComponent } from "../pledge-payment-verify/pledge-pa
 @Component({
   selector: "app-unpaid-pledge-list",
   templateUrl: "./unpaid-pledge-list.component.html",
-  styleUrls: ["./unpaid-pledge-list.component.scss"],
   standalone: false,
+  styleUrls: ["./unpaid-pledge-list.component.scss"],
 })
 export class UnpaidPledgeListComponent implements OnInit {
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
@@ -364,13 +364,6 @@ export class UnpaidPledgeListComponent implements OnInit {
         this.bindData();
       }
     });
-    // } else {
-    //   this.localstoragedataService.setLoginUserDataandToken(null, "0");
-    //   this.notificationService.showError("Token is expired. Please verify again.", "Error!");
-    //   setTimeout(() => {
-    //     window.location.reload();
-    //   }, 2000);
-    // }
   }
 
   resetPayAmount(pledgeId) {
@@ -393,8 +386,6 @@ export class UnpaidPledgeListComponent implements OnInit {
     let total: number = 0;
     for (let data of this.data) {
       total += Number(data.pledgeDefaultDisplayAmount.toFixed(2));
-      // data.pledgeRemainingAmount=Number(data.pledgeDefaultDisplayAmount);
-      //data.orgRemainingAmount=Number(data.pledgeDefaultDisplayAmount);
     }
     this.totalPayableAmount = this.commonMethodService.formatAmount(total);
 

@@ -12,8 +12,8 @@ declare var $: any;
 @Component({
   selector: "app-walletlist-popup",
   templateUrl: "./walletlist-popup.component.html",
-  styleUrls: ["./walletlist-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./walletlist-popup.component.scss"],
 })
 export class WalletlistPopupComponent implements OnInit {
   modalOptions: NgbModalOptions;
@@ -73,7 +73,6 @@ export class WalletlistPopupComponent implements OnInit {
       var haswallet = this.walletList.filter(
         (x) => x.walletId == this.selectedWalletId
       );
-      //this.walletList.unshift(haswallet);
       this.isDisable = haswallet.length > 0 ? false : true;
     }
   }
@@ -347,7 +346,6 @@ export class WalletlistPopupComponent implements OnInit {
     this.commonMethodService.getFeatureSettingValues();
   }
   onUpgrade() {
-    // this.activeModal.dismiss();
     this.commonMethodService.commenSendUpgradeEmail(
       this.commonMethodService.featureDisplayName
     );

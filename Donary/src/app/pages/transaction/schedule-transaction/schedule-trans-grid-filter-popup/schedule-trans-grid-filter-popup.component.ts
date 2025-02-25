@@ -5,8 +5,8 @@ import { CommonMethodService } from "src/app/commons/common-methods.service";
 @Component({
   selector: "app-schedule-trans-grid-filter-popup",
   templateUrl: "./schedule-trans-grid-filter-popup.component.html",
-  styleUrls: ["./schedule-trans-grid-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./schedule-trans-grid-filter-popup.component.scss"],
 })
 export class ScheduleTransGridFilterPopupComponent implements OnInit {
   @Output() emtOutputSearchFilterData: EventEmitter<any> = new EventEmitter();

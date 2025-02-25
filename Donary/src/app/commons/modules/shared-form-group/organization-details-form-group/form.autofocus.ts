@@ -13,7 +13,6 @@ export class FormAutoFocus {
 
   public focus(): void {
     const invalidControl = this.el.nativeElement.querySelector(".ng-invalid");
-    //console.log("test", invalidControl);
     if (invalidControl) {
       //invalidControl.focus();
       $(invalidControl).attr("tabindex", -1).focus();

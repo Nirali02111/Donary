@@ -36,9 +36,9 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
   selector: "[app-report-dynamic-list]",
   templateUrl: "./report-dynamic-list.component.html",
   styleUrls: ["./report-dynamic-list.component.scss"],
+  standalone: false,
   host: { "[id]": "id" },
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
 })
 export class ReportDynamicListComponent implements OnInit {
   @ViewChild("dvDragElement", { static: true }) div: HTMLElement;
@@ -190,44 +190,8 @@ export class ReportDynamicListComponent implements OnInit {
     this.gridFilterData = data;
   }
 
-  // @Input() set CompareData(data: any) {
-  //   if (data.comparevalues) {
-  //     this.compareValue =data.comparevalues;
-  //     this.compareColumn1="Column"+this.compareValue.compareColumn1
-  //     this.compareColumn2="Column"+this.compareValue.compareColumn2
-  //     this.sortType=data.sortType;
-  //     this.compareMainArray=data.mainArray;
-  //     this.commonMethodService.getPageNumberObservable().subscribe(pageNumber => {
-  //       this.pageNumber=pageNumber;
-  //       if (pageNumber && this.gridFilterDataAll ) {
-  //         //this.pageNumber=pageNumber;
-  //         this.gridFilterData = this.gridFilterDataAll.slice(pageNumber.startIndex, pageNumber.endIndex + 1);
-  //       } else {
-  //         // clear messages when empty message received
-  //       }
-  //     });
-  //     this.CompareColumnComponent();
-  //    //this.AddSearchDynamicComponent()
-
-  //   }
-  // }
-
   ngOnInit() {
     this.commonField = true;
-    /*this.commonMethodService.getDonorListArray().subscribe(items => {
-      this.mainArray=[]
-      if(items.length > 0)
-      {
-        this.donorlist=items;
-        var donorIds = [];
-          for (const iterator of this.donorlist) {
-            if (donorIds.findIndex(x => x == iterator.accountId) == -1) {
-              donorIds.push(iterator.accountId)
-            }
-          }
-       this.AddReportData(donorIds)
-      }
-    })*/
     this.commonMethodService.getLineHeight().subscribe((res) => {
       if (res != null) {
         this.oneline = res;
@@ -268,7 +232,6 @@ export class ReportDynamicListComponent implements OnInit {
           );
           resultArray.push(filterArray);
         }
-        //let sortedarray= this.mapOrder(resultArray,res, 'accountId');
         this.gridFilterDataAll = resultArray;
         this.gridFilterData = resultArray.slice(
           this.pageNumber.startIndex,
@@ -1931,69 +1894,6 @@ export class ReportDynamicListComponent implements OnInit {
 
     this.gridFilterData = values;
   }
-  //var $table = $('table.redesign_table');
-  // $table.floatThead('reflow');
-  // CompareColumnComponent() {
-  //  this.isCompare=true;
-  //   this.isloading = false;
-  //   this.transactionType=1;
-  //   this.mainArray=[];
-  //     if(this.compareValue.columnName==undefined)
-  //       {
-  //         this.defaultColumnName="Compare #"
-  //         var compareCount =localStorage.getItem('CompareCount');
-  //         var count=this.DefaultCount(Number(compareCount));
-  //         localStorage.setItem('CompareCount', count.toString());
-  //         this.columnName= this.defaultColumnName + count;
-  //       }
-  //       else{
-  //         this.columnName=this.compareValue.columnName;
-  //       }
-  //     // this.ColumnNameList.push(
-  //     //   {
-  //     //     id:this.tableId,
-  //     //     name:this.columnName
-  //     //   }
-  //     // )
-  //     // this.commonMethodService.sendColumnNameArray(this.ColumnNameList)
-
-  //       // hide loader
-  //        // this.transactionresult=res;
-  //         var donarIds = [];
-  //         for (const iterator of this.donorlist) {
-  //           if (donarIds.findIndex(x => x == iterator.accountId) == -1) {
-  //             donarIds.push(iterator.accountId)
-  //           }
-  //         }
-  //         let resultArray=[];
-
-  //         for (const item of donarIds) {
-  //           resultArray.push({
-  //           accountId:item,
-  //           amount:  this.compareMainArray.filter(x=>x.accountId == item).reduce(x=>x.accountId)[this.compareColumn1] - this.compareMainArray.filter(x=>x.accountId == item).reduce(x=>x.accountId)[this.compareColumn2]
-
-  //           });
-  //         }
-  //         this.gridFilterData = resultArray;
-  //         this.gridFilterDataAll=resultArray;
-  //         this.gridSearchFilterData=resultArray;
-  //         this.totalAmount=0;
-  //         for(var i = 0; i < resultArray.length; i++)
-  //         {
-  //         this.mainArray.push(
-  //       {
-  //         amount:resultArray[i].amount
-
-  //        })
-  //        this.totalAmount+=resultArray[i].amount;
-  //         }
-  //       var objData:any={}
-  //       objData.columnName='Column'+this.tableId;
-  //       objData.columnArray=this.mainArray
-  //         this.commonMethodService.sendColumnArray(objData);
-  //        // this.transactionType=this.objReportFilter.transactionType;
-  //         this.gridFilterData = this.gridFilterDataAll.slice(this.pageNumber.startIndex, this.pageNumber.endIndex + 1);
-  //     }
 
   OpenSearchFilter() {
     this.reportListMethod.OpenSearchFilter();
@@ -2148,9 +2048,6 @@ export class ReportDynamicListComponent implements OnInit {
       property = property.substr(1);
     }
     return function (a, b) {
-      /* next line works with strings and numbers,
-       * and you may want to customize it to your needs
-       */
       var result =
         a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;

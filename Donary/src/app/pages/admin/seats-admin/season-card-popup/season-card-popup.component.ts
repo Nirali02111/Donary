@@ -19,8 +19,8 @@ declare var $: any;
 @Component({
   selector: "app-season-card-popup",
   templateUrl: "./season-card-popup.component.html",
-  styleUrls: ["./season-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./season-card-popup.component.scss"],
 })
 export class SeasonCardPopupComponent implements OnInit {
   @ViewChild("campaigndrp", { static: false }) dropdownRef: AngularMultiSelect;

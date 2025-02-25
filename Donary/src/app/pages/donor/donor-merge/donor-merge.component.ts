@@ -76,8 +76,8 @@ interface SelectItem {
 @Component({
   selector: "app-donor-merge",
   templateUrl: "./donor-merge.component.html",
-  styleUrls: ["./donor-merge.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-merge.component.scss"],
 })
 export class DonorMergeComponent implements OnInit {
   isloading: boolean = false;
@@ -864,10 +864,6 @@ export class DonorMergeComponent implements OnInit {
         this.resMergeDonorsArray[index].emailsArray = this.extractFromString(
           this.resMergeDonorsArray[index].emails
         );
-        // this.resMergeDonorsArray[index].fatherNameJewish=item[0].fatherInLaw;
-        // this.resMergeDonorsArray[index].fatherName=item[0].father;
-        // this.resMergeDonorsArray[index].fatherInLawNameJewish=item[0].fatherInLaw;
-        // this.resMergeDonorsArray[index].fatherInLawName=item[0].fatherInLaw;
       }
       if (
         this.localUpadateDonaraccountID == "accountId2" &&
@@ -877,7 +873,6 @@ export class DonorMergeComponent implements OnInit {
         for (let i = 0; i < element.subCards.length; i++) {
           const e = element.subCards[i];
           if (e.accountId2 == item[0].accountId) {
-            // this.resMergeDonorsArray[index].subCards[0].accountNum=item[0].accountNum ;
             this.resMergeDonorsArray[index].subCards[i].fullName =
               item[0].fullName;
             this.resMergeDonorsArray[index].subCards[i].fullNameJewish =
@@ -903,7 +898,6 @@ export class DonorMergeComponent implements OnInit {
       }
     }
     this.listGridData = this.resMergeDonorsArray;
-    console.log("final updated", this.listGridData);
   }
   updatePhones(accountPhones) {
     let newStr = "";

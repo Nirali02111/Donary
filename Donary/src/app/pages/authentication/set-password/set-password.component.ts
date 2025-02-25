@@ -36,8 +36,8 @@ declare var $: any;
 @Component({
   selector: "app-set-password",
   templateUrl: "./set-password.component.html",
-  styleUrls: ["./set-password.component.scss"],
   standalone: false,
+  styleUrls: ["./set-password.component.scss"],
 })
 export class SetPasswordComponent implements OnInit {
   passwordType: string = "password";

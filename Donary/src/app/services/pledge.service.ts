@@ -13,7 +13,7 @@ export class PledgeService {
   PLEDGE_GET_URL = `${this.version}${this.PLEDGE_MAIN_URL}/GetPledge`;
   PLEDGE_UPDATE_URL = `${this.version}${this.PLEDGE_MAIN_URL}/UpdatePledge`;
   PLEDGE_ADD_URL = `${this.version}${this.PLEDGE_MAIN_URL}/AddPledge`;
-  PLEDGE_ADDGROUP_URL= `${this.version}${this.PLEDGE_MAIN_URL}/AddGroupPledge`;
+  PLEDGE_ADDGROUP_URL = `${this.version}${this.PLEDGE_MAIN_URL}/AddGroupPledge`;
 
   protected BULK_PLEDGE_ACTION_URL = `${this.version}${this.PLEDGE_MAIN_URL}/BulkUpdate`;
   protected PLEDGE_DOWNLOAD_TEMPLATE = `${this.version}${this.PLEDGE_MAIN_URL}/DonwloadTemplate`;
@@ -48,9 +48,11 @@ export class PledgeService {
   }
 
   addGroupPledge(formdata: any): Observable<any> {
-    return this.http.post(this.PLEDGE_ADDGROUP_URL, formdata).pipe((response) => {
-      return response;
-    });
+    return this.http
+      .post(this.PLEDGE_ADDGROUP_URL, formdata)
+      .pipe((response) => {
+        return response;
+      });
   }
 
   GetPledge(pledgeId: number, eventGuid: string) {
@@ -74,15 +76,13 @@ export class PledgeService {
         return response;
       });
   }
-  
-  downloadPledgeTemplate():Observable<any>{
-    return this.http.get(this.PLEDGE_DOWNLOAD_TEMPLATE,{ responseType: "blob" }
-      ).pipe(
-      response=>{
-        console.log(response);
-        return response
-      }
-    )
+
+  downloadPledgeTemplate(): Observable<any> {
+    return this.http
+      .get(this.PLEDGE_DOWNLOAD_TEMPLATE, { responseType: "blob" })
+      .pipe((response) => {
+        return response;
+      });
   }
   importPledge(formdata: any) {
     return this.http.post(this.PLEDGE_IMPORT, formdata).pipe((response) => {

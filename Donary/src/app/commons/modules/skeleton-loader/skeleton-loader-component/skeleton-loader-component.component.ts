@@ -3,8 +3,9 @@ import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 @Component({
   selector: "app-skeleton-loader-component",
   templateUrl: "./skeleton-loader-component.component.html",
-  styleUrls: ["./skeleton-loader-component.component.scss"],
   standalone: false,
+  styleUrls: ["./skeleton-loader-component.component.scss"],
+
   encapsulation: ViewEncapsulation.None,
 })
 export class SkeletonLoaderComponentComponent implements OnInit {

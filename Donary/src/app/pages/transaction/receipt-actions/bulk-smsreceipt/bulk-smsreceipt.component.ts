@@ -35,8 +35,8 @@ interface AccandPhone {
 @Component({
   selector: "app-bulk-smsreceipt",
   templateUrl: "./bulk-smsreceipt.component.html",
-  styleUrls: ["./bulk-smsreceipt.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-smsreceipt.component.scss"],
 })
 export class BulkSMSReceiptComponent implements OnInit {
   @ViewChildren("phonespans") phonespans: QueryList<ElementRef>;

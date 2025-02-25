@@ -307,9 +307,6 @@
                 <span class="icn_block" data-toggle="tooltip" appHoverTooltip [class.isVoidPledge]="isdisableVoidPledge"
                     [labelText]="!isdisableVoidPledge ? ('VOID' | translate) + ' '+ ('PLEDGE' | translate) : 'Some of the pledges are applied to an aliya and can only be voided in the aliya popup'"
                     (click)="!isdisableVoidPledge  && AdvanceVoidPledgeAction()"></span>
-                <span class="icn_block" data-toggle="tooltip" appHoverTooltip [class.isVoidPledge]="isdisableVoidPledge"
-                    [labelText]="!isdisableVoidPledge ? ('VOID' | translate) + ' '+ ('PLEDGE' | translate) : 'Some of the pledges are applied to an aliya and can only be voided in the aliya popup'"
-                    (click)="!isdisableVoidPledge  && AdvanceVoidPledgeAction()"></span>
                 <span class="icn_labels" data-toggle="tooltip" appHoverTooltip
                     labelText="{{'GENERATEREPORT' | translate}}" (click)="onPledgeCustomReport()"></span>
                 <span class="icn_advance" data-toggle="tooltip" appHoverTooltip

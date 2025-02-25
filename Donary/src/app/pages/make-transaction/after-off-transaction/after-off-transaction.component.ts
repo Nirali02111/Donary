@@ -49,7 +49,7 @@ export class AfterOffTransactionComponent {
     private paymentTransactionService: PaymentTransactionService,
     private pledgeService: PledgeService,
     private messengerService: MessengerService
-  ) { }
+  ) {}
 
   closePopup() {
     this.activeModal.close();
@@ -147,7 +147,7 @@ export class AfterOffTransactionComponent {
       isGlobalId: "",
     };
 
-    modalRef.componentInstance.emitAddressUpdated.subscribe((obj) => { });
+    modalRef.componentInstance.emitAddressUpdated.subscribe((obj) => {});
   }
 
   sendEmailReceipt() {
@@ -182,12 +182,16 @@ export class AfterOffTransactionComponent {
 
   onVoidAction() {
     Swal.fire({
-      title: this.commonMethodService.getTranslate('WARNING_SWAL.TITLE'),
-      text: this.commonMethodService.getTranslate('WARNING_SWAL.TEXT'),
+      title: this.commonMethodService.getTranslate("WARNING_SWAL.TITLE"),
+      text: this.commonMethodService.getTranslate("WARNING_SWAL.TEXT"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT'),
-      cancelButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT'),
+      confirmButtonText: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT"
+      ),
+      cancelButtonText: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT"
+      ),
     }).then((result) => {
       if (result.value) {
         if (this.type === "Pledge") {
@@ -245,10 +249,14 @@ export class AfterOffTransactionComponent {
 
   private openNoActionMessage() {
     Swal.fire({
-      title: this.commonMethodService.getTranslate('CANCELLED'),
-      text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
+      title: this.commonMethodService.getTranslate("CANCELLED"),
+      text: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.NO_ACTION_TAKEN"
+      ),
       icon: "error",
-      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+      confirmButtonText: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.BUTTON.CONFIRM.OK"
+      ),
       customClass: {
         confirmButton: "btn_ok",
       },
@@ -272,10 +280,14 @@ export class AfterOffTransactionComponent {
 
         if (res.status == "Success") {
           Swal.fire({
-            title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
+            title: this.commonMethodService.getTranslate(
+              "WARNING_SWAL.SUCCESS_TITLE"
+            ),
             text: res.message,
             icon: "success",
-            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+            confirmButtonText: this.commonMethodService.getTranslate(
+              "WARNING_SWAL.BUTTON.CONFIRM.OK"
+            ),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -316,10 +328,14 @@ export class AfterOffTransactionComponent {
           this.analytics.editedPledge();
 
           Swal.fire({
-            title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
+            title: this.commonMethodService.getTranslate(
+              "WARNING_SWAL.SUCCESS_TITLE"
+            ),
             text: res,
             icon: "success",
-            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+            confirmButtonText: this.commonMethodService.getTranslate(
+              "WARNING_SWAL.BUTTON.CONFIRM.OK"
+            ),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -341,10 +357,14 @@ export class AfterOffTransactionComponent {
 
   private displayErrorPopup(error) {
     Swal.fire({
-      title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
+      title: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.SOMETHING_WENT_WRONG"
+      ),
       text: error,
       icon: "error",
-      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+      confirmButtonText: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.BUTTON.CONFIRM.OK"
+      ),
       customClass: {
         confirmButton: "btn_ok",
       },
@@ -353,10 +373,12 @@ export class AfterOffTransactionComponent {
 
   private tryAgainError(text) {
     Swal.fire({
-      title: this.commonMethodService.getTranslate('WARNING_SWAL.TRY_AGAIN'),
+      title: this.commonMethodService.getTranslate("WARNING_SWAL.TRY_AGAIN"),
       text,
       icon: "error",
-      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+      confirmButtonText: this.commonMethodService.getTranslate(
+        "WARNING_SWAL.BUTTON.CONFIRM.OK"
+      ),
       customClass: {
         confirmButton: "btn_ok",
       },
@@ -375,7 +397,7 @@ export class AfterOffTransactionComponent {
 
     this.paymentTransactionService
       .GenerateLegalReceipt(obj)
-      .subscribe((res) => { });
+      .subscribe((res) => {});
     const modalRef = this.commonMethodService.openPopup(
       LegalReceiptPopupComponent,
       {
@@ -391,31 +413,6 @@ export class AfterOffTransactionComponent {
         this.commonMethodService.sendPaymentTrans(true);
       }
     });
-
-    // const transactionData = {
-    //   paymentId: paymentId,
-    //   globalId: this.globalId,
-    //   emailList: this.emailList,
-    //   "fullNameJewish ": this.isDonorSelected,
-    //   phoneNumberList: phoneArray,
-    //   pledgePayment: false,
-    //   accountId: this.paymentAccountId,
-    //   phoneCountryCodeID: this.countryCodeId,
-    //   address: this.address || "",
-    //   cityStateZip: this.cityStateZip || "",
-    // };
-
-    // const Data = {
-    //   additionalPhoneLabels: this.additionalPhoneLabels,
-    //   additionalPhones: this.additionalPhones,
-    //   additionalEmail: this.additionalEmail,
-    //   phones: this.phones,
-    //   phone: this.phone,
-    //   additionalEmailLabels: this.additionalEmailLabels,
-    //   countryCodeId: this.countryCodeId,
-    // };
-    // modalRef.componentInstance.DataTrans = Data;
-    // modalRef.componentInstance.transactionData = transactionData;
   }
 
   private generateForCashAndCheck() {

@@ -307,27 +307,7 @@
                             [(ngModel)]="pledge.emailNotify"
                             (change)="FirstEmailSelected(j,pledge.emailNotify,pledge,2)" />
                         <label for="email-to_{{j}}" class="mt-0">{{'EMAILTO' | translate}}:</label>
-                        <!-- new email code started -->
-                        <!-- <div class="option-group position-relative" (click)="toggleDropdown(j,'notify-credit-card')">
-                                <span *ngIf="pledge.emailNotify" class="option-select notify-credit-card">{{ pledgeData[j]?.selectedOptionEmail }}
-                                  <span>{{ pledgeData[j]?.selectedOptionLabel }}</span>
-                                </span>
-                                <span *ngIf="!pledge.emailNotify" class="option-select">Select Email</span>
-                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropdownOpen[j]">
-                                <div *ngIf="this.pledgeAliyaNames[j].firstDonorEmailData != undefined">
-                                  <li *ngFor="let option of this.pledgeAliyaNames[j].firstDonorEmailData; let i = index"
-                                      class="align-items-center d-flex justify-content-between"
-                                      [class.active]="i === pledgeData[j]?.selectedIndex"
-                                      (click)="selectOptionAndCloseDropdown(option, j, i)">
-                                    {{ option.emailAddress }} <span>{{ option.emailLabel }}</span>
-                                  </li>
-                                </div>
-                                  <li class="align-items-center d-flex justify-content-between" (click)="openTextPopup($event, textReciptPopup)">
-                                    Add email address
-                                  </li>
-                                </ul>
-                            </div> -->
-                        <!-- new email code ended -->
+                       
 
                         <!-- -----------Email New code started----------- -->
                         <div class="option-group position-relative" appClickOutside
@@ -354,29 +334,7 @@
                         </div>
                         <!-- -----------Email New code ended----------- -->
                     </div>
-                    <!-- <div class="form-group ae-checkbox with-label d-flex align-items-center">
-                            <input id="sms-to_{{j}}" type="checkbox"  class="d-none" [disabled]="!isDonorSelected" [(ngModel)]="pledge.phoneNotify"/>
-                            <label class="mt-0" for="sms-to_{{j}}">{{'SMSTO' | translate}}:</label>
-                            
-                            <div class="option-group position-relative" (click)="toggleSmsDropdown(j,'notify-sms-credit-card')">
-                                <span *ngIf="pledge.phoneNotify" class="option-select notify-sms-credit-card">{{pledgeSmsData[j]?.selectedOptionSms}}
-                                  <span>{{ pledgeSmsData[j]?.selectedOptionLabel }}</span>
-                                </span>
-                                <span *ngIf="!pledge.phoneNotify" class="option-select">Select Phone</span>
-                                <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropdownOpen[j]">
-                                  <li *ngFor="let option of phoneData; let i = index"
-                                      class="align-items-center d-flex justify-content-between"
-                                      [class.active]="i === pledgeSmsData[j]?.selectedIndex"
-                                      (click)="selectSmsOptionAndCloseDropdown(option, j, i)">
-                                    {{ option.phoneNumber }} <span>{{ option.phoneLabel }}</span>
-                                  </li>
-                                  <li class="align-items-center d-flex justify-content-between" (click)="openTextPopup($event, phoneReciptPopup)">
-                                    Add Phone Number
-                                  </li>
-                                </ul>
-                              </div>
-                            
-                        </div> -->
+               
                     <!-- updated SMS dropdown code started  -->
                     <div class="form-group ae-checkbox with-label d-flex align-items-center">
                         <!-- Keeping the checkbox for potentially other uses but it won't control the dropdown directly -->
@@ -429,7 +387,6 @@
                         <span [ngClass]="commonMethodService.currencyClass"></span>
                         <input type="text" name="pledgeAmt" [(ngModel)]="item.amount3"
                             (ngModelChange)="onChange($event)" class="form-control" placeholder="0.00">
-                        <!-- <div class="text-danger error" *ngIf="item.amount3 == '' && item.isAmount3">{{'AMOUNTREQUIRED' | translate}}</div> -->
                     </div>
                     <div class="child-campaing-right sub-dropdown aliyas-col-aliya aliyas-col">
                         <div class="child-campaign-inside">
@@ -549,11 +506,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="btn-add-new-donor">
-                                        <button type="button" (click)="OpenCreateDonorPopup(pledge.selectedDonor2,pledge,j,2)">
-                                            <i class="fa fa-plus"></i> {{'ADDDONOR' | translate}}</button>
-                                    </div>
-                                </div> -->
+                                   
 
                                     @if(commonMethodService.isglobalSearchApiCall2 == false){
                                     <span class="text-danger" *ngIf="pledge.isDonorName2Sel">{{'DONORSELECTEDREQUIRED' |
@@ -583,47 +536,7 @@
                                     (ngModelChange)="onChange($event,j,pledge.emailNotify1,pledge,'email')" />
                                 <label for="email-to1_{{j}}" class="mt-0">{{'EMAILTO' | translate}}:</label>
                                 <!-- second new email code started -->
-                                <!-- <div class="option-group position-relative" (click)="toggleDropdown1(j,'notify-credit-card')">
-                                        <span *ngIf="pledge.emailNotify1" class="option-select notify-credit-card">{{ pledgeData1[j]?.selectedOptionEmail }}
-                                          <span>{{ pledgeData1[j]?.selectedOptionLabel }}</span>
-                                        </span>
-                                        <span *ngIf="!pledge.emailNotify1" class="option-select">Select Email</span>
-                                        <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropdownOpen1[j]">
-                                        <div *ngIf="this.pledgeAliyaNames[j].secondDonorEmailData != undefined">
-                                          <li *ngFor="let option of this.pledgeAliyaNames[j].secondDonorEmailData; let i = index"
-                                              class="align-items-center d-flex justify-content-between"
-                                              [class.active]="i === pledgeData1[j]?.selectedIndex"
-                                              (click)="selectOptionAndCloseDropdown1(option, j, i)">
-                                            {{ option.emailAddress }} <span>{{ option.emailLabel }}</span>
-                                          </li>
-                                        </div>
-                                          <li class="align-items-center d-flex justify-content-between" (click)="openTextPopup($event, textReciptPopup)">
-                                            Add email address
-                                          </li>
-                                        </ul>
-                                      </div> -->
-                                <!-- second new email code ended -->
-
-                                <!-- Donor 2 email code started -->
-                                <!-- <div class="option-group position-relative" (click)="toggleDropdown1(j,'notify-credit-card')">
-                                        <span *ngIf="pledge.emailNotify1" class="option-select notify-credit-card">{{ pledgeData1[j]?.selectedOptionEmail }}
-                                          <span>{{ pledgeData1[j]?.selectedOptionLabel }}</span>
-                                        </span>
-                                        <span *ngIf="!pledge.emailNotify1" class="option-select">Select Email</span>
-                                        <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isDropdownOpen1[j]">
-                                        <div *ngIf="this.pledgeAliyaNames[j].secondDonorEmailData != undefined">
-                                          <li *ngFor="let option of this.pledgeAliyaNames[j].secondDonorEmailData; let i = index"
-                                              class="align-items-center d-flex justify-content-between"
-                                              [class.active]="i === pledgeData1[j]?.selectedIndex"
-                                              (click)="selectOptionAndCloseDropdown1(option, j, i)">
-                                            {{ option.emailAddress }} <span>{{ option.emailLabel }}</span>
-                                          </li>
-                                        </div>
-                                          <li class="align-items-center d-flex justify-content-between" (click)="openTextPopup($event, textReciptPopup)">
-                                            Add email address
-                                          </li>
-                                        </ul>
-                                      </div> -->
+                            
 
                                 <div class="option-group position-relative" appClickOutside
                                     (clickOutside)="closeEmailDropdown2ndDonor($event, j)"
@@ -651,29 +564,7 @@
 
                                 <!-- Donor 2 email code ended -->
                             </div>
-                            <!-- <div class="form-group ae-checkbox with-label d-flex align-items-center">
-                                    <input id="sms-to1_{{j}}" type="checkbox"  class="d-none" [disabled]="!isDonorSelected" [(ngModel)]="pledge.phoneNotify1" (ngModelChange)="onChange($event)"/>
-                                    <label class="mt-0" for="sms-to1_{{j}}">{{'SMSTO' | translate}}:</label>
-                                    
-                                    <div class="option-group position-relative" (click)="toggleSmsDropdown1(j,'notify-sms-credit-card')">
-                                        <span *ngIf="pledge.phoneNotify1" class="option-select notify-sms-credit-card">{{pledgeSmsData1[j]?.selectedOptionSms}}
-                                          <span>{{ pledgeSmsData1[j]?.selectedOptionLabel }}</span>
-                                        </span>
-                                        <span *ngIf="!pledge.phoneNotify1" class="option-select">Select Phone</span>
-                                        <ul class="option-dropdown list-unstyled position-absolute" *ngIf="isSmsDropdownOpen1[j]">
-                                          <li *ngFor="let option1 of phoneData; let i = index"
-                                              class="align-items-center d-flex justify-content-between"
-                                              [class.active]="i === pledgeSmsData1[j]?.selectedIndex"
-                                              (click)="selectSmsOptionAndCloseDropdown1(option1, j, i)">
-                                            {{ option1.phoneNumber }} <span>{{ option1.phoneLabel }}</span>
-                                          </li>
-                                          <li class="align-items-center d-flex justify-content-between" (click)="openTextPopup($event, phoneReciptPopup)">
-                                            Add Phone Number
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    
-                                </div> -->
+                            
 
                             <div class="form-group ae-checkbox with-label d-flex align-items-center">
                                 <!-- Keeping the checkbox for potentially other uses but it won't control the dropdown directly -->
@@ -735,43 +626,7 @@
                         </div>
                     </div>
                     <div class="aliyas-child-wrap" *ngFor="let item of pledge.expandShebirach2">
-                        <!-- <div class="aliyas-input">
-                                <span [ngClass]="commonMethodService.currencyClass"></span>
-                                <input type="text" name="pledgeAmt" [(ngModel)]="item.amount4" class="form-control"
-                                    placeholder="0.00">
-                            </div>
-                            <div class="child-campaing-left">
-                                <label>{{'NOTE' | translate}}:</label>
-                                <textarea name="note" rows="2" style="direction:rtl" [(ngModel)]="item.note3"
-                                    placeholder="{{'WRITENOTE' | translate}}" class="field-note"></textarea>
-                            </div>
-                            <div class="child-campaing-right sub-dropdown add-mi">
-                                <div class="child-campaign-inside">
-    
-                                    <div class="child-campaign-inside">
-                                        <angular2-multiselect id="ddlCampaign4"
-                                            [settings]="commonMethodService.setDropDownSettings('Search Campaign',2,false,true,true)"
-                                            [data]="commonMethodService.localCampaignList" name="selectedCampaignId"
-                                            [(ngModel)]="item.campaign4">
-                                            <c-item>
-                                                <ng-template let-item="item">
-                                                    <label
-                                                        [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
-                                                        {{item.itemName}}
-                                                        <span
-                                                            class="heb-dropdown-status">{{item.status}}</span></label>
-                                                </ng-template>
-                                            </c-item>
-                                        </angular2-multiselect>
-    
-    
-                                    </div>
-                                </div>
-                                <div class="aliyas-field field-dropdown-name">
-                                    <label>{{pledge.itemName2}}</label>
-                                    <input type="hidden" [(ngModel)]="pledge.aliyaNameId" name="pledgeName">
-                                </div>
-                            </div> -->
+                 
 
                         <div class="child-campaing-left aliyas-col-note aliyas-col">
                             <textarea name="note" rows="2" [(ngModel)]="item.note3" (ngModelChange)="onChange($event)"

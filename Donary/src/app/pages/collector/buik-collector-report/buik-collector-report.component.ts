@@ -18,8 +18,8 @@ import { PdfviewerPopupComponent } from "../../cards/payment-card-popup/pdfviewe
 @Component({
   selector: "app-buik-collector-report",
   templateUrl: "./buik-collector-report.component.html",
-  styleUrls: ["./buik-collector-report.component.scss"],
   standalone: false,
+  styleUrls: ["./buik-collector-report.component.scss"],
 })
 export class BuikCollectorReportComponent implements OnInit {
   isloading: boolean = false;
@@ -229,7 +229,6 @@ export class BuikCollectorReportComponent implements OnInit {
 
   isRunBtnDisable = true;
   onOptionsSelected() {
-    console.log("the selected value is " + this.ActionControl.value);
     if (this.ActionControl.value > 0) {
       this.isRunBtnDisable = false;
     } else {

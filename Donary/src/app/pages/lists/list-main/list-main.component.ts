@@ -9,8 +9,8 @@ declare var $: any;
 @Component({
   selector: "app-list-main",
   templateUrl: "./list-main.component.html",
-  styleUrls: ["./list-main.component.scss"],
   standalone: false,
+  styleUrls: ["./list-main.component.scss"],
 })
 export class ListMainComponent implements OnInit {
   routeState: any;
@@ -78,6 +78,8 @@ export class ListMainComponent implements OnInit {
       .getPermissionLst()
       .filter((x) => x.permissionName == "Source List")
       .map((x) => x.isActive)[0];
+
+    this.setActiveTab();
     $("body").addClass("sticky_table_list");
     if (this.routeState) {
       $("#custom-tabs-donors-tab").removeClass("active");
@@ -141,6 +143,17 @@ export class ListMainComponent implements OnInit {
 
   ngOnDestroy() {
     document.onkeydown = () => {};
+  }
+
+  setActiveTab() {
+    if (this.donorPermission) this.activeId = 1;
+    else if (this.reasonPermission) this.activeId = 2;
+    else if (this.campaignPermission) this.activeId = 3;
+    else if (this.locationPermission) this.activeId = 4;
+    else if (this.collectorPermission) this.activeId = 5;
+    else if (this.sourcePermission) this.activeId = 6;
+    else if (this.seatPermission) this.activeId = 7;
+    else this.activeId = 1;
   }
 
   donorList() {

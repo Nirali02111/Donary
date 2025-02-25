@@ -345,7 +345,6 @@ export class SeatsCardPopupComponent implements OnInit {
       let scheduleId = transationId;
       this.openScheduleCardPopup(scheduleId);
     } else {
-      console.log("something went wrong...");
     }
   }
 

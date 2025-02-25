@@ -41,8 +41,8 @@ interface DonorObj {
 @Component({
   selector: "app-bulk-mail-receipt",
   templateUrl: "./bulk-mail-receipt.component.html",
-  styleUrls: ["./bulk-mail-receipt.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-mail-receipt.component.scss"],
 })
 export class BulkMailReceiptComponent implements OnInit {
   @ViewChildren("emailspans") emailspans: QueryList<ElementRef>;

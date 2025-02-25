@@ -35,8 +35,8 @@ declare let $: any;
 @Component({
   selector: "app-notification-sidebar-popup",
   templateUrl: "./notification-sidebar-popup.component.html",
-  styleUrls: ["./notification-sidebar-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-sidebar-popup.component.scss"],
 })
 export class NotificationSidebarPopupComponent implements OnInit {
   isBrowser = false;
@@ -152,6 +152,7 @@ export class NotificationSidebarPopupComponent implements OnInit {
   assigneePhone: string;
   linkedToAlertID: number;
   alertInfo = [];
+  repeatName:string;
   @Output() emtOutputAdvancedFilterData: EventEmitter<any> = new EventEmitter();
   public tools: object = {
     items: [
@@ -229,6 +230,12 @@ export class NotificationSidebarPopupComponent implements OnInit {
               itemName: res[i].field,
               id: res[i].valueID,
             });
+          }
+          this.repeatId = this.repeatList.filter(
+            (x) => x.id == item.recurringTypeId
+          );
+          if(this.repeatId){
+            this.repeatName=this.repeatId[0].itemName;
           }
         },
         (err) => {}
@@ -387,9 +394,10 @@ export class NotificationSidebarPopupComponent implements OnInit {
       this.linkDonorId = data.linkDonorId;
       this.recordTypeId = data.recordTypeID;
       this.recordId = data.recordId;
-      this.repeatId = this.repeatList.filter(
-        (x) => x.id == data.recurringTypeId
-      );
+      //this.repeatId = this.repeatList.filter(
+        //(x) => x.id == data.recurringTypeId
+      //);
+     
       this.assigneeEmail = data.assigneeEmail;
       this.assigneePhone = data.assigneePhone;
       if (data.transactionStatus == "Success") {
@@ -446,9 +454,9 @@ export class NotificationSidebarPopupComponent implements OnInit {
       this.email_linkDonar = data.email;
       this.address_linkDonar = data.address;
       this.createdDate = data.createdDate;
-      this.repeatId = this.repeatList.filter(
-        (x) => x.itemName == data.recurringType
-      );
+      //this.repeatId = this.repeatList.filter(
+        //(x) => x.itemName == data.recurringType
+      //);
       this.notificationComments = data.notificationComments.reverse();
       this.recurringType = data.recurringType;
       this.scheduleStatus = data.scheduleStatus;
@@ -501,6 +509,9 @@ export class NotificationSidebarPopupComponent implements OnInit {
           this.repeatId = this.repeatList.filter(
             (x) => x.itemName == res.recurringType
           );
+          if(this.repeatId){
+            this.repeatName=this.repeatId[0].itemName;
+          }
           this.notificationComments = res.notificationComments.reverse();
           this.recurringType = res.recurringType;
           this.scheduleStatus = res.scheduleStatus;

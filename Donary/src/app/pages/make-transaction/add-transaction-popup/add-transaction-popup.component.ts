@@ -468,6 +468,7 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
   showNotifySection: boolean = true;
   isGenerateReceiptDisable: boolean = false;
   isBulkDonorList: boolean = false;
+  receiptGenerated: boolean = false;
   get BankType() {
     return this.achForm.get("bankType");
   }
@@ -500,10 +501,11 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
 
   private analytics = inject(AnalyticsService);
 
-  get transformedPaymentModeDetail() {
+  get transformedPaymentModeDetail() {    
     return (
-      this.paymentModeDetail?.split(" ").join("").toUpperCase() ||
-      this.paymentDetails
+      
+      this.paymentModeDetail?.split(" ").join("").toUpperCase() //||
+      //this.paymentDetails
     );
   }
 
@@ -529,7 +531,8 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
     private eventService: EventService,
     private paymentTransactionService: PaymentTransactionService,
     public paymentApiGatewayService: PaymentApiGatewayService,
-    private datePipe: DonaryDateFormatPipe
+    private datePipe: DonaryDateFormatPipe,
+    private cdr:ChangeDetectorRef
   ) {}
 
   @Input() set donorDetails(donorDetailsValue: any) {
@@ -962,7 +965,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
         this.creditCardCVV = "";
 
         this.checkCardAndExpValidation();
-        // console.log(this.creditCardNumber);
         this.changeDetectorRef.detectChanges();
       });
 
@@ -985,9 +987,7 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
       .pipe(
         debounceTime(100),
         distinctUntilChanged(),
-        tap(() => {
-          console.log("passing final", Date.now());
-        })
+        tap(() => {})
       )
       .subscribe((e) => {
         this.CardReader(e);
@@ -1152,12 +1152,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
     }
     if (this.isPledgeCard) {
       this.OpenAmountTab("paymentTab");
-      //   $("#donorInfo").removeClass("active show");
-      //  $("#donationAmount").removeClass("active show");
-      //  $("#donorTab").removeClass("active");
-      //  $("#donorAmtTab").removeClass("active");
-      //  $("#paymentTab").addClass("active");
-      //  $("#paymentMathod").addClass("active show");
     }
 
     if (this.isSeatPayNow) {
@@ -1264,7 +1258,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
   RemovePaymentTabClass() {
     $("#creditcardtab").removeClass("active");
     $("#cashtab").removeClass("active");
-    console.log($("#cashtab").hasClass("active"));
     $("charitytab").removeClass("active");
     $("#checktab").removeClass("active");
     $("#pledgetab").removeClass("active");
@@ -1394,7 +1387,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
     this.collectiondropdownRef.closeDropdown();
   }
   OpenDatePicker() {
-    console.log(this.pickerDirective);
     this.pickerDirective.open();
   }
 
@@ -2393,9 +2385,10 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
 
   OpenLegalReceipt(paymentId, paymentType) {
     if (
-      paymentType == "Cash" ||
+      (paymentType == "Cash" ||
       paymentType == "Check" ||
-      paymentType == "Other"
+      paymentType == "Other") &&
+      !this.receiptGenerated
     ) {
       this.modalOptions = {
         centered: true,
@@ -2408,8 +2401,14 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
         LegalReceiptCountryPopupComponent,
         this.modalOptions
       );
+
       modalRef.componentInstance.paymentId = paymentId;
       modalRef.componentInstance.gridFilterData = this.gridFilterData;
+      modalRef.componentInstance.IsPayment = true;
+      modalRef.componentInstance.recallPaymentCard?.subscribe((val) => {
+          this.receiptGenerated = val;
+          this.cdr.detectChanges();
+        });
     } else {
       var obj = {
         paymentId: paymentId,
@@ -2468,7 +2467,9 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
                 countryCodeId: this.countryCodeId,
               };
               modalRef.componentInstance.DataTrans = Data;
-              modalRef.componentInstance.transactionData = transactionData;
+              modalRef.componentInstance.transactionData = transactionData; 
+              modalRef.componentInstance.receiptGenerated = this.receiptGenerated;
+
             } else {
               Swal.fire({
                 title: "Error",
@@ -2848,38 +2849,28 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
   }
   CampaingDrpTabIn(event) {
     this.isSelectAmoutClickddlPaymentReason = false;
-    //console.log('campaing',event);
     this.closeReasonDrp();
     this.OpenCampaignDrp();
-    // event.preventDefault();
   }
   LocationDrpTabIn(event) {
-    //console.log('location',event);
     this.closeCampaignDrp();
     this.OpenLocationDrp();
   }
 
   CollectorDrpTabIn(event) {
-    //console.log('collection',event);
     this.closeLocationDrp();
     this.OpenCollectionDrp();
   }
 
   DateTabIn(event) {
-    //console.log('date',event);
     this.closeCollectionDrp();
     this.OpenDatePicker();
   }
 
   btnAmountTabNextTabIn() {
-    //console.log('btnAmountTabNextTabIn',event);
-
     this.resonDrpFirstTime = false;
     $(".md-drppicker").addClass("hidden");
     $(".md-drppicker").removeClass("shown");
-    //$('#btnAmountTabNextId').focus();
-    // $('#ddlPaymentReason').focus();
-    // this.reasonDrpTabIn(event);
     if (
       !this.CheckPaymentValidation(this.paymentMethodId) ||
       (!this.isDonorSkipped && !this.isDonorSelected)
@@ -3804,7 +3795,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
   }
 
   ValidExpiryDate(event) {
-    console.log(event.target.value.length);
     if (event.target.value.length == 5) {
       this.isInValid = false;
       this.isExpiryDateValid = false;
@@ -3962,7 +3952,7 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
       this.OpenAmountTab("paymentTab"), 1000;
     });
   }
-  ProcessTransaction() {
+  ProcessTransaction() {    
     this.closePledgeTooltip();
     if (
       this.checkSchedule &&
@@ -3976,9 +3966,9 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
           "Sorry but total schedule amount needs to be same as the pledge amount see your options below",
         html: "1. Update schedule amount to the pledge amount </br> 2. Create a pledge with the remaining schedule amount in apply the schedule to all pledges",
         icon: "error",
-        confirmButtonText: this.commonMethodService
-          .getTranslate("WARNING_SWAL.BUTTON.CONFIRM.OK")
-          .commonMethodService.getTranslate("WARNING_SWAL.BUTTON.CONFIRM.OK"),
+        confirmButtonText: this.commonMethodService.getTranslate(
+          "WARNING_SWAL.BUTTON.CONFIRM.OK"
+        ),
         customClass: {
           confirmButton: "btn_ok",
         },
@@ -5641,7 +5631,6 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
     }
   }
   donarInfoTabReturn(id) {
-    //console.log('blur',id);
     var chek = $("#btn_chooseProcesstypeProcess").is(":disabled");
     if (id == "txtareanote") {
       if (chek == true && id == "txtareanote") {
@@ -5658,21 +5647,16 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
   }
 
   onDown(event) {
-    //console.log(event)
     $(".tab-focus-0").focus();
   }
-  onUp(event) {
-    //console.log(event)
-  }
+  onUp(event) {}
   onDownTabFocus(i) {
-    console.log(i);
     i += 1;
     $(".tab-focus-" + i).focus();
     $(".selected_record").removeClass("selected_record");
     $(".tab-focus-" + i).addClass("selected_record");
   }
   onUpTabFocus(i) {
-    console.log(i);
     i > 0 ? (i -= 1) : i;
     $(".tab-focus-" + i).focus();
     $(".selected_record").removeClass("selected_record");
@@ -5936,7 +5920,10 @@ export class AddTransactionPopupComponent implements OnInit, AfterViewInit {
               this.textActionBtn = "Text Receipt";
               this.mailActionBtn = "Mail Receipt";
               this.paymentStatus = res.paymentStatus;
-              this.refNum = res.responseMessage[0].refNum;
+              if (res.responseMessage > 0)
+              {
+                this.refNum = res.responseMessage[0].refNum;
+              }
             }
             if (
               res &&

@@ -15,8 +15,8 @@ import { SendMailreceiptPopupComponent } from "../../transaction/receipt-actions
 @Component({
   selector: "app-legal-receipt-popup",
   templateUrl: "./legal-receipt-popup.component.html",
-  styleUrls: ["./legal-receipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./legal-receipt-popup.component.scss"],
 })
 export class LegalReceiptPopupComponent implements OnInit {
   isOnlyPledgePayment: boolean = false;

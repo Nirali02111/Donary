@@ -9,8 +9,8 @@ declare var $: any;
 @Component({
   selector: "app-import-token",
   templateUrl: "./import-token.component.html",
-  styleUrls: ["./import-token.component.scss"],
   standalone: false,
+  styleUrls: ["./import-token.component.scss"],
 })
 export class ImportTokenComponent implements OnInit {
   changeText: string = "";

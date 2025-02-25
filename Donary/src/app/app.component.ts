@@ -186,14 +186,11 @@ export class AppComponent implements OnInit {
 
   version = packageInfo.version;
   checkUIVersion() {
-    console.log("Local storage version : " + localStorage.getItem("UIVersion"));
-    console.log("New version : " + this.version);
     if (
       localStorage.getItem("UIVersion") !== this.version &&
       localStorage.getItem("UIVersion") != null
     ) {
       localStorage.setItem("UIVersion", this.version);
-      console.log("New version available");
       Swal.fire({
         title: "",
         icon: "warning",
@@ -245,7 +242,6 @@ export class AppComponent implements OnInit {
   }
 
   setPageTitile() {
-    console.log(this.orginUrl, this.href);
     //set page
     if (this.orginUrl == "https://drm.donary.com") {
       $("#PageTitle").text("Donary | DRM • Donor Relations Management");
@@ -259,18 +255,16 @@ export class AppComponent implements OnInit {
     if (this.href == "https://p.donary.com/productandplans/") {
       $("#PageTitle").text("Donary | Products & Plans");
     }
-    if (this.orginUrl == "https://donarydrmdev.azurewebsites.net") {
+    if (this.orginUrl == "https://dev-drm.donary.com") {
       $("#PageTitle").text("Donary | DRM • Donor Relations Management");
     }
-    if (this.orginUrl == "https://donarydrmdev.azurewebsites.net/") {
+    if (this.orginUrl == "https://dev-drm.donary.com/") {
       $("#PageTitle").text("Donary | DRM • Donor Relations Management");
     }
-    if (this.href == "https://donarydrmdev.azurewebsites.net/productandplans") {
+    if (this.href == "https://dev-drm.donary.com/productandplans") {
       $("#PageTitle").text("Donary | Products & Plans");
     }
-    if (
-      this.href == "https://donarydrmdev.azurewebsites.net/productandplans/"
-    ) {
+    if (this.href == "https://dev-drm.donary.com/productandplans/") {
       $("#PageTitle").text("Donary | Products & Plans");
     }
     //

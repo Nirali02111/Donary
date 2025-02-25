@@ -3,22 +3,12 @@
 		<h4>{{title |translate}}</h4>
 		<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
 	</div>
-	<form  name="reasonInfoForm" (ngSubmit)="fg.form.valid && SaveReasonInfo()" #fg="ngForm" >
+	<form  name="reasonInfoForm" (ngSubmit)="fg.form.valid && this.commonMethodService.isfeatureSetting && SaveReasonInfo()" #fg="ngForm" >
    <div class="reason_wrap">
 	@if(isloading){
         <ng-container *ngFor="let item of skeletonitems">
                 <app-edit-skeleton-loader [theme1]="{ width: '170px', height: '35px' }" [theme2]="{ width: '350px', height: '35px' }"></app-edit-skeleton-loader>
           </ng-container>
-		  <!-- <ng-container *ngFor="let item of skeletonitems">
-		  <div class="d-flex align-items-center px-3 pt-3"  >
-			<span class="flex-fill d-flex " style="margin-left:10px" >
-			  <app-skeleton-loader-component style="margin-right:20px"  [isLoading]="isloading" [theme]="{ width: '150px', height: '35px' }">
-			  </app-skeleton-loader-component>
-			  <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '350px', height: '35px' }">
-			  </app-skeleton-loader-component>
-			</span>
-		  </div>
-		</ng-container> -->
     }@else {
 	<div class="inside_wrap modal__custom_content">
 		<div class="form-group-block search-global-donor">              
@@ -43,14 +33,6 @@
 			  </div>
 			</div>
 		  </div>
-		<!-- <div class="form-group-block">
-			<div class="block_label">
-				Sort #:
-			</div>
-			<div class="block_inputs">
-				<input type="text" class="input-text" name="" />
-			</div>
-		</div> -->
 		<div class="form-group-block">
 			<div class="block_label">
 				{{'REASON#'| translate}}:
@@ -222,7 +204,6 @@
 		</div>
 		<div class="right_part">
 			<button class="btn btn-default" type="button" (click)="closePopup()">{{'CANCEL'|translate}}</button>
-			<!-- <button class="btn btn-primary btn-for-disable"  [disabled]="!formValid || !fg.form.valid">Save</button> -->
 			<button class="btn btn-primary btn-for-disable" [disabled]="!fg.form.valid || disabledSaveButton" *ngIf="this.commonMethodService.isfeatureSetting">{{'SAVE'|translate}}</button>
 			<button class="btn btn-primary btn-for-disable btn-core" (click)="onUpgrade()" *ngIf="!this.commonMethodService.isfeatureSetting">{{'UPGRADETOSAVE'|translate}}</button>
 		</div>

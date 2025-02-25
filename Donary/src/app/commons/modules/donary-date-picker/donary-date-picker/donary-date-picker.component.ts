@@ -17,8 +17,8 @@ import { DateRange } from "./model";
 @Component({
   selector: "app-donary-date-picker",
   templateUrl: "./donary-date-picker.component.html",
-  styleUrls: ["./donary-date-picker.component.scss"],
   standalone: false,
+  styleUrls: ["./donary-date-picker.component.scss"],
 })
 export class DonaryDatePickerComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

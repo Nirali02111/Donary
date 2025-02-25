@@ -38,8 +38,8 @@ interface SelectedDonorObj {
 @Component({
   selector: "app-bulk-advance-statement",
   templateUrl: "./bulk-advance-statement.component.html",
-  styleUrls: ["./bulk-advance-statement.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-advance-statement.component.scss"],
 })
 export class BulkAdvanceStatementComponent implements OnInit {
   isUpdated: boolean = false;
@@ -1059,7 +1059,6 @@ export class BulkAdvanceStatementComponent implements OnInit {
       this.isUpdated = true;
       this.updateEmailId = null;
       this.updatePhoneNumberId = null;
-      //console.log('insite div');
     }
   }
   updateAndSendReceipts() {
@@ -1130,15 +1129,6 @@ export class BulkAdvanceStatementComponent implements OnInit {
       (error) => {
         this.isloading = false;
         console.log(error);
-        // Swal.fire({
-        //   title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
-        //   text:error.error,
-        //   icon: 'error',
-        //   confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-        //   customClass: {
-        //     confirmButton: 'btn_ok'
-        // },
-        // })
       }
     );
   }

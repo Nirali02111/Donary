@@ -18,34 +18,7 @@
                 </app-skeleton-loader-component>
             </div>
         </div>
-        <!-- <div class="col-md-6">
-            <div class="form-group">
-                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '150px', height: '25px' }"> <label>{{'CREDITCARDGATEWAY' | translate}}:</label> </app-skeleton-loader-component>
-                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '30px' }">  <select class="form-control" [(ngModel)]="gatewayProviderId" (change)="isAPIKeyPin()"
-                [ngStyle]="{'border-color': (isGatewayProviderIdRequired) ? '#ff0404' : null}">
-                <option *ngFor="let item of gateWayList" [value]="item.gatewayId">
-                {{item.gatewayName}}
-                </option>
-                </select></app-skeleton-loader-component>
-            </div>
-        </div>
-        <div class="col-md-6">
-
-            <div class="form-group">
-                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '150px', height: '25px' }"> <label>{{'APITYPE' | translate}}:</label> </app-skeleton-loader-component>
-                @if(isloading){
-                    <br>
-                }
-                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '190px', height: '30px' }">   <select class="form-control" [(ngModel)]="gatewayTypeId" style="font-family: 'FontAwesome', 'Avenir', sans-serif" [ngStyle]="{'border-color': (isGatewayTypeIdRequired) ? '#ff0404' : null}"
-                (change)="isGatewayTypeIdRequired=false">
-            <option *ngFor="let item of gateWayTypesList" [value]="item.id" [disabled]="isDisableApiType(item.id) && isAdvancedKeys"
-            [attr.title]=" isDisableApiType(item.id) && isAdvancedKeys ? disableMsg : ''">
-                {{item.itemName}}  {{ isDisableApiType(item.id) && isAdvancedKeys ?'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#xf059;':''}}
-
-                </option>
-                </select></app-skeleton-loader-component>
-            </div>
-        </div> -->
+     
 
 
         <!-- Single skeleton loader covering both columns -->
@@ -116,6 +89,22 @@
                             [ngStyle]="isApiPinRequired ?{'border-color': '#ff0404'} : null" /></div>
                 </app-skeleton-loader-component>
             </div>
+
+            @if(merchantIdHideShow){
+            <div class="form-group">
+                <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '220px', height: '30px' }">
+                    <label>Merchant ID</label></app-skeleton-loader-component>
+                @if(isloading){
+                    <br>
+                    }
+                    <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '500px', height: '30px' }">
+                        <input class="form-control" type="text"
+                                placeholder="" [(ngModel)]="pin" 
+                                (blur)="isMerchantIdFocused = true"
+                                [ngStyle]=" isMerchantIdRequired && isMerchantIdFocused ? {'border-color': '#ff0404'} : null" />
+                    </app-skeleton-loader-component>
+            </div>
+        }
         </div>
         <div class="col-md-12">
             <div class="form-group">

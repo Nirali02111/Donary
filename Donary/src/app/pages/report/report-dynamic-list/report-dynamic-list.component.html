@@ -3,11 +3,7 @@
 
     <tr class="thead-tr dynamic-col">
         <th colspan="4">
-            <!-- <sv-default-sorter by="amount"> -->
-                <!-- <span class="col-bckground"> -->
-                    <!-- <span class="expand-button" *ngIf="!isCompare" (click)="rowExpand()">
-                        <span *ngIf="!isGridVisible">+</span><span *ngIf="isGridVisible">-</span>
-                    </span> -->
+           
                     <span class="report_colinfo">
                         <p class="reprt_colname">{{columnName}}</p>
                         <p class="reprt_tlt">{{'TOTAL'  |translate}} :  {{ commonMethodService.formatAmount(totalAmount)}}</p>
@@ -19,8 +15,7 @@
                         <i class="fa fa-edit"  *ngIf="!isCompare" (click)="EditSettingParameter(true)"></i>
                         <i class="fa fa-trash" (click)="DeleteComponent(tableId,reportQueryId)"></i>
                     </span>
-                    <!-- </span> -->
-            <!-- </sv-default-sorter> -->
+                
             <ng-container *ngIf="isGridVisible">
                 <div class="select-parameter">
                  <p>
@@ -72,9 +67,6 @@
             </ng-container>
         </th>
 </tr>
-<!-- <tr class="transparent" *ngIf="transactionType==1 || transactionType==0"></tr> -->
-
-
 <tbody  *ngIf="sv.data?.length > 0">
     <tr class="tbody_header" *ngIf="transactionType==2">
         <td colspan="4">
@@ -112,7 +104,6 @@
             </table>
         </td>
     </tr>
-   <!-- <tr  *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : 'twoline_height']"> -->
    <tr  *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : Treeline ?'threeline_height' : 'twoline_height']">
         <td *ngIf="transactionType==0 && CheckInteger(item.amount)==0" > {{ commonMethodService.formatAmount(item.amount) }}</td>
         <td *ngIf="transactionType==0 && CheckInteger(item.amount)==-1" class="highlight_red" > {{ commonMethodService.formatAmount(item.amount) }}</td>
@@ -125,13 +116,9 @@
         <td *ngIf="transactionType==3 && isTotalAmountType"> {{ commonMethodService.formatAmount(item.amount) }}</td>
         <td *ngIf="transactionType==3 && isBalanceAmountType" class="highlight_red"> {{ commonMethodService.formatAmount(item.balance) }}</td>
         <td *ngIf="transactionType==3 && isPaidAmountType" class="highlight_green"> {{ commonMethodService.formatAmount(item.paid) }}</td>
-        <!--<td *ngIf="transactionType==6 && isTotalPaymentType"> {{ commonMethodService.formatAmount(item.payment) }}</td>-->
         <td *ngIf="transactionType==6 && isTotalPaymentType"> {{ item && item.payment?commonMethodService.formatAmount(item.payment):commonMethodService.formatAmount(0) }}</td>
-        <!--<td *ngIf="transactionType==6 && isOpenPledgesType"> {{ commonMethodService.formatAmount(item.pledge) }}</td>-->
         <td *ngIf="transactionType==6 && isOpenPledgesType"> {{item && item.pledge? commonMethodService.formatAmount(item.pledge):commonMethodService.formatAmount(0) }}</td>
-        <!--<td *ngIf="transactionType==6 && isPendingScheduleType"> {{ commonMethodService.formatAmount(item.schedule) }}</td>-->
         <td *ngIf="transactionType==6 && isPendingScheduleType"> {{ item && item.schedule? commonMethodService.formatAmount(item.schedule) :commonMethodService.formatAmount(0)}}</td>
-        <!--<td *ngIf="transactionType==6 && isTotalAmtType"> {{ commonMethodService.formatAmount(item.amount) }}</td>-->
         <td *ngIf="transactionType==6 && isTotalAmtType"> {{item && item.amount? commonMethodService.formatAmount(item.amount):commonMethodService.formatAmount(0) }}</td>
     </tr>
 </tbody>

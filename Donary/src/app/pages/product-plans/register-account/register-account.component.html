@@ -32,7 +32,6 @@
 
 <ng-template #feedbackError let-item="item">
     <div class="row text-danger">
-        <!-- <div *ngIf="item.errors?.required"  class="val-error">field is required</div> -->
         <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID'  |translate}}</div>
         <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID'  |translate}}</div>
     </div>

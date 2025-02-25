@@ -41,8 +41,8 @@ interface alteredDocsObj {
 @Component({
   selector: "app-organization-details-form-group",
   templateUrl: "./organization-details-form-group.component.html",
-  styleUrls: ["./organization-details-form-group.component.scss"],
   standalone: false,
+  styleUrls: ["./organization-details-form-group.component.scss"],
 })
 export class OrganizationDetailsFormGroupComponent
   implements OnInit, AfterContentInit
@@ -614,13 +614,7 @@ export class OrganizationDetailsFormGroupComponent
       let newstr = mystring.replace(OrgHouseNumVal, "");
       OrgStreetVal = newstr.trim();
     }
-    // if (ContactStreetStr) {
-    //   let css = ContactStreetStr.split(" ");
-    //   ContactHouseNumVal = css.length > 0 ? css[0] : "";
-    //   let mystring = ContactStreetStr;
-    //   let newstr = mystring.replace(ContactHouseNumVal, "");
-    //   ContactStreetVal = newstr.trim();
-    // }
+
     this.formGroup.patchValue({
       OrgHouseNum: OrgHouseNumVal,
       OrgStreet: OrgStreetVal,

@@ -208,12 +208,6 @@
           <label for="lblDonor"> {{'DATE'  |translate}} : </label>
         </div>
         <div class="input-group col-9 mb-2 date-field">
-          <!-- <app-donary-date-picker
-            [isFullView]="false"
-            [SelectedDateRange]="selectedDateRange"
-            (emtDatesUpdated)="datesUpdated($event)"
-          ></app-donary-date-picker> -->
-
         <!-- Calendar code started -->
         <ng-template #popContent 
         ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
@@ -369,22 +363,6 @@
           ><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span>
         </div>
       </div>
-      <!-- <div class="row" *ngIf="isPayment" >
-                        <div class="input-group col-3 mb-2">
-                            <label for="lblDonor">
-                                Payment Status:
-                            </label>
-                        </div>
-                        <div class="input-group col-9 mb-2">
-                            <angular2-multiselect id="ddlPaymentStatus"
-                                [settings]="commonMethodService.setDropDownSettings('Select Payment Status',2,false,false)"
-                                [data]="commonMethodService.paymentStatusList"
-                                [(ngModel)]="commonMethodService.selectedPaymentStatus"
-                                (onDeSelectAll)="commonMethodService.onDeSelectAll('PaymentStatusList')">
-                            </angular2-multiselect>
-                        </div>
-                        <div class="data-set-exclude"><input type="checkbox" id="chckPaymentStatus" (change)="OnCheckBoxChange($event,'PaymentStatus')"><label></label><span class="include-exclude"><p>{{'INCLUDEEXCLUDE'  |translate}}</p></span></div>
-                    </div> -->
       <div class="row" *ngIf="isSchedule">
         <div class="input-group col-3 mb-2">
           <label for="lblDonor"> {{'SCHEDULESTATUS'  |translate}} : </label>
@@ -422,11 +400,6 @@
           <label for="lblDonor"> {{'AMOUTTYPE'  |translate}} </label>
         </div>
         <div class="input-group col-9 mb-2">
-          <!-- <select class="form-control" [(ngModel)]="amountType" name="slctAmount" id="input-amount">
-                                <option value="-1">All</option>
-                                <option value="1">Paid</option>
-                                <option value="2">Balance</option>
-                                </select> -->
           <angular2-multiselect
             id="ddlAmountType"
             [settings]="

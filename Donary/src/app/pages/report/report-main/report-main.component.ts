@@ -19,8 +19,8 @@ declare var $: any;
 @Component({
   selector: "app-report-main",
   templateUrl: "./report-main.component.html",
-  styleUrls: ["./report-main.component.scss"],
   standalone: false,
+  styleUrls: ["./report-main.component.scss"],
 })
 export class ReportMainComponent implements OnInit {
   showSubMenu = false;
@@ -200,7 +200,6 @@ export class ReportMainComponent implements OnInit {
         }
       };
 
-      // $("#schedule_tab").addClass("active_schedule")
       $("#custom-tabs-queries-reports").removeClass("active");
       $("#custom-tabs-standard").removeClass("active");
       $("#custom-tabs-queries").addClass("active");
@@ -328,32 +327,6 @@ export class ReportMainComponent implements OnInit {
             }
           }
         });
-
-        //
-
-        //   this.addClass="";
-        //   this.getParamsList.forEach((element) => {
-
-        //     if(element.paramName=="EventID"){
-
-        //     }
-        //     else if(element.paramName=="DtFrom"){
-        //      this.isDateFrom=true;
-        //     }
-        //    else if(element.paramName=="DtTo"){
-        //       this.isDateTo=true;
-        //     }
-        //     else{
-        //       if(element.paramName){
-        //       this.addClass="active-item-show";
-        //       this.dnyParam=element.paramName;
-        //       this.isDnyText=true;
-        //      //this.isDeviceNametxt=true;
-        //       }
-        //     }
-
-        // });
-        //
       },
       (error) => {
         this.isloading = false;
@@ -459,33 +432,6 @@ export class ReportMainComponent implements OnInit {
               : null;
           element.value = t;
         }
-        //   //element.value=element.value != undefined ? element.value != null ? moment(element.value.startDate).format("MM/DD/YYYY") : null : null;
-        //   //this.selecteFromdDate != undefined ? this.selecteFromdDate != null ? moment(this.selecteFromdDate.startDate).format("YYYY-MM-DD") : null : null;
-        // //if(element.value=="Invalid date"){
-        //   if(this.fdate && this.fParam==element.paramName && this.tempFd.length==0){
-        //     //element.value=this.tempFd != undefined ? this.tempFd != null ? moment(this.tempFd.startDate).format("MM/DD/YYYY") : null : null;
-        //     element.value=this.fdate;
-        //   }
-        //   else if(this.tdate && this.tParam==element.paramName && this.tempTd.length==0){
-        //     //element.value=this.tempTd != undefined ? this.tempTd != null ? moment(this.tempTd.startDate).format("MM/DD/YYYY") : null : null;
-
-        //     element.value=this.tdate;
-
-        //   }
-        //   else{
-        //     if(element.paramName=="DtFrom" && !this.fdate){
-        //     element.value=this.tempFd != undefined ? this.tempFd != null ? moment(this.tempFd.startDate).format("MM/DD/YYYY") : null : null;
-        //     }
-        //     if(element.paramName=="DtTo"&& !this.tdate){
-        //       element.value=this.tempTd != undefined ? this.tempTd != null ? moment(this.tempTd.startDate).format("MM/DD/YYYY") : null : null;
-        //       }
-        //         // if(element.value.startDate===null){
-        //         //     checkInvalidDate="Invalid date";//element.value;
-        //         // }else{
-        //         //   element.value=element.value != undefined ? element.value != null ? moment(element.value.startDate).format("MM/DD/YYYY") : null : null;
-        //         // }
-        //        }
-        // //}
       } else {
         if (element.value == "" || element.value == undefined) {
           checkOtherParam = element.value;
@@ -505,28 +451,7 @@ export class ReportMainComponent implements OnInit {
     };
     if (this.selectedReportId == undefined) {
     } else if (checkInvalidDate == "Invalid date") {
-      // Swal.fire({
-      //   title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
-      //   text: checkInvalidDate,
-      //   icon: 'error',
-      //   confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-      //   customClass: {
-      //     confirmButton: 'btn_ok'
-      // },
-      // })
-    }
-    // else if(checkOtherParam==undefined){
-    //   Swal.fire({
-    //     title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
-    //     text: checkParamName,
-    //     icon: 'error',
-    //     confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-    //     customClass: {
-    //       confirmButton: 'btn_ok'
-    //   },
-    //   })
-    // }
-    else {
+    } else {
       var isValid = this.getParamsList.filter(
         (x) => x.validation == true
       ).length;
@@ -542,43 +467,9 @@ export class ReportMainComponent implements OnInit {
           (res: any) => {
             this.isRunLoader = false;
             this.isloading = false;
-            // this.fdate="";
-            // this.tdate="";
             this.isQueryReportTable = true;
-            console.log(res);
             this.tableExecute = res.table;
             this.mainArray = this.tableExecute;
-            //
-
-            // var dataObject = {};
-            // if(this.tableExecute) {
-            //   for (var key in this.tableExecute) {
-            //
-            //     var obj = this.tableExecute[key];
-            //     for (var prop in obj) {
-            //        if(obj.hasOwnProperty(prop)){
-            //          //console.log(prop + " = " + obj[prop]);
-            //          var lable=prop;
-            //          var timestamp = obj[prop].toString();
-            //         //var isValidDate= moment(obj[prop], moment.ISO_8601).isValid();
-            //          if (timestamp.includes("T00:00:00")) {
-            //           var date = new Date(obj[prop]);
-            // var nDate= ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' +
-            // ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
-            // dataObject[lable] =nDate;
-            //         }
-            //         else{
-            //           dataObject[lable] =obj[prop];
-            //         }
-            //        }
-            //     }
-            //     this.mainArray.push(dataObject)
-            //  }
-            //  console.log(this.mainArray);
-            //  //this.tableExecute=this.mainArray;
-            // }
-
-            //
           },
           (error) => {
             console.log(error);
@@ -616,12 +507,8 @@ export class ReportMainComponent implements OnInit {
           var k = event.target.value;
           var thisVal = k;
           thisVal += "/";
-          //this.fdate=thisVal;
-          //event.target.value=thisVal;
         }
       }
-      // this.fdate=event.target.value;
-      // this.fParam=item;
     }
     if (item == "DtTo" || item == "ToDate") {
       if (event.target.value.length == 2 || event.target.value.length == 5) {
@@ -630,12 +517,8 @@ export class ReportMainComponent implements OnInit {
           var k = event.target.value;
           var thisVal = k;
           thisVal += "/";
-          //this.fdate=thisVal;
-          //event.target.value=thisVal;
         }
       }
-      // this.tdate=event.target.value;
-      // this.tParam=item;
     }
   }
   passValueToDate(event: any, item) {
@@ -698,24 +581,19 @@ export class ReportMainComponent implements OnInit {
   }
   datesFromUpdated(event) {
     if (this.isinitialize == 1) {
-      // this.tempFd = event;
     } else {
       this.isinitialize = 1;
       this.tempFd.startDate = moment(new Date());
       this.tempFd.endDate = moment(new Date());
-      //this.tempFd = undefined;
     }
   }
 
   datesToUpdated(event) {
     if (this.isToinitialize == 1) {
-      //this.tempTd = event;
     } else {
       this.isToinitialize = 1;
       this.tempTd.startDate = moment(new Date());
       this.tempTd.endDate = moment(new Date());
-
-      //this.tempTd = undefined;
     }
   }
 
@@ -729,7 +607,6 @@ export class ReportMainComponent implements OnInit {
             itemName: element.deviceName,
           };
           this.localDeviceList.push(obj);
-          // console.log(res);
         });
       },
       (error) => {
@@ -753,7 +630,6 @@ export class ReportMainComponent implements OnInit {
           var obj = this.tableExecute[key];
           for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
-              //console.log(prop + " = " + obj[prop]);
               var lable = prop;
               var timestamp = Date.parse(obj[prop]);
               var isValidDate = moment(obj[prop], moment.ISO_8601).isValid();
@@ -777,14 +653,12 @@ export class ReportMainComponent implements OnInit {
         }
       }
 
-      //console.log(testNewArray);
       const data = this.tableExecute; //temp;//testNewArray;
       const filename = this.xlsxService.getFilename("");
 
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, {
         cellStyles: true,
       });
-      //const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data,{header:testArray,cellStyles:true});
 
       var range = XLSX.utils.decode_range(worksheet["!ref"]);
       //
@@ -794,8 +668,6 @@ export class ReportMainComponent implements OnInit {
         for (var C = range.s.c; C <= range.e.c; ++C) {
           var cell_address = { c: C, r: R };
           var cell_ref = XLSX.utils.encode_cell(cell_address);
-          // worksheet[cell_ref].s = { alignment: { horizontal: 'center' } }
-
           if (!worksheet[cell_ref]) continue;
 
           if (
@@ -827,16 +699,6 @@ export class ReportMainComponent implements OnInit {
             currencyColumn.push(C);
             continue;
           }
-
-          //  if (worksheet[cell_ref].v && worksheet[cell_ref].v.includes('Schedules')) {
-          //    currencyColumn.push(C);
-          //    continue;
-          //  }
-
-          //  if (worksheet[cell_ref].v && worksheet[cell_ref].v.includes('Total')) {
-          //    currencyColumn.push(C);
-          //    continue;
-          //  }
         }
       }
 
@@ -850,7 +712,6 @@ export class ReportMainComponent implements OnInit {
           if (worksheet[cell_ref]) {
             worksheet[cell_ref].t = "n";
             worksheet[cell_ref].z = fmt;
-            // worksheet[cell_ref].s = { alignment: { horizontal: 'left' } } ;
           }
         }
       }
@@ -913,11 +774,6 @@ export class ReportMainComponent implements OnInit {
     if (keyword != "") {
       var searchArray = keyword.split(" ");
       for (var searchValue of searchArray) {
-        // filterdRecord = this.mainArray.filter((obj) =>
-        //   (obj.friendlyName && obj.friendlyName.toString().toLowerCase().indexOf(searchValue) > -1)
-        //   || (obj.paymentDate && obj.paymentDate.toString().toLowerCase().indexOf(searchValue) > -1)
-        //   || (obj.total && obj.total.toString().toLowerCase().indexOf(searchValue) > -1)
-        // );
         filterdRecord = this.mainArray.filter(
           (o) =>
             Object.values(o).toString().toLowerCase().indexOf(searchValue) > -1
@@ -938,9 +794,7 @@ export class ReportMainComponent implements OnInit {
       const pair = Array.from(event.target.value);
       pair.splice(2, 0, "/");
       pair.splice(5, 0, "/");
-      console.log(pair.join(""));
       this.testDate.startDate = pair.join("");
-      //console.log(this.testDate)
     }
   }
   //
@@ -948,27 +802,6 @@ export class ReportMainComponent implements OnInit {
   ngOnDestroy() {
     document.onkeydown = () => {};
   }
-
-  // openHebrewCalendarPopup(type,p:any) {
-  //   this.commonMethodService.openCalendarPopup(this.class_id, this.class_hid, this.selectedDateRange,true);
-  //   this.commonMethodService.getCalendarArray().subscribe(items => {
-  //     if(items &&  items.pageName=="ReportMain" && this.commonMethodService.isCalendarClicked == true){
-  //       if(items.obj){
-  //         this.commonMethodService.isCalendarClicked = false
-  //         p.close()
-  //         this.selectedDateRange = items.obj;
-  //         if(type == 'from'){
-  //           this.tempFd.startDate = this.selectedDateRange.startDate;
-  //           this.FromEngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
-  //         }
-  //         if(type == 'to'){
-  //           this.tempTd.startDate = this.selectedDateRange.startDate;
-  //           this.ToEngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
 
   openFromHebrewCalendarPopup(p: any) {
     this.commonMethodService.featureName = null;

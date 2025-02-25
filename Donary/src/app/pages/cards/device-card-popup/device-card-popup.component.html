@@ -296,11 +296,7 @@
                 </div>
               </div>
               <div class="cstm_selct_file {{setCls}}">
-                <!-- <div class="d-flex flex-wrap w-100" *ngIf="!imageUrl">
-                  <span class="selct_file">Select file</span>
-                  <p>or drag and drop files here</p>
-                  <input class="file-input" type="file" (change)="getBase64String($event)" name="doc_file" id="org_file" placeholder="Upload file">
-                </div> -->
+               
                 <div class="cstm_selct_file_content position-relative" *ngIf="!imageUrl">
                   <button class="selct_file" type="button">{{'SELECTFILE' | translate}}</button>
                   <input class="file-input" type="file" name="doc_file" id="org_file" (change)="getBase64String($event)"

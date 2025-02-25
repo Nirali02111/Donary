@@ -52,11 +52,11 @@ const noop = () => {};
 @Component({
   selector: "angular2-multiselect",
   templateUrl: "./multiselect.component.html",
+  standalone: false,
   host: { "[class]": "defaultSettings.classes" },
   styleUrls: ["./multiselect.component.scss"],
   providers: [DROPDOWN_CONTROL_VALUE_ACCESSOR, DROPDOWN_CONTROL_VALIDATION],
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
 })
 export class AngularMultiSelect
   implements

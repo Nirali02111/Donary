@@ -9,8 +9,8 @@ declare var $: any;
 @Component({
   selector: "app-phone-number-popup",
   templateUrl: "./phone-number-popup.component.html",
-  styleUrls: ["./phone-number-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./phone-number-popup.component.scss"],
 })
 export class PhoneNumberPopupComponent implements OnInit {
   @Output() emtOutput: EventEmitter<any> = new EventEmitter();

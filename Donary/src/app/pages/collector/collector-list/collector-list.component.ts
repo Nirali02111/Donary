@@ -57,8 +57,8 @@ declare var $: any;
   selector: "app-collector-list",
   templateUrl: "./collector-list.component.html",
   styleUrls: ["./collector-list.component.scss"],
+  standalone:false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class CollectorListComponent implements OnInit {
   @ViewChild(DataTable, { static: false }) svTable: DataTable;
@@ -3195,9 +3195,7 @@ export class CollectorListComponent implements OnInit {
         Swal.fire({
           title: "Layout Saved Successfully",
           icon: "success",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: "Ok",
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -3720,7 +3718,6 @@ export class CollectorListComponent implements OnInit {
     }
   }
   onBulkCollectorReport() {
-    // console.log(this.recordSelectedArray)
     this.modalOptions = {
       centered: true,
       size: "lg",
@@ -3759,30 +3756,6 @@ export class CollectorListComponent implements OnInit {
       }
     return false;
   }
-
-  // openHebrewCalendarPopup() {
-  //   this.modalOptions = {
-  //     centered: true,
-  //     size: "lg",
-  //     keyboard: true,
-  //     windowClass: "advance_search calender-modal",
-  //   };
-  //   let tPostion = $("#dynamicsCalender").offset();
-  //   setTimeout(() => {
-  //     $(".advance_search .modal-dialog").css("left", +tPostion.left);
-  //     $(".advance_search .modal-dialog").css("top", +tPostion.top + 40);
-  //   }, 1);
-  //   const modalRef = this.commonMethodService.openPopup(
-  //     CommonHebrewEnglishCalendarComponent,
-  //     this.modalOptions
-  //   );
-  //   modalRef.componentInstance.data = { isEngCal: true, formPage: "Payments", selectedDateRange: this.selectedDateRange , id : this.class_id , hid : this.class_hid };
-  //   modalRef.componentInstance.emtOutput.subscribe((res) => {
-  //     this.selectedDateRange = res;
-  //     this.EngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
-  //     this.getTotalPanel();
-  //   });
-  // }
 
   openHebrewCalendarPopup() {
     this.commonMethodService.featureName = null;

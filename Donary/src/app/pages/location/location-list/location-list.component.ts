@@ -52,8 +52,8 @@ declare var $: any;
   selector: "app-location-list",
   templateUrl: "./location-list.component.html",
   styleUrls: ["./location-list.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationListComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;
@@ -90,20 +90,6 @@ export class LocationListComponent implements OnInit {
     .getPermissionLst()
     .filter((x) => x.permissionName == "Show Total Panel Locations")
     .map((x) => x.isActive)[0];
-  /*colFields: any = [
-    { "colName": "Location", "isVisible": true , "colId":"LocationId", "isTotalPanel": true },
-    { "colName": "Nusach", "isVisible": true, "colId":"LocationnusachId", "isTotalPanel": true  },
-    { "colName": "Address", "isVisible": true, "colId":"LocationaddressId", "isTotalPanel": true  },
-    { "colName": "Rabbi", "isVisible": true, "colId":"LocationrabbiId", "isTotalPanel": true  },
-    { "colName": "Phone", "isVisible": true, "colId":"LocationphoneId", "isTotalPanel": true  },
-    { "colName": "Short Name", "isVisible": true, "colId":"LocationshortnameId", "isTotalPanel": true  },
-    { "colName": "Type", "isVisible": true, "colId":"LocationtypeId", "isTotalPanel": true  }  ,
-    { "colName": "Payments", "isVisible": true, "colId":"LocationpaymentsId", "isTotalPanel": false },
-    { "colName": "Open Pledges", "isVisible": true, "colId":"LocationopenPledgesId", "isTotalPanel": false },
-    { "colName": "Scheduled", "isVisible": true, "colId":"LocationscheduledId", "isTotalPanel": false },
-    { "colName": "Total", "isVisible": true, "colId":"LocationraisedId", "isTotalPanel": false },
-
-  ]*/
 
   colFields = [
     {
@@ -244,21 +230,6 @@ export class LocationListComponent implements OnInit {
   uiPageSettingId = null;
   uiPageSetting: any;
   listSyncSubscription!: Subscription;
-
-  /*headerList:any=[
-    {"colName":"Location", "visibleCondition":this.isLocationNameColVisible, "sortName":"locationName"},
-    {"colName":"Nusach", "visibleCondition":this.isLocationNusachColVisible, "sortName":"nusach"},
-    {"colName":"Address", "visibleCondition":this.isLocationAddressColVisible, "sortName":"address"},
-    {"colName":"Rabbi", "visibleCondition":this.isLocationRabbiColVisible, "sortName":"rabbi"},
-    {"colName":"Phone", "visibleCondition":this.isLocationPhoneColVisible, "sortName":"phone"},
-    {"colName":"Short Name", "visibleCondition":this.isLocationShortNameColVisible, "sortName":"locationNameShort"},
-    {"colName":"Type", "visibleCondition":this.isLocationTypeColVisible, "sortName":"locationType"},
-    {"colName": "Payments", "visibleCondition":  this.isLocationPaymentsColVisible, "sortName":"payments"},
-    {"colName":"Open Pledges", "visibleCondition": this.isLocationOpenPledgesColVisible, "sortName":"openPledges"},
-    {"colName":"Scheduled", "visibleCondition": this.isLocationScheduledColVisible, "sortName":"scheduled"},
-    {"colName":"Total", "visibleCondition": this.isLocationRaisedColVisible, "sortName":"raised"},
-  ]*/
-
   slideConfig = {
     infinite: false,
     arrows: true,
@@ -291,6 +262,16 @@ export class LocationListComponent implements OnInit {
   ngOnInit() {
     this.analytics.visitedLocations();
     this.colfieldsValue = this.pageSyncService.locationFieldsCol;
+    this.objAdvancedSearch = {
+      status: "Active",
+      donorId: [],
+      campaignId: [],
+      locationId: [],
+      collectorId: [],
+      sourceId: [],
+      reasonId: [],
+      linkedCampaignName: "",
+    };
     this.colfieldsValue.forEach((obj: { key: boolean }) => {
       let key = Object.keys(obj)[0];
       let value: boolean = Object.values(obj)[0];
@@ -2513,7 +2494,7 @@ export class LocationListComponent implements OnInit {
     //this.searchLocationData();
     this.gridData = this.gridShowPanelData;
     this.gridFilterData = this.gridData;
-    this.totalRecord = this.gridData.length;
+    this.totalRecord = this.gridData?.length;
     if (this.objAdvancedSearch != null) {
       this.filterLocalData();
     }
@@ -3307,7 +3288,6 @@ export class LocationListComponent implements OnInit {
   }
 
   filterLocalData() {
-    // console.log(this.objAdvancedSearch)
     this.gridFilterData = this.gridData.filter((o) => {
       if (!this.objAdvancedSearch) {
         return true;
@@ -3372,7 +3352,6 @@ export class LocationListComponent implements OnInit {
     }
   }
   onBulkCustomReport() {
-    // console.log(this.recordSelectedArray)
     this.modalOptions = {
       centered: true,
       size: "lg",
@@ -3384,12 +3363,7 @@ export class LocationListComponent implements OnInit {
       BulkCustomReportComponent,
       this.modalOptions
     );
-    // var bulkDonorDetails = [];
-    // this.recordSelectedArray.forEach(element => {
-    //   var filteredrecord = this.gridFilterData.filter(x => x.locationID == element);//this.gridData.filter(x => x.accountId == element);
-    //   bulkDonorDetails.push(filteredrecord);
-    // });
-    //modalRef.componentInstance.BulkDonorList = bulkDonorDetails;
+
     modalRef.componentInstance.SelectedDateRange = this.selectedDateRange;
     modalRef.componentInstance.SelectedIds = this.recordSelectedArray;
   }
@@ -3432,30 +3406,6 @@ export class LocationListComponent implements OnInit {
   checkselectRecord(accountId): Boolean {
     return this.recordSelectedArray.includes(accountId);
   }
-
-  // openHebrewCalendarPopup() {
-  //   this.modalOptions = {
-  //     centered: true,
-  //     size: "lg",
-  //     keyboard: true,
-  //     windowClass: "advance_search calender-modal",
-  //   };
-  //   let tPostion = $("#dynamicsCalender").offset();
-  //   setTimeout(() => {
-  //     $(".advance_search .modal-dialog").css("left", +tPostion.left);
-  //     $(".advance_search .modal-dialog").css("top", +tPostion.top + 40);
-  //   }, 1);
-  //   const modalRef = this.commonMethodService.openPopup(
-  //     CommonHebrewEnglishCalendarComponent,
-  //     this.modalOptions
-  //   );
-  //   modalRef.componentInstance.data = { isEngCal: true, formPage: "Payments", selectedDateRange: this.selectedDateRange , id : this.class_id , hid : this.class_hid };
-  //   modalRef.componentInstance.emtOutput.subscribe((res) => {
-  //     this.selectedDateRange = res;
-  //     this.EngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
-  //     this.getTotalPanel();
-  //   });
-  // }
 
   openHebrewCalendarPopup() {
     this.commonMethodService.featureName = null;

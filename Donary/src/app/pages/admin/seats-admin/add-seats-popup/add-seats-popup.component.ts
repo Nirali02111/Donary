@@ -18,8 +18,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: "app-add-seats-popup",
   templateUrl: "./add-seats-popup.component.html",
-  styleUrls: ["./add-seats-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./add-seats-popup.component.scss"],
 })
 export class AddSeatsPopupComponent implements OnInit {
   title = "Add seat rate";

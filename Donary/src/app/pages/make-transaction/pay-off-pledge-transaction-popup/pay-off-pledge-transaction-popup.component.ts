@@ -39,10 +39,7 @@ import { AfterOffTransactionComponent } from "../after-off-transaction/after-off
 import { Guid } from "guid-typescript";
 import { environment } from "src/environments/environment";
 import { AmountOfTransactionComponent } from "../amount-of-transaction/amount-of-transaction.component";
-import {
-  DonorDropdownOfTransactionComponent,
-  DonorOfDropdownInTransactionObj,
-} from "../donor-dropdown-of-transaction/donor-dropdown-of-transaction.component";
+import { DonorDropdownOfTransactionComponent, DonorOfDropdownInTransactionObj } from "../donor-dropdown-of-transaction/donor-dropdown-of-transaction.component";
 import Swal from "sweetalert2";
 import { DonaryDateFormatPipe } from "../../../commons/donary-date-format.pipe";
 import { AnalyticsService } from "src/app/services/analytics.service";
@@ -89,8 +86,10 @@ export interface unpaidPledges {
     ReactiveFormsModule,
     FormsModule,
     DoanryDirective,
+    NgClass,
     NgIf,
     NgSelectModule,
+    NgFor,
     CalendarModule,
     NgbPopover,
     CurrencyPipe,
@@ -99,7 +98,8 @@ export interface unpaidPledges {
     PaymentMethodOfTransactionComponent,
     AmountOfTransactionComponent,
     DonorDropdownOfTransactionComponent,
-  ],
+    DonaryDateFormatPipe
+],
   providers: [ClickOutsideDirective, TransactionControlProviderService],
   templateUrl: "./pay-off-pledge-transaction-popup.component.html",
   styleUrl: "./pay-off-pledge-transaction-popup.component.scss",
@@ -186,7 +186,9 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup.addControl("pledges", this.fb.array([]));
-    this.isDevEnv = environment.baseUrl.includes("https://dev-api.donary.com/");
+    this.isDevEnv = environment.baseUrl.includes(
+      "https://dev-api.donary.com/"
+    );
 
     this.donor.valueChanges.subscribe((value) => {
       if (!value) {
@@ -199,10 +201,7 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
 
       this.getPledges();
     });
-    this.EngHebCalPlaceholder = this.datePipe.transform(
-      this.EngHebCalPlaceholder,
-      "short"
-    );
+    this.EngHebCalPlaceholder = this.datePipe.transform(this.EngHebCalPlaceholder,'short');
   }
 
   onClose() {
@@ -535,6 +534,7 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
         }
         this.analytics.createdPayment();
 
+
         this.onClose();
         const modalRef = this.getAfterOfTransactionModal();
 
@@ -587,14 +587,10 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
       (error) => {
         this.activeModal.dismiss();
         Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-          ),
+          title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
           text: error.error,
           icon: "error",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -650,16 +646,10 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
         (error) => {
           this.activeModal.dismiss();
           Swal.fire({
-            title: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.SOMETHING_WENT_WRONG"
-            ),
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
             text: error.error,
             icon: "error",
-            confirmButtonText: this.commonMethodService
-              .getTranslate("WARNING_SWAL.BUTTON.CONFIRM.OK")
-              .commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK').commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -705,10 +695,11 @@ export class PayOffPledgeTransactionPopupComponent implements OnInit {
   }
 
   onChangeDonor(item: DonorOfDropdownInTransactionObj | null) {
+
     if (item) {
       this.donorName = item.fullName;
-      return;
+      return
     }
-    this.donorName = "";
+    this.donorName = ''
   }
 }

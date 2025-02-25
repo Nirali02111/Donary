@@ -16,8 +16,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-transaction-card-popup",
   templateUrl: "./donor-transaction-card-popup.component.html",
-  styleUrls: ["./donor-transaction-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-transaction-card-popup.component.scss"],
 })
 export class DonorTransactionCardPopupComponent implements OnInit {
   objAdvancedSearch: any;

@@ -39,10 +39,7 @@
                             <input type="text" name="data.fieldName" class="form-control" [(ngModel)]="data.filtervalue">
                         </div>
                         <div  *ngIf="data.type=='dropdown'">
-                            <!-- <select [(ngModel)]="data.filtervalue" name="data.fieldName" class="form-control">
-                            <option value="null">Select</option>
-                            <option *ngFor="let item of data.options" [value]="item">{{item}}</option>
-                            </select>-->
+                         
                             <angular2-multiselect id="ddlAdvanceField"
                             [settings]="commonMethodService.setDropDownSettings('',2,false,false,true)"
                             [data]="data.options"
@@ -95,8 +92,7 @@
                         </label>
                     </div>
                     <div class="input-group col-8 mb-2 d-flex justify-content-between">
-                        <!-- <input type="text" [(ngModel)]="address" class="form-control" name="txtAddress"
-                            id="input-address" /> -->
+                        
                             <div class="city-dpwn" >
 								<angular2-multiselect id="ddlCity"
 									[settings]="commonMethodService.setDropDownSettings('Select City',2,true,false, true,false,'')"
@@ -113,36 +109,7 @@
 							</div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="input-group col-4 mb-2">
-                        <label for="lblDonor">
-                            {{'CITY'|translate}}
-                        </label>
-                    </div>
-                    <div class="input-group col-8 mb-2">
-                        <input type="text" class="form-control" [(ngModel)]="city" name="txtCity" id="input-city" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group col-4 mb-2">
-                        <label for="lblDonor">
-                            {{'STATE'|translate}}
-                        </label>
-                    </div>
-                    <div class="input-group col-8 mb-2">
-                        <input type="text" class="form-control" [(ngModel)]="state" name="txtState" id="input-state" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group col-4 mb-2">
-                        <label for="lblDonor">
-                            {{'ZIP'|translate}}
-                        </label>
-                    </div>
-                    <div class="input-group col-8 mb-2">
-                        <input type="text" class="form-control" [(ngModel)]="zip" name="txtZip" id="input-zip" />
-                    </div>
-                </div> -->
+               
                 <div class="row">
                     <div class="input-group col-4 mb-2">
                         <label for="lblDonor">
@@ -154,7 +121,6 @@
                             [settings]="commonMethodService.setDropDownSettings('Select Default Location',2,false,true)"
                             [data]="commonMethodService.paymentLocationList" [(ngModel)]="defaultLocations">
                         </angular2-multiselect>
-                        <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
                     </div>
                 </div>
                 <div class="row">
@@ -167,21 +133,7 @@
                         <input type="text" class="form-control" [(ngModel)]="group" name="txtGroup" id="input-group" />
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="input-group col-4 mb-2">
-                        <label for="lblDonor">
-                            Class
-                        </label>
-                    </div>
-                    <div class="input-group col-8 mb-2">
-                        <input type="text" class="form-control" [(ngModel)]="class" name="txtClass" id="input-class" />
-                    </div>
-                </div>           -->
-
-
-
-
-
+               
                 <div class="row">
                     <div class="input-group col-4 mb-2">
                         <label for="lblDonor">

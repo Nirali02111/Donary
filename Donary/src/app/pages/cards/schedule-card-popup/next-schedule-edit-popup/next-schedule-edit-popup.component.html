@@ -14,7 +14,6 @@
              <div class="input_group">
                 <span class="icon"><img src="/assets/dist/img/count_icon.svg" width="20" height="20" alt="" /></span>
                 <input type="text" [maxLength]="countMaxLength" class="form-control" (keypress)="commonMethodService.numberOnly($event)"  [(ngModel)]="count" (change)="ChangeCount($event)" />
-                <!-- <span class="text-danger error_message" *ngIf="isCountError">Count is required</span> -->
              </div>
           </div>
           <div class="form-group d-flex">

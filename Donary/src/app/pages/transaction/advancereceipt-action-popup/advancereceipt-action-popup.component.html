@@ -416,39 +416,6 @@
 								</ng-container>
 							</ul>
 						</td>
-						<!-- <td class="blk-td-mail-box">
-							<ul class="bulk-sms-recipt">
-								<ng-container *ngFor="let addressLabel of item.addressLabelArray">
-									<li *ngIf="isAddressLabelNameShowHide(addressLabel.labelName)"
-										[class.selected]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)">
-										<div class="inner-div" *ngIf="addressLabel.labelValue">
-											<input type="checkbox" [id]="addressLabel.labelID" class="checkbox"
-												style="display: block;"[class.showInvalid]="item.validation && !item.validation.isValid"
-												[checked]="isAddressLabelChecked(item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)"
-												(change)="deSelectLabel($event,item.paymentId,item.accountId, addressLabel.labelValue,addressLabel.labelName,addressLabel.labelType)" />
-											<label [for]="addressLabel.labelID">{{addressLabel.labelName}}</label>
-
-
-										</div>
-										<div class="inner-div" *ngIf="!addressLabel.labelValue">
-											<span> {{addressLabel.labelName}}</span>
-										</div>
-										<div>
-											<span [class.showInvalid]="item.validation && !item.validation.isValid"
-												class="modal-span">{{addressLabel.labelValue}}</span>
-											<p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid"
-												class="address_error text-danger"></p><span class="showInvalid ml-1"> <i
-													class="fa fa-info-circle"
-													*ngIf="item.validation && !item.validation.isValid"
-													aria-hidden="true" data-toggle="tooltip" appHoverTooltip
-													labelText={{item?.validation?.message}}
-													t-title="Tooltip"></i></span>
-										</div>
-									</li>
-								</ng-container>
-							</ul>
-
-						</td> -->
 						<td class="blk-td-mail-box">
 							<ul class="bulk-sms-recipt">
 								<ng-container *ngFor="let addressLabel of item.addressLabelArray">
@@ -467,7 +434,6 @@
 								  </div>
 								  <div>
 								  <span class="modal-span">{{addressLabel.labelValue}}</span>
-								  <!-- <p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid" class="address_error text-danger">{{item.validation.message}}</p> -->
 								  <p *ngIf=" addressLabel.labelValue && item.validation && !item.validation.isValid" class="address_error text-danger">{{item.validation.message}}</p>
 								</div>
 								</li>

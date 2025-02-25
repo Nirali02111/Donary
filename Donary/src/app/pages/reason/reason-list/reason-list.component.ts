@@ -64,9 +64,9 @@ declare var $: any;
 @Component({
   selector: "app-reason-list",
   templateUrl: "./reason-list.component.html",
+  standalone: false,
   styleUrls: ["./reason-list.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class ReasonListComponent implements OnInit, AfterViewInit {
   @ViewChild(DaterangepickerDirective, { static: false })
@@ -178,7 +178,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
           sortName: "goal",
           disabled: false,
         },
-        // { "colName": "Raised", "isVisible": true, "colId":"reasonRaisedId", "sortName":"mainraised","disabled":false },
         {
           colName: "PERCENTAGE",
           isVisible: true,
@@ -559,14 +558,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
           this.searchReasonData();
         }
       });
-    /*this.cardFilter = [
-      {"id":1,"itemName":"Campaign"},
-      {"id":2,"itemName":"Reason"},
-      {"id":3,"itemName":"Location"},
-      {"id":5,"itemName":"Collector"},
-      {"id":7,"itemName":"Device"},
-      {"id":6,"itemName":"Donor"},
-    ];*/
     this.initMultiSelect();
     this.sortFilter = [
       { id: 1, itemName: "A-Z" },
@@ -636,13 +627,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
                 });
               }
             });
-
-            /*  this.colFields.forEach(element => {
-            element.items.forEach(item => {
-              item.isVisible = this.checkGridColVisibility(item.colName);
-            });
-
-          }); */
             if (this.isTotalPanelVisible) {
               this.panelTitle = "Hide Total Panel";
               this.searchReasonData();
@@ -1079,8 +1063,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
       if (this.isTotalPanelShowAll) {
         this.totalPanelfilterLocalData();
         this.showOnlyTotalData();
-        // this.showOnlyTotalData();
-        // this.filterLocalData();
         this.tempSearch = this.gridFilterData;
       } else {
         this.showAllTotalData();
@@ -1092,33 +1074,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
       this.isReasonRaisedTColVisible = true;
 
       if (this.gridFilterData.length > 0) {
-        // this.paymentTypeChipData = _(this.gridTotalPanelData).filter(s => s.campaignId != null && s.reasonId!=null).groupBy('campaignId').map((objs, key) => ({
-        //   'name': objs[0].campaign,
-        //   'key': key,
-        //   'count': this.gridFilterData.filter(x=>x.campaignId==objs[0].campaignId && x.reasonId!=null).length,
-        //   'total': this.gridFilterData.filter(x=>x.campaignId==objs[0].campaignId && x.reasonId!=null).map(item => item.raised).length == 0 ? 0 : this.gridFilterData.filter(x=>x.campaignId==objs[0].campaignId && x.reasonId!=null).map(item => item.raised).reduce((prev, next) => prev + next),
-        //   'payment':_.sumBy(objs, 'payments'),
-        //   'openpledge':_.sumBy(objs,'openPledges'),
-        //   'scheduled':_.sumBy(objs,'scheduled')
-        // })).value();
-        // this.paymentTypeChipData=this.paymentTypeChipData.filter(x=>x.count>0);
-        // if (this.paymentTypeChipData.length != 0) {
-        //   var allTotal = this.gridFilterData.filter(s => s.campaignId != null).map(item => item.raised).length == 0 ? 0 : this.gridFilterData.filter(s => s.campaignId != null).map(item => item.raised).reduce((prev, next) => prev + next);
-        //   var allReasonTotal = this.gridSumByData.filter(s => s.reasonId != null).map(item => item.raised).length == 0 ? 0 : this.gridSumByData.filter(s => s.reasonId != null).map(item => item.raised).reduce((prev, next) => prev + next);
-        //   var payment = this.gridFilterData.filter(s => s.campaignId != null).map(item => item.payments).length == 0 ? 0 : this.gridFilterData.filter(s => s.campaignId != null).map(item => item.payments).reduce((prev, next) => prev + next);
-        //   var openpledge = this.gridFilterData.filter(s => s.campaignId != null).map(item => item.openPledges).length == 0 ? 0 : this.gridFilterData.filter(s => s.campaignId != null).map(item => item.openPledges).reduce((prev, next) => prev + next);
-        //   var scheduled = this.gridFilterData.filter(s => s.campaignId != null).map(item => item.scheduled).length == 0 ? 0 : this.gridFilterData.filter(s => s.campaignId != null).map(item => item.scheduled).reduce((prev, next) => prev + next);
-        //   this.gridFilterData=this.gridFilterData.filter(s => s.campaignId != null)
-        //   var allLength = this.gridFilterData.length;
-        //   this.gridSearchFilterData=this.gridFilterData;
-        //   this.totalRecord=allLength;
-        //   var totalArray = { 'name': 'Total Of Campaigns', 'key': -2, 'total': allTotal, 'count': allLength,'payment':payment,'openpledge':openpledge,'scheduled':scheduled };
-        //   var allArray = { 'name': 'ALL', 'key': -2,'total': allReasonTotal,  'count': allLength};
-        //   this.paymentTypeChipData.unshift(allArray);
-        //   this.paymentTypeChipData.splice(1, 0,totalArray);
-        //   this.selectedItem=allArray;
-        //   this.changeSortType(this.sortType);
-        // }
         this.initMultiSelect();
       } else {
         this.paymentTypeChipData = [];
@@ -1127,7 +1082,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
     } else {
       this.paymentTypeChipData = [];
       this.totalRecord = 0;
-      //this.gridData = null;
       this.gridFilterData = [];
       this.gridSumByData = this.gridFilterData;
       this.initMultiSelect();
@@ -1155,7 +1109,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
       } else {
         this.selectedDateRange = event;
       }
-      //this.selectedDateRange=event;
       this.getTotalPanel();
     }
   }
@@ -3130,8 +3083,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
         this.gridData = this.gridSelectedData;
         this.totalRecord = this.gridSelectedData.length;
       } else {
-        // var record = this.gridSumByData;
-        // this.totalRecord = this.gridSumByData.length;
         var record = this.gridSearchFilterData; //this.gridFilterData;///issue added
         this.totalRecord = this.gridSearchFilterData.length; //this.gridFilterData.length;
       }
@@ -3301,14 +3252,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
         this.isFiltered = false;
         if (res) {
           this.objAdvancedSearch = objSearch;
-          // for local not local filter
-          //if (this.objAdvancedSearch && this.objAdvancedSearch.status) {
-          //  res = res.filter(x => x.status == "Active");
-          //}
-          /*selse {
-          res = res.filter(x => x.status != "InActive");
-        }*/
-
           for (var i = 0; i < res.length; i++) {
             if (res[i].linkedCampaignName) {
               //remove duplicate valu from linkedCampaignList
@@ -3365,7 +3308,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
         this.isloading = false;
         this.changeDetectorRef.detectChanges();
         console.log(error);
-        //this.notificationService.showError(error.error, "Error while fetching data !!");
       }
     );
   }
@@ -3440,9 +3382,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
         let parentReasonName = item && item.parentReasonName;
 
         let row = {};
-        /*if (this.isReasonRaisedColVisible) {
-          row['Raised']=this.commonMethodService.formatAmount(item.mainraised);
-        }*/
         if (this.isReasonNameColVisible) {
           let ColName: any = this.isdownloadExcelGuid
             ? this.commonMethodService.getColName("REASONNAME")
@@ -4042,16 +3981,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
           if (source) {
             return true;
           }
-          //reason
-          // const reason = this.objAdvancedSearch.reasonId.find((t)=>
-          // {
-          //   if (this.isContain(o.reasonId, t.id)) {
-          //         return true
-          //       }
-          // });
-          // if (reason) {
-          //   return true
-          // }
         }
         return false;
       });
@@ -4125,9 +4054,7 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
     }
   }
   checkselectRecord(reasonId): Boolean {
-    // return this.recordSelectedArray.includes(reasonId);
     var type = typeof reasonId;
-    //return this.recordSelectedArray.includes(accountId);
     if (
       !this.displayThisPageArray.includes(reasonId) &&
       this.isSelectPopupShow
@@ -4141,7 +4068,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
     }
   }
   onBulkReasonReport() {
-    // console.log(this.recordSelectedArray)
     this.modalOptions = {
       centered: true,
       size: "lg",
@@ -4288,7 +4214,6 @@ export class ReasonListComponent implements OnInit, AfterViewInit {
       return;
     }
     this.isSelected = false;
-    //  this.isCustomReport = false;
     this.isSelectPopupShow = false;
     this.recordSelectedArray = [];
   }

@@ -14,8 +14,8 @@ declare var $: any;
 @Component({
   selector: "app-campaign-trans-grid-filter-popup",
   templateUrl: "./campaign-trans-grid-filter-popup.component.html",
-  styleUrls: ["./campaign-trans-grid-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./campaign-trans-grid-filter-popup.component.scss"],
 })
 export class CampaignTransGridFilterPopupComponent
   implements OnInit, OnDestroy

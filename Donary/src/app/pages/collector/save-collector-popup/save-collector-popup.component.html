@@ -3,7 +3,7 @@
 		<h4>{{title}}</h4>
 		<div class="close_trans" (click)="closePopup()"><span>&times;</span></div>
 	</div>
-    <form  name="donorInfoForm" (ngSubmit)="f.form.valid && SaveCollectorInfo()" #f="ngForm" >
+    <form  name="donorInfoForm" (ngSubmit)="f.form.valid && this.commonMethodService.isfeatureSetting && SaveCollectorInfo()" #f="ngForm" >
         <div class="reason_wrap">
             <div class="inside_wrap modal__custom_content">
                 <div class="form-group-block search-global-donor">
@@ -48,16 +48,7 @@
             <div class="form-group-block edit-donor-top-wrap row-yiddish-name">
               <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"><div class="block_label">{{'YIDDISHNAME'|translate}}:</div></app-skeleton-loader-component>
               <div class="block_inputs">
-                <!-- <div class="form-group">
-                  <div class="colm colm-12">
-                    <input type="text" class="input-text" [ngClass]="[nameJewishReq ? 'error-field' : '']" (keyup)="ValidCollectorKeyPress($event,'namejewish')" (keypress)="commonMethodService.HebrewOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtFullNameJewish.invalid }"  id="txtFullNameJewish" [(ngModel)]="fullNameJewish"   #txtFullNameJewish="ngModel" name="txtFullNameJewish" />
-
-                    <div *ngIf="nameJewishReq" class="row text-danger">
-                      <div  class="val-error">Yiddish Name is required</div>
-                    </div>
-
-                  </div>
-                </div> -->
+               
                 @if(isloading){
                   <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '200px', height: '30px' }"></app-skeleton-loader-component>
                   <span  [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">
@@ -106,16 +97,7 @@
             <div class="form-group-block edit-donor-top-wrap row-english-name">
               <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }"><div class="block_label">{{'ENGLISHNAME'|translate}}:</div></app-skeleton-loader-component>
               <div class="block_inputs">
-                <!-- <div class="form-group">
-                  <div class="colm colm-12">
-                    <input type="text" class="input-text" [ngClass]="[nameReq ? 'error-field' : '']" id="txtFullName" (keyup)="ValidCollectorKeyPress($event,'name')" (keypress)="commonMethodService.EnglishOnly($event)" [ngClass]="{ 'is-invalid': f.submitted && txtFullName.invalid }" [(ngModel)]="fullName"    #txtFullName="ngModel" name="txtFullName"  />
-
-                    <div *ngIf="nameReq" class="row text-danger">
-                      <div  class="val-error">English Name is required</div>
-                    </div>
-
-                  </div>
-                </div> -->
+             
                 @if(isloading){
                   <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '130px', height: '30px' }"></app-skeleton-loader-component>
                   <span [ngStyle]="{'margin-left': isloading ? '10px' : '0px'}">

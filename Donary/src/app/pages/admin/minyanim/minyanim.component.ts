@@ -19,8 +19,8 @@ declare let $: any;
 @Component({
   selector: "app-minyanim",
   templateUrl: "./minyanim.component.html",
-  styleUrls: ["./minyanim.component.scss"],
   standalone: false,
+  styleUrls: ["./minyanim.component.scss"],
 })
 export class MinyanimComponent implements OnInit, AfterViewInit {
   @ViewChild("minyanimTab", { static: true }) minyanimTab: ElementRef<any>;
@@ -892,93 +892,6 @@ export class MinyanimComponent implements OnInit, AfterViewInit {
     let minyanType = this.getMinyanType(this.dynamicTabName);
     this.getDefaultTimesList(this.defaultValue, minyanType, false);
   }
-
-  //   getDefaultTimesList(selectedGroupId:string,minyanType: string) {
-  //     let eventGuId = this.localstoragedataService.getLoginUserEventGuId();
-
-  //     this.minyanimService.getTimesList(eventGuId).subscribe((res: any) => {
-  //       this.isloading=false;
-  //       this.isSaved=false;
-  //       this.grouplistresponse = res;
-  //       if(this.dynamicTabName == "minyanim-02"){
-  //          this.tabOpen=1
-  //       }else if(this.dynamicTabName == "minyanim-03"){
-  //         this.tabOpen=2
-  //       }else{
-  //         this.tabOpen=0
-  //       }
-  //         this.groupLists= res[this.tabOpen] ? res[this.tabOpen].groupList : null
-
-  //         if(this.groupLists){
-  // const dynamicTabsGroupNames = this.groupLists.map(tab => tab.groupId);
-
-  // this.groutabIds = dynamicTabsGroupNames
-  // const groupListGroupNames = this.groups.map(group => group.groupId);
-  // const filteredGroupList = this.groups.filter(
-  //   group => !dynamicTabsGroupNames.includes(group.groupId)
-  // );
-  // this.groupList= filteredGroupList;
-  //         this.groupIds = this.groupLists.map(group => group.groupId);
-
-  //         if(this.istabClicked==false) {
-  //         this.groupIds.forEach(groupId => {
-  //           this.selectGroupList(groupId,false);
-  //         });}
-  //         this.istabClicked=true;
-  //       this.defaultTimeList = res;
-  //       this.gridDefaultFilterData = [];
-  //       }
-  //       if (selectedGroupId) {
-  //        let selectedGroup = res.filter((x)=> x.minyanType == minyanType).find(x => x.groupList.some(y => y.groupId === 0 || y.groupName === selectedGroupId));
-
-  //         if (selectedGroup) {
-  //           selectedGroup.groupList.forEach(x => {
-  //             if (x.groupId === 0 || x.groupName === selectedGroupId) {
-  //               x.timelist.forEach(time => {
-  //                 let timeA = this.convertToAmPmTime(time.timeA);
-  //                 let timeB = this.convertToAmPmTime(time.timeB);
-  //                 let modifiedTime = {
-  //                   ...time,
-  //                   timeA: timeA,
-  //                   timeB: timeB
-  //                 };
-  //                 this.gridDefaultFilterData.push(modifiedTime);
-  //               });
-  //             }
-  //           });
-  //           this.initDefaultFormData()
-  //         }else{
-  //           let nullData = res.filter((x)=> x.minyanType == null || x.minyanType === '').find(x => x.groupList.some(y => y.groupId === 0 || y.groupName === selectedGroupId));
-  //           if(nullData){
-  //             nullData.groupList.forEach(x => {
-  //               if (x.groupId === 0 || x.groupName === selectedGroupId) {
-  //                 x.timelist.forEach(time => {
-  //                   let timeA = this.convertToAmPmTime(time.timeA);
-  //                   let timeB = this.convertToAmPmTime(time.timeB);
-  //                   let modifiedTime = {
-  //                     ...time,
-  //                     timeA: timeA,
-  //                     timeB: timeB
-  //                   };
-  //                   this.gridDefaultFilterData.push(modifiedTime);
-  //                 });
-  //               }
-  //             });
-  //           }
-  //           this.initDefaultFormData()
-  //         }
-  //       } else {
-  //         res.forEach(x => {
-  //           x.groupList.forEach(y => {
-  //             y.timelist.forEach(z => {
-  //               this.gridDefaultFilterData.push(z);
-  //             });
-  //           });
-  //         });
-  //       }
-  //     })
-
-  //   }
 
   //updated getDefaultTimesList code started
   getDefaultTimesList(

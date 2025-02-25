@@ -5,8 +5,8 @@ import { AnalyticsService } from "src/app/services/analytics.service";
 @Component({
   selector: "app-finance-main",
   templateUrl: "./finance-main.component.html",
-  styleUrls: ["./finance-main.component.scss"],
   standalone: false,
+  styleUrls: ["./finance-main.component.scss"],
 })
 export class FinanceMainComponent implements OnInit {
   isDevEnv: boolean;

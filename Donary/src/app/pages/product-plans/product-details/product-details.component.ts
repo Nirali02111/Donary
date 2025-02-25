@@ -36,8 +36,8 @@ export const swing = animation(
 @Component({
   selector: "app-product-details",
   templateUrl: "./product-details.component.html",
-  styleUrls: ["./product-details.component.scss"],
   standalone: false,
+  styleUrls: ["./product-details.component.scss"],
   animations: [trigger("swing", [transition("* => *", useAnimation(swing))])],
 })
 export class ProductDetailsComponent implements OnInit {

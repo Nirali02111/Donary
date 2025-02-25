@@ -7,7 +7,6 @@
         <div class="dropdown-item" *ngFor="let x of grpColumn.list; let i=index">
             <div style="width: 100%;">
                 <ng-template [ngIf]="i === grpColumn.selectedChild" [ngIfElse]="moreSelectCheckBBox">
-                    <!-- <input type="checkbox" name="singlecheck" [checked]="true" [disabled]="true"> -->
 				</ng-template>
 				<ng-template #moreSelectCheckBBox>
                     <div class="">

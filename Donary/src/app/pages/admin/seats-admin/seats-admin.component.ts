@@ -13,8 +13,8 @@ import { AnalyticsService } from "src/app/services/analytics.service";
 @Component({
   selector: "app-seats-admin",
   templateUrl: "./seats-admin.component.html",
-  styleUrls: ["./seats-admin.component.scss"],
   standalone: false,
+  styleUrls: ["./seats-admin.component.scss"],
 })
 export class SeatsAdminComponent implements OnInit {
   isLoading = false;
@@ -54,26 +54,6 @@ export class SeatsAdminComponent implements OnInit {
     );
   }
 
-  // AddNewSeason() {
-  //   this.modalOptions = {
-  //     centered: true,
-  //     size: "md",
-  //     backdrop: "static",
-  //     keyboard: true,
-  //     windowClass: "drag_popup AddNewSeason-popup",
-  //   };
-
-  //   const modalRef = this.commonMethodService.openPopup(
-  //     SeasonCardPopupComponent,
-  //     this.modalOptions
-  //   );
-  //   modalRef.componentInstance.emitSeasonCreated.subscribe((res) => {
-  //     if (res) {
-  //         this.commonMethodService.getCampaignList();
-  //     }
-  //   });
-  // }
-
   AddNewSeason() {
     if (this.isNewCreateSeasonRelease) {
       this.modalOptions = {
@@ -88,11 +68,6 @@ export class SeatsAdminComponent implements OnInit {
         CreateSeasonPopupComponent,
         this.modalOptions
       );
-      // modalRef.componentInstance.emitSeasonCreated.subscribe((res) => {
-      //   if (res) {
-      //       this.commonMethodService.getCampaignList();
-      //   }
-      // });
     } else {
       this.modalOptions = {
         centered: true,

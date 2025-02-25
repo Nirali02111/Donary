@@ -47,37 +47,6 @@ export class StandardReportComponent implements OnInit {
   allDyanamicReportList: any;
   reportType: string = "custom";
 
-  /*   onReportSelect(e: any) {
-    this.router.navigate([`/report/${e.reportId}`]);
-    if (e && e.sectionID) {
-      const allHeaderElements = document.querySelectorAll(".accordion-header");
-      allHeaderElements.forEach((element) => {
-        element.classList.add("collapsed");
-      });
-      const headerElement = document.getElementById(e.sectionID);
-      this.selectedGroup.set(e.sectionID);
-      if (headerElement) {
-        headerElement.classList.remove("collapsed");
-      }
-      const index = this.getIndex(e.sectionID);
-      const collapseshowElementId = `collapsed-${index+1}`;
-      const collapseshowElement = document.getElementById(
-        collapseshowElementId
-      );
-      const allCollapseshowElements = document.querySelectorAll(
-        '[id^="collapsed-"]'
-      );
-      allCollapseshowElements.forEach((element) => {
-        element.classList.remove("show");
-      });
-      if (collapseshowElement) {
-        collapseshowElement.classList.add("show");
-      }
-    }
-
-    this.cdr.detectChanges();
-  } */
-
   getIndex(sectionID) {
     return this.groupNames.findIndex((group) => group.sectionID === sectionID);
   }

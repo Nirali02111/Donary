@@ -15,8 +15,8 @@ import { UIPageSettingService } from "src/app/services/uipagesetting.service";
 @Component({
   selector: "app-select-transaction-popup",
   templateUrl: "./select-transaction-popup.component.html",
-  styleUrl: "./select-transaction-popup.component.scss",
   standalone: false,
+  styleUrl: "./select-transaction-popup.component.scss",
 })
 export class SelectTransactionPopupComponent {
   formGroup!: FormGroup;

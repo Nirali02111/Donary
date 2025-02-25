@@ -37,7 +37,7 @@ export class ApiInterceptor implements HttpInterceptor {
     const accesstoken = this.localstoragedataService.getloginUserAccessToken();
     let payaccesstoken = this.localstoragedataService.getloginPayUserAccessToken()
     const baseUrl = environment.baseUrl;
-    const mapUrl = "https://donarywebapicoreqa.azurewebsites.net/";
+    const mapUrl = "https://qa-api.donary.com/";
     const mapRequest = "v1/shullSeating/GetMapPdf";
     const webUrl=this.getHostname();
     //if current url is not login url

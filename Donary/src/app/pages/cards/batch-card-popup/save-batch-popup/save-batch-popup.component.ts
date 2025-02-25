@@ -23,8 +23,8 @@ declare var $: any;
 @Component({
   selector: "app-save-batch-popup",
   templateUrl: "./save-batch-popup.component.html",
-  styleUrls: ["./save-batch-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./save-batch-popup.component.scss"],
 })
 export class SaveBatchPopupComponent implements OnInit {
   batchCardData: any;

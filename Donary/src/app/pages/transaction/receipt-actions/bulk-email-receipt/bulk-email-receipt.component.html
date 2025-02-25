@@ -67,13 +67,6 @@
 						<tbody *ngIf="sv.data?.length > 0">
 							<tr *ngFor="let item of sv.data; let i=index">
 								<td class="bulk-email-donor-name-td-cls bulkrecep-donor-col">
-									<!-- <input #namecheckboxes type="checkbox"
-										name="singlecheck"
-										(change)="selectReceipt($event,'singlecheck',item.accountId,item.paymentId,item.emails, item.receiptNum)"
-									    [checked]="checkReceiptIsSelectOrNot(item.receiptNum)"
-										[attr.data-accId]="item.accountId"
-										[disabled]="checkDonorIsDisable(item.accountId)"
-									> -->
 									<div class="d-flex align-items-center justify-content-between">
 										<h5 (click)="openDonorCardPopup(item.accountId)" class="lng_hebrew" class="blueviolet">
 											{{ item.fullNameJewish }}

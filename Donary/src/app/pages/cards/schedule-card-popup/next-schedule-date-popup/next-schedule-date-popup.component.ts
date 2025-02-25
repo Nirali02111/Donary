@@ -14,8 +14,8 @@ import * as moment from "moment";
 @Component({
   selector: "app-next-schedule-date-popup",
   templateUrl: "./next-schedule-date-popup.component.html",
-  styleUrls: ["./next-schedule-date-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./next-schedule-date-popup.component.scss"],
 })
 export class NextScheduleDatePopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

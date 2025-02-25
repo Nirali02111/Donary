@@ -10,8 +10,8 @@ declare let $: any;
 @Component({
   selector: "app-api-keys",
   templateUrl: "./api-keys.component.html",
-  styleUrls: ["./api-keys.component.scss"],
   standalone: false,
+  styleUrls: ["./api-keys.component.scss"],
 })
 export class ApiKeysComponent implements OnInit {
   modalOptions: NgbModalOptions;

@@ -36,8 +36,8 @@ declare var $: any;
 @Component({
   selector: "app-reason-card-popup",
   templateUrl: "./reason-card-popup.component.html",
-  styleUrls: ["./reason-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./reason-card-popup.component.scss"],
 })
 export class ReasonCardPopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

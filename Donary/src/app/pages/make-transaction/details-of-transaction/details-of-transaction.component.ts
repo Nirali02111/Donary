@@ -42,6 +42,7 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
     CalendarModule,
     NgbPopoverModule,
     DoanryDirective,
+    DonaryDateFormatPipe,
   ],
   templateUrl: "./details-of-transaction.component.html",
   styleUrl: "./details-of-transaction.component.scss",
@@ -248,7 +249,6 @@ export class DetailsOfTransactionComponent
     this.calendarSubscription = this.commonMethodService
       .getCalendarOutput("details-of-transaction")
       .subscribe((items) => {
-        console.log(items);
         let selectedDate = items.obj;
         if (selectedDate.startDate != null) {
           this.selectedStartDate = moment(selectedDate.startDate);

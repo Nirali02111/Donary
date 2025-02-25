@@ -4,8 +4,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-location-popup",
   templateUrl: "./donor-location-popup.component.html",
-  styleUrls: ["./donor-location-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-location-popup.component.scss"],
 })
 export class DonorLocationPopupComponent implements OnInit {
   isloading: boolean;

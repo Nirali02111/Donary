@@ -9,8 +9,8 @@ declare var $: any;
 @Component({
   selector: "app-new-query-popup",
   templateUrl: "./new-query-popup.component.html",
-  styleUrls: ["./new-query-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./new-query-popup.component.scss"],
 })
 export class NewQueryPopupComponent implements OnInit {
   objAdvancedSearch: any = [];
@@ -241,7 +241,6 @@ export class NewQueryPopupComponent implements OnInit {
 
     //this.populateArray=this.displayFieldList(populateData[0].toLowerCase());
     for (let propt in populateData.objAdvancedSearch) {
-      //console.log(propt + ': ' + populateData.objAdvancedSearch[propt]);
       if (
         populateData.objAdvancedSearch[propt] !== undefined &&
         propt != "advancedFields"
@@ -338,7 +337,6 @@ export class NewQueryPopupComponent implements OnInit {
                   };
                 });
               }
-              console.log(item.options);
               item.filtervalue = "";
               item.isDisplayed = false;
             }
@@ -618,7 +616,6 @@ export class NewQueryPopupComponent implements OnInit {
   }
 
   CreateQuery() {
-    console.log(this.selectDonorField);
     if (this.queryName == undefined || this.queryName == "") {
       this.queryReq = true;
       return false;
@@ -1166,7 +1163,6 @@ export class NewQueryPopupComponent implements OnInit {
             ...element,
           };
         });
-        //this.advanceFilterName=filterName.id;
 
         //start code for tag
         this.isTagFieldFilterVisible = true;

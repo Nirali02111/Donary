@@ -17,8 +17,8 @@ import { PdfviewerPopupComponent } from "../../cards/payment-card-popup/pdfviewe
 @Component({
   selector: "app-custome-report",
   templateUrl: "./custome-report.component.html",
-  styleUrls: ["./custome-report.component.scss"],
   standalone: false,
+  styleUrls: ["./custome-report.component.scss"],
 })
 export class CustomeReportComponent implements OnInit {
   isloading: boolean = false;

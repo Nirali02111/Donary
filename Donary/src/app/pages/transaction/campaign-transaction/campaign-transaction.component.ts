@@ -17,8 +17,8 @@ import { XLSXService } from "src/app/services/xlsx.service";
 @Component({
   selector: "app-campaign-transaction",
   templateUrl: "./campaign-transaction.component.html",
-  styleUrls: ["./campaign-transaction.component.scss"],
   standalone: false,
+  styleUrls: ["./campaign-transaction.component.scss"],
 })
 export class CampaignTransactionComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

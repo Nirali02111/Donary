@@ -4,65 +4,75 @@
   <div class="add_new_button trans_add">
     <app-add-new-dropdown></app-add-new-dropdown>
   </div>
-
-  
-
-
-
   <section class="content">
     <div class="container-fluid">
       <div class="tabs__wrapper head__tabs list-page">
         <div class="card card__tabs list_tab">
           <div class="card-header p-0 border-bottom-0">
             <ul ngbNav class="nav-tabs" ngbNav #nav="ngbNav" [(activeId)]="activeId" >
+              @if(donorPermission){
               <li [ngbNavItem]="1" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "DONORS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-donor-list></app-donor-list>
                 </ng-template>
               </li>
+              }
+
+              @if(reasonPermission){
               <li [ngbNavItem]="2" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "REASONS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-reason-list></app-reason-list>
                 </ng-template>
               </li>
+             }
+
+             @if(campaignPermission){
               <li [ngbNavItem]="3" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "CAMPAIGNS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-campaign-list></app-campaign-list>
                 </ng-template>
               </li>
+            }
 
+            @if(locationPermission){
               <li [ngbNavItem]="4" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "LOCATIONS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-location-list></app-location-list>
                 </ng-template>
               </li>
+            }
 
+            @if(collectorPermission){
               <li [ngbNavItem]="5" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "COLLECTORS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-collector-list></app-collector-list>
                 </ng-template>
               </li>
+            }
 
 
+            @if(sourcePermission){
               <li [ngbNavItem]="6" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "SOURCES" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-source-list></app-source-list>
                 </ng-template>
               </li>
+            }
 
-
+            @if(seatPermission){
               <li [ngbNavItem]="7" [destroyOnHide]="true">
                 <a ngbNavLink>{{ "SEATS" | translate }}</a>
                 <ng-template ngbNavContent>
                   <app-seats></app-seats>
                 </ng-template>
               </li>
+            }
             </ul>
             
           </div>

@@ -22,14 +22,13 @@ export class PaymentService {
   protected BULK_UPDATE_PAYMENT_URL = `${this.version}${this.PAYMENT_MAIN_URL}/BulkUpdate`;
   protected BULK_VOID_PAYMENT_URL = `${this.version}${this.PAYMENT_MAIN_URL}/VoidPaymentBulk`;
 
-
   private DONATE_DEVICE_PAY_URL = `${this.version}${this.PAYMENT_MAIN_URL}/DevicePay`;
 
   protected PAYMENT_DELETE_URL = `${this.version}${this.PAYMENT_MAIN_URL}/Delete`;
 
-  protected REFUND_PAYMENT=`${this.version}${this.PAYMENT_MAIN_URL}/RefundPayment`;
-  protected DOWNLOAD_TEMPATE=`${this.version}${this.PAYMENT_MAIN_URL}/DownloadTempate`;
-  protected IMPORT_PAYMENTS=`${this.version}${this.PAYMENT_MAIN_URL}/ImportPayments`;
+  protected REFUND_PAYMENT = `${this.version}${this.PAYMENT_MAIN_URL}/RefundPayment`;
+  protected DOWNLOAD_TEMPATE = `${this.version}${this.PAYMENT_MAIN_URL}/DownloadTempate`;
+  protected IMPORT_PAYMENTS = `${this.version}${this.PAYMENT_MAIN_URL}/ImportPayments`;
   protected BULK_UPDATE_CHECK_STATUS_PAYMENT_URL = `${this.version}${this.PAYMENT_MAIN_URL}/BulkUpdateCheckStatus`;
   protected ACH_URL = `${this.version}${this.PAYMENT_MAIN_URL}/ACH`;
   protected BULK_PAYMENT_URL = `${this.version}${this.PAYMENT_MAIN_URL}/BulkPay`;
@@ -40,7 +39,7 @@ export class PaymentService {
       return response;
     });
   }
-  
+
   EditPayment(eventGuid: string, paymentId: number) {
     return this.http
       .get(
@@ -91,34 +90,38 @@ export class PaymentService {
       });
   }
   BulkVoidPayment(formdata: any): Observable<any> {
-    return this.http.post(this.BULK_VOID_PAYMENT_URL, formdata).pipe((response) => {
-      return response;
-    });
+    return this.http
+      .post(this.BULK_VOID_PAYMENT_URL, formdata)
+      .pipe((response) => {
+        return response;
+      });
   }
 
   DevicePay(formdata: any) {
-    return this.http.post(this.DONATE_DEVICE_PAY_URL, formdata).pipe((response) => {
-      return response;
-    });
+    return this.http
+      .post(this.DONATE_DEVICE_PAY_URL, formdata)
+      .pipe((response) => {
+        return response;
+      });
   }
-  DeletePayment(paymentIds:any) {
-      return this.http.post(this.PAYMENT_DELETE_URL,paymentIds).pipe((response) => {
-      return response;
-    });
+  DeletePayment(paymentIds: any) {
+    return this.http
+      .post(this.PAYMENT_DELETE_URL, paymentIds)
+      .pipe((response) => {
+        return response;
+      });
   }
   RefundPayment(formdata: any) {
     return this.http.post(this.REFUND_PAYMENT, formdata).pipe((response) => {
       return response;
     });
   }
-  downloadPaymentTemplate():Observable<any>{
-    return this.http.get(this.DOWNLOAD_TEMPATE,{ responseType: "blob" }
-      ).pipe(
-      response=>{
-        console.log(response);
-        return response
-      }
-    )
+  downloadPaymentTemplate(): Observable<any> {
+    return this.http
+      .get(this.DOWNLOAD_TEMPATE, { responseType: "blob" })
+      .pipe((response) => {
+        return response;
+      });
   }
   importPayments(formdata: any) {
     return this.http.post(this.IMPORT_PAYMENTS, formdata).pipe((response) => {

@@ -3,8 +3,8 @@ import { Component, OnInit } from "@angular/core";
 @Component({
   selector: "app-import-payment",
   templateUrl: "./import-payment.component.html",
-  styleUrls: ["./import-payment.component.scss"],
   standalone: false,
+  styleUrls: ["./import-payment.component.scss"],
 })
 export class ImportPaymentComponent implements OnInit {
   uploadedFileName: string = "Choose file";
@@ -13,9 +13,7 @@ export class ImportPaymentComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    //document.getElementById('input-uploadFile').focus();
-  }
+  ngOnInit() {}
 
   onFileChange(event) {
     if (event.target.files.length > 0) {

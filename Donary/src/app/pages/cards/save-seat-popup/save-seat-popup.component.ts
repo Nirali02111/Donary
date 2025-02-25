@@ -24,8 +24,8 @@ declare var $: any;
 @Component({
   selector: "app-save-seat-popup",
   templateUrl: "./save-seat-popup.component.html",
-  styleUrls: ["./save-seat-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./save-seat-popup.component.scss"],
 })
 export class SaveSeatPopupComponent implements OnInit {
   @Output() emtSeatSave: EventEmitter<any> = new EventEmitter();
@@ -74,10 +74,7 @@ export class SaveSeatPopupComponent implements OnInit {
 
   //some options commented in reservationDropdown , add later if required
   reservationDropdown = [
-    // { id: "Recurring Rental", itemName: "Recurring Rental" },
     { id: "One Time Rental", itemName: "One Time Rental" },
-    // { id: "Seasonal Rental", itemName: "Seasonal Rental" },
-    // { id: "Sale", itemName: "Sale" },
     { id: "Reserved", itemName: "Reserved" },
   ];
   checkFieldVal: boolean = false;
@@ -120,7 +117,6 @@ export class SaveSeatPopupComponent implements OnInit {
           }
         });
       }
-      // this.reservationStatus.push({ id: "One Time Rental", itemName: "One Time Rental" }) // commented to add based on seat API data
 
       this.reservationStatus
         ? this.onStatusSelect(this.reservationStatus[0])

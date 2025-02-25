@@ -8,8 +8,8 @@ import { NotificationService } from "../../../../commons/notification.service";
 @Component({
   selector: "app-add-update-pledge",
   templateUrl: "./add-update-pledge.component.html",
-  styleUrls: ["./add-update-pledge.component.scss"],
   standalone: false,
+  styleUrls: ["./add-update-pledge.component.scss"],
 })
 export class AddUpdatePledgeComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<void> = new Subject<void>();

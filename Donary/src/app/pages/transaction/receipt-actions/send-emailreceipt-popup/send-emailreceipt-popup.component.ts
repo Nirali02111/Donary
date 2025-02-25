@@ -10,8 +10,8 @@ declare var $: any;
 @Component({
   selector: "app-send-emailreceipt-popup",
   templateUrl: "./send-emailreceipt-popup.component.html",
-  styleUrls: ["./send-emailreceipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./send-emailreceipt-popup.component.scss"],
 })
 export class SendEmailreceiptPopupComponent implements OnInit {
   @Output() emtEditPledge: EventEmitter<any> = new EventEmitter();

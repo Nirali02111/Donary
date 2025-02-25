@@ -35,8 +35,8 @@ declare var $: any;
 @Component({
   selector: "app-location-card-popup",
   templateUrl: "./location-card-popup.component.html",
-  styleUrls: ["./location-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./location-card-popup.component.scss"],
 })
 export class LocationCardPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

@@ -16,8 +16,8 @@ interface SelectedDonorObj {
 @Component({
   selector: "app-print-singlereceipt-popup",
   templateUrl: "./print-singlereceipt-popup.component.html",
-  styleUrls: ["./print-singlereceipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./print-singlereceipt-popup.component.scss"],
 })
 export class PrintSingleReceiptPopupComponent implements OnInit {
   @Output() emtEditPledge: EventEmitter<any> = new EventEmitter();

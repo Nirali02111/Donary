@@ -57,13 +57,6 @@
         <form class="form--wrap" name="donorInfoForm" (ngSubmit)="ff.form.valid && SaveDonorInfo()" #ff="ngForm">
           <div class="donor_create">
             <div class="inside_wrap">
-
-              <!-- <div class="global_toggle" *ngIf="isGlobalEditIcon">
-              <label class="switch global_list_togle" data-toggle="tooltip" t-title="Add from global list">
-                <input type="checkbox"  class="global_chck" id="globalfatherlist" (change)="AddGlobalDonor($event)">
-                <span class="slider round" ></span>
-              </label>
-            </div> -->
               <div class="form-group-block edit-donor-top-wrap search-global-donor">
                 <div class="block_label">
                   <app-skeleton-loader-component [isLoading]="isloading" [theme]="{ width: '110px', height: '30px' }">
@@ -85,7 +78,6 @@
                           type="button" (click)="SearchGlobalDonor()">
                           {{ "SEARCH" | translate }}
                         </button>
-                        <!-- <span *ngIf="nonGlobalDonorEditable" class="cancel_icon" (click)="RemoveGlobalDonor()"><i class="fa fa-times" aria-hidden="true"></i></span> -->
                       </div>
 
                       <div *ngIf="
@@ -372,78 +364,7 @@
                           </label>
                         </li>
                       </ul>
-                      <!-- <ul>
-                                      <li>
-                                        <label for="r-home_{{ i }}">
-                                          <input
-                                            type="radio"
-                                            id="r-home_{{ i }}"
-                                            name="primary-radio_{{ i }}"
-                                            class=""
-                                            value="Home"
-                                            [(ngModel)]="address.addressLabel"
-                                            (change)="setValueCustomRadioTest(i)"
-                                          />
-                                          <span
-                                            ><i>{{ "HOME" | translate }}</i></span
-                                          >
-                                        </label>
-                                      </li>
-                                      <li>
-                                        <label for="r-work_{{ i }}">
-                                          <input
-                                            type="radio"
-                                            id="r-work_{{ i }}"
-                                            name="primary-radio_{{ i }}"
-                                            class=""
-                                            value="WORK"
-                                            [(ngModel)]="address.addressLabel"
-                                            (change)="setValueCustomRadioTest(i)"
-                                          />
-                                          <span
-                                            ><i>{{ "WORK" | translate }}</i></span
-                                          >
-                                        </label>
-                                      </li>
-                                      <li>
-                                        <label for="r-custom_{{ i }}">
-                                          <input
-                                            type="radio"
-                                            id="r-custom_{{ i }}"
-                                            name="primary-radio_{{ i }}"
-                                            class=""
-                                            (change)="TxtClearRadioDisplayValue0($event, i)"
-                                          />
-                                          <span></span>
-                                        </label>
-                                        <span class="input_custom"
-                                          ><input
-                                            class="type_text"
-                                            id="custom_{{ i }}"
-                                            maxlength="15"
-                                            placeholder="{{ 'CUSTOM' | translate }}"
-                                            type="text"
-                                            name="txtPrimaryCustom"
-                                            [(ngModel)]="address.textAddressLabel"
-                                            (change)="TxtRadioDisplayValue0($event, i)"
-                                        /></span>
-                                      </li>
-                                      <li class="custom-checkbox-btn">
-                                        <label for="primaryA_{{ i }}">
-                                          <input
-                                            type="checkbox"
-                                            id="primaryA_{{ i }}"
-                                            value=""
-                                            [checked]="address.isDefault"
-                                            class=""
-                                            (click)="primryAddress($event, i)"
-                                          />
-                                          <span
-                                            ><i>{{ "MAKEPRIMARY" | translate }}</i></span
-                                          >
-                                        </label>
-                                      </li>
-                                    </ul> -->
+               
                     </div>
                   </div>
 
@@ -465,12 +386,7 @@
                       </div>
                     </div>
                     <div class="form-group primary_address">
-                      <!-- <div class="colm colm-3 br-0">
-                                  <input type="text" class="form-control" placeholder="House num"  name="txtHouseNum_{{i}}"  [(ngModel)]="address.houseNum"/>
-                                </div>
-                                <div class="colm colm-6 br-0">
-                                  <input type="text" class="form-control" placeholder="Street Name" name="txtStreet_{{i}}"  [(ngModel)]="address.street"/>
-                                </div>-->
+                    
                       <div class="colm colm-6 br-0">
                         <app-skeleton-loader-component [isLoading]="isloading"
                           [theme]="{ width: '170px', height: '30px' }">
@@ -505,10 +421,7 @@
                             name="txtCity_{{ i }}" [(ngModel)]="address.city" /></app-skeleton-loader-component>
                       </div>
                       <div class="colm colm-2 br-0">
-                        <!-- <select  class="form-control" name="txtState_{{i}}"   [(ngModel)]="address.state">
-                                  <option value=null [selected]="true" >State</option>
-                                  <option *ngFor="let initial of commonMethodService.stateList" [value]="initial.id">{{initial.id}}</option>
-                                </select> -->
+                       
                         <app-skeleton-loader-component [isLoading]="isloading"
                           [theme]="{ width: '110px', height: '30px' }">
                           <ng-select bindLabel="id" bindValue="id" name="txtState_{{ i }}" [(ngModel)]="address.state"
@@ -542,14 +455,7 @@
                 </div>
                 }
               </div>
-              <!-- <div class="form-group-block">
-              <div class="block_label arrow_trigger">Home Phone:</div>
-              <div class="block_inputs">
-                <div class="form-group">
-                  <input type="" class="form-control" name="" />
-                </div>
-              </div>
-            </div> -->
+              
               <!-- coding start -->
               <div class="modal-devider">
                 <h4>{{ "PHONE" | translate }}</h4>
@@ -709,12 +615,7 @@
                 </div>
               </section>
 
-              <!-- <div class="colm colm-12 add_btn_default">
-            <button type="button" class="btn" (click)="addHomePhone()">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              <span>Add Phone</span>
-            </button>
-          </div>  -->
+              
               <!-- coding Stop -->
               <!-- coding Start -->
 
@@ -868,12 +769,7 @@
                       </button>
                       }
                       <!-- </section> -->
-                      <!-- <div class="colm colm-12 add_btn_default">
-                    <button type="button" class="btn"  (click)="addCellPhone()">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span>Add PHONE</span>
-                    </button>
-                  </div> -->
+                     
                     </div>
                   </div>
                 </div>
@@ -979,79 +875,7 @@
                           </div>
                         </li>
                       </ul>
-                      <!-- <ul>
-                        <li>
-                          <label for="r-home2_{{ i }}">
-                            <input
-                              type="radio"
-                              id="r-home2_{{ i }}"
-                              name="primary-radio2_{{ i }}"
-                              class=""
-                              value="Home"
-                              [(ngModel)]="emailaddress.emailLabel"
-                              (change)="RadioDisplayValue2(i)"
-                            />
-                            <span
-                              ><i>{{ "HOME" | translate }}</i></span
-                            >
-                          </label>
-                        </li>
-                        <li>
-                          <label for="r-work2_{{ i }}">
-                            <input
-                              type="radio"
-                              id="r-work2_{{ i }}"
-                              name="primary-radio2_{{ i }}"
-                              class=""
-                              value="Work"
-                              [(ngModel)]="emailaddress.emailLabel"
-                              (change)="RadioDisplayValue2(i)"
-                            />
-                            <span
-                              ><i>{{ "WORK" | translate }}</i></span
-                            >
-                          </label>
-                        </li>
-                        <li>
-                          <label for="r-custom2_{{ i }}">
-                            <input
-                              type="radio"
-                              id="r-custom2_{{ i }}"
-                              name="primary-radio2_{{ i }}"
-                              class=""
-                              (change)="TxtClearRadioDisplayValue2($event, i)"
-                              [checked]="emailaddress.textEmailAddress"
-                            />
-                            <span></span>
-                          </label>
-                          <span class="input_custom"
-                            ><input
-                              class="type_text"
-                              id="custom2_{{ i }}"
-                              maxlength="15"
-                              placeholder="{{ 'CUSTOM' | translate }}"
-                              type="text"
-                              name="txtPrimaryCustom2_{{ i }}"
-                              [(ngModel)]="emailaddress.textEmailAddress"
-                              (change)="setValueCustomRadio2($event, i)"
-                          /></span>
-                        </li>
-                        <li class="custom-checkbox-btn">
-                          <label for="primaryE_{{ i }}">
-                            <input
-                              type="checkbox"
-                              id="primaryE_{{ i }}"
-                              value=""
-                              [checked]="emailaddress.isDefault"
-                              class=""
-                              (click)="primryEmail($event, i)"
-                            />
-                            <span
-                              ><i>{{ "MAKEPRIMARY" | translate }}</i></span
-                            >
-                          </label>
-                        </li>
-                      </ul> -->
+                  
                     </div>
                   </div>
                   <div class="block_inputs">
@@ -1088,12 +912,7 @@
                       }
 
                       <!-- </section> -->
-                      <!-- <div class="colm colm-12 add_btn_default">
-                    <button type="button" class="btn"  (click)="addEmailAddress()">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span>Add Email Address</span>
-                    </button>
-                  </div> -->
+                     
                     </div>
                   </div>
                 </div>
@@ -1107,27 +926,7 @@
               </div>
               }
               <!-- coding stop -->
-              <!-- <div class="form-group-block">
-              <div class="block_label">Shul:</div>
-              <div class="block_inputs">
-                <div class="form-group with_add_btn shul-field">
-                  <div class="colm colm-10">
-                    <div class="input t-right">
-                      <input type="" class="form-control" name="" />
-                    </div>
-                    <div class="input t-right">
-                      <input type="" class="form-control" name="" />
-                    </div>
-                  </div>
-                  <div class="colm colm-2 add_btn">
-                    <button type="button" class="btn">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+              
 
             </div>
             <div class="action_footer">
@@ -1187,18 +986,7 @@
                         @else {
 
                         <input type="text" name="textnewField_{{ i }}" class="form-control" [(ngModel)]="data.value" />}
-                        <!-- <button
-                          type="button"
-                          class="delete_btn hidden-mobile"
-                          (click)="
-                            removeAdvanceField(
-                              data.advancedField.advancedFieldId,
-                              i
-                            )
-                          "
-                        >
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button> -->
+                      
                         <div class="advanced-dropdown hidden-desktop position-relative ml-3"
                           (clickOutside)="onClickedOutsideAdvance(i)">
                           <span class="advanced-btn" (click)="advancedDropdown(i)">...</span>
@@ -1244,18 +1032,7 @@
                           </option>
                         </select>
                         }
-                        <!-- <button
-                          type="button"
-                          class="delete_btn hidden-mobile"
-                          (click)="
-                            removeAdvanceField(
-                              data.advancedField.advancedFieldId,
-                              i
-                            )
-                          "
-                        >
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button> -->
+                       
 
                         <div class="advanced-dropdown hidden-desktop position-relative ml-3"
                           (clickOutside)="onClickedOutsideAdvance(i)">
@@ -1268,14 +1045,7 @@
                             ">
                               <span class="material-icons">edit</span> Edit field type
                             </li>
-                            <!-- <li class="delete-btn" (click)="
-                              removeAdvanceField(
-                                data.advancedField.advancedFieldId,
-                                i
-                              )
-                            ">
-                              <span class="fa fa-trash"></span> Remove field
-                            </li> -->
+                           
                           </ul>
                         </div>
                       </div>

@@ -4,8 +4,8 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-report-combineddata-cardpopup",
   templateUrl: "./report-combineddata-cardpopup.component.html",
-  styleUrls: ["./report-combineddata-cardpopup.component.scss"],
   standalone: false,
+  styleUrls: ["./report-combineddata-cardpopup.component.scss"],
 })
 export class ReportCombineddataCardpopupComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal) {}

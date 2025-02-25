@@ -97,9 +97,9 @@ import { AnalyticsService } from "src/app/services/analytics.service";
   selector: "app-pledge-transaction",
   templateUrl: "./pledge-transaction.component.html",
   styleUrls: ["./pledge-transaction.component.scss"],
+  standalone: false,
   providers: [DonaryDateFormatPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class PledgeTransactionComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

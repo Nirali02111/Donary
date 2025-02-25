@@ -68,8 +68,8 @@ function fullhtml2canvas(el) {
   selector: "app-seats",
   templateUrl: "./seats.component.html",
   styleUrls: ["./seats.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
   @ViewChild("mapprint", { static: false }) mapprint: ElementRef;
@@ -335,9 +335,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
       this.loadSeasonList();
     } else {
       this.seasonsList = this.pageSyncService.seasonsList;
-      /*   if(this.pageSyncService.seatSelectedLocation && this.pageSyncService.seatSelectedSeason)
-        this.isloading=false 
-       */
     }
     if (this.pageSyncService.seatsFilterData) {
       this.advancedFilterData(this.pageSyncService.seatsFilterData);
@@ -394,7 +391,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
             if (this.selectedSeasonID) {
               this.getSeatLocation();
             }
-            // this.changeDetectorRef.detectChanges();
             setTimeout(() => {
               this.selectedSeason = this.seasonsList.filter(
                 (x) => x.id == this.selectedSeasonID
@@ -648,8 +644,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
               this.pageSyncService.sections = res.sections;
               this.SeatLocationMapId = res.maps[0].seatLocationMapId;
               this.resLoadDataModification(res);
-
-              //this.changeDetectorRef.detectChanges();
             }
           },
           (err) => {
@@ -662,7 +656,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
         this.isloading = false;
         this.resLoadDataModification(this.pageSyncService.seatList), 2000;
       });
-      // this.changeDetectorRef.detectChanges();
     }
     this.editSeat = false;
   }
@@ -687,10 +680,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
         this.seatSaleIdAfterPaymentTransaction = s.seatSaleId;
       }
     });
-    //const highestXPos = res.seats.reduce((prev, current) => (prev.xPos > current.xPos) ? prev : current).xPos;
-    //this.maxXPos =highestXPos;
-    //this.highestXPos = new Array(highestXPos).fill(null).map((_, i) => i + 1);
-    //this.highestXPos=this.highestXPos.reverse();
     this.highestXPos = [];
     this.highestYPos = [];
 
@@ -892,11 +881,6 @@ export class SeatsComponent implements OnInit, AfterContentInit, AfterViewInit {
       element.posNum = reverseColGroup[index];
     });
     this.mapXPos = this.mapXPos.reverse();
-
-    //    let highestMapXPos = this.highestXPos.filter(this.onlyUnique).sort();
-    //  const mapXPosLength = highestMapXPos.length-1;
-    //  this.mapXPos = new Array(mapXPosLength).fill(null).map((_, i) => i + 1);
-
     this.seatTwoDimensionalArray.shift();
     for (let i = 0; i < this.seatTwoDimensionalArray.length; i++) {
       this.seatTwoDimensionalArray[i].shift();

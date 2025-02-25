@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-source-filter",
   templateUrl: "./source-filter.component.html",
-  styleUrls: ["./source-filter.component.scss"],
   standalone: false,
+  styleUrls: ["./source-filter.component.scss"],
 })
 export class SourceFilterComponent implements OnInit {
   @Output() emtOutputSourceFilterData: EventEmitter<any> = new EventEmitter();

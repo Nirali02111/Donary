@@ -27,16 +27,6 @@
             <app-scehdule-edit-skeleton-loader [theme1]="{ width: '120px', height: '40px' }" [theme2]="{ width: '225px', height: '40px' }"></app-scehdule-edit-skeleton-loader>
           </ng-container>
       }@else {
-      <!-- <div class="form-group d-flex mt-4">
-        <div class="pause_schedule-btn d-none">
-          <span class="chck_location">{{ "PAUSESHEDULE" | translate }}</span>
-          <label class="switch">
-            <input type="checkbox" (click)="pauseSchedule($event)" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-    
-      </div> -->
       <div class="form-group d-flex donation_amount" (click)="OnDivClick()">
         <label>{{ "TOTALOPENAMOUNT" | translate }}:</label>
         <div class="input_group">
@@ -132,22 +122,10 @@
               [placeholder]="EngHebCalPlaceholder" />
           </div>
          <!-- Calendar code ended -->
-            <!-- <div class="input-group-append" >
-                            <span class="input-group-text">
-                                <i class="far fa-calendar-alt ngx-daterangepicker-action" (click)="CalendarFocus()"></i>
-                            </span>
-                        </div> -->
           </div>
         </div>
       </div>}
-      <!-- <div class="accordions_wrapper">
-    <div class="accordion_label">
-        <span class="text">Send alert one day before schedule</span>  <span class="down_arrow"></span>
-    </div>
-    <div class="accordion_label">
-        <span class="text">Send receipt after charge</span>  <span class="down_arrow"></span>
-    </div>
-</div>    -->
+
       <div class="tabs__wrap" (click)="OnDivClick()">
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" style="margin-left: 20px;">
@@ -211,7 +189,6 @@
                   />
                   <span class="slider round"></span>
                 </label>
-                <!-- <app-donor-dropdown-list  [isSearchable]="true"></app-donor-dropdown-list> -->
                 <div
                   class="donor_infolist"
                   (clickOutside)="onClickedOutside()"
@@ -385,9 +362,7 @@
     </div>
     <div class="modal__custom_footer">
       <div class="btn_info">
-        <!-- <div class="dlte_schdule">
-        <span class="delete_schedule_lbl" (click)="deleteSchedule()">Delete Schedule</span>
-    </div> -->
+        
 
         <div class="dlte_schdule">
           <span class="delete_schedule_lbl" (click)="deleteSchedule()">{{

@@ -17,6 +17,17 @@
         </li>
       }
 
+      @if (isAliyasPledge && newAliyesPermission && !isNewTransactionPopupsRelease) {
+        <li>
+          <a
+            class="dropdown-item"
+            style="cursor: pointer"
+            (click)="isNewAliyaPopupRelease ? openCreateAliyosGroupCardPopup() : openAliyesWindow()"
+            ><span class="aliyes_icon">נדרים ונדבות</span>
+          </a>
+        </li>
+      }
+
     @if (newDonorPermission) {
       <li>
         <a class="dropdown-item" style="cursor: pointer" (click)="openSaveDonorPopup()"><span
@@ -52,7 +63,6 @@
     </ul>
   </div>
 
-  <!-- <button class="scroll-top" *ngIf="showButton" (click)="scrollToTop()"><span class="material-icons">arrow_upward</span></button> -->
   <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
   <div id="btn-transaction" class="position-relative">

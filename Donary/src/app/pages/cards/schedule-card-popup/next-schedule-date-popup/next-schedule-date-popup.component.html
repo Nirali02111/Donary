@@ -1,8 +1,6 @@
 <ng-template [ngIf]="checkForSubmenu()" [ngIfElse]="simpleResume">
-  <!-- <li class="dropdown-submenu"  (mouseenter)="openSubmenu($event)" (click)="$event.stopPropagation()"></li> -->
   <li class="dropdown-submenu resume_schedule_menu"  (mouseenter)="openSubmenu($event)" (click)="$event.stopPropagation()">
     <a class="dropdown-item" style="cursor: pointer;">{{'RESUME'|translate}}</a>
-    <!-- <ul class="dropdown-menu resume-menu" role="menu" aria-labelledby="dropdownMenu" [ngStyle]="{'display': isSubmenuOpen ? 'block': 'none'}"></ul> -->
     <ul class="dropdown-menu resume-menu" role="menu" aria-labelledby="dropdownMenu">
       <li (click)="onLeaveClick()">
         <a class="dropdown-item resume-menu-item" style="cursor: pointer;">{{'LEAVEORIGINAL'|translate}}</a>                        

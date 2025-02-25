@@ -31,14 +31,13 @@ declare var $: any;
 @Component({
   selector: "app-notification-alerts",
   templateUrl: "./notification-alerts.component.html",
-  styleUrls: ["./notification-alerts.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-alerts.component.scss"],
 })
 export class NotificationAlertsComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;
   @ViewChild(DaterangepickerDirective, { static: false })
   pickerDirective: DaterangepickerDirective;
-  //selectedDateRange: any ;
   selectedDateRange: any = {
     startDate: null,
     endDate: null,

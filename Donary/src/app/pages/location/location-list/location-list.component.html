@@ -5,15 +5,6 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                     <!-- <div class="colm loct_all">
-                        <div class="loct_showall">
-                            <span class="show_all">Show All Location: &nbsp;</span>
-                            <label class="switch">
-                                <input type="checkbox" (change)="OnCheckboxChange($event)" >
-                                <span class="slider round"></span>
-                              </label>
-                        </div>
-                    </div>  -->
                     <div class="filters__options">
                         <div class="search_opts  searchdonor_opts">
                             <div class="colm searcg_txt">
@@ -124,7 +115,6 @@
                                         </li>
                                         <hr class="seprator" />
                                         <li class="dropdown" [ngClass]="{'disabled': isDisable}"><a class="dropdown-item" [ngClass]="{'opacity-50':gridFilterData==null || gridFilterData.length == 0}"  (click)="gridFilterData != null && gridFilterData.length > 0 && downloadExcel()"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
-                                        <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
                                         <li class="dropdown">
                                           <a class="dropdown-item" (click)="SaveLayout()"
                                             ><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate }}</a
@@ -208,7 +198,6 @@
                                 <tbody  *ngIf="sv.data?.length > 0">
                                     <tr  *ngFor="let item of sv.data; let i=index">
                                         <tr  *ngFor="let item of sv.data; let i=index" tabindex={{i}} class="table-row table-row-{{i}}">
-                                            <!-- <td><input type="checkbox" name="singlecheck"/></td> -->
                                                <td class="custom-checkbox-td"><input #checkboxes  id="{{item.accountId}} "type="checkbox" name="singlecheck" (change)="selectRecord($event,'singlecheck',item.locationID)" [checked]="checkselectRecord(item.locationID)"/>
                                                 <label for="{{item.locationID}}" class="custom-checkbox"></label>
                                                 <span class="tooltip-custom">{{'SELECT'|translate}}</span>
@@ -266,19 +255,7 @@
         </div>
             </section>
 
-<!-- <div class="total-panel-wrapper" [ngClass]="{'active': isClicked && isOpen}">
-    <button *ngIf="!isClicked && !isOpen" class="totalp-btn total-panel-arrow-btn" (click)="onArrowClick()"></button>
-    <button *ngIf="isClicked && !isOpen" class="totalp-btn total-panel-open-btn" (click)="onTotalBtnClick()">Totals</button>
-    <app-total-panel *ngIf="isClicked && isOpen"
-        (emtOutputClose)="ClosePanel($event)"
-        (emtOutputPageChange)="emtOutputPageChange($event)"
-        [GroupBy]="'locationID'"
-        [ListRecords]="gridFilterData"
-        [HeaderList]="headerList"
-        [ActivePage]="sv.activePage"
-        [RowsOnPage]="sv.rowsOnPage"
-    ></app-total-panel>
-</div> -->
+
     </div>
 
     <ng-template #chipCardTemp let-item="item">
@@ -293,48 +270,8 @@
                      <div class="col-12 bottom_value">
                         <span class="info-box-number" *ngIf="item.total!=null">{{commonMethodService.formatAmount(item.total)}}</span>
                      </div>
-                     <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span>  -->
                   </div>
                </div>
-               <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
-                <div class="cards filter-boxes-wrap">
-                    <ul>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Payments</p>
-                                        <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Open Pledges</p>
-                                        <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Schedules</p>
-                                        <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
             </div>
          </div>
     </ng-template>

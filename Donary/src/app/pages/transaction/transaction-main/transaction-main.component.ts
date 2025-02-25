@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-transaction-main",
   templateUrl: "./transaction-main.component.html",
-  styleUrls: ["./transaction-main.component.scss"],
   standalone: false,
+  styleUrls: ["./transaction-main.component.scss"],
 })
 export class TransactionMainComponent implements OnInit {
   showSubMenu = false;

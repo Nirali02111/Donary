@@ -12,8 +12,8 @@ declare var $: any;
 @Component({
   selector: "app-send-textreceipt-popup",
   templateUrl: "./send-textreceipt-popup.component.html",
-  styleUrls: ["./send-textreceipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./send-textreceipt-popup.component.scss"],
 })
 export class SendTextreceiptPopupComponent implements OnInit {
   @Output() emtEditPledge: EventEmitter<any> = new EventEmitter();

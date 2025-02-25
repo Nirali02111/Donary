@@ -6,7 +6,7 @@ import { ProductPlansComponent } from "./product-plans.component";
 import { LayoutComponent } from "./layout/layout.component";
 import { ProductDetailsComponent } from "./product-details/product-details.component";
 import { SignUpComponent } from "./sign-up/sign-up.component";
-import { RegisterAccountComponent } from './register-account/register-account.component';
+import { RegisterAccountComponent } from "./register-account/register-account.component";
 import { ViewCartComponent } from "./view-cart/view-cart.component";
 
 const routes: Routes = [
@@ -37,17 +37,6 @@ const routes: Routes = [
         path: ":id",
         component: ProductDetailsComponent,
       },
-      /*{
-        path: 'drm',
-        loadChildren: () => import("./drm/drm.module").then((m) => m.DrmModule),
-      },
-      {
-        path: 'mobiledevice',
-        loadChildren: () =>
-          import("./mobile-device/mobile-device.module").then(
-            (m) => m.MobileDeviceModule
-          ),
-      },*/
     ],
   },
 ];

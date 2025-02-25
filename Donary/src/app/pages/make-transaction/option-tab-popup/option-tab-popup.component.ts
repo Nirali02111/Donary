@@ -6,8 +6,8 @@ import { CommonMethodService } from "src/app/commons/common-methods.service";
 @Component({
   selector: "app-option-tab-popup",
   templateUrl: "./option-tab-popup.component.html",
-  styleUrls: ["./option-tab-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./option-tab-popup.component.scss"],
 })
 export class OptionTabPopupComponent implements OnInit {
   isLockCollector: boolean = JSON.parse(

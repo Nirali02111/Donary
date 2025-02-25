@@ -5,8 +5,8 @@ declare var $: any;
 @Component({
   selector: "app-payment-trans-grid-filter-popup",
   templateUrl: "./payment-trans-grid-filter-popup.component.html",
-  styleUrls: ["./payment-trans-grid-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./payment-trans-grid-filter-popup.component.scss"],
 })
 export class PaymentTransGridFilterPopupComponent implements OnInit {
   @Output() emtOutputSearchFilterData: EventEmitter<any> = new EventEmitter();

@@ -16,8 +16,8 @@ import { CommonAPIMethodService } from "src/app/services/common-api-method.servi
 @Component({
   selector: "app-notification-setting",
   templateUrl: "./notification-setting.component.html",
-  styleUrls: ["./notification-setting.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-setting.component.scss"],
 })
 export class NotificationSettingComponent implements OnInit {
   assigneeList: Array<any> = [];
@@ -102,7 +102,6 @@ export class NotificationSettingComponent implements OnInit {
             `,
             },
           });
-
           this.getSettingsList();
         }
       },

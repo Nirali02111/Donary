@@ -189,8 +189,7 @@
 
                               <div class="example-box" *ngFor="let i of group.items" class="example-box" cdkDrag
                                 cdkDragBoundary=".field_dropdown" (click)="$event.stopPropagation()">
-                                <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                          {{ i.colName  }} -->
+                              
                                 <div class="fieldlst_chkbox" style="padding-left: 50px">
 
                                   <span *ngIf="group.id != 2">
@@ -218,23 +217,7 @@
                                       }}</label>
 
                                   </span>
-                                  <!-- <input
-                            type="checkbox"
-                            class="fields_chkbx"
-                            class=""
-                            [(ngModel)]="i.isVisible"
-                            (change)="
-                              setGridColVisibility(
-                                $event,
-                                i.colName,
-                                i.isVisible
-                              )
-                            "
-                            [id]="i.colId"
-                          />
-                          <label class="fields_lbl" [for]="i.colId">{{
-                            fieldsShortName(i.colName) | translate
-                          }}</label> -->
+                             
                                 </div>
 
                               </div>
@@ -244,260 +227,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div
-                    cdkDropList
-                    [cdkDropListData]="colFields"
-                    class="field_dropdown dropdown-menu multi-level"
-                    role="menu"
-                    aria-labelledby="dropdownMenu"
-                  >
-                    <div
-
-                      *ngFor="let group of colFields"
-                      cdkDrag
-                      [cdkDragData]="group"
-                    > -->
-
-
-                    <!-- <div
-                    id="all-type"
-                    cdkDropList
-                    [cdkDropListData]="colFields"
-                    (cdkDropListDropped)="dropGroupItem($event)"
-                    [cdkDropListConnectedTo]="droplistVal"
-                    (cdkDragEntered)="onDragEntered($event)"
-                            (cdkDragStarted)="onDragStarted($event)"
-                    class="field_dropdown dropdown-menu multi-level"
-                    role="menu"
-                    aria-labelledby="dropdownMenu"
-                  >
-                    <div
-                      cdkDropListGroup
-                      *ngFor="let group of colFields"
-                      cdkDrag
-                      [cdkDragData]="group"
-                    >
-
-                      <ng-template [ngIf]="group.isTotalPanel">
-                        <h3 [ngClass]="group.class">
-                          {{ group.title | translate }}
-                        </h3> -->
-
-                    <!--
-                          both together
-                        -->
-                    <!-- <div cdkDropList
-                        [cdkDropListData]="colFields"
-                        (cdkDropListDropped)="dropGroup($event)">
-                          <div cdkDropListGroup class="example-container"
-                          *ngFor="let group of colFields"
-                          cdkDrag [cdkDragData]="group">
-                            <h2>{{group.title}}</h2>
-                            <div cdkDropList class="example-list"
-                            id={{group.id}}
-                            [cdkDropListData]="group.items"
-                            (cdkDropListDropped)="dropGroupItem($event)"
-                            [cdkDropListConnectedTo]="getConnectedList()">
-                              <div class="example-box"
-                              *ngFor="let it of group.items"
-                              cdkDrag [cdkDragData]="it">
-                                {{it.colName}}
-                              </div>
-                            </div>
-                          </div>
-                        </div> -->
-
-
-                    <!-- Not an Advanced Field -->
-                    <!-- <ng-container *ngIf="group.id != 2">
-                          <ul
-                          #toDoList="cdkDropList"
-                            cdkDropList
-                            class="field_ul"
-                            id="{{ group.id }}"
-                            [cdkDropListConnectedTo]="[]"
-                            [cdkDropListData]="group.items"
-                            (cdkDropListDropped)="dropGroupItem($event)"
-                            role="menu"
-                            aria-labelledby="dropdownMenu"
-                          >
-                            <li
-                              class="example-box"
-                              *ngFor="let item of group.items"
-                              cdkDrag
-
-                              [cdkDragData]="item"
-                              class="dropdown"
-                              style="list-style: none"
-                            >
-                              <div
-                                class="fieldlst_chkbox"
-                                style="padding-left: 50px"
-                              >
-                                <input
-                                  type="checkbox"
-                                  class="fields_chkbx"
-                                  class=""
-                                  [(ngModel)]="item.isVisible"
-                                  (change)="
-                                    setGridColVisibility(
-                                      $event,
-                                      item.colName,
-                                      item.isVisible
-                                    )
-                                  "
-                                  [id]="item.colId"
-                                />
-                                <label class="fields_lbl" [for]="item.colId">{{
-                                  fieldsShortName(item.colName) | translate
-                                }}</label>
-                              </div>
-                            </li>
-                          </ul>
-                        </ng-container> -->
-
-                    <!-- <div >
-
-
-                          <div
-                            class="field-box-group-content"
-                            cdkDropList
-                            [id]="group.id"
-                            [cdkDropListData]="group.items"
-
-                            (cdkDropListDropped)="dropGroupItem($event)"
-                            [cdkDropListConnectedTo]="droplistVal"
-                            (cdkDragEntered)="onDragEntered($event)"
-                            (cdkDragStarted)="onDragStarted($event)"
-                          >
-                            <div
-                              class="field-box"
-                              *ngFor="let i of group.items"
-                              cdkDrag
-                              [cdkDragData]="i"
-                            >
-                              {{ i.colName }}
-                            </div>
-                          </div>
-                        </div> -->
-
-                    <!-- <div cdkDropListGroup>
-                          <div class="example-container">
-                            <h2>Pending</h2>
-
-                            <div
-                              class="example-list"
-                              cdkDropList
-                              [cdkDropListData]="pending"
-                              (cdkDropListDropped)="drop($event)"
-                              (cdkDropListEntered)="onDropListEntered($event)"
-                              (cdkDropListExited)="onDropListExited($event)"
-                            >
-                              <div
-                                class="example-box"
-                                *ngFor="let item of pending"
-                                cdkDrag
-                                (cdkDragEntered)="onDragEntered($event)"
-                                (CdkDragMoved)="onMoved($event)"
-                                (cdkDragExited)="onDragExited($event)"
-                              >
-                                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                                {{ item }}
-                              </div>
-                            </div>
-                          </div> -->
-
-
-
-
-
-
-
-
-
-
-
-                    <!-- an Advanced Field -->
-                    <!-- <ng-container *ngIf="group.id == 2">
-                          <ul
-                          #doneList="cdkDropList"
-                            cdkDropList
-                            class="field_ul"
-                            id="{{ group.id }}"
-                            [cdkDropListConnectedTo]="[toDoList]"
-                            [cdkDropListData]="group.items"
-                            (cdkDropListDropped)="dropGroupItem($event)"
-                            role="menu"
-                            aria-labelledby="dropdownMenu"
-                          >
-                            <li
-                              class="example-box"
-                              *ngFor="let item of group.items"
-                              cdkDrag
-                              (click)="$event.stopPropagation()"
-                              [cdkDragData]="item"
-                              class="dropdown"
-                              style="list-style: none"
-                            >
-                              <div
-                                class="fieldlst_chkbox"
-                                style="padding-left: 50px"
-                              >
-                                <input
-                                  type="checkbox"
-                                  class="fields_chkbx"
-                                  class=""
-                                  [(ngModel)]="item.isVisible"
-                                  (change)="
-                                    setGridAdvancedColVisibility(
-                                      $event,
-                                      item.colId
-                                    )
-                                  "
-                                  [id]="item.colId"
-                                />
-                                <label class="fields_lbl" [for]="item.colId">{{
-                                  item.colName
-                                }}</label>
-                              </div>
-                            </li>
-                          </ul>
-                        </ng-container> -->
-                    <!-- ///if not working for grp, then add ngIf and two times div -->
-                    <!-- <div *ngIf="group.id == 2" class="field-box">
-                          <div class="field-box-group-header">
-                            {{ group.name }}
-                          </div>
-
-                          <div
-                            class="field-box-group-content"
-                            cdkDropList
-                            [id]="group.id"
-                            [cdkDropListData]="group.items"
-
-                            (cdkDropListDropped)="dropGroupItem($event)"
-                            [cdkDropListConnectedTo]="droplistVal"
-                          >
-                            <div
-                              class="field-box"
-                              *ngFor="let i of group.items"
-                              cdkDrag
-                              [cdkDragData]="i"
-                            >
-                              {{ i.colName }}
-                            </div>
-                          </div>
-                        </div> -->
-
-
-
-
-
-
-                    <!-- </ng-template>
-
-                    </div>
-                  </div> -->
+    
                   </div>
                 </div>
 
@@ -537,7 +267,6 @@
                               class="fas fa-file-excel"></i>
                             {{ "EXCEL" | translate }}</a>
                         </li>
-                        <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
                         <li class="dropdown">
                           <a class="dropdown-item" (click)="mergeDonor()"><span class="merge_icon">
                               {{ "MERGE" | translate }}</span></a>
@@ -1079,48 +808,9 @@
               commonMethodService.formatAmount(item.total)
               }}</span>
           </div>
-          <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span> -->
         </div>
       </div>
-      <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
-                <div class="cards filter-boxes-wrap">
-                    <ul>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Payments</p>
-                                        <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Open Pledges</p>
-                                        <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Schedules</p>
-                                        <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>  -->
+  
     </div>
   </div>
 </ng-template>

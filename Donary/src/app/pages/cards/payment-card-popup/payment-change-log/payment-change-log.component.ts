@@ -4,8 +4,8 @@ declare var $: any;
 @Component({
   selector: "app-payment-change-log",
   templateUrl: "./payment-change-log.component.html",
-  styleUrls: ["./payment-change-log.component.scss"],
   standalone: false,
+  styleUrls: ["./payment-change-log.component.scss"],
 })
 export class PaymentChangeLogComponent implements OnInit {
   changeLog: string;

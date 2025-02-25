@@ -26,8 +26,8 @@ declare var $: any;
 @Component({
   selector: "app-maketransaction-schedule-popup",
   templateUrl: "./maketransaction-schedule-popup.component.html",
-  styleUrls: ["./maketransaction-schedule-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./maketransaction-schedule-popup.component.scss"],
 })
 export class MaketransactionSchedulePopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

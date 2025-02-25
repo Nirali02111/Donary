@@ -18,8 +18,8 @@ import { Subscription } from "rxjs";
 @Component({
   selector: "app-create-aliyos-group-popup",
   templateUrl: "./create-aliyos-group-popup.component.html",
-  styleUrls: ["./create-aliyos-group-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./create-aliyos-group-popup.component.scss"],
 })
 export class CreateAliyosGroupPopupComponent implements OnInit {
   isDropDown: boolean = false;

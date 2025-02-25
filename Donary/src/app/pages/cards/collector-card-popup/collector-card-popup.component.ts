@@ -25,13 +25,12 @@ declare var $: any;
 @Component({
   selector: "app-collector-card-popup",
   templateUrl: "./collector-card-popup.component.html",
-  styleUrls: ["./collector-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./collector-card-popup.component.scss"],
 })
 export class CollectorCardPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })
   pickerDirective: DaterangepickerDirective;
-  // selectedDateRange: any = { startDate: null, endDate: null };
   @Input() CollectorId: any;
   @Input("selectedDateRange") selectedDateRange?: any;
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

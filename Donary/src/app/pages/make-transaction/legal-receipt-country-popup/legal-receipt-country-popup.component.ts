@@ -10,8 +10,8 @@ import { PaymentApiGatewayService } from "src/app/services/payment-api-gateway.s
 @Component({
   selector: "app-legal-receipt-country-popup",
   templateUrl: "./legal-receipt-country-popup.component.html",
-  styleUrl: "./legal-receipt-country-popup.component.scss",
   standalone: false,
+  styleUrl: "./legal-receipt-country-popup.component.scss",
 })
 export class LegalReceiptCountryPopupComponent {
   valueFromPopup: any;
@@ -33,6 +33,7 @@ export class LegalReceiptCountryPopupComponent {
   @Input() transactionData: any;
   @Input() isBlukTransaction: any;
   @Input() isLegalReceiptNumPresent: any;
+  @Input() IsPayment: boolean;
   modalOptions: NgbModalOptions;
   selectedCountry: any = 1;
   countries = [
@@ -140,12 +141,15 @@ export class LegalReceiptCountryPopupComponent {
       let obj = {
         paymentId: this.paymentId,
         countryCodeId: this.selectedCountry,
+        IsPayment: this.IsPayment,
       };
       this.activeModal.close(this.isClosed);
       this.paymentTransactionService
         .GenerateLegalReceipt(obj)
         .subscribe((res) => {
-          if (res.legalReceiptNum != null) {
+          if (obj.IsPayment) {
+            this.recallPaymentCard.emit(true);
+          } else if (res.legalReceiptNum != null) {
             this.modalOptions = {
               centered: true,
               size: "md",

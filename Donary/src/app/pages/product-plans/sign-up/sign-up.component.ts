@@ -105,15 +105,6 @@ export class SignUpComponent implements OnInit {
     );
 
     this.confirmPassword.updateValueAndValidity();
-
-    /*const eventId = this.localstoragedataService.getLoginUserEventGuId();
-    if (eventId) {
-      this.signUpForm.patchValue({
-        EventGuid: eventId
-      })
-
-      this.signUpForm.updateValueAndValidity()
-    }*/
   }
 
   onSignUp() {
@@ -137,7 +128,6 @@ export class SignUpComponent implements OnInit {
           //store local OrganizationId
           var setOrganizationId = res.orgId;
           this.localstoragedataService.setOrganizationId(setOrganizationId);
-          // this.goToCheckout();
         } else {
           console.log("onSignUp res error");
         }
@@ -167,7 +157,6 @@ export class SignUpComponent implements OnInit {
   }
 
   onContinueShopping() {
-    // this.router.navigate([PageRouteVariable.ProductCheckout_url]);
     this.goToCheckout();
   }
 

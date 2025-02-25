@@ -1,25 +1,10 @@
 <div class="content-wrapper" ngbAutofocus  tabindex="-1">
     <!-- Content Header (Page header) -->
-    <!-- <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Reasons</h1>
-                </div>
-            </div>
-        </div>
-    </section> -->
     <section class="content">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
                     <div class="filters__options">
-                        <!-- <div class="search_opts">
-                            <div class="input-group col-md-4 searcg_txt">
-                                <input type="text" name="advanceSearch" class="form-control float-right" placeholder="Search Reasons"  (keyup)="search($event.target.value)">
-                            </div>
-                            <div class="input-group col-md-5 filter_pop"></div>
-                        </div> -->
                         <div class="search_opts  searchdonor_opts">
                             <div class="colm searcg_txt">
                                 <input type="text" name="advanceSearch" id="searchReason" class="form-control float-right" placeholder="{{'SEARCHREASONS' | translate}}"  (keyup)="search($event.target.value)">
@@ -209,7 +194,6 @@
                                         </li>
                                         <hr class="seprator" />
                                         <li class="dropdown"><a class="dropdown-item"[ngClass]="{'opacity-50':gridFilterData==null || gridFilterData.length == 0}" (click)="gridFilterData != null && gridFilterData.length > 0 && downloadExcel()"><i class="fas fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
-                                        <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
                                         <li class="dropdown">
                                           <a class="dropdown-item" (click)="SaveLayout()"
                                             ><i class="fa fa-tags"></i> {{ "SAVELAYOUT" | translate }}</a
@@ -258,10 +242,8 @@
                             </div>
                         </div>
                     </ng-template>
-                    <div class="tbl_colm_sticky" [ngClass]="{'open_panel':isTotalPanelVisible==true}" id="reason_div">
+                    <div class="tbl_colm_sticky" [ngClass]="{'open_panel':isTotalPanelVisible==true,'isTabulator':isTabulator==true}" id="reason_div">
                         <div class="row action_list">
-
-
                             <ng-container *ngIf="!isTabulator">
 
                                 <span class="action_lbl"  *ngIf="isSelected">{{'ACTIONS'|translate}}:</span>
@@ -319,7 +301,6 @@
                                                     (change)="selectPopupOpen($event)" />
                                                     <label for="select_all" class="custom-checkbox"></label>
                                                 </th>
-                                                <!-- <th><input type="checkbox" name="selectAll"/></th> -->
                                                 <ng-container *ngFor="let groupHeader of colFields; let i=index" >
                                                     <ng-container *ngFor="let objHeader of groupHeader.items; let i=index" >
                                                     <th resizable *ngIf="checkVisibility(objHeader.colName)" [ngClass]="getTableTdClassName(objHeader)" >
@@ -332,7 +313,6 @@
                                         </thead>
                                         <tbody  *ngIf="sv.data?.length > 0">
                                             <tr  *ngFor="let item of sv.data; let i=index" tabindex={{i}} class="table-row table-row-{{i}}">
-                                                <!-- <td><input type="checkbox" name="singlecheck"/></td>  -->
                                                 <td><input #checkboxes  id="{{item.reasonId}} "type="checkbox" name="singlecheck" (change)="selectRecord($event,'singlecheck',item.reasonId)" [checked]="checkselectRecord(item.reasonId)"/>
 
                                                     <label for="{{item.reasonId}}" class="custom-checkbox"></label>
@@ -429,21 +409,6 @@
     </section>
 
 
-
-    <!-- <div class="total-panel-wrapper" [ngClass]="{'active': isClicked && isOpen}">
-        <button *ngIf="!isClicked && !isOpen" class="totalp-btn total-panel-arrow-btn" (click)="onArrowClick()"></button>
-        <button *ngIf="isClicked && !isOpen" class="totalp-btn total-panel-open-btn" (click)="onTotalBtnClick()">Totals</button>
-        <app-total-panel *ngIf="isClicked && isOpen"
-            (emtOutputClose)="ClosePanel($event)"
-            (emtOutputPageChange)="emtOutputPageChange($event)"
-            [GroupBy]="'ReasonID'"
-            [ListRecords]="gridFilterData"
-            [HeaderList]="headerList"
-            [ActivePage]="sv.activePage"
-            [RowsOnPage]="sv.rowsOnPage"
-        ></app-total-panel>
-    </div> -->
-
 </div>
 
 <ng-template #chipCardTemp let-item="item">
@@ -458,48 +423,8 @@
                  <div class="col-12 bottom_value">
                     <span class="info-box-number" *ngIf="item.total!=null">{{commonMethodService.formatAmount(item.total)}}</span>
                  </div>
-                 <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span>                 -->
               </div>
            </div>
-           <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
-            <div class="cards filter-boxes-wrap">
-                <ul>
-                    <li>
-                        <div class="filter-payment-type-box">
-                            <a>
-                                <span class="data">
-                                    <p>Payments</p>
-                                    <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
-                                </span>
-                                <span class="right-arrow action_btn"></span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="filter-payment-type-box">
-                            <a>
-                                <span class="data">
-                                    <p>Open Pledges</p>
-                                    <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
-                                </span>
-                                <span class="right-arrow action_btn"></span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="filter-payment-type-box">
-                            <a>
-                                <span class="data">
-                                    <p>Schedules</p>
-                                    <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
-                                </span>
-                                <span class="right-arrow action_btn"></span>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
      </div>
      </div>
 </ng-template>

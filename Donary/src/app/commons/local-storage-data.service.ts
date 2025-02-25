@@ -73,6 +73,7 @@ export class LocalstoragedataService {
   getPermissionLst() {
     return JSON.parse(localStorage.getItem("permissionLst"));
   }
+  
   setCurrentMenuState(menuItems) {
     if (menuItems) {
       localStorage.setItem("currentMenu", JSON.stringify(menuItems));

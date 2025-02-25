@@ -32,8 +32,8 @@ interface stateObj {
 @Component({
   selector: "app-admin-main",
   templateUrl: "./admin-main.component.html",
-  styleUrls: ["./admin-main.component.scss"],
   standalone: false,
+  styleUrls: ["./admin-main.component.scss"],
 })
 export class AdminMainComponent implements OnInit {
   registractionForm: UntypedFormGroup;
@@ -148,7 +148,6 @@ export class AdminMainComponent implements OnInit {
       this.organizationService
         .getOrganizationAdmin(OrganizationId, eventGuid)
         .subscribe((res: any) => {
-          // console.log(res);
           let contactModel!: GetOrganizationContactResponse;
           if (
             res.organizationContactModel &&

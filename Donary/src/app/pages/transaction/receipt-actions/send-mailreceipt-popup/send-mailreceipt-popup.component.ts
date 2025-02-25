@@ -32,8 +32,8 @@ interface NewAddress {
 @Component({
   selector: "app-send-mailreceipt-popup",
   templateUrl: "./send-mailreceipt-popup.component.html",
-  styleUrls: ["./send-mailreceipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./send-mailreceipt-popup.component.scss"],
 })
 export class SendMailreceiptPopupComponent implements OnInit {
   isloading: boolean;

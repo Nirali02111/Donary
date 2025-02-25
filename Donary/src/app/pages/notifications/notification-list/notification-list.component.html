@@ -11,40 +11,6 @@
                 <!-- Card Type Drop Down -->
 
                 <div class="input-group dnr-datepicker-container date_picker" *appIsWeb>
-                    <!-- <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
-                        [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
-                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                        [ranges]="commonMethodService.ranges" [linkedCalendars]="commonMethodService.linkedCalendars"
-                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                        [showClearButton]="commonMethodService.showClearButton"
-                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                        placeholder="All Time"  />
-                    <div class="input-group-append">
-                        <span class="input-group-text">
-                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
-                        </span>
-                    </div> -->
-                    <!-- <input
-							  type="text"
-							  class="alltime_filter_btn"
-							  ngxDaterangepickerMd
-							  #upcomingCalendar
-							  [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
-							  [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-							  [ranges]="commonMethodService.upcomingranges"
-							  [linkedCalendars]="commonMethodService.linkedCalendars"
-							  [opens]="commonMethodService.open"
-							  [drops]="commonMethodService.drop"
-							  [(ngModel)]="selectedUpcomingDateRange"
-							  [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-							  (datesUpdated)="datesUpcomingUpdated($event)"
-							  (rangeClicked)="upcomingRangeClicked($event)"
-							  id="upcomingcalendar"
-                              [showClearButton]="commonMethodService.showClearButton"
-                              [placeholder]="commonMethodService.placeholder"
-                              autocomplete="off"
-							/> -->
                          <!-- Calendar code started -->
                          <ng-template #popContent 
                          ><app-common-hebrew-english-calendar [pageName]="PageName2" [data]="selectedUpcomingDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
@@ -175,7 +141,6 @@
                                             <td class="reminder-date">{{item.dueDateTime| donaryDateFormat: "long" }} </td>
                                             <td class="reminder-status"><span [ngClass]="getStatusClass(item.statusId)">{{item.status}}</span></td>
                                             <td class="reminder-assignee">{{item.assignee}}</td>
-                                            <!-- <td>{{item.recordType}}</td> -->
                                             <td class="reminder-attached">
                                                 <div class="notification-attached">
                                                     <ng-container *appIsMobile>
@@ -190,13 +155,6 @@
                                                 <span class="attached-amount">{{item.amount? commonMethodService.formatAmount(item.amount):item.amount}}</span>
                                                 </div>
                                         </div></td>
-                                            <!-- <td><input type="checkbox" name="singlecheck"/></td> -->
-
-                                            <!-- <ng-container  *ngFor="let groupHeader of colFields;">
-                                                <ng-container  *ngFor="let objHeader of groupHeader.items;">                                                         -->
-                                                <!-- </ng-container>
-                                            </ng-container> -->
-
                                         </tr>
                                     </tbody>
                                     <tbody *ngIf="sv.data?.length == 0">
@@ -276,21 +234,6 @@
                 <label class="lbl__text">{{'DUEDATE'  |translate}} :</label>
                 <div class="duedate-right">
                 <h5 class="lbl__value" (click)="ChangeDate()" *ngIf="isDateLabel">{{dueDate}}</h5>
-                <!-- <input type="text" *ngIf="!isDateLabel" class="form-control"
-                                #calendarsearch
-                                ngxDaterangepickerMd
-                                    [singleDatePicker]="true"
-                                    [(ngModel)]="selectedDateRange"
-                                    autoUpdateInput="false"
-                                    [timePicker]="true"
-                                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                    [opens]="commonMethodService.open"
-                                    [drops]="commonMethodService.drop"
-                                    [showClearButton]="commonMethodService.showClearButton"
-                                    (datesUpdated)="datesUpdated($event)"
-                                    [keepCalendarOpeningWithRange]="true"
-                                /> -->
                  <!-- Calendar code started -->
                  <ng-template #popContent 
                  ><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange" [isOneDate]="isSidebarOnedate"></app-common-hebrew-english-calendar>
@@ -368,15 +311,12 @@
         )">
             <div class="linked-donor-inside">
                 <div class="linked-donor-top">
-                    <!-- <div class="p">
-                        <span class="lng_hebrew">{{defaultLocationNameJewish}}</span>
-                    </div> -->
+                   
                     <div class="name_col">
                         <div class="left">
                             <div class="donor-name-left">
                                 <h3>{{fullName}}</h3>
                                 <h3 class="lng_hebrew">{{fullNameJewish}}</h3>
-                                <!-- <h4>{{father!=null?father+"/":""}} {{fatherInLaw}}</h4>                             -->
                             </div>
                             <div class="donor-name-right">
                                 <ul>
@@ -397,7 +337,6 @@
                     <div class="amounts_colms donor-amount">
                         <div class="t-col">
                             <span class="lbl__text text-capitalize">{{'PHONE'  |translate}} :</span>
-                            <!--<span class="lbl__value">{{phoneNumber}}</span>-->
                             <span class="lbl__value">{{phone_linkDonar}}</span>
                         </div>
                         <div class="t-col">
@@ -407,7 +346,6 @@
                         <div class="t-col">
                         <span class="lbl__text text-capitalize">{{'EMAIL'  |translate}} :</span>
                         <span class="lbl__value">{{email_linkDonar}} </span>
-                            <!--<span class="text">{{accountNum}} </span>-->
                         </div>
                     </div>
                 </div>
@@ -436,10 +374,6 @@
                 </div>
                 <div class="pledge-card-right">
                     <div class="name_col">
-                        <!-- <div class="left">
-                            <h3>{{donorFullName}}</h3>
-                            <h3 class="lng_hebrew">{{donorFullNameJewish}} </h3>
-                        </div> -->
                         <div class="right">
                             <p [ngClass]="status_class">{{status}}</p>
                             <h6 *ngIf="transactionType!='Pledge'"><span class="card__icon" [ngClass]="paymenttype_icn"></span> {{ commonMethodService.formatAmount(amount)}}</h6>
@@ -498,15 +432,10 @@
             <div class="inline__data task-by-wrap">
                 <div class="taks-label">
                     <span class="lbl__text">{{'TASKBY'  |translate}} :</span>
-                    <!--<span class="lbl__value lng_hebrew">{{assignee}}</span>-->
                     <span class="lbl__value lng_hebrew">{{userCreatedName}}</span>
                 </div>
                 <span class="lbl__value-createdate">{{createdDate | donaryDateFormat: 'name-long'}}</span>
             </div>
-            <!-- <div class="inline__data">
-                <span class="lbl__text">DATE CREATED:</span>
-                <span class="lbl__value">{{createdDate}}</span>
-            </div> -->
         </div>
         <div class="comment_sect" *ngFor="let item of notificationComments">
             <div class="comment-top">
@@ -515,7 +444,6 @@
                 <span class="lbl__value lng_hebrew">{{item.userCreated}}</span>
             </div>
             <div class="comment-date">
-                <!-- <span class="lbl__value-createdate">{{item.createdDate | donaryDateFormat: 'name-long'}}</span> -->
                 <span class="lbl__value-createdate">{{item.createdDate | donaryDateFormat: 'name-long'}}</span>
             </div>
             </div>
@@ -524,10 +452,6 @@
             </div>
         </div>
     <div class="ckeditor_sect">
-       <!-- <ckeditor [editor]="Editor"
-         [config]="{ toolbar: [ [ 'Bold' ],[ 'Italic' ],
-         [ 'Link' ],[ 'BulletedList' ] ,[ 'NumberedList' ]],placeholder: 'Write a note...' }">
-         </ckeditor>-->
       <ckeditor  *ngIf="isBrowser"  [(ngModel)]="txtCommands" [editor]="Editor" (ready)="onReady($event)" [config]="{ toolbar: [  'Bold', 'Italic', 'Underline',
          'Link' ,'NumberedList', 'BulletedList'],placeholder: 'Write a note...' }"> </ckeditor>
         <button class="comment_btn" type="button" (click)="saveComments()">{{'COMMENT'  |translate}}</button>

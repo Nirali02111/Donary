@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-collector-filter-popup",
   templateUrl: "./collector-filter-popup.component.html",
-  styleUrls: ["./collector-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./collector-filter-popup.component.scss"],
 })
 export class CollectorFilterPopupComponent implements OnInit {
   @Output() emtOutputCollectorFilterData: EventEmitter<any> =

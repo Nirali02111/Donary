@@ -36,7 +36,6 @@
                                         <label [ngClass]="contains_heb(item.itemName) ? 'heb-dropdown-title' : 'simple-dropdown-title' ">
                                             {{item.itemName}}
                                             </label>
-                                            <!-- <span class="season-count">({{ getSeasonCount(item.id) }})</span> -->
                                     </ng-template>
                                 </c-item>
                             </angular2-multiselect>
@@ -59,7 +58,6 @@
                                         <label>
                                             {{item.itemName}}
                                             </label>
-                                            <!-- <span class="season-count">({{ getLocationCount(item.id) }})</span> -->
                                     </ng-template>
                                 </c-item>
                         </angular2-multiselect>
@@ -195,7 +193,6 @@
                     }
   
                     <div class="map-block large-block">
-                      <!-- <h4 class="map-title">{{item.sectionName}}</h4> -->
                       <div class="inner-block d-flex align-items-start">
                         @if (!isPrice) {
                           <div class="map-pagination pagination-verticle right">
@@ -335,7 +332,6 @@
                         </ng-container>
                         <td class="custom_action hover__action">
                           <div class="float__action">
-                            <!-- <span  class="add_icon" data-toggle="tooltip"  t-title="Add Seat" (click)="SaveSeatPopup(item)" style="color: #6D55A5;"><i class="fa fa-plus" aria-hidden="true" ></i></span> -->
                             <span class="icn_edit" data-toggle="tooltip" appHoverTooltip labelText="{{'EDIT' | translate}}" (click)="EditSeatPopup(item)"
                               style="color: #6D55A5;"><i class="fas fa-edit"></i></span>
                           </div>

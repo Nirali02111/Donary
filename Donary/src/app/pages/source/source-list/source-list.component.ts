@@ -63,8 +63,8 @@ declare var $: any;
   selector: "app-source-list",
   templateUrl: "./source-list.component.html",
   styleUrls: ["./source-list.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SourceListComponent implements OnInit {
   @ViewChild("sv", { static: true }) svTable: DataTable;
@@ -384,7 +384,6 @@ export class SourceListComponent implements OnInit {
   ngOnInit() {
     this.analytics.visitedSources();
     this.colfieldsValue = this.pageSyncService.sourceFieldsCol;
-    console.log(this.colfieldsValue);
     this.colfieldsValue.forEach((obj: { key: boolean }) => {
       let key = Object.keys(obj)[0];
       let value: boolean = Object.values(obj)[0];
@@ -3588,32 +3587,6 @@ export class SourceListComponent implements OnInit {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, {
       cellStyles: true,
     });
-    //  if(this.isTotalPanelVisible){
-    //     var range = XLSX.utils.decode_range(worksheet["!ref"]);
-    //     console.log(range);
-    //      var fmt="$0.00"
-    //     var columnindex;
-    //     for(var C = range.s.r; C <= range.e.r; ++C) {
-    //     const R = range.s.r
-    //     var cell = worksheet[XLSX.utils.encode_cell({r:R,c:C})];
-    //     if(cell.v=="Payments"){
-    //       columnindex=C
-    //       var formatrange = { s: {r:1, c:columnindex}, e: {r:22, c:columnindex} };
-    //       for(var row = formatrange.s.r; R <= formatrange.e.r; ++row) {
-    //        for(var Col = formatrange.s.c; Col <= formatrange.e.c; ++Col) {
-    //         var cell = worksheet[XLSX.utils.encode_cell({r:row,c:Col})];
-
-    //         if(cell!=undefined)
-    //         //if(!cell || cell.t != 'n') continue; // only format numeric cells
-    //         cell.z = fmt;
-    //       }
-    //     }
-
-    // }
-
-    // }
-    //  }
-
     if (this.isTotalPanelVisible) {
       var range = XLSX.utils.decode_range(worksheet["!ref"]);
       // Find Payment, Pledge, Schedule, And Total
@@ -3847,7 +3820,6 @@ export class SourceListComponent implements OnInit {
   }
 
   filterLocalData() {
-    console.log(this.objAdvancedSearch);
     this.gridFilterData = this.gridData.filter((o) => {
       if (!this.objAdvancedSearch) {
         return true;

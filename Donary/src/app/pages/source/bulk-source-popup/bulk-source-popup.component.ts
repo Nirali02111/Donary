@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-bulk-source-popup",
   templateUrl: "./bulk-source-popup.component.html",
-  styleUrls: ["./bulk-source-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-source-popup.component.scss"],
 })
 export class BulkSourcePopupComponent implements OnInit {
   selectedCampaignList = [];

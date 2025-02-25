@@ -29,8 +29,8 @@ import { SelectTransactionPopupComponent } from "src/app/pages/make-transaction/
 
 @Component({
   selector: "app-add-new-dropdown",
-  standalone: false,
   templateUrl: "./add-new-dropdown.component.html",
+  standalone: false,
   styleUrls: ["./add-new-dropdown.component.scss"],
   host: {
     "(window:click)": "onClick()",
@@ -177,8 +177,6 @@ export class AddNewDropdownComponent implements OnInit, AfterViewInit {
   }
 
   closeDropdown() {
-    console.log("clicked on closeDropdown");
-
     this.commonMethodService.closeDropdown();
     this.isDropDown = false;
   }

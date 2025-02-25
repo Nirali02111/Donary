@@ -171,27 +171,3 @@
         </div>
     </div>
 </div>
-<!-- <div class="container admin-register preset-amt" *ngIf="!isDevEnv">
-    <div class="white_box">
-        <h4 class="headline">{{'PRESETAMOUNT' | translate}}</h4>
-        <p>{{'CUSTOMIZEPRESENT' | translate}}</p>
-        <div class="preset-form">
-            <div class="row-preset-data" *ngFor="let item of presetAmounts;let j=index">
-                <label>{{'PRESET' | translate}} {{j+1}}:</label>
-                <div class="preset-amount-left">
-                    <input class="form-control" type="number" placeholder="0.00" (focusout)="convertDecimal(j)"
-                        [(ngModel)]="item.amount" name="amount_{{j+1}}" />
-                    <span [ngClass]="commonMethodService.currencyClass"></span>
-                </div>
-                <div class="preset-amount-right">
-                    <input class="form-control" placeholder="{{'ENTERTITLE' | translate}}" type="text"
-                        [(ngModel)]="item.text" name="text_{{j+1}}" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="actions_buttons" [ngClass]="isloading? 'loading' : ''">
-        <button class="btn btn-primary btn-preset" (click)="SavePresetAmount()"><span>{{'SAVE' |
-                translate}}</span></button>
-    </div>
-</div> -->

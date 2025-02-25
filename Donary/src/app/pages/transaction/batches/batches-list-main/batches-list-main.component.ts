@@ -26,8 +26,8 @@ declare var $: any;
 @Component({
   selector: "app-batches-list-main",
   templateUrl: "./batches-list-main.component.html",
-  styleUrls: ["./batches-list-main.component.scss"],
   standalone: false,
+  styleUrls: ["./batches-list-main.component.scss"],
 })
 export class BatchesListMainComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

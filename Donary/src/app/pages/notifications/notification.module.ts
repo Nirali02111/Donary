@@ -109,7 +109,6 @@ export class ClosePopoverOnClickOutsideDirective {
     CKEditorModule,
     TranslateModule,
     NgxDaterangepickerMd.forRoot(),
-    //NgMultiSelectDropDownModule.forRoot(),
     NgxMaskDirective,
     NgxMaskPipe,
     DataTableModule,

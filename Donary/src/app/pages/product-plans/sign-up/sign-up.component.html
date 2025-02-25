@@ -9,11 +9,6 @@
                         <label class="lbl_text">{{'ORGANIZATIONNAME'  |translate}} :</label>
                         <input type="text" class="form-control" formControlName="OrgName" 
                             [class.error-field]="organization.invalid && isFormubmited" />
-                        <!-- <ng-container *ngIf="organization.touched && organization.invalid">
-                            <div class="row text-danger">
-                                <div  class="val-error">Organization Name is required</div>
-                            </div>
-                        </ng-container> -->
                     </div>
 
 
@@ -24,21 +19,11 @@
                             placeholder="{{'FIRSTNAME'  |translate}}"  
                             formControlName="Firstname" 
                             [class.error-field]=" firstname.invalid && isFormubmited"/>
-                            <!-- <ng-container *ngIf="firstname.touched && firstname.invalid">
-                                <div class="row text-danger">
-                                    <div  class="val-error">field is required</div>
-                                </div>
-                            </ng-container> -->
                         </div>
                         <div class="colm colm-6">
                             <input type="text" class="form-control" placeholder="{{'LASTNAME'  |translate}}"  
                             formControlName="{{'LASTNAME'  |translate}}" 
                             [class.error-field]="lastname.touched && lastname.invalid && isFormubmited">
-                            <!-- <ng-container *ngIf="lastname.touched && lastname.invalid">
-                                <div class="row text-danger">
-                                    <div  class="val-error">field is required</div>
-                                </div>
-                            </ng-container> -->
                         </div>
                     </div>
 
@@ -49,7 +34,6 @@
                             [class.error-field]="email.touched && email.invalid && isFormubmited" />
                         <ng-container *ngIf="email.touched && email.invalid">
                             <div class="row text-danger">
-                                <!-- <div  *ngIf="email.errors?.required" class="val-error">Email is required</div> -->
                                 <div  *ngIf="email.errors?.email" class="val-error">{{'EMAILNOTVALID'  |translate}}</div>
                             </div>
                         </ng-container>
@@ -60,10 +44,6 @@
                         <input [type]="passwordType" class="form-control" formControlName="password" 
                             [class.error-field]="password.touched && password.invalid && isFormubmited" />
                         <ng-container *ngIf="password.touched && password.invalid">
-                            <!-- <div class="row text-danger">
-                                <div  *ngIf="password.errors?.required" class="val-error">Password is required</div>
-                            </div> -->
-                            
                         </ng-container>
                         <div class="password-action-wrap">
                             <span class="show_icon" *ngIf="!showPassword" (click)="ShowPassword(true)"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
@@ -77,13 +57,11 @@
                             [class.error-field]="confirmPassword.touched && confirmPassword.invalid && isFormubmited" />
                         <ng-container *ngIf="confirmPassword.touched && confirmPassword.invalid">
                             <div class="row text-danger">
-                                <!-- <div  *ngIf="confirmPassword.errors?.required" class="val-error">Confirm Password is required</div> -->
                                 <div  *ngIf="confirmPassword.errors?.mismatch" class="val-error">{{'CONFIRMPASSWORDNOTMATCH'  |translate}} </div>
                             </div>
                         </ng-container>
                     </div>
 
-                    <!-- {{ signUpForm.value | json}} -->
 
                     <div class="actions_footer actions_buttons" [class.loading]="isloading">
                         
@@ -105,7 +83,6 @@
                     <p>{{'YOUARENEWDONOR'  |translate}}</p>
                 </div>
                 <div class="thank-you-action actions_buttons" [class.loading]="isloading">
-                    <!-- <button class="btn btn-primary btn-reg" (click)="onRegisterClick()">Register Now</button> -->
                     <button class="btn-shoping" [disabled]="isloading" (click)="onContinueShopping()"> <span>{{'CONTINUESHOPPING'  |translate}}</span></button>
                 </div>
             </div>

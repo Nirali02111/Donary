@@ -3,8 +3,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/Avenir-Black.woff2") format("woff2");
-    src: url("../fonts/Avenir-Black.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Black.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Black.woff") format("woff");
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -12,17 +12,17 @@
 
 @font-face {
     font-family: "Avenir Black Oblique";
-    src: url("../fonts/avenir-blackoblique.woff2") format("woff2");
-    src: url("../fonts/avenir-blackoblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-BlackOblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-BlackOblique.woff") format("woff");
     font-weight: 900;
     font-style: italic;
-    font-display: swap;
+    font-display: swap; 
 }
 
 @font-face {
     font-family: "Avenir Book";
-    src: url("../fonts/avenir-book.woff2") format("woff2");
-    src: url("../fonts/avenir-book.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Book.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Book.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -30,8 +30,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-heavyoblique.woff2") format("woff2");
-    src: url("../fonts/avenir-Heavyoblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-HeavyOblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-HeavyOblique.woff") format("woff");
     font-weight: 900;
     font-style: italic;
     font-display: swap;
@@ -39,8 +39,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-heavy.woff2") format("woff2");
-    src: url("../fonts/avenir-heavy.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Heavy.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Heavy.woff") format("woff");
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -48,8 +48,8 @@
 
 @font-face {
     font-family: "Avenir Book";
-    src: url("../fonts/avenir-bookoblique.woff2") format("woff2");
-    src: url("../fonts/avenir-bookoblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-BookOblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-BookOblique.woff") format("woff");
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -57,8 +57,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-light.woff2") format("woff2");
-    src: url("../fonts/avenir-light.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Light.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Light.woff") format("woff");
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -66,8 +66,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-lightoblique.woff2") format("woff2");
-    src: url("../fonts/avenir-lightoblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-LightOblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-LightOblique.woff") format("woff");
     font-weight: 300;
     font-style: italic;
     font-display: swap;
@@ -75,8 +75,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-medium.woff2") format("woff2");
-    src: url("../fonts/avenir-medium.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Medium.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Medium.woff") format("woff");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -85,8 +85,8 @@
 
 @font-face {
     font-family: "Avenir Roman";
-    src: url("../fonts/avenir-roman.woff2") format("woff2");
-    src: url("../fonts/avenir-roman.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Roman.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Roman.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -94,8 +94,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-oblique.woff2") format("woff2");
-    src: url("../fonts/avenir-oblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-Oblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-Oblique.woff") format("woff");
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -103,8 +103,8 @@
 
 @font-face {
     font-family: "Avenir";
-    src: url("../fonts/avenir-mediumoblique.woff2") format("woff2");
-    src: url("../fonts/avenir-mediumoblique.woff") format("woff");
+    src: url("/assets/dist/fonts/Avenir-MediumOblique.woff2") format("woff2");
+    src: url("/assets/dist/fonts/Avenir-MediumOblique.woff") format("woff");
     font-weight: 500;
     font-style: italic;
     font-display: swap;
@@ -112,22 +112,22 @@
 
 @font-face {
     font-family: 'FbShefaRegular';
-    src: url('../fonts/FbShefaRegular.eot');
-    src: url('../fonts/FbShefaRegular.eot') format('embedded-opentype'),
-        url('../fonts/FbShefaRegular.woff2') format('woff2'),
-        url('../fonts/FbShefaRegular.woff') format('woff'),
-        url('../fonts/FbShefaRegular.ttf') format('truetype'),
-        url('../fonts/FbShefaRegular.svg#FbShefaRegular') format('svg');
+    src: url('/assets/dist/fonts/FbShefaRegular.eot');
+    src: url('/assets/dist/fonts/FbShefaRegular.eot') format('embedded-opentype'),
+        url('/assets/dist/fonts/FbShefaRegular.woff2') format('woff2'),
+        url('/assets/dist/fonts/FbShefaRegular.woff') format('woff'),
+        url('/assets/dist/fonts/FbShefaRegular.ttf') format('truetype'),
+        url('/assets/dist/fonts/FbShefaRegular.svg#FbShefaRegular') format('svg');
 }
 
 @font-face {
     font-family: 'FbShefaBold';
-    src: url('../fonts/FbShefaBold.eot');
-    src: url('../fonts/FbShefaBold.eot') format('embedded-opentype'),
-        url('../fonts/FbShefaBold.woff2') format('woff2'),
-        url('../fonts/FbShefaBold.woff') format('woff'),
-        url('../fonts/FbShefaBold.ttf') format('truetype'),
-        url('../fonts/FbShefaBold.svg#FbShefaBold') format('svg');
+    src: url('/assets/dist/fonts/FbShefaBold.eot');
+    src: url('/assets/dist/fonts/FbShefaBold.eot') format('embedded-opentype'),
+        url('/assets/dist/fonts/FbShefaBold.woff2') format('woff2'),
+        url('/assets/dist/fonts/FbShefaBold.woff') format('woff'),
+        url('/assets/dist/fonts/FbShefaBold.ttf') format('truetype'),
+        url('/assets/dist/fonts/FbShefaBold.svg#FbShefaBold') format('svg');
 }
 
 body {
@@ -16103,12 +16103,12 @@ body .swal2-title {
 
 .tbl_colm_sticky.campaign_sticky {
     width: 100%;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
-.tbl_colm_sticky {
+/* .tbl_colm_sticky {
     margin-top: 10px;
-}
+} */
 
 .tbl_colm_sticky.campaign_sticky table tbody tr:nth-child(odd) td {
     background: #fff !important;
@@ -16183,12 +16183,21 @@ table tr td.custom_action.hover__action .float__action .fa-edit {
 }
 
 .tbl_colm_sticky .transaction__table>div {
-    height: calc(100vh - 14rem) !important;
+    height: calc(100vh - 12.25rem) !important;
 }
 
-.modal-open .drag_popup.modal.savereason_popup {
-    z-index: 10002;
+.tbl_colm_sticky.isTabulator .transaction__table>div {
+    height: calc(100vh - 9.75rem) !important;
 }
+
+#collector_div.tbl_colm_sticky.open_panel.isTabulator .transaction__table>div {
+    height: calc(100vh - 15.25rem) !important;
+}
+
+#reason_div.tbl_colm_sticky.open_panel.isTabulator .transaction__table>div {
+    height: calc(100vh - 15.25rem) !important;
+}
+
 
 /* :host ::ng-deep .md-drppicker.ltr .calendar.right { display: none; } */
 
@@ -16224,11 +16233,11 @@ table tr td.custom_action.hover__action .float__action .fa-edit {
 }
 
 .tbl_colm_sticky#donor_div .transaction__table>div {
-    height: calc(100vh - 15.5rem) !important;
+    height: calc(100vh - 12.75rem) !important;
 }
 
 .tbl_colm_sticky#donor_div.open_panel .transaction__table>div {
-    height: calc(100vh - 23rem) !important;
+    height: calc(100vh - 18.5rem) !important;
 }
 
 
@@ -16984,11 +16993,11 @@ body .swal2-content {
 }
 
 #location_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 18rem) !important;
+    height: calc(100vh - 18.25rem) !important;
 }
 
 #location_div.tbl_colm_sticky .transaction__table>div {
-    height: calc(100vh - 14rem) !important;
+    height: calc(100vh - 12.25rem) !important;
 }
 
 
@@ -17026,23 +17035,27 @@ body[_nghost-rhm-c16] .half_view .md-drppicker.double {
 
 
 #reason_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 16.7rem) !important;
+    height: calc(100vh - 18.25rem) !important;
 }
 
 #campaign_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 14.7rem) !important;
+    height: calc(100vh - 18.25rem) !important;
 }
 
-#location_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 17rem) !important;
+#campaign_div.tbl_colm_sticky.open_panel.isTabulator .transaction__table>div {
+    height: calc(100vh - 15.25rem) !important;
 }
+
+/* #location_div.tbl_colm_sticky.open_panel .transaction__table>div {
+    height: calc(100vh - 19rem) !important;
+} */
 
 #collector_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 17rem) !important;
+    height: calc(100vh - 18.25rem) !important;
 }
 
 #source_div.tbl_colm_sticky.open_panel .transaction__table>div {
-    height: calc(100vh - 17rem) !important;
+    height: calc(100vh - 18.25rem) !important;
 }
 
 #custom-tabs-donors .colm.searcg_txt,

@@ -223,22 +223,6 @@
                 }}</span>
               </div>
             </div>
-            <!-- <div class="inline-col" *ngIf="isCancelled">
-                <h6>Total Cancelled:</h6>
-                <div class="text-danger value small-text">
-                  {{commonMethodService.formatAmount(totalCanceled)}}
-                </div>
-              </div> -->
-            <!-- <div class="inline-col" *ngIf="isFailed">
-                <h6>Total Failed :</h6>
-                <div class="text-danger value small-text ">
-                  {{commonMethodService.formatAmount(totalFailed)}}
-                </div>
-              </div> -->
-            <!-- <div class="inline-col large_colm cancel_amt" *ngIf="isCancelled">
-              <h6>Cancelled ({{cancelCount}}):</h6>
-              <div class="text-danger small-text">{{commonMethodService.formatAmount(cancelAmount)}}</div>
-            </div> -->
           </div>
         </div>
       </app-skeleton-loader-component>
@@ -261,7 +245,6 @@
             >{{ "PENDINGPAYMENTS" | translate }}({{ upcomingCount }})</a
           >
         </li>
-        <!--<li role="presentation"><a href="#" role="tab" class="disabled grey-out" data-toggle="tab">Alerts</a></li>-->
         <li role="presentation">
           <a href="#appliedPledges" role="tab" data-toggle="tab"
             >{{ "APPLIEDTOPLEDGES" | translate }}({{ appliedToPledgeCount }})</a
@@ -446,7 +429,6 @@
                     class="status text-center justify-content-end"
                     [ngClass]="getStatusClass(item.scheduleStatus)"
                   >
-                    <!-- <b *ngIf="item.retires!=null">{{item.retires}}</b> -->
                     <span
                       class="sts-error-msg hidden-desktop"
                       *ngIf="item.error"
@@ -722,30 +704,7 @@
                           {{ item.pledgeJewishDate }}</strong
                         >
                       </span>
-                      <!-- <span class="action">
-												<i class="more-icon"  data-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false"></i>
-												<div class="dropdown_card dropdown-menu" >
-													<ul >
-														<li>
-															<a class="dropdown-item disbaled">{{'EDITAMOUNT' | translate}}</a>
-															<span class="tooltip-action" appDataHover labelText="{{'UNAPPLYPLEDGEEDIT' | translate}}"></span>
-														</li>
-
-														<li><a class="dropdown-item"  (click)="DismissPendingPayment(item.pledgeId,item.pledgeDate)">{{'DISMISSPAYMENT' | translate}}</a></li>
-
-														<li >
-															<a class="dropdown-item disbaled" >{{'PAUSEPAYMENT' |translate}}</a>
-															<span class="tooltip-action" appDataHover labelText="{{'UNAPPLYPLEDGEEDIT' | translate}}"></span>
-														</li>
-														<li *ngIf="false">
-															<app-next-schedule-date-popup [scheduleObj]="item" (OnSimpleResume)="onIndividualResume($event)"></app-next-schedule-date-popup>
-														</li>
-
-														<li><a class="dropdown-item"   (click)="OpenEditAmountPopup(item.pledgeId,item.pledgeDate,false)">{{'CHANGEDATE' | translate}}</a></li>
-													</ul>
-												</div>
-											</span> -->
+                     
                     </td>
                   </tr>
                 </ng-container>
@@ -754,39 +713,6 @@
           </div>
         </div>
 
-        <!--
-				<div  role="tabpanel" class="tab-pane fade payment-alert-tab" id="alerts">
-					<div class="left_colm">
-						<h6>Send receipt after charge</h6>
-						<div class="block-col">
-							<div class="radio_input">
-								<input type="radio" name="receipt1" />
-								<label>Email</label>
-							</div>
-							<div class="radio_input">
-								<input type="radio" name="receipt1" />
-								<label>Mail</label>
-							</div>
-							<div class="radio_input">
-								<input type="radio" name="receipt1" />
-								<label>Text Message</label>
-							</div>
-						</div>
-					</div>
-					<div class="right_colm">
-						<h6>Send Alert One Day Before Charge</h6>
-						<div class="block-col">
-							<div class="radio_input">
-								<input type="radio" name="receipt2" />
-								<label>Email</label>
-							</div>
-							<div class="radio_input">
-								<input type="radio" name="receipt2" />
-								<label>Text Message</label>
-							</div>
-						</div>
-					</div>
-				</div>-->
         <!-- added new-->
         <div role="tabpanel" class="tab-pane fade" id="logs">
           <div class="Schedule_log logs-data" *ngIf="changeLog != null">

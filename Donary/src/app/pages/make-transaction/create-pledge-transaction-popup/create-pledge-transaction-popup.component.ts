@@ -26,6 +26,7 @@ import { TranslateModule } from "@ngx-translate/core";
   selector: "app-create-pledge-transaction-popup",
   standalone: true,
   imports: [
+    JsonPipe,
     NgSelectModule,
     TranslateModule,
     ReactiveFormsModule,
@@ -60,7 +61,7 @@ export class CreatePledgeTransactionPopupComponent {
   constructor(
     public activeModal: NgbActiveModal,
     private localStorageDataService: LocalstoragedataService,
-
+    
     private pledgeService: PledgeService
   ) {}
 
@@ -116,25 +117,46 @@ export class CreatePledgeTransactionPopupComponent {
     }
 
     this.isLoading = true;
-    this.pledgeService.addPledge(objPledgeTransaction).subscribe(
-      (res: any) => {
-        this.isLoading = false;
-        this.activeModal.dismiss();
+    this.pledgeService
+      .addPledge(objPledgeTransaction).subscribe(
+        (res: any) => {
+          this.isLoading = false;
+          this.activeModal.dismiss();
+          
+          let modalRef = this.commonMethodService.openPopup(
+            AfterOffTransactionComponent,
+            {
+              centered: true,
+              size: "xl",
+              keyboard: true,
+              backdropClass: "backdrop-show",
+              windowClass: "modal-main modal-success",
+            }
+          );
+          modalRef.componentInstance.type = "Pledge";
 
-        let modalRef = this.commonMethodService.openPopup(
-          AfterOffTransactionComponent,
-          {
-            centered: true,
-            size: "xl",
-            keyboard: true,
-            backdropClass: "backdrop-show",
-            windowClass: "modal-main modal-success",
+          if (!res) {
+            modalRef.componentInstance.isError = true;
+            const item: AfterOfTransactionItem = {
+              accountId: res.accountId,
+              donorJewishName: res.donorJewishName,
+              donorFullName: res.donorName,
+              pledgeNum: res.pledgeNum,
+              pledgeId: res.pledgeId,
+              emails: res.emails,
+              phoneNums: res.phoneNums,
+              accountNum: res.accountNum,
+              amount: formValues.amount,
+              paymentModeMessage: "Error",
+              status: "Error",
+            };
+
+            modalRef.componentInstance.item = item;
+            return;
           }
-        );
-        modalRef.componentInstance.type = "Pledge";
 
-        if (!res) {
-          modalRef.componentInstance.isError = true;
+          this.analytics.createdPledge();
+          modalRef.componentInstance.isError = false;
           const item: AfterOfTransactionItem = {
             accountId: res.accountId,
             donorJewishName: res.donorJewishName,
@@ -145,49 +167,25 @@ export class CreatePledgeTransactionPopupComponent {
             phoneNums: res.phoneNums,
             accountNum: res.accountNum,
             amount: formValues.amount,
-            paymentModeMessage: "Error",
-            status: "Error",
+            paymentModeMessage: "visa",
+            status: "Success",
           };
 
           modalRef.componentInstance.item = item;
-          return;
+        },
+        (error) => {
+          this.isLoading = false;
+          this.activeModal.dismiss();
+          Swal.fire({
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
+            text: error.error,
+            icon: "error",
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
+            customClass: {
+              confirmButton: "btn_ok",
+            },
+          });
         }
-
-        this.analytics.createdPledge();
-        modalRef.componentInstance.isError = false;
-        const item: AfterOfTransactionItem = {
-          accountId: res.accountId,
-          donorJewishName: res.donorJewishName,
-          donorFullName: res.donorName,
-          pledgeNum: res.pledgeNum,
-          pledgeId: res.pledgeId,
-          emails: res.emails,
-          phoneNums: res.phoneNums,
-          accountNum: res.accountNum,
-          amount: formValues.amount,
-          paymentModeMessage: "visa",
-          status: "Success",
-        };
-
-        modalRef.componentInstance.item = item;
-      },
-      (error) => {
-        this.isLoading = false;
-        this.activeModal.dismiss();
-        Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-          ),
-          text: error.error,
-          icon: "error",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
-          customClass: {
-            confirmButton: "btn_ok",
-          },
-        });
-      }
-    );
+      );
   }
 }

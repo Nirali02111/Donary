@@ -18,8 +18,8 @@ import * as moment from "moment";
 @Component({
   selector: "app-bulk-reason-report",
   templateUrl: "./bulk-reason-report.component.html",
-  styleUrls: ["./bulk-reason-report.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-reason-report.component.scss"],
 })
 export class BulkReasonReportComponent implements OnInit {
   isloading: boolean = false;
@@ -229,7 +229,6 @@ export class BulkReasonReportComponent implements OnInit {
 
   isRunBtnDisable = true;
   onOptionsSelected() {
-    console.log("the selected value is " + this.ActionControl.value);
     if (this.ActionControl.value > 0) {
       this.isRunBtnDisable = false;
     } else {

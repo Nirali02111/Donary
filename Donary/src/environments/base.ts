@@ -12,7 +12,7 @@ export const commonEnvironment: IEnvironment = {
   releaseFeature: {
     isStandardReportRelease: false,
     isNewAliyaPopupRelease: false,
-    isSelectCountryInAddAPIKeyRelease: false,
+    isSelectCountryInAddAPIKeyRelease: true,
     isNewCreateSeasonRelease:false,
     isNewTransactionPopupsRelease: false
   },

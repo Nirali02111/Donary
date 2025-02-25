@@ -4,8 +4,8 @@ declare var $: any;
 @Component({
   selector: "app-dismiss-payment-popup",
   templateUrl: "./dismiss-payment-popup.component.html",
-  styleUrls: ["./dismiss-payment-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./dismiss-payment-popup.component.scss"],
 })
 export class DismissPaymentPopupComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal) {}

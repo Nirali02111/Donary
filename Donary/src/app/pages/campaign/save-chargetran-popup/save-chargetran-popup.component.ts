@@ -8,8 +8,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: "app-save-chargetran-popup",
   templateUrl: "./save-chargetran-popup.component.html",
-  styleUrls: ["./save-chargetran-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./save-chargetran-popup.component.scss"],
 })
 export class SaveChargetranPopupComponent implements OnInit {
   campaignId: number;

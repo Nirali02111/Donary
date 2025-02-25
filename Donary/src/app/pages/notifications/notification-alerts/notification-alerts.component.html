@@ -15,26 +15,6 @@
                       <!-- Card Type Drop Down -->
 
                       <div class="input-group date_picker" *appIsWeb>
-                          <!-- <input
-                      type="text"
-                      class="alltime_filter_btn"
-                      ngxDaterangepickerMd
-                      #calendar
-                      [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
-                      [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                      [ranges]="commonMethodService.upcomingranges"
-                      [linkedCalendars]="commonMethodService.linkedCalendars"
-                      [opens]="commonMethodService.open"
-                      [drops]="commonMethodService.drop"
-                      [(ngModel)]="selectedDateRange"
-                      [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                      (datesUpdated)="datesUpcomingUpdated($event)"
-                      (rangeClicked)="upcomingRangeClicked($event)"
-                      id="calendar"
-                                    [showClearButton]="commonMethodService.showClearButton"
-                                    [placeholder]="commonMethodService.placeholder"
-                                    autocomplete="off"
-                    /> -->
                     <!-- Calendar code started -->
                     <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"></app-common-hebrew-english-calendar>
                     </ng-template>
@@ -250,8 +230,6 @@
                       </span>
                     </div>
                     <div class="custom_pagination">
-                      <!-- <sv-bootstrap-paginator [svTable]="sv" [rowsOnPageSet]="[25, 50, 100]">
-                      </sv-bootstrap-paginator> -->
                     </div>
                  </div>
               </div>

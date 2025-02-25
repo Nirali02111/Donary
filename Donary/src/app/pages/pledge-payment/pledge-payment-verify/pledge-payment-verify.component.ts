@@ -9,8 +9,8 @@ import { PledgePaymentService } from "../../../services/pledge-payment.service";
 @Component({
   selector: "app-pledge-payment-verify",
   templateUrl: "./pledge-payment-verify.component.html",
-  styleUrls: ["./pledge-payment-verify.component.scss"],
   standalone: false,
+  styleUrls: ["./pledge-payment-verify.component.scss"],
 })
 export class PledgePaymentVerifyComponent implements OnInit {
   @Input() accountId: string;

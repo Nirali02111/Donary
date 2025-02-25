@@ -24,35 +24,7 @@
             </div>
 
             <div class="form-group field-street-apt">
-                <!-- <label>ADDRESS:</label>
-                <div class="colm colm-6 br-0 mb-3 col-w-25">
-                    <input
-                    type="text"
-                    placeholder="Enter Location"
-                    class="form-control"
-                    name="orgAddress"
-                    [(ngModel)]="orgAddress"
-                    [ngModelOptions]="{standalone: true}"
-                    appAddressAutocomplete
-                    (focusout)="onOrgAddressBlur()"
-                    (onAddressChange)="onOrgAddressChange($event)"
-                     />
-                </div> -->
-               <!-- <div class="colm colm-6 br-0 col-w-25">
-                    <input
-                    type="text"
-                    placeholder="House num"
-                    class="form-control"
-                    formControlName="OrgHouseNum"
-                    [class.error-field]="isFormSubmited && OrgHouseNum.invalid"
-                    />
-
-                    <ng-container *ngIf="OrgHouseNum.touched && OrgHouseNum.invalid">
-                        <ng-template [ngTemplateOutlet]="feedbackError"
-                            [ngTemplateOutletContext]="{item: OrgHouseNum}"></ng-template>
-                    </ng-container>
-                </div>
-                -->
+                
                 <div class="colm colm-6 br-0 mb-3 col-w-50">
                     <input class="form-control" placeholder="{{'STREETADDRESS' | translate}}" type="text"
                     formControlName="OrgStreet" 
@@ -87,11 +59,7 @@
                     </ng-container>
                 </div>
                 <div class="colm colm-2 br-0">
-                    <!-- <select class="form-control" formControlName="OrgState" [class.error-field]="isFormSubmited && OrgState.invalid">
-                        <option value="null">State</option>
-                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.abbreviations}}</option>
-
-                    </select> -->
+                   
 
                     <ng-select bindLabel="abbreviations" bindValue="abbreviations" [searchable]="true"
                         formControlName="OrgState" [items]="stateList" [searchFn]="customSearchFn"
@@ -153,31 +121,7 @@
             </div>
 
             <div class="form-group field-street-apt">
-                <!-- <label>ADDRESS:</label>
-                <div class="colm colm-6 br-0 mb-3 col-w-25">
-                    <input
-                    type="text"
-                    placeholder="Enter Location"
-                    class="form-control"
-                    name="contactAddress"
-                    [(ngModel)]="contactAddress"
-                    [ngModelOptions]="{standalone: true}"
-                    appAddressAutocomplete
-                    (focusout)="onContactAddressBlur()"
-                    (onAddressChange)="onContactAddressChange($event)"
-                     />
-                </div> -->
-                <!--<div class="colm colm-6 br-0 col-w-25">
-                    <input class="form-control"
-                    placeholder="House num" type="text"
-                    formControlName="ContactHouseNum"
-                    [class.error-field]="isFormSubmited && ContactHouseNum.invalid"/>
-                <ng-container *ngIf="ContactHouseNum.touched && ContactHouseNum.invalid">
-                    <ng-template [ngTemplateOutlet]="feedbackError"
-                        [ngTemplateOutletContext]="{item: ContactHouseNum}"></ng-template>
-                </ng-container>
-                </div>
-                -->
+            
                 <div class="colm colm-6 br-0 col-w-50">
                     <input class="form-control" placeholder="{{'STREETADDRESS' | translate}}" type="text"
                         formControlName="ContactStreet" appAddressAutocomplete
@@ -213,10 +157,7 @@
                     </ng-container>
                 </div>
                 <div class="colm colm-2 br-0">
-                    <!-- <select class="form-control" formControlName="ContactState" [class.error-field]="isFormSubmited && ContactState.invalid">
-                        <option value="null">State</option>
-                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.abbreviations}}</option>
-                    </select> -->
+                 
                     <ng-select bindLabel="abbreviations" bindValue="abbreviations" [searchable]="true"
                         formControlName="ContactState" [items]="stateList" [searchFn]="customSearchFn"
                         [selectOnTab]="true"
@@ -278,16 +219,7 @@
 
         <div class="form-section" *ngIf="isOrganzation && isBranding">
             <h4 class="headline">Credit card processing Information</h4>
-            <!-- <div class="form-group">
-                <label>CREDIT CARD MERCHANT:</label>
-                <input class="form-control" value="Fidelity" type="text" formControlName="CCMerchant"
-                    [class.error-field]="isFormSubmited && CCMerchant.invalid" />
-                <ng-container *ngIf="CCMerchant.touched && CCMerchant.invalid">
-                    <ng-template [ngTemplateOutlet]="feedbackError"
-                        [ngTemplateOutletContext]="{item: CCMerchant}"></ng-template>
-                </ng-container>
-            </div> -->
-
+           
             <div class="form-group">
                 <label>{{'CREDITCARDGATEWAY'  | translate}}:</label>
                 <select class="slect_box" formControlName="CCGateway" (change)="onChangeGateway($event)"
@@ -573,7 +505,6 @@
                             {{'UPLOADFILE' | translate}}<br> <span class="text">({{'WAVFORMAT' | translate}})</span>
                         </label>
                         <button class="selct_file" id="btn_select_audio" *ngIf="!isAudioFileSelected">{{'SELECTFILE' | translate}}</button>
-                        <!-- <span id="lbl_select_audio" class="select-audio-name" *ngIf="isAudioFileSelected">{{audioFileName}}</span> -->
                         <input class="file-input" type="file" name="doc_file" id="aud_file"
                             (change)="getBase64String($event,3)" placeholder="{{'UPLOADFILE'  | translate}}"
                             accept=".WAV" *ngIf="!isAudioFileSelected">
@@ -581,7 +512,6 @@
 
                     <div class="col-sm-12 inline_colm reg-audio-wrap">
                         <span id="lbl_select_audio" class="select-audio-name" *ngIf="isAudioFileSelected">{{audioFileName}}</span>
-                        <!-- <span  class="stop_btn controls-audio" style="display: none;" (click)="myAudio.pause();"> <i class="fa fa-stop"></i></span> -->
                         <audio #myAudio controls class="controls-audio"  style="height: 30px; width: 500px;display: none;"></audio>
                         <span class="delete_btn controls-audio" (click)="deleteAudioFile(3)" style="display: none;"> <i class="fa fa-trash"></i></span>
 
@@ -593,7 +523,6 @@
 
 
         </div>
-        <!-- {{ formGroup.value | json}} -->
 
 
 
@@ -609,7 +538,6 @@
 
 <ng-template #feedbackError let-item="item">
     <div class="row text-danger">
-        <!-- <div *ngIf="item.errors?.required"  class="val-error">field is required</div> -->
         <div *ngIf="item.errors?.email" class="val-error">{{'EMAILNOTVALID' | translate}}</div>
         <div *ngIf="item.errors?.mask" class="val-error">{{'FIELDNOTVALID' | translate}}</div>
     </div>

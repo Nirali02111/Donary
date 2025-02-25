@@ -28,9 +28,9 @@ interface CheckOutItem {
 @Component({
   selector: "app-view-cart",
   templateUrl: "./view-cart.component.html",
+  standalone: false,
   styleUrls: ["./view-cart.component.scss"],
   animations: [swingTrigger],
-  standalone: false,
 })
 export class ViewCartComponent implements OnInit {
   isLoading: Boolean = false;
@@ -361,22 +361,6 @@ export class ViewCartComponent implements OnInit {
   }
 
   getSubTotal() {
-    /*this.subTotalAmount =
-      this.monthlyTotalAmount +
-      this.yearlyTotalAmount +
-      this.deviceTotalAmount +
-      this.taxTotalAmount +
-      this.shippingAmount;
-
-    this.subTotalAmount;
-
-    if (this.canDisplayPickup()) {
-      this.IsSelfPickup ? this.subTotalAmount = this.subTotalAmount-this.shippingAmount: this.subTotalAmount;
-      return
-    }
-
-    this.subTotalAmount = this.subTotalAmount-this.shippingAmount;*/
-
     const val =
       this.monthlyTotalAmount +
       this.yearlyTotalAmount +
@@ -408,19 +392,12 @@ export class ViewCartComponent implements OnInit {
     const file = event.target.files[0];
     this.fileOutTaxExemptForm_Name = file.name.toString();
   }
-
-  // setIncomingFile(){
-  //   this.commonMethod.fileOutTaxExemptForm=this.file;
-  // }
-
   // set date
   rMonth: any;
   rDay: any;
   yMonth: any;
   yDay: any;
   changeDate() {
-    //var _now= new Date().toLocaleDateString();
-    //this.monthlyNextCharge=_now;
     if (this.monthlyTotalAmount > 0) {
       var now = new Date();
       var year = now.getFullYear();
@@ -450,9 +427,6 @@ export class ViewCartComponent implements OnInit {
   }
 
   canDisplayPickup() {
-    // const list = this.getEmptyProduct();
-    // return list.length === this.checkOutList.length;
-
     const haveDRMProduct = this.checkOutList.filter((o) => {
       return o.product.productName.indexOf("DRM") !== -1;
     });

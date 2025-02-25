@@ -64,14 +64,6 @@
                                     <ng-container *ngIf="ShippingAddress.get('State').touched && ShippingAddress.get('State').invalid">
                                         <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('State')}"></ng-template>
                                     </ng-container>
-
-
-                                    <!-- <select class="selct_box"  formControlName="State">
-                                        <option *ngFor="let item of stateList" [value]="item.abbreviations">{{item.name}}</option>
-                                    </select>
-                                    <ng-container *ngIf="ShippingAddress.get('State').touched && ShippingAddress.get('State').invalid">
-                                        <ng-template [ngTemplateOutlet]="feedbackError" [ngTemplateOutletContext]="{item: ShippingAddress.get('State')}"></ng-template>
-                                    </ng-container> -->
                                 </div>
 
                                 <div class="col-sm-2 city_col" [class.is-error-red]="ShippingAddress.get('Zip').touched && ShippingAddress.get('Zip').invalid && isFormSubmited">
@@ -198,9 +190,6 @@
                     </div>
 
                 </div>
-
-                <!-- {{ checkoutForm.value | json }} -->
-
                 <div class="summary-section">
                     <h3 class="cart-title">{{'SUMMARY'  |translate}}</h3>
 
@@ -254,34 +243,20 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="row summary-wrapper">
-                                <div class="col-5 summary-left-part">
-                                    <div>
-                                        <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-7 summary-right-part">
-
-                                </div>
-                            </div> -->
                             <div class="row summary-wrapper">
                             <div class="apply-promo-wrap" *ngIf="!encryptedPromoCodeId">
                         <h4 class="cart-wrapper-title promo-code">{{'ADDPROMOCODE'  |translate}} :</h4>
                            <div class="apply-promo-code">
-                              <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
                               <input type="text"  class="form-control enter-code" placeholder="{{'ENTERCODEOPTIONAL'  |translate}}" name="txt_promoCode" id="txtpromoCode" />
                               <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;" (click)="onAddPromoCode()"> {{'APPLY'  |translate}}</span></h5>
                            </div>
                        </div>
-                            <!--  -->
                                 <div class="apply-promo-wrap" *ngIf="encryptedPromoCodeId">
                                     <div class="promo-code-left">
                                  <h4 class="cart-wrapper-title promo-code">{{'PROMOCODE'  |translate}} :</h4>
                                  <span class="promo-code-description">{{description}}</span>
                                  </div>
                                     <div class="apply-promo-code">
-                                       <!-- <a href="" class="cart-wrapper-link" title="apply promo code">Apply Promo Code</a> -->
                                        <input type="text"  class="form-control enter-code code-text-disabled" style="opacity:0.5;"  name="txt_promoCode" id="txtpromoCode" value="{{promoCode}}" disabled/>
                                        <h5 class="cart-code-apply"><span class="click-code-apply" style="cursor:pointer;" (click)="onRemovePromoCode()">{{'REMOVE'  |translate}}</span></h5>
                                     </div>
@@ -294,16 +269,12 @@
                             <div class="row summary-wrapper">
                                 <div class="col-7 summary-left-part">
                                     <div>
-                                        <!-- <h4 class="cart-wrapper-title">Tax:</h4> -->
                                         <a href="" class="cart-wrapper-link" title="exempt form">{{'FILLOUTTAXTEXEMPT'  |translate}}</a>
                                     </div>
                                 </div>
 
                                 <div class="col-5 summary-right-part checkout-attach">
                                     <div>
-                                        <!-- <h5 class="cart-prize">{{commonMethodService.formatAmount(taxTotalAmount)}}</h5> -->
-                                        <!-- <span class="input-group-text px-2 text-muted"><i class="fa fa-paperclip" aria-hidden="true"></i> <h6>{{fileOutTaxExemptForm_Name ?fileOutTaxExemptForm_Name:"Attach File"}}</h6></span> -->
-
                                     </div>
                                 </div>
                                 <div class="form-group cart-file-input input-file-checkout {{checkoutanimation}}" x-data="{ fileName: '' }">

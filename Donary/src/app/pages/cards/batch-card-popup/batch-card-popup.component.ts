@@ -15,8 +15,8 @@ declare var $: any;
 @Component({
   selector: "app-batch-card-popup",
   templateUrl: "./batch-card-popup.component.html",
-  styleUrls: ["./batch-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./batch-card-popup.component.scss"],
 })
 export class BatchCardPopupComponent implements OnInit {
   totalAmount: number;
@@ -78,10 +78,7 @@ export class BatchCardPopupComponent implements OnInit {
       this.gatewayTransactionIdsArray = this.batchTransactions.map(
         (payment) => payment.gatewayTransactionId
       );
-      // this.gatewayTransactionIdsArray = this.batchTransactions.map(payment => {
-      //   // Use default value (e.g., -1) or handle null in a way that suits your application
-      //   return payment.gatewayTransactionId !== null ? payment.gatewayTransactionId : -1;
-      // });
+
       this.isloading = false;
     }
   }
@@ -134,9 +131,6 @@ export class BatchCardPopupComponent implements OnInit {
         this.isloading = false;
         modalRef.componentInstance.PaymentCardData = res;
       });
-      // modalRef.componentInstance.emtRetryPayment.subscribe(($e) => {
-      //   this.searchPaymentTransactionsData();
-      // });
     }
   }
 
@@ -328,8 +322,6 @@ export class BatchCardPopupComponent implements OnInit {
             },
           });
           this.initialNote = this.note;
-          //  this.emtEditPayment.emit(res);
-          // this.commonMethodService.sendPaymentTrans(true);
         }
       },
       (error) => {

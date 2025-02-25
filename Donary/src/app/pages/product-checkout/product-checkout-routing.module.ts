@@ -23,17 +23,6 @@ const routes: Routes = [
         component: ThankYouComponent,
       },
     ],
-
-    /*children: [            
-            {
-                path: '',
-                component: ProductCheckoutComponent,
-            },
-            {
-                path: PageRouteVariable.ProductCheckout_url,
-                component: ProductCheckoutComponent,
-            }
-        ]*/
   },
 ];
 

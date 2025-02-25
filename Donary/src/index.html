@@ -12,15 +12,6 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
-    <!-- Ionicons -->
-    <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
-    <!-- Google Font: Source Sans Pro -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/> -->
-
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
     <link
       rel="preload"
       href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
@@ -73,10 +64,6 @@
       />
     </noscript>
 
-    <script
-      type="text/javascript"
-      src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"
-    ></script>
     <script>
       !(function (w, d, i, s) {
         function l() {
@@ -128,24 +115,6 @@
         background: #6c757d;
       }
 
-      /* .main_loader_img {
-      position: fixed;
-      top: 0;
-      background: rgb(255 255 255 / 80%);
-      width: 100%;
-      height: 100%;
-      left: 0;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .main_loader_img i {
-      color: #6963c1;
-      z-index: 9;
-    }  */
-
       .donary_loader {
         top: 0;
         left: 0;
@@ -191,9 +160,6 @@
       rel="stylesheet"
     />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
   </head>
 
   <script>
@@ -204,10 +170,6 @@
   <body class="hold-transition sidebar-mini">
     <div class="wrapper">
       <app-root>
-        <!-- <div class="main_loader_img">
-        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-      </div> -->
-        <!-- <div class="donary_loader"></div> -->
         <div class="lottie">
           <lottie-player
             src="/assets/dist/data/fbc68153-b8cc-49bf-80e1-d07b1df1019c.json"
@@ -234,27 +196,56 @@
     <!-- For Draggable-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.umd.min.js"></script>
-    <!-- <script src="https://dev-api.donary.com/jewishdates.js?v=1"></script>   -->
-
+   
+   <script>
+     function loadScriptWithHeaders(url, headers = {}) {
+        return fetch(url, { headers })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to load script from ${url}. HTTP status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(scriptContent => {
+            const script = document.createElement('script');
+            script.type = 'application/javascript';
+            script.text = scriptContent;
+            document.body.appendChild(script); // Append to body
+          })
+          .catch(error => console.error('Error loading script:', error));
+      }
+      loadScriptWithHeaders('https://oss.sheetjs.com/sheetjs/xlsx.full.min.js', {
+        Accept: 'text/javascript',
+      });
+      loadScriptWithHeaders('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js', {
+        Accept: 'application/javascript',
+      });
+      loadScriptWithHeaders('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js', {
+        Accept: 'application/javascript',
+      });
+      loadScriptWithHeaders('https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js', {
+        Accept: 'application/javascript',
+      });
+      loadScriptWithHeaders('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js', {
+        Accept: 'application/javascript',
+      });
+      loadScriptWithHeaders('https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', {
+        Accept: 'application/javascript',
+      });
+      loadScriptWithHeaders('https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.0/dist/index.umd.min.js', {
+        Accept: 'application/javascript',
+      });
+      
+      
+   </script>
     <!-- Calendly link widget begin -->
     <link
       href="https://assets.calendly.com/assets/external/widget.css"
       rel="stylesheet"
     />
     <script
-      type="application/javascript"
+      type="text/javascript"
       src="https://assets.calendly.com/assets/external/widget.js"
     ></script>
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.2.1/jquery.floatThead.js" integrity="sha512-kBvoZVF+tXbN40CoGPeUGPIhIPsVf9Idu8uhNCFifO+dNXrbERzSAyNpzlBqn6Ix/JgPirAHFqfRBCDr6peqRQ==" crossorigin="anonymous"></script>   -->
-    <!-- <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script> -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>  -->
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>           -->
   </body>
 </html>

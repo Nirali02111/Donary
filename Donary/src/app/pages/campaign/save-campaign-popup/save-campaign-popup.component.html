@@ -74,7 +74,7 @@
   <div class="card-body edit-campaign-tabs-body">
     <form
       name="reasonInfoForm"
-      (ngSubmit)="f.form.valid && SaveCampaignInfo()"
+      (ngSubmit)="f.form.valid && this.commonMethodService.isfeatureSetting && SaveCampaignInfo()"
       #f="ngForm"
     >
       <div class="tab-content">

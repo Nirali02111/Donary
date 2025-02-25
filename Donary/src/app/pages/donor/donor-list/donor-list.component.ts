@@ -78,9 +78,9 @@ declare var $: any;
 @Component({
   selector: "app-donor-list",
   templateUrl: "./donor-list.component.html",
+  standalone:false,
   styleUrls: ["./donor-list.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class DonorListComponent implements OnInit {
   settingFnc = false;
@@ -148,31 +148,6 @@ export class DonorListComponent implements OnInit {
     .map((x) => x.isActive)[0];
   uiPageSettingId = null;
   uiPageSetting: any;
-  /*colFields: any = [
-    { "colName": "Account #", "isVisible": true, "colId":"DonoraccountId","isTotalPanel": true },
-    { "colName": "Full Name", "isVisible": true, "colId":"DonorfullnameId","isTotalPanel": true },
-    { "colName": "Family", "isVisible": true, "colId":"DonorfamilyId","isTotalPanel": true },
-    { "colName": "Phone", "isVisible": true, "colId":"DonorphonelabelId","isTotalPanel": true },
-    { "colName": "Address", "isVisible": true, "colId":"DonoraddressId","isTotalPanel": true },
-    { "colName": "Email", "isVisible": true, "colId":"DonoremailId","isTotalPanel": true },
-    { "colName": "Group", "isVisible": false, "colId":"DonorgroupId","isTotalPanel": true },
-    { "colName": "Class", "isVisible": false, "colId":"DonorclassId","isTotalPanel": true },
-    { "colName": "City State Zip", "isVisible": false, "colId":"DonorcitystatezipId","isTotalPanel": true },
-    { "colName": "Note", "isVisible": false, "colId":"DonornoteId","isTotalPanel": true },
-    { "colName": "Father", "isVisible": false, "colId":"DonorfatherId","isTotalPanel": true },
-    { "colName": "Father in law", "isVisible": false, "colId":"DonorfatherinlawId","isTotalPanel": true },
-  ]
-
-  colTotalFields:any=[
-    { "colName": "Payments", "isVisible": true, "colId":"DonorpaymentsId", "isTotalPanel": false },
-    { "colName": "Count of Payments", "isVisible": false, "colId":"DonorpaymentscountId", "isTotalPanel": false },
-    { "colName": "Open Pledges", "isVisible": true, "colId":"DonoropenPledgesId", "isTotalPanel": false },
-    { "colName": "Count of Pledges", "isVisible": false, "colId":"DonorpledgescountId", "isTotalPanel": false },
-    { "colName": "Scheduled", "isVisible": true, "colId":"DonorscheduledId", "isTotalPanel": false },
-    { "colName": "Count of Schedules", "isVisible": false, "colId":"DonorschedulescountId", "isTotalPanel": false },
-    { "colName": "Total", "isVisible": true, "colId":"DonorraisedId", "isTotalPanel": false },
-  ]*/
-
   isDonorAccountNoColVisible: boolean = true;
   isDonorFullNameColVisible: boolean = true;
   isDonorFullNameEnglishColVisible: boolean = false;
@@ -226,7 +201,6 @@ export class DonorListComponent implements OnInit {
           sortOrder: "",
           sortName: "accountNum",
         },
-        // { "colName": "Full Name", "isVisible": true, "colId": "DonorfullnameId", "sortOrder": "", "sortName": "fullName" },
         {
           colName: "FULLNAME",
           isVisible: true,
@@ -241,7 +215,6 @@ export class DonorListComponent implements OnInit {
           sortOrder: "",
           sortName: "fullNameJewish",
         },
-        // { "colName": "English Name", "isVisible": false, "colId": "DonorfullnameengId", "sortOrder": "", "sortName": "fullNameEng" },
         {
           colName: "ENGLISHNAME",
           isVisible: false,
@@ -277,8 +250,6 @@ export class DonorListComponent implements OnInit {
           sortOrder: "",
           sortName: "emailLabels",
         },
-        // { "colName": "Group", "isVisible": false, "colId":"DonorgroupId", "sortOrder": "", "sortName":"group" },
-        // { "colName": "Class", "isVisible": false, "colId":"DonorclassId", "sortOrder": "", "sortName":"class" },
         {
           colName: "CITYSTATEZIP",
           isVisible: false,

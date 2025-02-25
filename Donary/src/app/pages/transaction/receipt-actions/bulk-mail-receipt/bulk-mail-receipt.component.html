@@ -32,13 +32,9 @@
 					<table class="bulk-mail-table" cellpadding="0" cellspacing="0" id="advancereceipttbl"
 						[svData]="gridFilterDataList" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="fullNameJewish" svSortOrder="desc">
 
-						<!-- <table class="bulk-mail-table" cellpadding="0" cellspacing="0" id="advancereceipttbl"
-						[svData]="gridFilterDataList" #sv="svDataTable" [svRowsOnPage]="30" svSortBy="fullNameJewish"
-						svSortOrder="desc"> -->
 						<thead>
 							<tr>
 								<th style="min-width: 350px;">
-									<!-- <input type="checkbox" name="selectAllName" (change)="selectName($event,'selectAll',null,null)" [checked]="selectAllNameCheckBox" > -->
 									<sv-default-sorter by="fullNameJewish"> <span>{{'DONORNAME' |
 											translate}}</span></sv-default-sorter>
 								</th>
@@ -75,12 +71,6 @@
 						<tbody *ngIf="sv.data?.length > 0">
 							<tr *ngFor="let item of sv.data; let i=index">
 								<td class="bulk-mail-donor-name-cls">
-									<!-- <input #namecheckboxes type="checkbox"
-										name="singlecheck"
-										(change)="selectReceipt($event,'singlecheck',item.accountId, item.receiptNum)"
-										[checked]="checkReceiptIsSelectOrNot(item.receiptNum)"
-										[disabled]="checkDonorIsDisable(item.accountId)"
-									> -->
 									<h5 (click)="openDonorCardPopup(item.accountId)" class="lng_hebrew"
 										class="blueviolet">
 										{{ item.fullNameJewish }}
@@ -152,12 +142,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="input-group">
-			<input class="form-check-input" type="checkbox" value="" [(ngModel)]="isOnlyPledgePayment" id="id_isOnlyPledgePayment">
-			<label class="form-check-label" for="id_isOnlyPledgePayment">
-				{{'HIDEPAYMENT' | translate}}
-			</label>
-		</div> -->
 		<button class="btn btn-default" (click)="closePopup()">{{'CANCEL' | translate}}</button>
 		<button
 			style="width: 169px; margin-right: 1px;"

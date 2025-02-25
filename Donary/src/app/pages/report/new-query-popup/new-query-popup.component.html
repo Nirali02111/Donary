@@ -23,21 +23,6 @@
           >{{ "QUERYNAME" | translate }} {{ "ISREQUIRED" | translate }}
         </span>
       </div>
-      <!-- <div class="form-group">
-
-					<label>Base Column:</label>
-					<div class="input-group">
-						<angular2-multiselect id="ddlBaseField"
-                        [settings]="commonMethodService.setDropDownSettings('',1,false,true,false)"
-                        [data]="baseFieldFilter"
-                        [(ngModel)]="baseField"
-						(onSelect)="changeBaseField(baseField)"
-						(onDeSelectAll)="deselectBaseField()"
-                        >
-                    </angular2-multiselect>
-					</div>
-				</div> -->
-
       <div
         class="form-group multi-selector"
         [ngClass]="[fieldReq ? 'error-field' : '']"
@@ -540,23 +525,10 @@
       <div class="filter_by_section">
         <div class="top_row">
           <div class="filter_by_text">{{ "FILTERBY" | translate }} :</div>
-          <!-- <div class="filter_by_exclude">EXCLUDE</div> -->
         </div>
 
         <div class="middle_content">
           <div class="form-group">
-            <!-- <label>Address</label>
-
-							<div class="input-group ">
-								<angular2-multiselect id="ddlCityStateZip"
-								[settings]="commonMethodService.setDropDownSettings('Select Address',2,true,false, true)"
-								[data]="commonMethodService.cityStateZipList"
-								[(ngModel)]="selectedCityStateZipList"
-								(onDeSelectAll)="onDeleteAllCityStateZip()">
-							</angular2-multiselect>
-							</div>
-						</div> -->
-
             <label>{{ "ADDRESS" | translate }}</label>
             <div class="input-group">
               <div
@@ -640,102 +612,8 @@
                 (onDeSelectAll)="hideFilter()"
               >
               </angular2-multiselect>
-              <!-- <div class="dropdown">
-									<button id="dLabel" [disabled]="commonMethodService.isCommonDropDownloading" type="button"
-									class="btn btn-default" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									<i class="fas fa-plus text-center"> <span> Add New Feild</span></i>
-								</button> -->
-              <!-- <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isDonorFilter">
-								<li *ngFor="let item of donorFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isReasonFilter">
-								<li *ngFor="let item of reasonFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul>
-
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isCollectorFilter">
-								<li *ngFor="let item of collectorFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isLocationFilter">
-								<li *ngFor="let item of locationFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isCampaignFilter">
-								<li *ngFor="let item of campaignFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" *ngIf="isSourceFilter">
-								<li *ngFor="let item of sourceFieldList">
-									<a class="dropdown-item" (click)="displayFilter(item.key)">{{item.value}}</a>
-								</li>
-								</ul> -->
             </div>
-            <!-- <div class="exclude_checkbox">
-
-							</div> -->
           </div>
-
-          <!-- <div class="form-group">
-						<div class="lbl__text">
-							<label>City:</label>
-						</div>
-						<div class="input_group">
-							<div class="input_text">
-								<select class="select_box">
-									<option>Select City</option>
-								</select>
-							</div>
-							 <div class="exclude_checkbox custom__checkbox">
-								<input type="checkbox" id="exclude_lable1" class="cstm_checkbox">
-								<label for="exclude_lable1"></label>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="lbl__text">
-							<label>State:</label>
-						</div>
-						<div class="input_group">
-							<div class="input_text">
-								<select class="select_box">
-									<option>Select City</option>
-								</select>
-							</div>
-							 <div class="exclude_checkbox custom__checkbox">
-								<input type="checkbox" id="exclude_lable2" class="cstm_checkbox">
-								<label for="exclude_lable2"></label>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="form-group">
-						<div class="lbl__text">
-							<label>Zip:</label>
-						</div>
-						<div class="input_group">
-							<div class="input_text">
-								<select class="select_box">
-									<option>Select City</option>
-								</select>
-							</div>
-							 <div class="exclude_checkbox custom__checkbox">
-								<input type="checkbox" id="exclude_lable3" class="cstm_checkbox">
-								<label for="exclude_lable3"></label>
-							</div>
-						</div>
-
-					</div> -->
-
           <div class="form-group" *ngIf="isAcctNoFilterVisible">
             <label>{{ "ACCT#" | translate }}</label>
             <div class="input-group">

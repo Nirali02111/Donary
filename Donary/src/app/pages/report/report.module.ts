@@ -4,13 +4,12 @@ import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
-
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxDaterangepickerMd } from "ngx-daterangepicker-material";
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { NgxPrintModule } from "ngx-print";
 import { CustomPaginationComponent } from "./custom-pagination/custom-pagination.component";
-import { DoanryDirective } from "src/app/commons/modules/doanry-directive.module/doanry-directive.module.module"; 
+import { DoanryDirective } from "src/app/commons/modules/doanry-directive.module/doanry-directive.module.module";
 import { ReportCombineddataListComponent } from "./report-combineddata-list/report-combineddata-list.component";
 import { ReportComparePopupComponent } from "./report-compare-popup/report-compare-popup.component";
 import { ReportDonorfilterPopupComponent } from "./report-donorfilter-popup/report-donorfilter-popup.component";
@@ -28,8 +27,6 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataTableModule } from "src/app/commons/modules/data-table/data-table.module";
 import { AngularMultiSelectModule } from "src/app/commons/modules/angular-multi-select-module/angular-multi-select.module";
 import { StandardReportComponent } from "./standard-report/standard-report.component";
-
-
 
 @NgModule({ declarations: [
         ReportMainComponent,
@@ -51,8 +48,8 @@ import { StandardReportComponent } from "./standard-report/standard-report.compo
         TranslateModule,
         AngularMultiSelectModule,
         NgxDaterangepickerMd.forRoot(),
-        //NgMultiSelectDropDownModule.forRoot(),
-        NgxMaskDirective, NgxMaskPipe,
+        NgxMaskDirective,
+        NgxMaskPipe,
         DataTableModule,
         DonaryDatePickerModule,
         ReportsSharedModule,

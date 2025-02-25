@@ -389,20 +389,6 @@
             </div>
         </div>
     </section>
-    <!-- <div class="total-panel-wrapper" [ngClass]="{'active': isClicked && isOpen}">
-                <button *ngIf="!isClicked && !isOpen" class="totalp-btn total-panel-arrow-btn" (click)="onArrowClick()"></button>
-                <button *ngIf="isClicked && !isOpen" class="totalp-btn total-panel-open-btn" (click)="onTotalBtnClick()">Totals</button>
-                <app-total-panel *ngIf="isClicked && isOpen"
-                    (emtOutputClose)="ClosePanel($event)"
-                    (emtOutputPageChange)="emtOutputPageChange($event)"
-                    [GroupBy]="'deviceId'"
-                    [ListRecords]="gridFilterData"
-                    [HeaderList]="headerList"
-                    [ActivePage]="sv.activePage"
-                    [RowsOnPage]="sv.rowsOnPage"
-                ></app-total-panel>
-            </div> -->
-
 </div>
 
 <ng-template #chipCardTemp let-item="item">
@@ -419,48 +405,8 @@
                         <span class="info-box-number"
                             *ngIf="item.total!=null">{{commonMethodService.formatAmount(item.total)}}</span>
                     </div>
-                    <!-- <span class="action_btn" (click)="OpenSumCard(item)"><i class='fas fa-angle-down'></i></span>   -->
                 </div>
             </div>
-            <!-- <div class="filter-dropdown-window cards_secton" *ngIf="isSumCardOpen && selectedItem == item">
-                <div class="cards filter-boxes-wrap">
-                    <ul>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Payments</p>
-                                        <h6>{{commonMethodService.formatAmount(item.payment)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Open Pledges</p>
-                                        <h6>{{commonMethodService.formatAmount(item.openpledge)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="filter-payment-type-box">
-                                <a>
-                                    <span class="data">
-                                        <p>Schedules</p>
-                                        <h6>{{commonMethodService.formatAmount(item.scheduled)}}</h6>
-                                    </span>
-                                    <span class="right-arrow action_btn"></span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
         </div>
     </div>
 </ng-template>

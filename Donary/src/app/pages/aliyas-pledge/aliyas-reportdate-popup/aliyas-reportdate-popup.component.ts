@@ -24,8 +24,8 @@ declare var $: any;
 @Component({
   selector: "app-aliyas-reportdate-popup",
   templateUrl: "./aliyas-reportdate-popup.component.html",
-  styleUrls: ["./aliyas-reportdate-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./aliyas-reportdate-popup.component.scss"],
   providers: [
     { provide: NgbCalendar, useClass: NgbCalendarHebrew },
     { provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew },

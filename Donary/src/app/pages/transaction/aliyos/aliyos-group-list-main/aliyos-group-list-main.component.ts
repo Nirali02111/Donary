@@ -22,8 +22,8 @@ declare var $: any;
 @Component({
   selector: "app-aliyos-group-list-main",
   templateUrl: "./aliyos-group-list-main.component.html",
-  styleUrls: ["./aliyos-group-list-main.component.scss"],
   standalone: false,
+  styleUrls: ["./aliyos-group-list-main.component.scss"],
 })
 export class AliyosGroupListMainComponent implements OnInit {
   modalOptions: NgbModalOptions;
@@ -643,11 +643,9 @@ export class AliyosGroupListMainComponent implements OnInit {
       const dates = this.commonMethodService.getStartAndEndDate(sDate);
       this.selectedDateRange.startDate = dates.startDate;
       this.selectedDateRange.endDate = dates.endDate;
-      // this.onDateChange(this.selectedDateRange.startDate , this.selectedDateRange.endDate,"PresetOption")
     } else if (sDate != null && eDate != null) {
       this.selectedDateRange.startDate = moment(sDate);
       this.selectedDateRange.endDate = moment(eDate);
-      // this.onDateChange(sDate,eDate,"CustomRange");
     }
   }
 }

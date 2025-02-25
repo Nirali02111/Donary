@@ -52,59 +52,6 @@
             </angular2-multiselect>
           </div>
         </div>
-
-        <!-- <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName" [data]="selectedDateRange"
-            [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
-        </ng-template>
-        <div class="input-group date_picker" popoverClass="calender-modal" [ngbPopover]="popContent"
-          [popoverTitle]="popTitle" [autoClose]="false"
-          placement="bottom right left start end bottom-start bottom-end end-top end-bottom"
-          (click)="openHebrewCalendarPopup()" id="schedulePaymentCalender" (clickOutside)="onClickedOutsidePopover(p1)"
-          container="body" #p1="ngbPopover">
-          <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
-          <div class="input-group-append">
-            <span class="input-group-text">
-              <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
-            </span>
-          </div>
-        </div> -->
-
-
-        <!-- <div class="input-group date_picker" *ngIf="false">
-          <input
-            type="text"
-            class="form-control"
-            ngxDaterangepickerMd
-            [(ngModel)]="selectedDateRange"
-            [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
-            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-            [ranges]="
-              commonMethodService.isHebrew == true
-                ? commonMethodService.hebranges
-                : commonMethodService.ranges
-            "
-            [locale]="
-              commonMethodService.isHebrew == true
-                ? commonMethodService.heblocale
-                : commonMethodService.locale
-            "
-            [linkedCalendars]="commonMethodService.linkedCalendars"
-            [opens]="commonMethodService.open"
-            [drops]="commonMethodService.drop"
-            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-            [showClearButton]="commonMethodService.showClearButton"
-            [placeholder]="commonMethodService.placeholder"
-            (datesUpdated)="datesUpdated($event)"
-          />
-          <div class="input-group-append">
-            <span class="input-group-text">
-              <i
-                class="far fa-calendar-alt ngx-daterangepicker-action"
-                (click)="CalendarFocus()"
-              ></i>
-            </span>
-          </div>
-        </div> -->
       </div>
       <div class="refresh-div d-flex align-items-center">
         <span class="refresh-icon" (click)="RefreshList()" style="cursor:pointer;">
@@ -320,13 +267,6 @@
       <span class="action_lbl" *ngIf="isSelected">{{ "ACTIONS" | translate }}:
       </span>
       <div class="custom_action" *ngIf="isSelected">
-        <!-- <span data-toggle="tooltip" t-title="Edit"  class="icn_edit" (click)="editTransactionInfoPopup()"></span>
-                <span class="icn_text_receipt"  data-toggle="tooltip" t-title="{{'PRINT'|translate}} {{'RECEIPT'|translate}}" (click)="AdvancePrintReceipt()"></span>
-                <span class="icn_text_msg"   data-toggle="tooltip" t-title="{{'TEXT'|translate}} {{'RECEIPT'|translate}}" (click)="AdvanceSMSReceiptAction()"></span>
-                <span class="icn_mail"  data-toggle="tooltip" t-title="{{'EMAIL'|translate}} {{'RECEIPT'|translate}}" (click)="AdvanceEmailReceiptAction()"  ></span>
-                <span class="icn_message"  data-toggle="tooltip" t-title="{{'MAIL'|translate}} {{'RECEIPT'|translate}}" (click)="AdvanceMailReceiptAction()"></span>
-                <span class="icn_block"  data-toggle="tooltip" t-title="{{'VOIDPAYMENT'|translate}}"></span>
-                <span class="icn_advance" data-toggle="tooltip" t-title="{{'ADVANCE'|translate}} {{'ACTION'|translate}} " (click)="AdvanceReceiptAction()">{{'ADVANCE'|translate}}</span> -->
       </div>
     </div>
 
@@ -342,12 +282,6 @@
 
 
                 <ng-template let-data>
-                  <!-- <div>
-  
-                      {{ data.rowData | json }}
-                      
-                    </div> -->
-
                   <div class="payment-listing payment-schedule-listing">
 
 
@@ -381,9 +315,6 @@
                                 <span class="donor-status status-success" *ngSwitchCase="'SCHEDULED'">
                                   <i class="material-icons">check</i>
                                 </span>
-                                <!-- <span class="donor-status status-success" *ngSwitchCase="'SCHEDULED'">
-                              <i class="material-icons">check</i>
-                              </span> -->
                                 <span class="donor-status status-success" *ngSwitchCase="'COMPLETED'">
                                   <i class="material-icons">check</i>
                                 </span>
@@ -879,9 +810,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div class="col-12 bottom_value">
-                        <span class="info-box-number">{{commonMethodService.formatAmount(item.totalAmount)}}</span>
-                    </div> -->
         </div>
       </div>
     </div>

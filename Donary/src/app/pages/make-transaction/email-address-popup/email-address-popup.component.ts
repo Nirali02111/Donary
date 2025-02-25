@@ -14,8 +14,8 @@ declare var $: any;
 @Component({
   selector: "app-email-address-popup",
   templateUrl: "./email-address-popup.component.html",
-  styleUrls: ["./email-address-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./email-address-popup.component.scss"],
 })
 export class EmailAddressPopupComponent implements OnInit {
   @Output() emtOutput: EventEmitter<any> = new EventEmitter();

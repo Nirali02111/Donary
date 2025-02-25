@@ -364,7 +364,6 @@
                               [(ngModel)]="commonMethodService.txtQuery" (keyup)="SearchDonor($event)" #donorSearch
                               [readonly]="isReadOnly" (blur)="donarInfoTabReturn('donorText')"
                               (keydown.ArrowDown)="onDown($event)" (keydown.ArrowUp)="onUp($event)" />
-                            <!-- <button class="search_btn" *ngIf="displaySearchIcon" (click)="SearchGlobalDonor()">Search</button> -->
                             <button class="search_btn hover_tooltip" *ngIf="isSearchDisable && displaySearchIcon"
                               data-toggle="tooltip" appHoverTooltip labelText="{{ 'CHARACTERTOOLTIP' | translate }}"
                               type="button" [disabled]="isSearchDisable" (click)="SearchGlobalDonor()">
@@ -655,13 +654,7 @@
                             </ng-template>
                           </ng-select>
                         </div>
-                        <!-- <span class="icon"
-                          ><img
-                            src="/assets/dist/img/user-icon.svg"
-                            width="30"
-                            height="30"
-                            alt=""
-                        /></span> -->
+                      
                         <input type="text" maxlength="14"
                           (keypress)="commonMethodService.numberOnly($event)  && changeSideTab($event.target.value,'payPledgeTab')"
                           (keyup.enter)="TriggerPaymentEvent()" (keydown.Tab)="focusAmtEvent()"
@@ -686,30 +679,12 @@
                             " (focusout)="removeClsfisrtIndexTab($event)">{{ item.text }}</span>{{
                           commonMethodService.formatAmount(item.amount) }}
                         </li>
-                        <!-- <li (click)="SelectAmount(18,'id_btn_eighteen'); commonMethodService.getPledgeAmount(18)">
-                  <span tabindex="0" id="id_btn_eighteen" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,18)"(focusout)="removeClsfisrtIndexTab($event)">18 דולר</span> $18</li>
-                  <li (click)="SelectAmount(36,'id_btn_thirtysix'); commonMethodService.getPledgeAmount(36)">
-                  <span tabindex="0" id="id_btn_thirtysix" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,36)"(focusout)="removeClsfisrtIndexTab($event)">36 דולר</span> $36</li>
-                  <li  (click)="SelectAmount(50,'id_btn_fifty'); commonMethodService.getPledgeAmount(50)">
-                  <span tabindex="0" id="id_btn_fifty"(keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,50)"(focusout)="removeClsfisrtIndexTab($event)">50 דולר</span> $50</li>
-                  <li (click)="SelectAmount(72,'id_btn_seventytwo'); commonMethodService.getPledgeAmount(72)">
-                  <span tabindex="0" id="id_btn_seventytwo"(keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,72)"(focusout)="removeClsfisrtIndexTab($event)">72 דולר</span> $72</li>
-                  <li  (click)="SelectAmount(100,'id_btn_hundred'); commonMethodService.getPledgeAmount(100)">
-                  <span tabindex="0"id="id_btn_hundred" (keypress)="amtButtonEnterPress($event)" (focusin)="fisrtIndexTab($event,100)" (keydown.Tab)="backToFistIndexTab($event)" >100 דולר</span> $100</li> -->
                       </ul>
                     </div>
                   </div>
                 </div>
                 <div class="modal__custom_footer_inside">
-                  <!-- <div class="actions_button" *ngIf="isDonorSelected">
-              <a class="btn" (click)="SchedulePopup()"
-                ><span class="icon"
-                  ><img src="/assets/dist/img/schedule-payment-icon.svg" alt=""
-                /></span>
-                &nbsp;&nbsp; Schedule Payments</a
-              >
-              <a class="btn" (click)="PayPledgePopup()">Pay off Pledge</a>
-            </div> -->
+                
                   <div class="next_button">
                     <ng-container *appIsMobile>
                       <button class="btn-default btn-cancel" (click)="dismissPop()">Cancel</button>
@@ -786,18 +761,7 @@
                           </a>
                         </li>
                       </span>
-                      <!-- <span class="pay-icon-3" tabindex="0" (focusin)="PaymentFisrtIndexTab($event,'check')" class="payment-check-wrap hover_tooltip" data-toggle="tooltip" [title]="disableTitle">
-                <li
-                  style="cursor: pointer"
-                  class="pymnt_tab indextab_check"
-                  id="checktab"
-                  (click)="ChangePayment('check')"
-                  [ngClass]="{'disabled': checkSchedule || isDonorBulkSelected}">
-                  <a>
-                    <img src="/assets/dist/img/check.svg" alt="" />
-                  </a>
-                </li>
-              </span> -->
+                      
                       <span class="pay-icon-3" tabindex="0"
                         (focusin)="!isDonorBulkSelected &&PaymentFisrtIndexTab($event, 'check')"
                         class="payment-check-wrap hover_tooltip" data-toggle="tooltip">
@@ -818,16 +782,7 @@
                           </a>
                         </li>
                       </span>
-                      <!-- <li
-      x            style="cursor: pointer"
-                  class="pymnt_tab"
-                  id="ojctab"
-                  [ngClass]="{'disabled':isDonorBulkSelected}"
-                  (click)="ChangePayment('ojc')">
-                  <a>
-                    <img src="/assets/dist/img/ojc.svg" alt=""/>
-                  </a>
-                </li> -->
+                    
                       <span class="pay-icon-5" tabindex="0" (click)="Wallet()"
                         (focusin)="PaymentFisrtIndexTab($event, 'wallet')">
                         <li style="cursor: pointer" class="pymnt_tab indextab_wallet" id="wallettab"
@@ -848,9 +803,7 @@
                           {{ "OTHER" | translate }}
                         </li>
                       </span>
-                      <!-- <li class="the-donor-fund" style="cursor: pointer;" id="donorfundtab" (click)="ChangePayment('donorfund')"  [ngClass]="{'disabled':isDonorBulkSelected}">
-                  <a><img src="/assets/dist/img/payment-type-icon.svg" alt="" /></a>
-                  </li> -->
+                     
                     </ul>
                     <div class="modal__custom_footer_inside chosepayment_btn">
                       <div class="section-footer process_btn">
@@ -887,12 +840,7 @@
                   </div>
                   <div class="credit-card-wrap p-5" *ngIf="isCreditCard">
                     <form (ngSubmit)="f.form.valid && ProcessTransaction()" name="creditCardForm" #f="ngForm">
-                      <!-- <div class="section-header">
-                                    <span>
-                                        <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                    </span> Enter Credit Card
-                                </div>
-                                                          -->
+                                 
                       <div class="modal__custom_content_inside">
                         <div class="modal__custom_content_inside_wrapper">
                           <div class="inside_content">
@@ -942,23 +890,7 @@
                                 <span class="icon">
                                   <img src="/assets/dist/img/credit-card-icon.svg" width="40" alt="" />
                                 </span>
-                                <!-- <input
-                            type="text"
-                            class="form-control card__icon"
-                            [(ngModel)]="creditCardNumber"
-                            name="txtcreditCardNumber"
-                            (focusin)="ChangeCreditMask()"
-                            (focusout)="IdentifyCardType('creditcard')"
-                            [mask]="maskCreditValue"
-                            (keyup)="EnterCreditCard($event)"
-                            [showMaskTyped]="true"
-                            #txtcreditCardNumber="ngModel"
-                            id="input-creditCardNumber"
-                            [ngClass]="{
-                              'is-invalid': f.submitted && creditCardNumber.invalid
-                            }"
-                            required
-                          /> -->
+                             
                                 <input type="text" class="form-control card__icon" [(ngModel)]="creditCardNumber"
                                   name="txtcreditCardNumber" (focusout)="IdentifyCardType('creditcard')"
                                   (keypress)="ChangeCreditMask()" (input)="CardReader($event)" [mask]="maskCreditValue"
@@ -972,7 +904,6 @@
                                     <img src="/assets/img/loader.svg" alt="loader" />
                                   </div>
                                 </div>
-                                <!--(focusin)="ChangeCreditMask()" for issue remove above-->
                                 <div *ngIf="
                                     f.submitted && creditCardNumber.invalid
                                   " class="input-group col-12">
@@ -982,19 +913,7 @@
                                 <span class="text-danger" *ngIf="inValidCCNum">{{ "INVALIDCARD" | translate }}</span>
                                 <div class="form-group form-group-fields">
                                   <div class="form-group">
-                                    <!-- <input
-                                type="text"
-                                class="form-control"
-                                [(ngModel)]="expDate"
-                                name="txtexpDate"
-                                mask="00/00"
-                                id="expiryDate"
-                                (keyup)="EnterExpiryDate($event)"
-                                (focusout)="ValidExpiryDate($event)"
-                                [showMaskTyped]="true"
-                                #txtexpDate="ngModel"
-                                required
-                              /> -->
+                                  
                                     <input type="text" class="form-control" [(ngModel)]="expDate" name="txtexpDate"
                                       maxlength="5" minlength="5" id="expiryDate" (keyup)="EnterExpiryDate($event)"
                                       (focusout)="ValidExpiryDate($event)" autocomplete="cc-exp"
@@ -1342,19 +1261,7 @@
                                   }}</span>
                                 <div class="form-group form-group-fields">
                                   <div class="form-group">
-                                    <!-- <input
-                                type="text"
-                                class="form-control"
-                                [(ngModel)]="expDate"
-                                name="txtexpDate"
-                                mask="00/00"
-                                id="expiryDate"
-                                (keyup)="EnterExpiryDate($event)"
-                                (focusout)="ValidExpiryDate($event)"
-                                [showMaskTyped]="true"
-                                #txtexpDate="ngModel"
-                                required
-                              /> -->
+                                  
                                     <input type="text" class="form-control" [(ngModel)]="expDate" name="txtexpDate"
                                       maxlength="5" minlength="5" id="expiryDate" (keyup)="EnterExpiryDate($event)"
                                       (focusout)="ValidExpiryDate($event)" autocomplete="cc-exp"
@@ -1483,11 +1390,7 @@
                     </form>
                   </div>
                   <div class="credit-card-wrap cash_wrap p-5" *ngIf="isCash">
-                    <!-- <div class="section-header">
-                                    <span>
-                                        <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                    </span> Cash
-                                </div> -->
+                  
                     <div class="modal__custom_content_inside">
                       <div class="modal__custom_content_inside_wrapper">
                         <div class="inside_content">
@@ -1574,11 +1477,6 @@
                   </div>
                   <div class="credit-card-wrap p-5" *ngIf="isCheckNumber">
                     <form name="checkNumberForm" (ngSubmit)="f.form.valid && ProcessTransaction()" #f="ngForm">
-                      <!-- <div class="section-header">
-                                        <span>
-                                            <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                        </span> Check Number
-                                    </div> -->
                       <div class="modal__custom_content_inside">
                         <div class="modal__custom_content_inside_wrapper">
                           <div class="inside_content">
@@ -1686,11 +1584,7 @@
                     </form>
                   </div>
                   <div class="credit-card-wrap p-5" *ngIf="isPledgePayment">
-                    <!-- <div class="section-header">
-                                        <span>
-                                            <a (click)="ChangePayment('moreOption')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                        </span> Pledge Options
-                                    </div>  -->
+                 
                     <div class="modal__custom_content_inside">
                       <div class="modal__custom_content_inside_wrapper">
                         <div class="inside_content">
@@ -1710,7 +1604,6 @@
                                 <span class="right_arrow" id="campaign_pldge" [ngClass]="{
                                     blink_animate: isCampaignSelect == true
                                   }" (click)="OpenCampaignDrp()">
-                                  <!-- <img src="/assets/dist/img/right-arrow.svg" alt=""/> -->
                                 </span>
                               </div>
                             </div>
@@ -1723,17 +1616,10 @@
                                   selectedDate.startDate | donaryDateFormat: "short"
                                   }}</span>
                                 <span class="right_arrow ngx-daterangepicker-action" (click)="OpenDatePicker()">
-                                  <!-- <img src="/assets/dist/img/right-arrow.svg" alt=""/> -->
                                 </span>
                               </div>
                             </div>
-                            <!-- <div class="notes_input">
-                        <textarea placeholder="Notes"[(ngModel)]="pledgenotes"></textarea>
-                      </div> -->
-                            <!-- <div class="schedule_button">
-                        <span class="icon icon-well"></span>
-                        <span class="btn-text">Schedule Follow Up</span>
-                      </div> -->
+                            
                           </div>
                         </div>
                       </div>
@@ -1938,16 +1824,7 @@
                                 <a href="javascript:void(0)" (click)="RemoveCard(donor[0].accountId)">Remove donor</a>
                               </li>
                             </ng-container>
-                            <!-- <li>
-      <span>ר’ חיים הלל פריעדמאן</span>
-      <a href="javascript:void(0)" (click)="AddCard()">+ Add card</a>
-      <a href="javascript:void(0)" (click)="RemoveCard()">Remove donor</a>
-    </li>
-    <li>
-      <span>ר’ חיים הלל פריעדמאן</span>
-      <a href="javascript:void(0)">+ Add card</a>
-      <a href="javascript:void(0)">Remove donor</a>
-    </li> -->
+                        
                           </ul>
                           <div *ngIf="isloading2" class="overlay d-flex">
                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
@@ -2809,15 +2686,12 @@
                   <div class="d_header">
                     <div class="titlebar">
                       <div class="d_left">
-                        <!-- <span class="backArrow">
-                                <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                            </span> -->
+                      
                         <span class="d_name">{{
                           "CHOOSECOLLECTOR" | translate
                           }}</span>
                       </div>
                       <div class="d_right">
-                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
                         <span><i class="fa fa-plus"></i>
                           {{ "NEWCOLLECTOR" | translate }}</span>
                       </div>
@@ -2847,9 +2721,6 @@
                   <div class="d_header">
                     <div class="titlebar">
                       <div class="d_left">
-                        <!-- <span class="backArrow">
-                                    <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                </span> -->
                         <span class="d_name">{{
                           "CHOOSELOCATION" | translate
                           }}</span>
@@ -2862,7 +2733,6 @@
                           <input type="checkbox" />
                           <span class="slider round"></span>
                         </label>
-                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
                       </div>
                     </div>
                     <div class="search_box">
@@ -2892,12 +2762,8 @@
                         <span class="d_name">{{
                           "CHOOSECAMPAIGN" | translate
                           }}</span>
-                        <!-- <span class="backArrow">
-                                        <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                    </span> -->
                       </div>
                       <div class="d_right">
-                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
                         <span><i class="fa fa-plus"></i>
                           {{ "NEWCAMPAIGN" | translate }}</span>
                       </div>
@@ -2930,12 +2796,8 @@
                         <span class="d_name">{{
                           "CHOOSEREASON" | translate
                           }}</span>
-                        <!-- <span class="backArrow">
-                                            <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                        </span> -->
                       </div>
                       <div class="d_right">
-                        <!-- <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a> -->
                         <span><i class="fa fa-plus"></i>
                           {{ "NEWREASON" | translate }}</span>
                       </div>
@@ -2964,42 +2826,9 @@
                 <div class="options_dropdown" *ngIf="isDateSelection">
                   <div class="d_header">
                     <div class="titlebar">
-                      <!-- <div class="d_left">
-                   <span class="backArrow">
-                                    <a (click)="OpenDropdown('optionlist')"><img src="/assets/dist/img/back-arrow.svg" width="34" alt="" /></a>
-                                </span>
-                  <span class="d_name">Choose Date</span>
-                </div> -->
-                      <!-- <div class="d_right">
-                                    <a class="close-icon" href="#donorInfo" role="tab" data-toggle="tab" >&times;</a>
-                                </div> -->
+                     
                     </div>
-                    <!-- <div class="input_group">
-                <span class="icon"
-                  ><img
-                    src="/assets/dist/img/calendar-icon.svg"
-                    width="20"
-                    height="20"
-                    alt=""
-                /></span>
-                <div class="searchbar">
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="selectedDate"
-                    ngxDaterangepickerMd
-                    [singleDatePicker]="true"
-                    [alwaysShowCalendars]="
-                      commonMethodService.alwaysShowCalendars
-                    "
-                    #
-                    [opens]="commonMethodService.open"
-                    [drops]="commonMethodService.drop"
-                    [showClearButton]="commonMethodService.showClearButton"
-                    (datesUpdated)="datesUpdated($event)"
-                  />
-                </div>
-              </div> -->
+                  
                   </div>
                 </div>
               </div>
@@ -3072,7 +2901,6 @@
                 <span class="price">{{ symbol + selectedAmount }}</span>
               </div>
               <div class="card__info">
-                <!-- <span class="card_type">{{paymentModeDetail}}</span> -->
                 <span class="card_type">{{ refNum }}</span>
                 <span class="payment_status" [ngClass]="{ 'text-danger': isPaymentExist == true }"
                   *ngIf="isSuccess && paymentStatus != 'Partial'">{{ paymentStatus | uppercase | translate }}</span>
@@ -3089,9 +2917,8 @@
             <button class="btn btn-primary" type="button" (click)="scheduleWithoutAuthorization()">Schedule without
               authorization</button>
           </div>
-          @if (isDevEnv) {
             
-          <ng-container *ngIf="(!isCreditCard && this.OtherCurrencyId) && !((isPledgePayment && !showNotifySection) || showNotifySection ) ">
+          <ng-container *ngIf="(!isCreditCard && this.OtherCurrencyId) && !((isPledgePayment && !showNotifySection) || showNotifySection ) && !receiptGenerated">
             
       
                 <span 
@@ -3112,9 +2939,8 @@
 </span>
 
           </ng-container>
-          }
         
-          <div class="other__actions" *ngIf="(isOtherActionShow  && !isPaymentCredit) || ((isPledgePayment && !showNotifySection) || showNotifySection )">
+          <div class="other__actions" *ngIf="(isOtherActionShow  && !isPaymentCredit) || ((isPledgePayment && !showNotifySection) || showNotifySection ) || receiptGenerated">
             <div class="card__block {{ isDefaultCls }}" [ngClass]="{ disabled: isError }"
               (click)="!isError && printReceipt(paymentId, type)" appHoverTooltip
               labelText="{{ 'DONORSELECTEDTRANSACTION' | translate }}" data-toggle="tooltip">

@@ -96,8 +96,6 @@
                 <tr>
                   <ng-container *ngFor="let objHeader of headerList; let i = index">
                     <th class="text-uppercase" *ngIf="checkGridColVisibility(objHeader.colName)">
-                      <!-- <sv-default-sorter [by]="objHeader.sortName">{{ objHeader.colName | translate }}
-                      </sv-default-sorter> -->
                       <!-- Split the column name if it contains spaces -->
                       <ng-container *ngIf="objHeader.colName.includes(' ')">
                         <sv-default-sorter [by]="objHeader.sortName">

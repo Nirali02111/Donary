@@ -21,10 +21,6 @@
       " (focusout)="removeClsfisrtIndexTab($event)">{{ item.text }}</span>{{
       commonMethodService.formatAmount(item.amount) }}
     </li>
-    <!-- <li #amount10 *ngFor="let item of presetAmountList; let i = index">
-        <span tabindex="0" [id]="item.amountID">{{ item.text }}</span>{{
-        commonMethodService.formatAmount(item.amount) }}
-      </li> -->
   </ul>
   @if (amount?.touched && amount?.invalid) {
   <app-input-error [errors]="amount?.errors"></app-input-error>

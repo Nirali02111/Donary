@@ -4,8 +4,8 @@ declare var $: any;
 @Component({
   selector: "app-support-popup",
   templateUrl: "./support-popup.component.html",
-  styleUrls: ["./support-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./support-popup.component.scss"],
 })
 export class SupportPopupComponent implements OnInit {
   isloading: boolean;

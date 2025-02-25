@@ -35,8 +35,8 @@ interface AccandEmail {
 @Component({
   selector: "app-bulk-email-receipt",
   templateUrl: "./bulk-email-receipt.component.html",
-  styleUrls: ["./bulk-email-receipt.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-email-receipt.component.scss"],
 })
 export class BulkEmailReceiptComponent implements OnInit {
   @ViewChildren("emailspans") emailspans: QueryList<ElementRef>;
@@ -1058,11 +1058,6 @@ export class BulkEmailReceiptComponent implements OnInit {
     }
   }
   isLabelChecked(accountId, selectedEmail, receiptNum, labelName) {
-    console.log("accountId", accountId);
-    console.log("selectedEmail", selectedEmail);
-    console.log("receiptNum", receiptNum);
-    console.log("labelName", labelName);
-    console.log(this.selectedAccountList);
     const found = this.selectedAccountList.some(
       (el) =>
         el.labelName == labelName &&

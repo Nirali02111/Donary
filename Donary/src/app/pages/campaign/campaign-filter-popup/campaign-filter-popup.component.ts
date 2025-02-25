@@ -6,8 +6,8 @@ declare var $: any;
 @Component({
   selector: "app-campaign-filter-popup",
   templateUrl: "./campaign-filter-popup.component.html",
-  styleUrls: ["./campaign-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./campaign-filter-popup.component.scss"],
 })
 export class CampaignFilterPopupComponent implements OnInit {
   campaignName: string;

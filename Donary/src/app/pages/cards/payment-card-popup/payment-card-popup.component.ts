@@ -46,8 +46,8 @@ declare var $: any;
 @Component({
   selector: "app-payment-card-popup",
   templateUrl: "./payment-card-popup.component.html",
-  styleUrls: ["./payment-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./payment-card-popup.component.scss"],
 })
 export class PaymentCardPopupComponent implements OnInit {
   fullName: string;
@@ -1230,10 +1230,8 @@ export class PaymentCardPopupComponent implements OnInit {
           var paymentIdsArray = [];
           paymentIdsArray.push(paymentId); //added new
           paymentIdsArray = paymentIdsArray.map((element) => {
-            // element=element.replace('paymentIds=','')
             return element;
           });
-          // let paymentIds=paymentIdsArray.join('&');
           this.paymentService.DeletePayment(paymentIdsArray).subscribe(
             (res: any) => {
               this.isloading = false;
@@ -1305,14 +1303,11 @@ export class PaymentCardPopupComponent implements OnInit {
           var paymentIdsArray = [];
           paymentIdsArray.push(paymentId); //added new
           paymentIdsArray = paymentIdsArray.map((element) => {
-            // element=element.replace('paymentIds=','')
             return element;
           });
-          // let paymentIds=paymentIdsArray.join('&');
           this.paymentService.DeletePayment(paymentIdsArray).subscribe(
             (res: any) => {
               this.isloading = false;
-              ///
               Swal.fire({
                 title: this.commonMethodService.getTranslate(
                   "WARNING_SWAL.SUCCESS_TITLE"
@@ -1385,7 +1380,6 @@ export class PaymentCardPopupComponent implements OnInit {
             confirmButton: "btn_ok",
           },
         }).then(() => {
-          //this.commonMethodService.sendPaymentTrans(true);
           let objDonorCard = {
             eventGuId: this.localstoragedataService.getLoginUserEventGuId(),
             paymentId: paymentId,
@@ -1402,10 +1396,8 @@ export class PaymentCardPopupComponent implements OnInit {
   }
   onDeletePyament(paymentIdsArray) {
     paymentIdsArray = paymentIdsArray.map((element) => {
-      //element=element.replace('paymentIds=','')
       return element;
     });
-    // let paymentIds=paymentIdsArray.join('&');
     this.paymentService.DeletePayment(paymentIdsArray).subscribe(
       (res: any) => {
         this.isloading = false;
@@ -1565,7 +1557,6 @@ export class PaymentCardPopupComponent implements OnInit {
                 },
               });
               this.activeModal.dismiss();
-              // this.emtEditPayment.emit(res);
               this.commonMethodService.sendPaymentTrans(true);
             }
           },

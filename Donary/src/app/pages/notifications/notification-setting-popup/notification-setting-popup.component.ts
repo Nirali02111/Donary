@@ -26,8 +26,8 @@ import Swal from "sweetalert2";
   selector: "app-notification-setting-popup",
   templateUrl: "./notification-setting-popup.component.html",
   styleUrls: ["./notification-setting-popup.component.scss"],
-  providers: [CurrencyPipe],
   standalone: false,
+  providers: [CurrencyPipe],
 })
 export class NotificationSettingPopupComponent implements OnInit {
   dropdownList = [];

@@ -18,8 +18,8 @@ declare var $: any;
 @Component({
   selector: "app-check-details-popup",
   templateUrl: "./check-details-popup.component.html",
-  styleUrls: ["./check-details-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./check-details-popup.component.scss"],
 })
 export class CheckDetailsPopupComponent implements OnInit {
   refNum: number;

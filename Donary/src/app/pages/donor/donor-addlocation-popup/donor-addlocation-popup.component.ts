@@ -5,8 +5,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-addlocation-popup",
   templateUrl: "./donor-addlocation-popup.component.html",
-  styleUrls: ["./donor-addlocation-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-addlocation-popup.component.scss"],
 })
 export class DonorAddlocationPopupComponent implements OnInit {
   title: string;

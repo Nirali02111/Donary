@@ -36,8 +36,8 @@ declare var $: any;
 @Component({
   selector: "app-pledge-card-popup",
   templateUrl: "./pledge-card-popup.component.html",
-  styleUrls: ["./pledge-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pledge-card-popup.component.scss"],
 })
 export class PledgeCardPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

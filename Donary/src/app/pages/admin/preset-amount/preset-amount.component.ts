@@ -27,8 +27,8 @@ interface presetAmount {
 @Component({
   selector: "app-preset-amount",
   templateUrl: "./preset-amount.component.html",
-  styleUrls: ["./preset-amount.component.scss"],
   standalone: false,
+  styleUrls: ["./preset-amount.component.scss"],
 })
 export class PresetAmountComponent implements OnInit {
   @ViewChild("editableDiv", { static: false }) editableDiv: ElementRef;
@@ -445,10 +445,7 @@ export class PresetAmountComponent implements OnInit {
     if (this.isChangedValue) this.analytics.editedSettingsDisableEmail();
   }
 
-  getFeatureSettingValues() {
-    //  this.commonMethodService.featureName = 'save_preset_amounts'
-    //  this.commonMethodService.getFeatureSettingValues();
-  }
+  getFeatureSettingValues() {}
 
   onUpgrade() {
     if (this.isChangedValuePresetAmounts) {

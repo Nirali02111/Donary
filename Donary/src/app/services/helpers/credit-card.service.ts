@@ -80,8 +80,6 @@ export class CreditCardService {
       };
     }
 
-    // console.log(details1)
-
     try {
       let cardNumber = details1[0];
       cardNumber = cardNumber.substring(2);
@@ -89,14 +87,6 @@ export class CreditCardService {
       const names = details1[1].split("/");
       const firstName = names[1];
       const lastName = names[0];
-
-      /*
-    const details2 = details1[2].split(";");
-    const details2Second = details2[1].split("=");
-
-    let expDate = details2Second[1];
-    expDate = expDate.substring(0, expDate.length - 1);
-    expDate = expDate.substring(2, 4) + "/" + expDate.substring(0, 2);*/
 
       let expDate = details1[2];
       expDate = expDate.substring(0, expDate.length - 1);

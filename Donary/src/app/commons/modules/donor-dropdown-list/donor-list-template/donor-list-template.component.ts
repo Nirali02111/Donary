@@ -4,8 +4,8 @@ import { CommonMethodService } from "src/app/commons/common-methods.service";
 @Component({
   selector: "app-donor-list-template",
   templateUrl: "./donor-list-template.component.html",
-  styleUrls: ["./donor-list-template.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-list-template.component.scss"],
 })
 export class DonorListTemplateComponent implements OnInit {
   phoneList: Array<{ label: string; phone: string }> = [];

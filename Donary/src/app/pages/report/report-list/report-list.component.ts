@@ -49,8 +49,8 @@ declare var $: any;
 @Component({
   selector: "app-report-list",
   templateUrl: "./report-list.component.html",
-  styleUrls: ["./report-list.component.scss"],
   standalone: false,
+  styleUrls: ["./report-list.component.scss"],
 })
 export class ReportListComponent implements OnInit {
   @ViewChild("container", { static: false, read: ViewContainerRef }) container;
@@ -276,7 +276,6 @@ export class ReportListComponent implements OnInit {
             }
           }
         }
-        //console.log(this.colFields)
       });
   }
 
@@ -416,42 +415,6 @@ export class ReportListComponent implements OnInit {
             this.isloading = false; //for issue
             $("#div_report_search").show();
             $("#main_table").show();
-            //Remove old code
-            // this.tempval += 1;
-
-            // this.testcont += 1;
-
-            // var temda = 2 + this.dataSetArrays.length;
-            // if (this.tempval == temda) {
-            //   this.isloading = false; //for issue
-            //   this.tempval = 0;
-            //   temda = 0;
-            //   $("#main_table").show();
-            //   $("#div_report_search").show();
-            // }
-            // if (this.testcont == 9 && this.countonSelectSavedQueryNew > 2) {
-            //   this.isloading = false; //for issue
-            //   $("#main_table").show();
-            //   $("#div_report_search").show();
-            // }
-            // if (this.testcont == 18 && this.countonSelectSavedQueryNew > 2) {
-            //   this.isloading = false; //for issue
-            //   $("#main_table").show();
-            //   $("#div_report_search").show();
-
-            // }
-            // if (this.testcont == 30 && this.countonSelectSavedQueryNew > 2) {
-            //   this.isloading = false; //for issue
-            //   $("#main_table").show();
-            //   $("#div_report_search").show();
-
-            // }
-            // if (this.testcont == 45 && this.countonSelectSavedQueryNew > 2) {
-            //   this.isloading = false; //for issue
-            //   $("#main_table").show();
-            //   $("#div_report_search").show();
-
-            // }
           }
         }
       });
@@ -489,9 +452,6 @@ export class ReportListComponent implements OnInit {
       property = property.substr(1);
     }
     return function (a, b) {
-      /* next line works with strings and numbers,
-       * and you may want to customize it to your needs
-       */
       var result =
         a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
@@ -505,38 +465,12 @@ export class ReportListComponent implements OnInit {
     });
     var result = Object.values(tempArray).every((o) => o !== 0);
   }
-  // OpenDonorFilterPopup(isButtonGenerate) {
-  //   this.modalOptions = {
-  //     centered: true,
-  //     size: "lg",
-  //     backdrop: "static",
-  //     keyboard: false,
-  //     windowClass: "drag_popup",
-  //   };
-  //   const modalRef = this.commonMethodService.openPopup(
-  //     ReportDonorfilterPopupComponent,
-  //     this.modalOptions
-  //   );
-  //   var obj: any = {};
-  //   obj.isButtonGenerate = isButtonGenerate;
-  //   this.isGenerate = isButtonGenerate;
-  //   obj.data = this.objAdvancedSearch;
-  //   modalRef.componentInstance.AdvancedFilterData = obj;
-  //   modalRef.componentInstance.emtOutputAdvancedFilterData.subscribe(
-  //     (objResponse) => {
-  //       this.isloading = true;
-  //       this.objAdvancedSearch = objResponse;
-  //       this.searchDonorData();
-  //     }
-  //   );
-  // }
 
   onChangePage(pageOfItems) {
     this.gridFilterData = pageOfItems;
   }
 
   PageSizeChange(val) {
-    //var e = (document.getElementById("recordCount") as HTMLSelectElement).value;
     this.pageSize = Number(val);
     this.isPageSizeChanged = true;
     $(".show_entryval").removeClass("active");
@@ -583,7 +517,6 @@ export class ReportListComponent implements OnInit {
         if (this.baseColumn == "Donor") {
           this.searchDonorData();
         }
-        // $("#div_report_search").show();
       }
     });
   }
@@ -631,7 +564,6 @@ export class ReportListComponent implements OnInit {
         if (this.baseColumn == "Donor") {
           this.searchDonorData();
         }
-        //$("#div_report_search").show();
       }
     });
   }
@@ -647,13 +579,6 @@ export class ReportListComponent implements OnInit {
     this.dfields = [];
     this.oneline = true;
     this.commonMethodService.sendColumnNameArray([]);
-
-    //this.columnList;
-    //this.droplistREf.element=null;
-
-    // this.localDragRef=[];
-    // this.columnList=[];
-    //  this.tempArray=[];
     this.dataSetArrays = [];
     this.btnDeleteDonoryQuery += 1;
     this.mainArray = [];
@@ -684,41 +609,23 @@ export class ReportListComponent implements OnInit {
         var myobj1 = document.getElementById(tempid);
         if (myobj1 != null) {
           myobj1.remove();
-          //   var columnName="Column"+ tempid;
-          // this.commonMethodService.sendColumnName(columnName);
         }
         var myobj2 = document.getElementById(tempid);
         if (myobj2 != null) {
           myobj2.remove();
-          //   var columnName="Column"+ tempid;
-          // this.commonMethodService.sendColumnName(columnName);
         }
         var myobj3 = document.getElementById(tempid);
         if (myobj3 != null) {
           myobj3.remove();
-          //   var columnName="Column"+ tempid;
-          // this.commonMethodService.sendColumnName(columnName);
         }
       }
     }
     this.container.clear();
-    //this.container=[];
-
     $("#main_table").hide();
     this.countAA = 1;
     this.ngOnInit();
-    //added new
-    //this.commonMethodService.columnArrayObservable=null;
   }
   DeleteDonorQueryNew() {
-    //   $("#main_table").hide();
-    //   window.location.reload();
-    //    //$('#cdk-drop-list-0').empty();
-    //   this.isloadingSavedQuery=false;
-    //   $("#div_report_search").hide();
-    //  //this.ngOnInit();
-    //   this.hasDonor=false;
-    //   $("#div_report_search").show();
     this.ngOnInit();
   }
   ngOnDestroy() {
@@ -760,7 +667,6 @@ export class ReportListComponent implements OnInit {
       let columnName = res.columnName;
       var column = this.columnList;
       var accountIds = res.columnArray.map((x) => x.accountId);
-      // this.mainArray=this.mainArray.filter(item => accountIds.indexOf(item.accountId) != -1);
       var colaccountIds = this.mainArray.map((x) => x.accountId);
       res.columnArray = res.columnArray.filter(
         (item) => colaccountIds.indexOf(item.accountId) != -1
@@ -783,7 +689,6 @@ export class ReportListComponent implements OnInit {
         var amount =
           res.columnArray.length != 0 ? res.columnArray[0].amount : 0;
         var colNo = columnName.substr(columnName.length - 1);
-        //res.columnArray=this.mapOrder(res.columnArray,this.mainArray, "accountId");
         this.mainArray.forEach(function (element, i) {
           const obj = res.columnArray.find(
             (o) => o.accountId == element.accountId
@@ -804,13 +709,6 @@ export class ReportListComponent implements OnInit {
             element["Total Amount #" + colNo] =
               obj && obj.amount ? obj.amount : 0;
           }
-          //element["Column" + colNo] = obj && obj.amount ? obj.amount : 0;
-
-          /*element["Payments"]=res.columnArray[i].payment;
-          element["Pledges"]=res.columnArray[i].pledge;
-          element["Schedules"]=res.columnArray[i].schedule;
-          element["Total"] = res.columnArray[i].amount;
-          element[columnName] = res.columnArray[i].amount;                */
         });
       } else if (
         column[0].default &&
@@ -830,28 +728,15 @@ export class ReportListComponent implements OnInit {
           );
           element[columnName] = obj && obj.amount ? obj.amount : 0;
         });
-      }
-      //  else if(column.map(x => x.name).toString().indexOf("Payment") > -1){
-      //    var amount=res.columnArray[0].amount;
-      //   var colNo=columnName.substr(columnName.length - 1);
-      //   this.mainArray.forEach(function (element, i) {
-      //     const obj = res.columnArray.find(o => o.accountId == element.accountId)
-      //     if(amount!=undefined){element["Payment #"+colNo] = obj && obj.amount ? obj.amount : 0;}
-      //     //element[columnName] = res.columnArray[i].amount;
-      //   });
-
-      //}
-      else {
+      } else {
         this.mainArray.forEach(function (element, i) {
           const obj = res.columnArray.find(
             (o) => o.accountId == element.accountId
           );
           element[columnName] = obj && obj.amount ? obj.amount : 0;
-          //element[columnName] = res.columnArray[i].amount;
         });
       }
       this.search(null, true);
-      //this.mainArray[columnName] = this.mainArray['amount'];
 
       this.isloading = false;
     }
@@ -893,10 +778,6 @@ export class ReportListComponent implements OnInit {
         const reportRef = this.container.createComponent(
           reportDynamicListFactory
         );
-
-        // $("#div_report_search").hide();
-        // $("#main_table").hide();
-        // this.isloading = true;
         var obj: any = {};
 
         obj.sortType = this.sortType;
@@ -921,7 +802,6 @@ export class ReportListComponent implements OnInit {
         } else {
           this.isloading = false;
         }
-        //this.AddSearchDynamicComponent();
       }
     );
   }
@@ -971,7 +851,6 @@ export class ReportListComponent implements OnInit {
   }
 
   onBulkCustomReport() {
-    // console.log(this.recordSelectedArray)
     this.modalOptions = {
       centered: true,
       size: "lg",
@@ -1067,16 +946,6 @@ export class ReportListComponent implements OnInit {
   }
 
   filterZeroAmt(array) {
-    /*return array.filter((o) => {
-      return Object.keys(o).some((k) => {
-          if (k.includes("Column")) {
-            return o[k]!=0;
-          } else {
-            return o[k] === 0;
-          }
-      });
-    });*/
-
     return array.filter((o) => {
       const keys = Object.keys(o);
       const amountkeys = keys.filter((t) => t.includes("Column"));
@@ -1096,8 +965,6 @@ export class ReportListComponent implements OnInit {
   }
 
   searchDonorData() {
-    //.isloading = false;
-    //$("#main_table").show();
     var objAdvancedSearchData: any = {};
     if (this.objAdvancedSearch) {
       objAdvancedSearchData = {
@@ -1239,7 +1106,6 @@ export class ReportListComponent implements OnInit {
               ) != -1 && { address: res[i].address }),
               ...(this.displayFields.findIndex((x) => x.itemName == "Phone") !=
                 -1 && { phonenumbers: res[i].phonenumbers }),
-              // ...(this.displayFields.findIndex(x => x.itemName == "Family") != -1 && { family: (res[i].father==null?"":res[i].father+" :בן    ") +(res[i].fatherInLaw==null?"":res[i].fatherInLaw+ " :חתן") }),
               ...(this.displayFields.findIndex((x) => x.itemName == "Family") !=
                 -1 && {
                 family:
@@ -1580,17 +1446,6 @@ export class ReportListComponent implements OnInit {
   }
   GetDynamicAdvanceField(displayFieldAry, AdvanceAry) {
     let obj = {};
-
-    // for (let index = 0; index < AdvanceAry.length; index++) {
-    //   const element = AdvanceAry[index];
-    //   const dd=displayFieldAry.find(x=>x.itemName==element.key);
-    //   if(dd){
-    //     obj[element.key]=element.value;
-    //    // tempAry.push(obj);
-    //   }
-    // }
-    // return obj;
-
     for (let index = 0; index < this.advanceFieldList.length; index++) {
       const element = this.advanceFieldList[index];
       const dd = displayFieldAry.find(
@@ -1603,7 +1458,6 @@ export class ReportListComponent implements OnInit {
         } else {
           obj[element.colName] = "";
         }
-        // obj[element.key]=element.value;
       }
     }
     return obj;
@@ -1711,7 +1565,6 @@ export class ReportListComponent implements OnInit {
           this.searchgridCount = this.gridData;
           this.hasDonor = true;
           this.Sort(this.sortType);
-          //this.isloading = false;
         } else {
           this.totalRecord = 0;
           this.gridData = [];
@@ -1852,7 +1705,6 @@ export class ReportListComponent implements OnInit {
       (error) => {
         this.isloading = false;
         console.log(error);
-        // this.notificationService.showError(error.error, "Error while fetching data !!");
       }
     );
   }
@@ -2236,7 +2088,6 @@ export class ReportListComponent implements OnInit {
       (error) => {
         this.isloading = false;
         console.log(error);
-        // this.notificationService.showError(error.error, "Error while fetching data !!");
       }
     );
   }
@@ -2255,8 +2106,6 @@ export class ReportListComponent implements OnInit {
       item.hasOwnProperty(keyName) &&
       this.columnList.find((x) => x.id == id) != undefined
     );
-    //this.columnList.find((x) => x.id == id).default != "Total" &&
-    //this.columnList.find((x) => x.id == id).default != "Pledge"
   }
 
   DownloadExcel() {
@@ -2373,7 +2222,6 @@ export class ReportListComponent implements OnInit {
     var tAarray = [];
     data.forEach((obj) => {
       Object.keys(obj).forEach((key) => {
-        console.log("key : " + key + " - value : " + obj[key]);
         if (testArray.indexOf(key) > -1) {
         } else {
           testArray.push(key);
@@ -2381,13 +2229,6 @@ export class ReportListComponent implements OnInit {
         }
       });
     });
-    // var inval=testArray.indexOf("Total #Schedules");
-    // if(inval> -1){
-    //   testArray.splice(inval, 1);
-    //   testArray.splice(testArray.length-1,0,"Total #Schedules")
-    // }
-    //
-
     let invalPay1 = testArray.indexOf("Payment #1");
     if (invalPay1 > -1) {
       let invalPledge1 = testArray.indexOf("Pledge #1");
@@ -2437,9 +2278,7 @@ export class ReportListComponent implements OnInit {
     if (checkArrayHeader == true) {
       tAarray = testArray;
     } else {
-      //tAarray=data;
     }
-    //const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data,{cellStyles :true});
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, {
       cellStyles: true,
     });
@@ -2452,7 +2291,6 @@ export class ReportListComponent implements OnInit {
       for (var C = range.s.c; C <= range.e.c; ++C) {
         var cell_address = { c: C, r: R };
         var cell_ref = XLSX.utils.encode_cell(cell_address);
-        // worksheet[cell_ref].s = { alignment: { horizontal: 'center' } }
 
         if (!worksheet[cell_ref]) continue;
         if (
@@ -2492,7 +2330,6 @@ export class ReportListComponent implements OnInit {
         }
       }
     }
-    //let fmt = '"$"#,##0.00_);\\("$"#,##0.00\\)';
     let fmt = "$#,##0.00";
     let defaultCurrency = this.localstoragedataService.getLoginUserCurrency();
     if (
@@ -2500,7 +2337,6 @@ export class ReportListComponent implements OnInit {
       defaultCurrency == "USD" ||
       defaultCurrency == "CAD"
     ) {
-      //fmt = '"$"#,##0.00_);\\("$"#,##0.00\\)';
       fmt = "$#,##0.00";
     } else if (defaultCurrency == "GBP") {
       fmt = '"£"#,##0.00_);\\("£"#,##0.00\\)';
@@ -2519,7 +2355,6 @@ export class ReportListComponent implements OnInit {
         if (worksheet[cell_ref]) {
           worksheet[cell_ref].t = "n";
           worksheet[cell_ref].z = fmt;
-          // worksheet[cell_ref].s = { alignment: { horizontal: 'left' } } ;
         }
       }
     }
@@ -2597,9 +2432,6 @@ export class ReportListComponent implements OnInit {
     });
 
     this.isloading = true; //for issue
-
-    //const baseColumn = this.baseColumn.length > 0 ? this.baseColumn[0] : '';
-    //const displayFields = this.displayFields.map((s)=>{ return s.itemName });
     const displayFields = this.displayFields;
 
     const queryName = this.queryName || "";
@@ -2656,8 +2488,6 @@ export class ReportListComponent implements OnInit {
     this.queryName = obj.queryName;
     (this.baseColumn = obj.baseColumn),
       (this.displayFields = JSON.parse(obj.displayFields));
-    // this.objAdvancedSearch= obj.objAdvancedSearch;
-
     this.objAdvancedSearch = {
       accountNo: undefined,
       class: undefined,
@@ -2737,7 +2567,6 @@ export class ReportListComponent implements OnInit {
             } else {
               //this.isloading = false;
             }
-            //this.temda=2+this.dataSetArrays.length;
             if (res.advancedSearch == null) {
               this.objAdvancedSearch = {
                 accountNo: undefined,
@@ -2774,11 +2603,6 @@ export class ReportListComponent implements OnInit {
     if (this.baseColumn.toLowerCase() == "Donor".toLowerCase()) {
       this.searchDonorData();
       this.commonMethodService.getDonorListArray().subscribe(() => {
-        // if (this.donorlist) {
-        //   this.dataSetArrays.map((ds)=>{
-        //     this.runDataSet(ds)
-        //   })
-        // }
         if (this.donorlist) {
           if (this.dsalength <= this.dataSetArrays.length) {
             if (this.dsalength > 0) {
@@ -2798,7 +2622,6 @@ export class ReportListComponent implements OnInit {
   }
 
   runDataSet(objResponse) {
-    //if(this.componentCount<=this.dataSetArrays.length){///added conditon
     this.commonMethodService.setIsDataSetLoading(true);
     const reportDynamicListFactory = this.resolver.resolveComponentFactory(
       ReportDynamicListComponent
@@ -2810,36 +2633,19 @@ export class ReportListComponent implements OnInit {
     obj.mainArray = this.mainArray;
     obj.selectedBaseCol = this.baseColumn;
     this.componentCount = this.componentCount + 1;
-    //objResponse.columnNo=this.componentCount;
     obj.list = objResponse;
     reportRef.instance.DonorList = this.donorlist;
     reportRef.instance.TableId = this.componentCount.toString();
     reportRef.instance.ReportData = obj;
     this.tableId = this.componentCount.toString();
-    //this.componentCount = this.componentCount +                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             1;
 
     this.commonMethodService.getColumnArray().subscribe((res) => {
-      /*if (res && Object.keys(res.columnName).length != 0) {
-        let columnName = res.columnName;
-        console.log(columnName)
-        this.mainArray.forEach(function (element, i) {
-          if(i<res.columnArray.length)
-          {
-          element[columnName] = res.columnArray[i].amount;
-          }
-        });
-        this.search(null, true);
-        ///this.isloading = false;//just comment
-        //this.mainArray[columnName] = this.mainArray['amount'];
-      }*/
-
       this.callAftergetColumnArray(res);
     });
 
     this.localDragRef.push(reportRef.instance.dragEnable(this.dragDrop));
     this.droplistREf.withItems([...this.localDragRef]);
     reportRef.changeDetectorRef.detectChanges();
-    //}
   }
 
   deleteSavedQuery(reportQueryId: number) {
@@ -2854,7 +2660,6 @@ export class ReportListComponent implements OnInit {
       ),
     }).then((result) => {
       if (result.value) {
-        // var eventGuId = this.localstoragedataService.getLoginUserEventGuId();
         var updatedBy = this.localstoragedataService.getLoginUserId();
         this.reportQueryService
           .deleteQuery(reportQueryId.toString(), updatedBy.toString())
@@ -2871,7 +2676,6 @@ export class ReportListComponent implements OnInit {
                   confirmButton: "btn_ok",
                 },
               });
-              //this.activeModal.dismiss();
               this.getSavedQueary();
             },
             (err) => {
@@ -2893,9 +2697,6 @@ export class ReportListComponent implements OnInit {
             }
           );
       }
-      //  else if (result.dismiss === Swal.DismissReason.cancel) {
-      //   Swal.fire("Cancelled", "error");
-      // }
     });
   }
   stopRun() {
@@ -2912,14 +2713,11 @@ export class ReportListComponent implements OnInit {
     if (this.subAll) {
       this.subAll.unsubscribe();
     }
-    // this.subGetPledgeTran.unsubscribe();
-    // this.subPaymentTrans.unsubscribe();
   }
 
   // new logic
   backArray: any = [];
   searchNew(keyword, event, isZero = false) {
-    //this.gridCount = this.searchgridCount;//old logic
     var tempArray: any = []; //this.mainArray;//old logic
 
     const charCode = event.which ? event.which : event.keyCode;
@@ -2940,7 +2738,6 @@ export class ReportListComponent implements OnInit {
       keyword = keyword.toLowerCase();
     }
     this.isFiltered = false;
-    // this.totalRecord = this.mainArray.length;//old logic
     if (keyword != "" || keyword == null) {
       if (!isZero) {
         var searchArray = keyword.split(" ");

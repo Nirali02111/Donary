@@ -6,8 +6,8 @@ declare var $: any;
 @Component({
   selector: "app-email-missing-popup",
   templateUrl: "./email-missing-popup.component.html",
-  styleUrls: ["./email-missing-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./email-missing-popup.component.scss"],
 })
 export class EmailMissingPopupComponent implements OnInit {
   isloading: boolean = false;

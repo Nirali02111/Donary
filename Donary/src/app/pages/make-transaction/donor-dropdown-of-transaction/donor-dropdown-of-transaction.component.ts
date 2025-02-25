@@ -67,7 +67,8 @@ export interface DonorOfDropdownInTransactionObj {
   ],
 })
 export class DonorDropdownOfTransactionComponent
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   eventService: any;
   isNotifyDonarEmailShow: any;
   isOpenFromCard: boolean;
@@ -88,7 +89,7 @@ export class DonorDropdownOfTransactionComponent
     private readonly changeDetectorRef: ChangeDetectorRef,
     private localstoragedataService: LocalstoragedataService,
     private cardService: CardService
-  ) { }
+  ) {}
 
   @HostListener("click", ["$event"])
   onClick(event: MouseEvent): void {
@@ -243,7 +244,6 @@ export class DonorDropdownOfTransactionComponent
             label: label.trim(),
           };
         });
-        //  var donarDetails = [{ "email": emailArray, "phone": phoneResult }];
       } else {
         const emails = this.paymentDetails.emails
           ? this.paymentDetails.emails.split(",")
@@ -327,22 +327,26 @@ export class DonorDropdownOfTransactionComponent
     };
 
     // Subscribe to the modal's output
-    modalRef.componentInstance.emtOutputDonorTransaction.subscribe((response) => {
-      this.isCreateDonorPopup = false;
-      if (response) {
-        // Add the new donor to the list
-        this.commonMethodService.localDonorList= [...this.commonMethodService.localDonorList,response]
-        // Update the form control
-        this.formGroup.get('accountId')?.setValue(response.accountId);
-        debugger
-        // Optionally, trigger change detection if the ng-select is not reflecting changes
-        this.changeDetectorRef.detectChanges();
-        this.donorChange.emit(response);
-        if (this.donorDrp) {
-          this.donorDrp.open();
-          setTimeout(() => this.donorDrp.close(), 100);
+    modalRef.componentInstance.emtOutputDonorTransaction.subscribe(
+      (response) => {
+        this.isCreateDonorPopup = false;
+        if (response) {
+          // Add the new donor to the list
+          this.commonMethodService.localDonorList = [
+            ...this.commonMethodService.localDonorList,
+            response,
+          ];
+          // Update the form control
+          this.formGroup.get("accountId")?.setValue(response.accountId);
+          // Optionally, trigger change detection if the ng-select is not reflecting changes
+          this.changeDetectorRef.detectChanges();
+          this.donorChange.emit(response);
+          if (this.donorDrp) {
+            this.donorDrp.open();
+            setTimeout(() => this.donorDrp.close(), 100);
+          }
         }
       }
-    });
+    );
   }
 }

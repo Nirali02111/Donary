@@ -39,8 +39,8 @@ import { CreditCardService } from "src/app/services/helpers/credit-card.service"
   providers: [provideNgxMask()],
 })
 export class CreditCardTypeMethodComponent
-  implements OnInit, OnDestroy, AfterContentInit {
-  // cardMask = "0000-0000-0000-0000||0000-000000-0000||0000-0000-0000-000";
+  implements OnInit, OnDestroy, AfterContentInit
+{
   protected cardMask: string = "0000-0000-0000-0000";
 
   cvvMaskValue = "000||0000";
@@ -109,15 +109,13 @@ export class CreditCardTypeMethodComponent
     return this.formGroup.get("card");
   }
 
-  expInput = viewChild('expInput', { read: ElementRef<HTMLInputElement> });
+  expInput = viewChild("expInput", { read: ElementRef<HTMLInputElement> });
 
-  cvvInput = viewChild('cvvInput', { read: ElementRef<HTMLInputElement> });
+  cvvInput = viewChild("cvvInput", { read: ElementRef<HTMLInputElement> });
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-    // this.cdr.detectChanges()
-  }
+  ngOnInit(): void {}
 
   ngAfterContentInit(): void {
     this.formGroup.get("card").clearValidators();
@@ -194,7 +192,6 @@ export class CreditCardTypeMethodComponent
       }
 
       const type = this.creditCardService.identifyCard(val);
-      // console.log(type);
       this.cardType.set(type.name);
       this.cardMask = type.mask;
       this.cvvMaskValue = type.CVV;
@@ -210,24 +207,20 @@ export class CreditCardTypeMethodComponent
     this.formGroup.get("card").updateValueAndValidity();
     this.formGroup.get("exp").updateValueAndValidity();
     this.formGroup.get("cvv").updateValueAndValidity();
-    this.formGroup.updateValueAndValidity()
+    this.formGroup.updateValueAndValidity();
   }
 
-  oninput(event: Event) {
-    // console.log(event);
-    // event.target.value
-    // this.creditCardService.parseMagneticStrip(val)
-  }
+  oninput(event: Event) {}
 
   ccNumberFill() {
     if (this.expInput()) {
-      this.expInput().nativeElement.focus()
+      this.expInput().nativeElement.focus();
     }
   }
 
   expNumberFill() {
     if (this.cvvInput()) {
-      this.cvvInput().nativeElement.focus()
+      this.cvvInput().nativeElement.focus();
     }
   }
 }

@@ -110,19 +110,6 @@
                                                         </div>
                                                         <div class="input_group date_picker"
                                                             *ngIf="item.uiDataType=='DateTime' && (item.type==='to1' || item.type==='to2' || item.type==='singleToDate')  ">
-                                                            <!-- <div class="searchbar applybtn_blink">
-                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
-                                                            [singleDatePicker]="true" [(ngModel)]="tempTd"
-                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                            [showClearButton]="commonMethodService.showClearButton"
-                                                            (focus)="OnDatePickerToOpen()" #toDate  (datesUpdated)="datesToUpdated($event)"
-                                                             (keypress)="dateSetValue($event,item.paramName);"
-                                                             (keyup)="passValueToDate($event,item.paramName)" maxlength="10"
-                                                             (blur)="clearTo()" />
-                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}{{'REQUIRED' | translate}}</span>
-                                                    </div> -->
                                                             <!-- Calendar code started -->
                                                             <ng-template #popContent><app-common-hebrew-english-calendar
                                                                     [pageName]="ToPageName" [data]="selectedDateRange"
@@ -142,62 +129,8 @@
                                                             <!-- Calendar code ended -->
                                                         </div>
                                                         <!--not from and to date-->
-                                                        <!-- <div class="input_group date_picker dynamic_date_picker" *ngIf="item.uiDataType=='DateTime' && item.paramName!='DtTo' && item.paramName!='DtFrom'">
-                                                    <div class="searchbar applybtn_blink">
-                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
-                                                            [singleDatePicker]="true" [(ngModel)]="testDate"
-                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                            [showClearButton]="commonMethodService.showClearButton"
-                                                            (focus)="OnDatePickerToOpen()" #item.value  (datesUpdated)="datesToUpdated($event)"
-                                                             (keyup)="passTestDate($event)" maxlength="10"
-                                                             />
-                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}</span>
                                                     </div>
-                                                </div> -->
-                                                    </div>
-
                                                 </div>
-
-                                                <!-- <div class="query-report-dates" *ngIf="isDateFrom">
-                                            <label>From Date</label>
-
-                                            <div class="input_group date_picker">
-                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
-                                                        alt="" /></span>
-                                                <div class="searchbar applybtn_blink">
-                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
-                                                        [singleDatePicker]="true" [(ngModel)]="selecteFromdDate" autoUpdateInput="false"
-                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                        [showClearButton]="commonMethodService.showClearButton" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="query-report-dates" *ngIf="isDateTo">
-                                            <label>To Date</label>
-                                            <div class="input_group date_picker">
-                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
-                                                        alt="" /></span>
-                                                <div class="searchbar applybtn_blink">
-                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
-                                                        [singleDatePicker]="true" [(ngModel)]="selecteTodDate" autoUpdateInput="false"
-                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                        [showClearButton]="commonMethodService.showClearButton" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="report-device-name" *ngIf="isDnyText">
-                                            <label>{{dnyParam}}</label>
-                                            <div class="input-group col-8 mb-2">
-                                               <input type="text" [(ngModel)]="dnyText">
-                                            </div>
-                                        </div> -->
                                             </div>
                                             <div class="query-report-action">
                                                 <button class="btn btn-primary btn-run" (click)="onRun()"
@@ -221,14 +154,11 @@
                                             </div>
                                             <div class="query-data-table {{setClsTableTestTreport}}"
                                                 id="customReportScroll">
-                                                <!-- <table class="table-striped table-resizable table-campaign" id="queryreporttable" [svData]="tableExecute" #sv="svDataTable" [svRowsOnPage]="50" svSortBy="createdDate" svSortOrder="desc"> -->
                                                 <table class="table-striped table-resizable table-campaign"
                                                     id="queryreporttable" [svData]="tableExecute" #sv="svDataTable"
                                                     [svRowsOnPage]="50">
                                                     <thead>
                                                         <tr>
-                                                            <!-- <th *ngFor="let item of sv.data; index as i">{{item}}</th> -->
-                                                            <!-- <th *ngFor="let header of getHeaders()">{{header}}</th> -->
                                                             <th *ngFor="let header of getHeaders()">
                                                                 <sv-default-sorter [by]="header">{{header}}
                                                                 </sv-default-sorter>
@@ -240,7 +170,6 @@
                                                             class="table-row table-row-{{i}}">
                                                             <td *ngFor="let key of getHeaders(); index as i">{{item[key]
                                                                 }}</td>
-                                                            <!-- <td *ngFor="let key of getHeaders(); index as i">{{key=='last Payment Date' || key=='lastDate'? (item[key] | donaryDateFormat: "short") : item[key]}}</td> -->
                                                         </tr>
                                                     </tbody>
                                                     <tbody *ngIf="sv.data?.length == 0">
@@ -328,19 +257,6 @@
                                                         </div>
                                                         <div class="input_group date_picker"
                                                             *ngIf="item.uiDataType=='DateTime' && (item.type==='to1' || item.type==='to2' || item.type==='singleToDate') ">
-                                                            <!-- <div class="searchbar applybtn_blink">
-                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
-                                                            [singleDatePicker]="true" [(ngModel)]="tempTd"
-                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                            [showClearButton]="commonMethodService.showClearButton"
-                                                            (focus)="OnDatePickerToOpen()" #toDate  (datesUpdated)="datesToUpdated($event)"
-                                                             (keypress)="dateSetValue($event,item.paramName);"
-                                                             (keyup)="passValueToDate($event,item.paramName)" maxlength="10"
-                                                             (blur)="clearTo()" />
-                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}{{'REQUIRED' | translate}}</span>
-                                                    </div> -->
                                                             <!-- Calendar code started -->
                                                             <ng-template #popContent><app-common-hebrew-english-calendar
                                                                     [pageName]="ToPageName" [data]="selectedDateRange"
@@ -360,62 +276,9 @@
                                                             <!-- Calendar code ended -->
                                                         </div>
                                                         <!--not from and to date-->
-                                                        <!-- <div class="input_group date_picker dynamic_date_picker" *ngIf="item.uiDataType=='DateTime' && item.paramName!='DtTo' && item.paramName!='DtFrom'">
-                                                    <div class="searchbar applybtn_blink">
-                                                        <input type="text" class="form-control"  ngxDaterangepickerMd
-                                                            [singleDatePicker]="true" [(ngModel)]="testDate"
-                                                            [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                            [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                            [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                            [showClearButton]="commonMethodService.showClearButton"
-                                                            (focus)="OnDatePickerToOpen()" #item.value  (datesUpdated)="datesToUpdated($event)"
-                                                             (keyup)="passTestDate($event)" maxlength="10"
-                                                             />
-                                                             <span class="text-danger" *ngIf="item.validation">{{'REQUIRED' | translate}}</span>
-                                                    </div>
-                                                </div> -->
                                                     </div>
 
                                                 </div>
-
-                                                <!-- <div class="query-report-dates" *ngIf="isDateFrom">
-                                            <label>From Date</label>
-
-                                            <div class="input_group date_picker">
-                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
-                                                        alt="" /></span>
-                                                <div class="searchbar applybtn_blink">
-                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
-                                                        [singleDatePicker]="true" [(ngModel)]="selecteFromdDate" autoUpdateInput="false"
-                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                        [showClearButton]="commonMethodService.showClearButton" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="query-report-dates" *ngIf="isDateTo">
-                                            <label>To Date</label>
-                                            <div class="input_group date_picker">
-                                                <span class="icon"><img src="/assets/dist/img/calendar-icon.svg" width="20" height="20"
-                                                        alt="" /></span>
-                                                <div class="searchbar applybtn_blink">
-                                                    <input type="text" class="form-control" #calendarsearch ngxDaterangepickerMd
-                                                        [singleDatePicker]="true" [(ngModel)]="selecteTodDate" autoUpdateInput="false"
-                                                        [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                                                        [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                                                        [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                                                        [showClearButton]="commonMethodService.showClearButton" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="report-device-name" *ngIf="isDnyText">
-                                            <label>{{dnyParam}}</label>
-                                            <div class="input-group col-8 mb-2">
-                                               <input type="text" [(ngModel)]="dnyText">
-                                            </div>
-                                        </div> -->
                                             </div>
                                             <div class="query-report-action">
                                                 <button class="btn btn-primary btn-run" (click)="onRun()"
@@ -439,14 +302,11 @@
                                             </div>
                                             <div class="query-data-table {{setClsTableTestTreport}}"
                                                 id="customReportScroll">
-                                                <!-- <table class="table-striped table-resizable table-campaign" id="queryreporttable" [svData]="tableExecute" #sv="svDataTable" [svRowsOnPage]="50" svSortBy="createdDate" svSortOrder="desc"> -->
                                                 <table class="table-striped table-resizable table-campaign"
                                                     id="queryreporttable" [svData]="tableExecute" #sv="svDataTable"
                                                     [svRowsOnPage]="50">
                                                     <thead>
                                                         <tr>
-                                                            <!-- <th *ngFor="let item of sv.data; index as i">{{item}}</th> -->
-                                                            <!-- <th *ngFor="let header of getHeaders()">{{header}}</th> -->
                                                             <th *ngFor="let header of getHeaders()">
                                                                 <sv-default-sorter [by]="header">{{header}}
                                                                 </sv-default-sorter>
@@ -458,7 +318,6 @@
                                                             class="table-row table-row-{{i}}">
                                                             <td *ngFor="let key of getHeaders(); index as i">{{item[key]
                                                                 }}</td>
-                                                            <!-- <td *ngFor="let key of getHeaders(); index as i">{{key=='last Payment Date' || key=='lastDate'? (item[key] | donaryDateFormat: "short") : item[key]}}</td> -->
                                                         </tr>
                                                     </tbody>
                                                     <tbody *ngIf="sv.data?.length == 0">

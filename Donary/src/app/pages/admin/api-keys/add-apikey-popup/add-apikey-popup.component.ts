@@ -24,8 +24,8 @@ interface GateWay {
 @Component({
   selector: "app-add-apikey-popup",
   templateUrl: "./add-apikey-popup.component.html",
-  styleUrls: ["./add-apikey-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./add-apikey-popup.component.scss"],
 })
 export class AddApikeyPopupComponent implements OnInit {
   @Output() emtOutputEditApiKeys: EventEmitter<any> = new EventEmitter();
@@ -75,6 +75,14 @@ export class AddApikeyPopupComponent implements OnInit {
     this.localstoragedataService.getUserEventCurrency();
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   Country: any = this.commonMethodService.getDefaultSelectedCountryCode();
+  merchantIdHideShow: boolean = false;
+
+  get isMerchantIdRequired() {
+    return this.merchantIdHideShow && !this.pin;
+  }
+
+  isMerchantIdFocused: boolean = false;
+
   @Input() set keys(key) {
     if (key) {
       this.isAdvancedKeys = key.isAdvancedKeys;
@@ -418,6 +426,8 @@ export class AddApikeyPopupComponent implements OnInit {
     if (this.gatewayProviderId == 13) {
       this.currencyId = 1;
     }
+    this.merchantIdHideShow = this.gatewayProviderId == 19;
+
     this.isGatewayProviderIdRequired = false;
     if (
       this.gatewayProviderId == 3 ||
@@ -515,7 +525,8 @@ export class AddApikeyPopupComponent implements OnInit {
       this.isGatewayProviderIdRequired ||
       this.isGatewayTypeIdRequired ||
       this.isIntegrationKeyRequired ||
-      this.isCurrencyIdRequired
+      this.isCurrencyIdRequired ||
+      this.isMerchantIdRequired
     );
   }
 

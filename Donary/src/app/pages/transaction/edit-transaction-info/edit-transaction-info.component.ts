@@ -21,8 +21,8 @@ interface option {
 @Component({
   selector: "app-edit-transaction-info",
   templateUrl: "./edit-transaction-info.component.html",
-  styleUrls: ["./edit-transaction-info.component.scss"],
   standalone: false,
+  styleUrls: ["./edit-transaction-info.component.scss"],
 })
 export class EditTransactionInfoComponent implements OnInit {
   @Input("types") types: string;
@@ -158,9 +158,6 @@ export class EditTransactionInfoComponent implements OnInit {
     if (this.isPaymentTypeCheck) {
       this.bulkUpdateCheckStatus();
     }
-    // if(this.appliedPledges && this.paymentTypeCheckHideShow){
-    //   return false;
-    // }
     const updatedObj = this.fieldsArrayToObj();
     const paymentBulkUpdates = this.transactionIds.map((o) => {
       return {

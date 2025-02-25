@@ -36,8 +36,8 @@ interface PanelRes {
 @Component({
   selector: "app-total-panel",
   templateUrl: "./total-panel.component.html",
-  styleUrls: ["./total-panel.component.scss"],
   standalone: false,
+  styleUrls: ["./total-panel.component.scss"],
 })
 export class TotalPanelComponent implements OnInit, AfterViewInit {
   @ViewChild(DaterangepickerDirective, { static: false })

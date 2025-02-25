@@ -36,8 +36,8 @@ declare var $: any;
 @Component({
   selector: "app-notification-list",
   templateUrl: "./notification-list.component.html",
-  styleUrls: ["./notification-list.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-list.component.scss"],
 })
 export class NotificationListComponent implements OnInit {
   isBrowser = false;
@@ -892,11 +892,8 @@ export class NotificationListComponent implements OnInit {
           this.btnTitleMarkComplete = "Mark Complete";
           this.setclsClickedComplete = "";
         }
-        //
         this.statusLabel = this.getStatusLabel(data.statusId);
         this.status_labelClass = this.getStatusClass(data.statusId);
-        // $('.active-record').removeClass('active-record');
-        //event.currentTarget.className="active-record";
         this.getEmailDwn(data.assigneeId);
         this.getPhoneDwn(data.assigneeId);
       }
@@ -959,7 +956,6 @@ export class NotificationListComponent implements OnInit {
         }
       );
     modalRef.componentInstance.emtOutputPaymentData.subscribe((objResponse) => {
-      console.log(objResponse);
       this.isAttachedTrans = false;
       this.SelectedPaymentArray = [];
       this.SelectedPaymentArray.push(objResponse);
@@ -1100,15 +1096,7 @@ export class NotificationListComponent implements OnInit {
 
   RemoveLinkedDonor() {
     this.selectedOldDonorId = this.selectedDonorId;
-    //this.selectedDonorId=0;
     this.isLinkedDonorCard = true;
-    // this.donor=null;
-    //this.nonEditable=false;
-    //this.linkDonor=true;
-    //this.isAttachedTrans=false;
-    //this.isAttachedTransX=false
-    //this.recordTypeId =  this.recordTypeId
-    //this.SaveNotification();
   }
 
   RemoveLinkedTransaction() {
@@ -1127,8 +1115,6 @@ export class NotificationListComponent implements OnInit {
   SaveNotification() {
     this.isloading = true;
     if (this.notificationId != undefined) {
-      //var assigneeId = this.assigneeId ? this.assigneeId.map(s => s.id).toString() : 0;
-      // var RecurringTypeId = this.repeatId ? this.repeatId.map(s => s.id).toString() : 0;
       var obj = {
         EventGuId: this.localstorageService.getLoginUserEventGuId(),
         NotificationId: this.notificationId,
@@ -1167,7 +1153,6 @@ export class NotificationListComponent implements OnInit {
             this.getNotificationById();
           } else {
             this.isgridDisable = false;
-            console.log("onReminder res error");
           }
         },
         (err) => {
@@ -1185,10 +1170,7 @@ export class NotificationListComponent implements OnInit {
             customClass: {
               confirmButton: "btn_ok",
             },
-          }).then(() => {
-            console.log("onReminder res error", err.error);
-            // this.activeModal.dismiss();
-          });
+          }).then(() => {});
         }
       );
     }
@@ -1209,7 +1191,6 @@ export class NotificationListComponent implements OnInit {
 
   AssigneeLabel(event) {
     event.stopPropagation();
-    //this.changeHtml=false; //for issue
   }
   setclsClickedComplete = "";
   setclsClickedDelete = "";
@@ -1230,7 +1211,6 @@ export class NotificationListComponent implements OnInit {
       this.setclsClickedDelete = "clicked-delete";
     }
 
-    //if(this.isSelectedNotification){
     this.isSelectedNotification = false;
     this.isloading = true;
     this.statusId = statusIdPass; //added new
@@ -1247,8 +1227,6 @@ export class NotificationListComponent implements OnInit {
       AssigneeId: this.assigneeId[0].id,
       Note: this.note,
       RecordTypeId: this.recordTypeId,
-      //ReportTypeId: 0,
-      //ReportId: 0,
       StatusId: statusIdPass,
       LinkDonorId: this.selectedDonorId,
       LoginUserId: this.localstorageService.getLoginUserId(),
@@ -1256,12 +1234,6 @@ export class NotificationListComponent implements OnInit {
       Phone: this.phone,
       NotifySMS: this.notifySMS,
       NotifyEmail: this.notifyEmail,
-      // RecurringModel:
-      // {
-      //   RecurringCount: 0,
-      //   //RecurringType: null,//RecurringTypeId,
-      //  // ScheduleDateTime: "2022-01-11T14:58:32.687Z"
-      // }
     };
     this.notificationService.saveNotification(obj).subscribe(
       (res) => {
@@ -1291,11 +1263,9 @@ export class NotificationListComponent implements OnInit {
           },
         }).then(() => {
           console.log("onReminder res error", err.error);
-          // this.activeModal.dismiss();
         });
       }
     );
-    //}
   }
   onDeleteStatus(statusIdPass: number) {
     this.onMarkCompleted(statusIdPass);
@@ -1345,12 +1315,9 @@ export class NotificationListComponent implements OnInit {
   isRangeSelected = false;
   isinitializeSecond: number = 0;
   datesUpcomingUpdated(event) {
-    //this.filterStatus="1";//added new
-    //this.filtercount=1;
     if (this.isinitializeSecond == 1) {
       this.isloading = true;
       this.selectedUpcomingDateRange = event;
-      //this.getDashboardValues();
       this.GetListData();
       this.isRangeSelected == true
         ? $("#upcomingcalendar").removeClass("custom_range")
@@ -1409,7 +1376,6 @@ export class NotificationListComponent implements OnInit {
     this.usersListTextdpw = this.tempUserListPhone;
   }
   public onReady(editor) {
-    //console.log('items ',editor.ui.view.toolbar.items._items)
     var itemCls = editor.ui.view.toolbar.items._items;
     itemCls[0].element.classList.add("icon_bold");
     itemCls[1].element.classList.add("icon_italic");
@@ -1442,7 +1408,6 @@ export class NotificationListComponent implements OnInit {
           this.getNotificationById();
           this.txtCommands = null;
         } else {
-          //console.log('onReminder res error')
         }
       },
       (err) => {
@@ -1462,7 +1427,6 @@ export class NotificationListComponent implements OnInit {
           },
         }).then(() => {
           console.log("onReminder res error", err.error);
-          // this.activeModal.dismiss();
         });
       }
     );
@@ -1505,9 +1469,6 @@ export class NotificationListComponent implements OnInit {
     return false;
   }
   seperateHebrewAndEnglishName(str) {
-    // var result = str.replace(/\s*(\b[a-z\s]+\b)\s*/ig, '<span class="lan-eng">$1 </span>');
-    // result = result.replace(/(^|[^\u0590-\u05FF])([\u0590-\u05FF]+)(?![\u0590-\u05FF])/g, '$1<span class="lng_hebrew">$2 </span>');
-    // return result;
     var re =
       /(^|[^\u0590-\u05FF])([\u0590-\u05FF]+)(?![\u0590-\u05FF])|(\b[a-z)-9\s]+\b)/gi;
     var res = [];

@@ -45,8 +45,8 @@ declare var $: any;
   selector: "app-tabulator-table",
   templateUrl: "./tabulator-table.component.html",
   styleUrls: ["./tabulator-table.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabulatorTableComponent
   implements OnInit, AfterViewInit, OnDestroy

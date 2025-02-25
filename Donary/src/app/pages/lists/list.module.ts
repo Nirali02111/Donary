@@ -4,7 +4,6 @@ import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxDaterangepickerMd } from "ngx-daterangepicker-material";
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
@@ -20,7 +19,6 @@ import { ListMainComponent } from "./list-main/list-main.component";
 import { ListRoutingModule } from "./list-routing.module";
 import { TotalPanelComponent } from "./total-panel/total-panel.component";
 import { SeatsComponent } from "../seats/seats.component";
-
 
 import { ResizableModule } from "./../../commons/modules/resizable/resizable.module";
 import { SlickModule } from "./../../commons/modules/slick/slick.module";
@@ -64,8 +62,8 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
         AngularMultiSelectModule,
         AddNewDropdownModule,
         NgxDaterangepickerMd.forRoot(),
-        //NgMultiSelectDropDownModule.forRoot(),
-        NgxMaskDirective, NgxMaskPipe,
+        NgxMaskDirective,
+        NgxMaskPipe,
         ResizableModule,
         DataTableModule,
         SlickModule,

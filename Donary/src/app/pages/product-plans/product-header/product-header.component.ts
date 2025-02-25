@@ -6,8 +6,8 @@ import { CartManagementService } from "src/app/services/helpers/cart-management.
 @Component({
   selector: "app-product-header",
   templateUrl: "./product-header.component.html",
-  styleUrls: ["./product-header.component.scss"],
   standalone: false,
+  styleUrls: ["./product-header.component.scss"],
 })
 export class ProductHeaderComponent implements OnInit {
   HOME_URL: string = "https://donary.com/";

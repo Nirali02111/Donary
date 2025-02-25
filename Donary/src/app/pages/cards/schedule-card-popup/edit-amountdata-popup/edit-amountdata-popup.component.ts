@@ -22,8 +22,8 @@ declare var $: any;
 @Component({
   selector: "app-edit-amountdata-popup",
   templateUrl: "./edit-amountdata-popup.component.html",
-  styleUrls: ["./edit-amountdata-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./edit-amountdata-popup.component.scss"],
 })
 export class EditAmountdataPopupComponent implements OnInit {
   amount: string = "";

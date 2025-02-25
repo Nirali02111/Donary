@@ -9,8 +9,8 @@ import { DataTable, PageEvent } from "./DataTable";
 
 @Component({
   selector: "sv-paginator",
-  template: `<ng-content></ng-content>`,
   standalone: false,
+  template: `<ng-content></ng-content>`,
 })
 export class Paginator implements OnChanges {
   @Input("svTable") inputSVTable: DataTable;

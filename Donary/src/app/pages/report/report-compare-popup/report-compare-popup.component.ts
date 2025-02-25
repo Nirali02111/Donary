@@ -5,8 +5,8 @@ import { CommonMethodService } from "src/app/commons/common-methods.service";
 @Component({
   selector: "app-report-compare-popup",
   templateUrl: "./report-compare-popup.component.html",
-  styleUrls: ["./report-compare-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./report-compare-popup.component.scss"],
 })
 export class ReportComparePopupComponent implements OnInit {
   columnNameList: any = [];

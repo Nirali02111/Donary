@@ -4,7 +4,6 @@ import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxDaterangepickerMd } from "ngx-daterangepicker-material";
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
@@ -27,10 +26,9 @@ import { DoanryDirective } from "src/app/commons/modules/doanry-directive.module
 import { CardsModule } from "../cards/cards.module";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataTableModule } from "src/app/commons/modules/data-table/data-table.module";
 import { AngularMultiSelectModule } from "src/app/commons/modules/angular-multi-select-module/angular-multi-select.module";
-
 
 @NgModule({ declarations: [
         DonorLocationPopupComponent,
@@ -40,8 +38,7 @@ import { AngularMultiSelectModule } from "src/app/commons/modules/angular-multi-
         DonorEmailComponent,
         DonorPhoneComponent,
         DonorSaveEmailComponent,
-        DonorSavePhoneComponent
-        //SendReceiptPopupComponent,
+        DonorSavePhoneComponent,
     ],
     exports: [TranslateModule], imports: [CommonModule,
         FormsModule,
@@ -52,8 +49,8 @@ import { AngularMultiSelectModule } from "src/app/commons/modules/angular-multi-
         DonorRoutingModule,
         AngularMultiSelectModule,
         NgxDaterangepickerMd.forRoot(),
-        //NgMultiSelectDropDownModule.forRoot(),
-        NgxMaskDirective, NgxMaskPipe,
+        NgxMaskDirective,
+        NgxMaskPipe,
         DataTableModule,
         DonaryDatePickerModule,
         DonorDropdownListModule,

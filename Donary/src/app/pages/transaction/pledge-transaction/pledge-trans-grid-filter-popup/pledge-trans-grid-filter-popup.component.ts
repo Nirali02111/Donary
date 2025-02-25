@@ -5,8 +5,8 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-pledge-trans-grid-filter-popup",
   templateUrl: "./pledge-trans-grid-filter-popup.component.html",
-  styleUrls: ["./pledge-trans-grid-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pledge-trans-grid-filter-popup.component.scss"],
 })
 export class PledgeTransGridFilterPopupComponent implements OnInit {
   @Output() emtOutputSearchFilterData: EventEmitter<any> = new EventEmitter();

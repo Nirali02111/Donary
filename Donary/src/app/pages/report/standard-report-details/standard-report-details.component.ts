@@ -44,6 +44,8 @@ interface ParamFormGroup {
   imports: [
     TranslateModule,
     NgIf,
+    NgFor,
+    KeyValuePipe,
     AddNewDropdownModule,
     TabulatorModule,
     ReactiveFormsModule,
@@ -313,9 +315,6 @@ export class StandardReportDetailsComponent implements OnInit {
   executeQuery(values) {
     this.isloading = true;
     this.filterFormData = values;
-
-    // Filter out the report parameters that use the "MultiSelectdropdown" control and
-    // If the length of inputValue matches the list data length, set the value to null
     let multiSelectValues: any[] = values.reportParam.filter(
       (report) => report.uiControl.toLowerCase() == "multiselectdropdown"
     );

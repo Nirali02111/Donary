@@ -10,8 +10,8 @@ declare var $: any;
 @Component({
   selector: "app-notification-main",
   templateUrl: "./notification-main.component.html",
-  styleUrls: ["./notification-main.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-main.component.scss"],
 })
 export class NotificationMainComponent implements OnInit, OnDestroy {
   routeState: any;

@@ -33,8 +33,8 @@ declare var $: any;
 @Component({
   selector: "app-reminder-popup",
   templateUrl: "./reminder-popup.component.html",
-  styleUrls: ["./reminder-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./reminder-popup.component.scss"],
 })
 export class ReminderPopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

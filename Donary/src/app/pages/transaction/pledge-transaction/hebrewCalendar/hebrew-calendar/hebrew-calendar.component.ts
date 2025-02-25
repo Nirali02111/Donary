@@ -24,8 +24,8 @@ interface DateObject {
 @Component({
   selector: "app-hebrew-calendar",
   templateUrl: "./hebrew-calendar.component.html",
-  styleUrls: ["./hebrew-calendar.component.scss"],
   standalone: false,
+  styleUrls: ["./hebrew-calendar.component.scss"],
   providers: [
     { provide: NgbCalendar, useClass: NgbCalendarHebrew },
     { provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew },
@@ -463,14 +463,6 @@ export class HebrewCalendarComponent implements OnInit {
       this.hebrewEDate = new NgbDate(eHebrewYear, eHebrewMonth, eHebrewDay);
       this.toDate = this.hebrewEDate;
     }
-
-    /* else{
-		//new logic
-			if(this.hebrewEngishCalendarService.hebFromDateTodate){
-				this.fromDate = this.hebrewEngishCalendarService.hebFromDateTodate;
-				this.toDate = this.fromDate;
-			}
-		} */
     this.convertedFromDate = this.displayFromHebDate(this.fromDate);
     this.convertedToDate = this.displayToHebDate(this.toDate);
     this.datepicker.navigateTo(this.fromDate);

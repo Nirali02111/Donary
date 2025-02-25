@@ -5,8 +5,8 @@ import { BatchService } from "src/app/services/batch.service";
 @Component({
   selector: "app-create-new-batch",
   templateUrl: "./create-new-batch.component.html",
-  styleUrls: ["./create-new-batch.component.scss"],
   standalone: false,
+  styleUrls: ["./create-new-batch.component.scss"],
 })
 export class CreateNewBatchComponent implements OnInit {
   isNewBatch: boolean = true;

@@ -27,8 +27,8 @@ interface stateObj {
 @Component({
   selector: "app-register-account",
   templateUrl: "./register-account.component.html",
-  styleUrls: ["./register-account.component.scss"],
   standalone: false,
+  styleUrls: ["./register-account.component.scss"],
 })
 export class RegisterAccountComponent implements OnInit, AfterViewInit {
   registractionForm: UntypedFormGroup;
@@ -55,7 +55,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.initForm();
     this.getOrganization();
-    //this.getOrganizationContact();
   }
 
   ngAfterViewInit() {
@@ -81,7 +80,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
       OrgId: this.fb.control(""),
       OrgName: this.fb.control("", Validators.compose([Validators.required])),
       TaxId: this.fb.control("", Validators.compose([Validators.required])),
-      // OrgHouseNum: this.fb.control("", Validators.compose([Validators.required])),
       OrgHouseNum: this.fb.control(""),
       OrgStreet: this.fb.control("", Validators.compose([Validators.required])),
       OrgApt: this.fb.control(""), //("", Validators.compose([Validators.required])),
@@ -99,7 +97,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
         "",
         Validators.compose([Validators.required])
       ),
-      // ContactHouseNum: this.fb.control("", Validators.compose([Validators.required])),
       ContactHouseNum: this.fb.control(""),
       ContactStreet: this.fb.control(
         "",
@@ -186,9 +183,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
         (res) => {
           this.isloading = false;
           if (res) {
-            console.log("onRegister res ", res);
-            // this.router.navigate([PageRouteVariable.ProductCheckout_url]);
-
             this.router.navigate(["/"]);
           } else {
             console.log("onRegister res error");
@@ -357,15 +351,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  // audioTimerProgress=0;
-  // playAudioFile(){
-  //   //myAudio.play()
-  //   var player = new Audio();
-  //   player.src =document.querySelector('audio').src;
-  //   player.play();
-  //   var resultDuration= player.duration;
-  //   this.audioTimerProgress=50;
-  // }
   isCardKnox = false;
   onChangeGateway(event) {
     if (event.target.value == "2") {
@@ -391,7 +376,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
               OrgName: res.organizationName,
               ContactName: res.contactName,
               OrgEmail: res.organizationContactModel[0].contactEmail,
-              //OrgHouseNum:res.organizationContactModel[0].houseNum,
               OrgStreet: hno + res.organizationContactModel[0].streetName,
               OrgApt: res.apartment, //organizationContactModel[0].unit,
               OrgCity: res.organizationContactModel[0].city,
@@ -411,7 +395,6 @@ export class RegisterAccountComponent implements OnInit, AfterViewInit {
           console.log(res);
 
           this.registractionForm.patchValue({
-            //OrgName: res.organizationName,
             ContactName: res.contactName,
             OrgEmail: res.contactEmail,
           });

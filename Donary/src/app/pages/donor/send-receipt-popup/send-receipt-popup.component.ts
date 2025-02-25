@@ -39,8 +39,8 @@ declare var $: any;
 @Component({
   selector: "app-send-receipt-popup",
   templateUrl: "./send-receipt-popup.component.html",
-  styleUrls: ["./send-receipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./send-receipt-popup.component.scss"],
 })
 export class SendReceiptPopupComponent implements OnInit {
   @Output() emtOutputPrint: EventEmitter<any> = new EventEmitter();

@@ -4,8 +4,8 @@ import { CommonMethodService } from "./../../../common-methods.service";
 @Component({
   selector: "app-donor-dropdown-list",
   templateUrl: "./donor-dropdown-list.component.html",
-  styleUrls: ["./donor-dropdown-list.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-dropdown-list.component.scss"],
 })
 export class DonorDropdownListComponent implements OnInit {
   @Input("isSearchable") isSearchable: boolean = false;

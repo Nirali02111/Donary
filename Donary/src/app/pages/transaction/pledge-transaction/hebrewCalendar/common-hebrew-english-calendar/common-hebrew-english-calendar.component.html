@@ -14,10 +14,10 @@
 		translate}}</label>
 </div>
 <div class="calender-switch calender-single-month" *ngIf="isOneDate">
-	<input type="radio" name="calender" id="eng" [checked]="isEngCal" (change)="switchCalendar($event)" />
-	<label for="eng">Eng</label>
-	<input type="radio" name="calender" id="heb" [checked]="!isEngCal" (change)="switchCalendar($event)" />
-	<label for="HEB">{{'CLEAR' |
+	<input type="radio" name="calender" id="eng_isOneDate" [checked]="isEngCal" (change)="switchCalendar($event)" />
+	<label for="eng_isOneDate">Eng</label>
+	<input type="radio" name="calender" id="heb_isOneDate" [checked]="!isEngCal" (change)="switchCalendar($event)" />
+	<label for="heb_isOneDate">{{'HEB' |
 		translate}}</label>
 </div>
 <div *ngIf="isEngCal" [class.calender-single-month]="isOneDate">

@@ -38,8 +38,8 @@ interface dynaObj {
 @Component({
   selector: "app-transaction-advanced-filter-popup",
   templateUrl: "./transaction-advanced-filter-popup.component.html",
-  styleUrls: ["./transaction-advanced-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./transaction-advanced-filter-popup.component.scss"],
 })
 export class TransactionAdvancedFilterPopupComponent
   implements OnInit, OnDestroy
@@ -109,13 +109,6 @@ export class TransactionAdvancedFilterPopupComponent
   isCurrencyFilterVisible: boolean;
   minDate: any;
   maxDate: any;
-
-  /*
-  isCityFilterVisible: boolean;
-  isStateFilterVisible: boolean;
-  isZipFilterVisible: boolean;
-  **/
-
   isCityStateZipVisible: boolean;
   isStreetFilterVisible: boolean;
 
@@ -456,16 +449,6 @@ export class TransactionAdvancedFilterPopupComponent
         this.isBatchFilterVisible = true;
         this.isBatchClicked = true;
       }
-
-      /*if (selectedAdvancedSearchFilter.city) {
-        this.isCityFilterVisible = true;
-      }
-      if (selectedAdvancedSearchFilter.state) {
-        this.isStateFilterVisible = true;
-      }
-      if (selectedAdvancedSearchFilter.zip) {
-        this.isZipFilterVisible = true;
-      }*/
 
       if (
         selectedAdvancedSearchFilter.cityStateZip &&
@@ -897,18 +880,6 @@ export class TransactionAdvancedFilterPopupComponent
       case "fullName":
         this.isFullNameFilterVisible = true;
         break;
-
-      /*
-      case 'city':
-        this.isCityFilterVisible = true;
-        break;
-      case 'state':
-        this.isStateFilterVisible = true;
-        break;
-      case 'zip':
-        this.isZipFilterVisible = true;
-        break;
-      */
       case "cityStateZip":
         this.isCityStateZipVisible = true;
         this.enableDisableDropdown();

@@ -46,7 +46,7 @@ export class SidebarMenuComponent implements OnInit {
   };
 
   panels = ["First", "Second", "Third"];
-  alertSubscriber$: Subscription
+  alertSubscriber$: Subscription;
   public version: string = packageInfo.version;
   public fullName: string;
   public organisationName: string;
@@ -167,33 +167,30 @@ export class SidebarMenuComponent implements OnInit {
     });
   }
 
-  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-  //   this.localstoragedataService.setCurrentMenuState(this.sideMenuItems);
-  //   //event.returnValue = false;
-  // }
-
   ngOnInit() {
-    this.isProdEnv=environment.baseUrl.includes("https://webapi.donary.com/");
-    let alertsObj = {eventGuid: this.localstoragedataService.getLoginUserEventGuId()};
+    this.isProdEnv = environment.baseUrl.includes("https://webapi.donary.com/");
+    let alertsObj = {
+      eventGuid: this.localstoragedataService.getLoginUserEventGuId(),
+    };
     this.fullName = this.localstoragedataService.getLoginUserFullName();
     this.organisationName =
       this.localstoragedataService.getLoginUserOrganisation();
     this.currentYear = new Date().getFullYear();
     this.eventName = this.localstoragedataService.getLoginUserEventName();
-    //this.localstoragedataService.setCurrentMenuState(this.sideMenuItems);
-    //this.sideMenuItems=this.sideMenuItems;
     let extension = this.localstoragedataService.getLoginUserDonateExt();
     this.donateExt = "DONARY.COM/" + extension;
     this.donateExtensionNum = extension;
-    this.alertSubscriber$ = this.notificationService.alert$.subscribe((data) => {
-      this.alertCount = data});
-    this.notificationService
-      .getAlert(alertsObj)
-      .subscribe((data: any[]) => {
-        this.alertCount = data?.filter(alert => alert?.statusID == '1').length;
-        
-        if(this.alertCount) this.notificationService.alert$.next(this.alertCount)
-      });
+    this.alertSubscriber$ = this.notificationService.alert$.subscribe(
+      (data) => {
+        this.alertCount = data;
+      }
+    );
+    this.notificationService.getAlert(alertsObj).subscribe((data: any[]) => {
+      this.alertCount = data?.filter((alert) => alert?.statusID == "1").length;
+
+      if (this.alertCount)
+        this.notificationService.alert$.next(this.alertCount);
+    });
   }
 
   resetAllMenuSelection() {
@@ -268,9 +265,6 @@ export class SidebarMenuComponent implements OnInit {
       active: true,
       iconClasses: "nav-icon fas fa-tachometer-alt",
       children: [],
-      //   children: [ { label: 'Dashboard v1', parentId: 2, route: this.dashboardPage_Url, selected: true, iconClass: "far fas fa-chart-line nav-icon" },
-      //   { label: 'Dashboard v2', parentId: 2, route: 'dashboard1', selected: false, iconClass: "far fas fa-chart-line nav-icon" },
-      // ]
     },
     {
       label: "LISTS",
@@ -288,14 +282,6 @@ export class SidebarMenuComponent implements OnInit {
       active: false,
       iconClasses: "nav-icon fas fa-list",
       children: [],
-      //   children: [
-      //   { label: 'Donors', parentId: 2, route:this.donorPage_Url , selected: false, iconClass: "fas fa-user  nav-icon" },
-      //   { label: 'Reasons', parentId: 2, route:this.reasonPage_Url , selected: false, iconClass: "far fas fa-comments  nav-icon" },
-      //   { label: 'Campaigns', parentId: 2, route: this.campaignPage_Url, selected: false, iconClass: "far fas fa-volume-up nav-icon" },
-      //   { label: 'Locations', parentId: 2, route: this.locationPage_Url, selected: false, iconClass: "far fas fa-map-marker nav-icon" },
-      //   { label: 'Collectors', parentId: 2, route: this.collectorPage_Url, selected: false, iconClass: "far fas fa-user nav-icon" },
-      //   { label: 'Sources', parentId: 2, route:this.sourcePage_Url, selected: false, iconClass: "far fas fa-share-alt nav-icon" }
-      // ]
     },
     {
       label: "TRANSACTIONS",
@@ -307,12 +293,6 @@ export class SidebarMenuComponent implements OnInit {
       iconClasses: "nav-icon fas fa-clipboard-list",
       children: [],
     },
-    // {
-    //   //   label: 'ENTITIES', isSeperator: true, route: '', id: 4, active: false, iconClasses: 'nav-icon fas fa-clipboard-list', children: []
-    //   // },
-    //   // {
-    //   //   label: 'Donors', isSeperator: false, route: this.donorPage_Url, id: 5, active: false, iconClasses: 'nav-icon fas fa-user', children: []
-    //   // },
     {
       label: "REPORTS",
       isSeperator: false,
@@ -343,14 +323,6 @@ export class SidebarMenuComponent implements OnInit {
       iconClasses: "nav-icon fas fa-user",
       children: [],
     },
-    // {
-    //   label: 'Donations', isSeperator: false, route: '', id: 8, active: false, iconClasses: 'nav-icon fas fa-donate', children: [
-    //     //{ label: 'Payments', route: 'grid', parentId: 7, selected: false, iconClass: "fas fa-credit-card nav-icon" },
-    //     { label: 'Pledges', route: this.gridPage_Url, parentId:8, selected: false, iconClass: "far fas fa-gift nav-icon" },
-    //     { label: 'Schedules', route: 'grid4', parentId: 8, selected: false, iconClass: "far fas fa-clipboard-list nav-icon" },
-
-    //   ]
-    // }
     {
       label: "Finance",
       isSeperator: false,

@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-notification-filter",
   templateUrl: "./notification-filter.component.html",
-  styleUrls: ["./notification-filter.component.scss"],
   standalone: false,
+  styleUrls: ["./notification-filter.component.scss"],
 })
 export class NotificationFilterComponent implements OnInit {
   @Output() emtOutputSourceFilterData: EventEmitter<any> = new EventEmitter();
@@ -88,12 +88,7 @@ export class NotificationFilterComponent implements OnInit {
     this.assigneeNames();
   }
 
-  ngOnDestroy() {
-    // // This aborts all HTTP requests.
-    // this.ngUnsubscribe.next();
-    // // This completes the subject properlly.
-    // this.ngUnsubscribe.complete();
-  }
+  ngOnDestroy() {}
   assigneeNames() {
     const eventGuId = this.localstoragedataService.getLoginUserEventGuId();
     this.userService.getUsersList(eventGuId).subscribe(
@@ -123,7 +118,6 @@ export class NotificationFilterComponent implements OnInit {
         this.assigneeId.length == 0
           ? "null"
           : this.assigneeId.length > 0 && this.assigneeId[0].id,
-      // assigneeName: this.assigneeId.length>0 && this.assigneeId[0].itemName
     };
 
     this.emtOutputSourceFilterData.emit(obj);

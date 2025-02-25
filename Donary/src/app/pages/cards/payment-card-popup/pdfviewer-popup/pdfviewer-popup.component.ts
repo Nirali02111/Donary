@@ -5,8 +5,8 @@ declare var $: any;
 @Component({
   selector: "app-pdfviewer-popup",
   templateUrl: "./pdfviewer-popup.component.html",
-  styleUrls: ["./pdfviewer-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pdfviewer-popup.component.scss"],
 })
 export class PdfviewerPopupComponent implements OnInit {
   fileName: any;

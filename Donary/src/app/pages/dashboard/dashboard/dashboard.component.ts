@@ -25,8 +25,8 @@ declare var $: any;
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
   standalone: false,
+  styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
   fullName: string;
@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent2: NgbPopover;
   @ViewChild(NgbPopover, { static: false }) popContent3: NgbPopover;
   popupsDemo!: QueryList<NgbPopover>;
-  // @ViewChild('popContent2', { static: false ,read:NgbPopover }) popContentDir: NgbPopover;
   @ViewChild("upcomingCalendar", {
     static: false,
     read: DaterangepickerDirective,
@@ -812,7 +811,6 @@ export class DashboardComponent implements OnInit {
       .getCalendarArray()
       .pipe(take(1))
       .subscribe((items) => {
-        console.log(items);
         if (
           items &&
           items.pageName == "RecentDashboard" &&
@@ -882,7 +880,6 @@ export class DashboardComponent implements OnInit {
       .getCalendarArray()
       .pipe(take(1))
       .subscribe((items) => {
-        console.log(items);
         if (
           items &&
           items.pageName == "UpcomingDashboard" &&
@@ -935,7 +932,6 @@ export class DashboardComponent implements OnInit {
       .getCalendarArray()
       .pipe(take(1))
       .subscribe((items) => {
-        console.log(items);
         if (
           items &&
           items.pageName == "TotalRecentDashboard" &&
@@ -989,19 +985,4 @@ export class DashboardComponent implements OnInit {
         }
       });
   }
-
-  // ngOnDestroy(): void {
-  //   if (this.TotalRecentcalendarSubscription) {
-  //     console.log("TotalRecentcalendarSubscription");
-  //     this.TotalRecentcalendarSubscription.unsubscribe();
-  //   }
-  //   if (this.RecentcalendarSubscription) {
-  //     console.log("RecentcalendarSubscription");
-  //     this.RecentcalendarSubscription.unsubscribe();
-  //   }
-  //   if (this.UpcomingcalendarSubscription) {
-  //     console.log("UpcomingcalendarSubscription");
-  //     this.UpcomingcalendarSubscription.unsubscribe();
-  //   }
-  // }
 }

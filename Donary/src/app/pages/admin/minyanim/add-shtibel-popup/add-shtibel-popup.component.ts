@@ -16,8 +16,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: "app-add-shtibel-popup",
   templateUrl: "./add-shtibel-popup.component.html",
-  styleUrls: ["./add-shtibel-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./add-shtibel-popup.component.scss"],
 })
 export class AddShtibelPopupComponent implements OnInit {
   modalOptions: NgbModalOptions;

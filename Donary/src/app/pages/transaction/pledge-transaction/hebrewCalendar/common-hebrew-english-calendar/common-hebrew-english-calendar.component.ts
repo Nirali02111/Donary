@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-common-hebrew-english-calendar",
   templateUrl: "./common-hebrew-english-calendar.component.html",
-  styleUrls: ["./common-hebrew-english-calendar.component.scss"],
   standalone: false,
+  styleUrls: ["./common-hebrew-english-calendar.component.scss"],
 })
 export class CommonHebrewEnglishCalendarComponent implements OnInit {
   isClearClick = false;

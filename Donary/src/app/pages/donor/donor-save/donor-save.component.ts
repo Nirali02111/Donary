@@ -47,9 +47,9 @@ declare var $: any;
 @Component({
   selector: "app-donor-save",
   templateUrl: "./donor-save.component.html",
+  standalone: false,
   styleUrls: ["./donor-save.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class DonorSaveComponent implements OnInit {
   @Output() emtOutputEditDonor: EventEmitter<any> = new EventEmitter();
@@ -557,31 +557,8 @@ export class DonorSaveComponent implements OnInit {
           element.tagsDropdownMenu = false;
         });
       }
-      // for (let index = 0; index < this.homephone.length; index++) {
-      //   $('#lblHomePhoneOpen_'+index).text(this.homephone[index].phoneLabel);
-      // }
-      // for (let index = 0; index < this.cellphone.length; index++) {
-      //   $('#lblOpenCellPhonePopup_'+index).text(this.cellphone[index].phoneLabel);
-      // }
-      // for (let index = 0; index < this.email.length; index++) {
-      //   $('#lblOpenEmailPopup_'+index).text(this.email[index].emailLabel);
-      // }
-      // for (let index = 0; index < this.donorAddresses.length; index++) {
-      //   $('#lblOpenHomeAddressPopup_'+index).text(this.donorAddresses[index].addressLabel);
-      // }
 
       this.familyService.Get(this.accountId).subscribe((res) => {
-        // var memberArr={
-        //   "memberLabel": null,
-        //   "memberType": res.memberType,
-        //   "accountFamilyId": 0,
-        //   "fullName": res.fullName,
-        //   "memberAccountId":res.memberAccountId,
-        //   "familyMemberId": 0,
-        //   "familyType": res.familyType,
-        // }
-        // this.memberArr.push(memberArr);
-
         //get family data adding in edit popup add member functionality code started
         this.familiesData = res;
         let familyMembers = [];
@@ -791,54 +768,6 @@ export class DonorSaveComponent implements OnInit {
         this.countries = res;
       });
   }
-
-  // getAllLabels(){
-  //   const eventGuId = this.localstoragedataService.getLoginUserEventGuId();
-  //   this.commonAPIMethodService.getLabelText(eventGuId).subscribe((res: any) => {
-  //     this.phoneLabelArray =res.filter(x=>x.labelType == "Phone");
-  //     this.phoneLabelArray =this.phoneLabelArray.filter(x=>x.labelName != "Home");
-  //     this.phoneLabelArray =this.phoneLabelArray.filter(x=>x.labelName != "Cell");
-  //     this.homephone.map(x=>x.isLabelErrorMessage=false);
-  //     this.cellphone.map(x=>x.isLabelErrorMessage=false);
-  //     this.phoneLabelArray=this.phoneLabelArray.map((item,index)=>{
-  //       item.editVisable=false;
-  //       item.isLabelAdded=false;
-  //       item.phoneRdioId="phoneRedioId_"+index;
-  //       item.cellRedioId="cellRedioId_"+index;
-  //       return item;
-  //     });
-
-  //     // address label
-  //     this.addressLabelArray = res.filter(x=>x.labelType == "Address");
-  //     this.addressLabelArray = this.addressLabelArray.filter(x=>x.labelName != "Home");
-  //     this.donorAddresses.map(x=>x.isLabelErrorMessage=false);
-  //     this.addressLabelArray = this.addressLabelArray.map((item,index)=>{
-  //       item.editVisable = false;
-  //       item.isLabelAdded = false;
-  //       item.addressRdioId = "addressRedioId_"+index;
-  //       return item;
-  //     });
-
-  //     // email label
-  //     this.emailLabelArray = res.filter(x=>x.labelType == "Email");
-  //     this.emailLabelArray = this.emailLabelArray.filter(x=>x.labelName.toLowerCase() != "home");
-  //     let homeEmailLbl = res.filter(x=>x.labelName.toLowerCase() == "home" && x.labelType.toLowerCase()=="email");
-  //     this.email=this.email.map((item)=>{
-  //       if(item.emailLabel && item.emailLabel.toLowerCase()=="home")
-  //       {
-  //       item.emailID=homeEmailLbl[0].labelID
-  //       }
-  //       return item;
-  //     })
-  //     this.email.map(x=>x.isLabelErrorMessage=false);
-  //     this.emailLabelArray = this.emailLabelArray.map((item,index)=>{
-  //       item.editVisable = false;
-  //       item.isLabelAdded = false;
-  //       item.emailRdioId = "emailRedioId_"+index;
-  //       return item;
-  //     });
-  //   });
-  // }
 
   //updated code for get all labels started
   getAllLabels(callApi: boolean = false) {
@@ -2230,28 +2159,6 @@ export class DonorSaveComponent implements OnInit {
           switchMap((data) => {
             this.donorSaveResponse = data;
             this.commonMethodService.sendDonorLst(true);
-            // if (this.familyArr && this.familyArr.length > 0) {
-            //   this.familyArr.forEach((element) => {
-            //     var familyObj = {
-            //       accountFamilyId: 0,
-            //       familyType: element.familyType,
-            //       familyLabel: null,
-            //       members: element.members,
-            //     };
-            //     element.members.forEach((item) => {
-            //       (item.memberLabel = item.memberLabel),
-            //         (item.memberType = item.memberLabel == "אב"?"Father":item.memberLabel =="חמיו"?"FatherInLaw":item.memberLabel == "חתנו"?"SonInLaw":item.memberLabel=="בנו"? "Son":null ),
-            //         (item.accountFamilyId = item.accountFamilyId),
-            //         (item.fullName = item.fullName),
-            //         (item.memberAccountId =
-            //           Number.isFinite(item.memberAccountId) == true
-            //             ? item.memberAccountId
-            //             : null),
-            //         (item.familyType = element.familyType);
-            //     });
-            //   });
-            // }
-
             //save family api code started
             if (this.familiesInput.length > 0) {
               // Initialize arrays to store the results
@@ -2352,8 +2259,7 @@ export class DonorSaveComponent implements OnInit {
                   this.emtOutputDonorTransaction.emit(res); //added new
                 });
               }
-              // this.commonMethodService.sendDonorLst(true) for issue
-              //console.log([res])
+
               var donarList = [res];
               this.commonMethodService.sendDonorSingle(donarList);
             } else {
@@ -2503,120 +2409,6 @@ export class DonorSaveComponent implements OnInit {
           }
         );
     }
-
-    // this.donorService.SaveDonor(objSaveDonor).subscribe((res: any) => {
-    //   this.isloading=false;
-    //   if(res)
-    //   {
-    //     if(islocation){
-    //      this.EditDonorData=res
-    //     }
-    //     else{
-    //     this.activeModal.dismiss();
-    //     }
-    //     if(this.isEditMode)
-    //     {
-    //       Swal.fire({
-    //         title: '',
-    //         text: 'Donor updated successfully',
-    //         icon: 'success',
-    //         confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-    //         customClass: {
-    //           confirmButton: 'btn_ok'
-    //       },
-    //       }).then(()=>{
-    //         // this.emtOutputEditDonor.emit(true);
-    //         this.emtOutputEditDonor.emit(true);
-    //         this.emtOutputEditDonorUpdatedValue.emit(res);
-    //         this.commonMethodService.sendPaymentTrans(true);
-    //         this.commonMethodService.sendPledgeTrans(true);
-    //       });
-    //     }
-    //     else
-    //     {
-    //       Swal.fire({
-    //         title: '',
-    //         text: 'Donor added successfully',
-    //         icon: 'success',
-    //         confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-    //         customClass: {
-    //           confirmButton: 'btn_ok'
-    //       },
-    //       }).then(()=>{
-    //         this.emtOutputEditDonor.emit(true);
-    //         this.emtOutputDonorTransaction.emit(res);//added new
-    //      });
-    //     }
-    //    // this.commonMethodService.sendDonorLst(true) for issue
-    //    //console.log([res])
-    //    var donarList=[res];
-    //    this.commonMethodService.sendDonorSingle(donarList) ;
-
-    //   }
-    //   else
-    //   {
-    //     Swal.fire({
-    //       title: this.commonMethodService.getTranslate('WARNING_SWAL.TRY_AGAIN'),
-    //       text: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
-    //       icon: 'error',
-    //       confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-    //       customClass: {
-    //         confirmButton: 'btn_ok'
-    //     },
-    //     })
-    //   }
-    //   },
-    //   error => {
-    //     this.isloading = false;
-    //     console.log(error);
-    //     var str=error.error;
-    //     var regex = /<br\s*[\/]?>/gi;
-    //     var msg=str.replace(regex, "\n");
-
-    //     Swal.fire({
-    //       title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
-    //       //text: msg,//error.error,
-    //       html:error.error,
-    //       icon: 'error',
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: 'Save anyway',
-    //       confirmButtonColor: '#726ab9',
-    //       //denyButtonText: `Don't save`,
-    //     }).then((result) => {
-    //       /* Read more about isConfirmed, isDenied below */
-    //       if (result.isConfirmed) {
-    //         this.isloading = true;
-    //         objSaveDonor.SaveWhenPhoneExists=true;
-    //         this.donorService.SaveDonor(objSaveDonor).subscribe((res: any) => {
-    //           this.isloading = false;
-    //           this.activeModal.dismiss();
-    //           Swal.fire({
-    //             title: '',
-    //             text: 'Donor added successfully',
-    //             icon: 'success',
-    //             confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
-    //             customClass: {
-    //               confirmButton: 'btn_ok'
-    //           },
-    //           }).then(()=>{
-    //             this.emtOutputEditDonor.emit(true);
-    //             this.emtOutputDonorTransaction.emit(res);//added new
-    //          });
-    //          // this.commonMethodService.sendDonorLst(true); for issue
-    //          var donarList=[res];
-    //          this.commonMethodService.sendDonorSingle(donarList) ;
-    //          this.emtOutputEditDonorUpdatedValue.emit(res);//added new
-    //         });
-    //       } else if (result.isDismissed) {
-    //         //this.formValid=false;
-
-    //       }
-
-    //     })
-
-    //   })
-    // }
   }
 
   AdvanceFieldArray(list = []) {

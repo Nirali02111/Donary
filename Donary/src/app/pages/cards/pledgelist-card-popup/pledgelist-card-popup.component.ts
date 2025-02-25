@@ -31,8 +31,8 @@ declare var $: any;
 @Component({
   selector: "app-pledgelist-card-popup",
   templateUrl: "./pledgelist-card-popup.component.html",
-  styleUrls: ["./pledgelist-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pledgelist-card-popup.component.scss"],
 })
 export class PledgelistCardPopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

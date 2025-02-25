@@ -61,9 +61,9 @@ const getSingularCampaign = (mem) => {
 @Component({
   selector: "app-campaign-list",
   templateUrl: "./campaign-list.component.html",
+  standalone: false,
   styleUrls: ["./campaign-list.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class CampaignListComponent implements OnInit {
   private calendarSubscription: Subscription;
@@ -2277,66 +2277,33 @@ export class CampaignListComponent implements OnInit {
           this.localStorageDataService.getLoginUserEventGuId()
         );
         fd.append("CreatedBy", this.localStorageDataService.getLoginUserId());
-        this.campaignService.uploadResonFile(fd).subscribe(
-          () => {
-            $("#campaign_doc_file").val("");
-            this.file = null;
-            this.reseteFile();
-            this.isCampaignUpload = false;
-            Swal.fire({
-              title: "",
-              text: "Campaigns  file enqueued successfully see import updates in users email",
-              icon: "success",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
-              customClass: {
-                confirmButton: "btn_ok",
-              },
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                if (this.isTotalPanelVisible) {
-                  this.getTotalPanel();
-                } else {
-                  this.searchCampaignList();
-                  $("#import-campaign-data").modal("hide");
-                }
-              } else if (result.isDenied) {
+        this.campaignService.uploadResonFile(fd).subscribe(() => {
+          $("#campaign_doc_file").val("");
+          this.file = null;
+          this.reseteFile();
+          this.isCampaignUpload = false;
+          Swal.fire({
+            title: "",
+            text: "Campaigns  file enqueued successfully see import updates in users email",
+            icon: "success",
+            confirmButtonText: this.commonMethodService.getTranslate(
+              "WARNING_SWAL.BUTTON.CONFIRM.OK"
+            ),
+            customClass: {
+              confirmButton: "btn_ok",
+            },
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              if (this.isTotalPanelVisible) {
+                this.getTotalPanel();
+              } else {
+                this.searchCampaignList();
+                $("#import-campaign-data").modal("hide");
               }
-            });
-          },
-          (err) => {
-            this.isloading = false;
-            Swal.fire({
-              title: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.SOMETHING_WENT_WRONG"
-              ),
-              text: err.error,
-              icon: "error",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
-              customClass: {
-                confirmButton: "btn_ok",
-              },
-            });
-          }
-        );
-      } else {
-        this.isloading = false;
-        Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-          ),
-          text: "No file chosen",
-          icon: "error",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
-          customClass: {
-            confirmButton: "btn_ok",
-          },
+            } else if (result.isDenied) {
+            }
+          });
         });
       }
     } else {

@@ -24,8 +24,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-addtag-popup",
   templateUrl: "./donor-addtag-popup.component.html",
-  styleUrls: ["./donor-addtag-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-addtag-popup.component.scss"],
 })
 export class DonorAddtagPopupComponent implements OnInit {
   @Output() emtOutputTagUpdate: EventEmitter<any> = new EventEmitter();

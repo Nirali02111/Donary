@@ -27,8 +27,8 @@ import { Subscription } from "rxjs";
 @Component({
   selector: "app-pay-pledge-popup",
   templateUrl: "./pay-pledge-popup.component.html",
-  styleUrls: ["./pay-pledge-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pay-pledge-popup.component.scss"],
 })
 export class PayPledgePopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

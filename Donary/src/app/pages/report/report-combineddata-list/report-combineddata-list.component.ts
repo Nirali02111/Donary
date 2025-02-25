@@ -14,8 +14,8 @@ import { ReportCombineddataCardpopupComponent } from "../report-combineddata-car
 @Component({
   selector: "app-report-combineddata-list",
   templateUrl: "./report-combineddata-list.component.html",
-  styleUrls: ["./report-combineddata-list.component.scss"],
   standalone: false,
+  styleUrls: ["./report-combineddata-list.component.scss"],
 })
 export class ReportCombineddataListComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

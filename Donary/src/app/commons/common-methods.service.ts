@@ -455,7 +455,7 @@ export class CommonMethodService {
       if (currency != "USD") {
         defaultCurrency = currency;
       }
-      if (payCurrency !="USD" || currency != "USD") {
+      if (payCurrency != "USD" || currency != "USD") {
         defaultCurrency = payCurrency;
       }
       //let defaultCurrency="ILS"
@@ -849,6 +849,7 @@ export class CommonMethodService {
   sendUserLst(items: any) {
     this.UserLstObservable.next(items);
   }
+  
   getUserLst(): Observable<any> {
     return this.UserLstObservable;
   }
@@ -856,6 +857,7 @@ export class CommonMethodService {
   sendSeatLst(isreload: true) {
     this.SeatLstObservable.next(isreload);
   }
+
   getSeatLst(): Observable<any> {
     return this.SeatLstObservable;
   }
@@ -2981,42 +2983,6 @@ export class CommonMethodService {
     return `TXN-${timestamp}-${random}`;
   }
 
-  // openCalendarPopup(classId: any, classHid: any, selectedDateRange: any,isOneDate:boolean,Postion?:string,customClass?:string) {
-  //   let upperCalendarClass = customClass ? customClass : '';
-  //   this.calModalOptions = {
-  //     centered: true,
-  //     size: "lg",
-  //     keyboard: true,
-  //     windowClass: "advance_search calender-modal fade-transition "+ upperCalendarClass,
-  //   };
-  //   this.modalRef = this.modalService.open(CommonHebrewEnglishCalendarComponent, this.calModalOptions);
-
-  //   const tPostion = Postion ? $(`#${Postion}`).offset() : $('#dynamicsCalender').offset();
-
-  //   if(tPostion){
-  //       // Apply delayed transition after a short timeout
-  //       setTimeout(() => {
-  //         const modalDialog = document.querySelector('.advance_search .modal-dialog');
-  //         // if (modalDialog) {
-  //         //   modalDialog.setAttribute('style', 'transform: translateY(-20px);'); // Adjust transition duration as needed
-  //         // }
-  //         setTimeout(() => {
-  //           $(".advance_search .modal-dialog").css("left", +tPostion.left);
-  //           $(".advance_search .modal-dialog").css("top", +tPostion.top + 40);
-  //         }, 1);
-  //       }, 100); // Adjust delay time as needed
-  //   }
-
-  //   this.modalRef.componentInstance.data = {
-  //     "isEngCal": true,
-  //     formPage: "Payments",
-  //     selectedDateRange: selectedDateRange,
-  //     id: classId,
-  //     hid: classHid,
-  //     isOneDate: isOneDate
-  //   };
-  // }
-
   openCalendarPopup(
     classId: any,
     classHid: any,
@@ -3037,23 +3003,6 @@ export class CommonMethodService {
         $(".advance_search .modal-dialog").css("top", +tPostion.top + 40);
       });
     }
-
-    // this.calModalOptions = {
-    //   centered: true,
-    //   size: "lg",
-    //   keyboard: true,
-    //   windowClass: "advance_search calender-modal"+ upperCalendarClass,
-    // };
-    // this.modalRef = this.modalService.open(CommonHebrewEnglishCalendarComponent, this.calModalOptions);
-
-    // this.modalRef.componentInstance.data = {
-    //   "isEngCal": isEngCal,
-    //   formPage: "Payments",
-    //   selectedDateRange: selectedDateRange,
-    //   id: classId,
-    //   hid: classHid,
-    //   isOneDate: isOneDate
-    // };
   }
 
   commenSendUpgradeEmail(disaplayName: string) {

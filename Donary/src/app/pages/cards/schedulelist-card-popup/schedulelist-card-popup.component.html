@@ -214,8 +214,7 @@
                                         <tr>
                                             <td colspan="15"
                                                 style="border-left: none !important;border-right: none !important;">
-                                                <!-- <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 15]">
-                                            </sv-bootstrap-paginator> -->
+                                               
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -226,13 +225,7 @@
                                     <span>{{sv.data.length}} {{'RECORDS'|translate}}</span>
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- <div class="page_size" *ngIf="sv.data?.length > 0">
-                                        <label class="show_entries">Show Entries:</label>
-                                        <span class="page_number active" id="paypage_id5" (click)="ChangePaymentPageSize(5,'paypage_id5')">5</span>
-                                        <span class="page_number" id="paypage_id10"(click)="ChangePaymentPageSize(10,'paypage_id10')">10</span>
-                                         <span class="page_number" id="paypage_id15" (click)="ChangePaymentPageSize(15,'paypage_id15')">15</span>
-                                    </div>
-                                    -->
+                                   
                                     <div *ngIf="sv.data?.length>0">
                                         <ngb-pagination [(page)]="paymentPage" [pageSize]="paymentPageSize"
                                             [ngClass]="[!showPArrow?'singlepage':'']" [collectionSize]="sv.data.length"
@@ -263,11 +256,7 @@
                     <div class="all-time-filter">
                         <div class="search-edits">
                             <div class="searchbar">
-                                <!-- <app-donary-date-picker
-                        [isFullView]="false"
-                        [SelectedDateRange]="selectedPledgeDateRange"
-                        (emtDatesUpdated)="datesPledgeUpdated($event)"
-                    ></app-donary-date-picker> -->
+                              
 
                                 <!-- Calendar code started -->
                                 <ng-template #popContent2><app-common-hebrew-english-calendar
@@ -413,8 +402,7 @@
                                         <tr>
                                             <td colspan="15"
                                                 style="border-left: none !important;border-right: none !important;">
-                                                <!-- <sv-bootstrap-paginator  [rowsOnPageSet]="[5, 10, 15]">
-                                                </sv-bootstrap-paginator> -->
+                                               
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -425,13 +413,7 @@
                                     <span>{{svp.data.length}} records</span>
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- <div class="page_size" *ngIf="svp.data?.length > 0">
-                                            <label class="show_entries">Show Entries:</label>
-                                            <span class="page_number active" id="page_id5" (click)="ChangePageSize(5,'page_id5')">5</span>
-                                            <span class="page_number" id="page_id10"(click)="ChangePageSize(10,'page_id10')">10</span>
-                                             <span class="page_number" id="page_id15" (click)="ChangePageSize(15,'page_id15')">15</span>
-                                        </div>
-                                        -->
+                                    
                                     <div *ngIf="svp.data?.length>0">
                                         <ngb-pagination [(page)]="pledgePage" [pageSize]="pledgePageSize"
                                             [ngClass]="[!showArrow?'singlepage':'']"

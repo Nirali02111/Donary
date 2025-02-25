@@ -8,14 +8,12 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { CommonMethodService } from "src/app/commons/common-methods.service";
-//ng buildimport paginate from 'jw-paginate'
 
 @Component({
-  //moduleId: module.id,
   selector: "jw-pagination",
   templateUrl: "./custom-pagination.component.html",
-  styleUrls: ["./custom-pagination.component.scss"],
   standalone: false,
+  styleUrls: ["./custom-pagination.component.scss"],
 })
 export class CustomPaginationComponent implements OnInit, OnChanges {
   @Input() items: Array<any>;
@@ -49,7 +47,6 @@ export class CustomPaginationComponent implements OnInit, OnChanges {
       changes.items &&
       changes.items.currentValue !== changes.items.previousValue
     ) {
-      //this.commonMethodService.sendPageNumber(this.initialPage,this.pageSize);
       this.setPage(this.initialPage);
     }
   }

@@ -1,15 +1,3 @@
-<!-- <div class="modal-header" style="display: block;">
-    <div class="row">
-        <div class="input-group col-10">
-            <h4 class="modal-title">Advance Search</h4>
-        </div>
-        <div class="input-group col-2">
-            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-</div> -->
 <div
   class="modal-body advance_search modal__custom_content filter-ad-search"
   ngbAutofocus
@@ -979,24 +967,6 @@
           </label>
         </div>
         <div class="input-field-group input-field-multiselect col-9 mb-2 d-flex justify-content-between">
-          <!-- <angular2-multiselect
-            id="ddlCityStateZip"
-            [settings]="
-              commonMethodService.setDropDownSettings(
-                'Select Address',
-                2,
-                true,
-                false,
-                true
-              )
-            "
-            [data]="commonMethodService.cityStateZipList"
-            [(ngModel)]="commonMethodService.selectedCityStateZipList"
-            (onDeSelectAll)="
-              commonMethodService.onDeSelectAll('cityStateZipList')
-            "
-          >
-          </angular2-multiselect> -->
           <!-- city dropdown code started -->
           <div
             class="city-dpwn"
@@ -1121,7 +1091,6 @@
             [(ngModel)]="defaultLocations"
           >
           </angular2-multiselect>
-          <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
         </div>
       </div>
       <div class="row filter_row" *ngIf="isGroupFilterVisible">
@@ -1297,9 +1266,6 @@
           </label>
         </div>
         <div class="col-9 input-field-group mb-2 input-datepicker">
-          <!-- <app-donary-date-picker [isFullView]="false" [minDate]="minDate" [maxDate]='maxDate' [isMinDate]="true" [SelectedDateRange]="createdDateRange"
-                    (emtDatesUpdated)="datesUpdated($event)" [IsDisabled]="isloading"></app-donary-date-picker>
-             -->
           <input
             type="text"
             class="form-control"
@@ -1483,13 +1449,6 @@
                   >{{ "ADVANCEDFILED" | translate }}</a
                 >
               </li>
-              <!-- <li class="dropdown-submenu no-arrow" *ngIf="isCreatedDateFilter">
-                <a
-                  class="dropdown-item"
-                  (click)="displayFilter('createdDate')"
-                  >{{ "CREATEDDATE" | translate }}</a
-                >
-              </li> -->
             </ul>
             </ng-container>
             <ng-container *appIsMobile>
@@ -1658,6 +1617,5 @@
     <button class="btn btn-default" (click)="clearFilter()">
       {{ "CLEARALLFILTERS" | translate }}
     </button>
-    <!-- <button type="button" class="btn btn-default" (click)="closePopup()">Close</button> -->
   </div>
 </div>

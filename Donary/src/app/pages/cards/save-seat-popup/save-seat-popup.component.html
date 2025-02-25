@@ -206,11 +206,6 @@
 
     <div class="action_footer">
         <div class="right_part " [class.justify-content-end]="toShowCancelSave" *ngIf="!isDeletedDonorId">
-
-            <!-- <button  class="btn btn-create-pledge"(click)="closePopup()" *ngIf="!isAddSeat">Cancel</button>
-            <button  class="btn btn-create-pledge"(click)="SaveSeat()" *ngIf="isAddSeat">Create Pledge</button>
-            <button  class="btn btn-primary"(click)="makeTransactionPopup()" *ngIf="isAddSeat">Pay now</button>
-            <button  class="btn btn-primary"(click)="SaveSeat()" *ngIf="!isAddSeat">Save</button> -->
             <button class="btn  btn-create-pledge" [class.btn-auto]="toShowCancelSave" (click)="closePopup()"
                 *ngIf="isReservationstatus || paidStatus == 'Open'">{{'CANCEL'|translate}}</button>
             <button class="btn btn-create-pledge" (click)="SaveSeat()"

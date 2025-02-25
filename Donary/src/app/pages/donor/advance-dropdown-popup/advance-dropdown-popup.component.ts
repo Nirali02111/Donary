@@ -20,8 +20,8 @@ declare var $: any;
 @Component({
   selector: "app-advance-dropdown-popup",
   templateUrl: "./advance-dropdown-popup.component.html",
-  styleUrls: ["./advance-dropdown-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./advance-dropdown-popup.component.scss"],
 })
 export class AdvanceDropdownPopupComponent implements OnInit {
   @Output() emtSaveAdvanceFields: EventEmitter<any> = new EventEmitter();

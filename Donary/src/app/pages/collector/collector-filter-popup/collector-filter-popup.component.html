@@ -1,23 +1,4 @@
-<!-- <div class="modal-header" style="display: block;">
-    <div class="row">
-        <div class="input-group col-5">
-            <h4 class="modal-title">Search</h4>
-        </div>
-        <div class="input-group col-4">
-            &nbsp;
-        </div>
-        <div class="input-group col-2">
-            <div class="dropdown">
-                              
-            </div>
-        </div>
-        <div class="input-group col-1">
-            <button type="button" class="close" aria-label="Close" (click)="closePopup()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-</div> -->
+
 <div class="modal-body modal__custom_content filter_modal_popup" ngbAutofocus  tabindex="-1">
     <div class="card" style="box-shadow: none !important;">
         <div class="row close_btn">
@@ -112,7 +93,6 @@
                         [settings]="commonMethodService.setDropDownSettings('Select Default Location',2,false,true)"
                         [data]="commonMethodService.paymentLocationList" [(ngModel)]="defaultLocations">
                     </angular2-multiselect>
-                    <!-- <input type="text" class="form-control" [(ngModel)]="defaultLocation" name="txtDefaultLocation" id="input-defaultlocation" /> -->
                 </div>
             </div>
             <div class="row">

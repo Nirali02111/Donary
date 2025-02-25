@@ -14,8 +14,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: "app-print-seat-stickers-card-popup",
   templateUrl: "./print-seat-stickers-card-popup.component.html",
-  styleUrls: ["./print-seat-stickers-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./print-seat-stickers-card-popup.component.scss"],
 })
 export class PrintSeatStickersCardPopupComponent implements OnInit {
   isPrintSeatMap: boolean = false;

@@ -626,7 +626,6 @@ export class SaveReasonPopupComponent implements OnInit {
   }
 
   onUpgrade() {
-    // this.activeModal.dismiss();
     this.commonMethodService.commenSendUpgradeEmail(
       this.commonMethodService.featureDisplayName
     );

@@ -8,8 +8,8 @@ declare var $: any;
 @Component({
   selector: "app-next-schedule-edit-popup",
   templateUrl: "./next-schedule-edit-popup.component.html",
-  styleUrls: ["./next-schedule-edit-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./next-schedule-edit-popup.component.scss"],
 })
 export class NextScheduleEditPopupComponent implements OnInit {
   @Output() emtOutputDate: EventEmitter<any> = new EventEmitter();
@@ -83,7 +83,6 @@ export class NextScheduleEditPopupComponent implements OnInit {
   }
 
   getMaxCountLength() {
-    console.log(this.donationAmount.length);
     return this.donationAmount.length;
   }
 

@@ -33,8 +33,8 @@ interface SelectedDonorObj {
 @Component({
   selector: "app-print-receipt-popup",
   templateUrl: "./print-receipt-popup.component.html",
-  styleUrls: ["./print-receipt-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./print-receipt-popup.component.scss"],
 })
 export class PrintReceiptPopupComponent implements OnInit {
   @Output() emtOutput: EventEmitter<any> = new EventEmitter();

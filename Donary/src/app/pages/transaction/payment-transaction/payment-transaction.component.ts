@@ -1,8 +1,4 @@
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from "@angular/cdk/drag-drop";
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -64,7 +60,7 @@ import { SendMailreceiptPopupComponent } from "../receipt-actions/send-mailrecei
 import { LocationService } from "src/app/services/location.sevice";
 import { AdvanceSMSActionService } from "src/app/services/helpers/advance-smsaction.service";
 
-import { forkJoin } from "rxjs";
+import { forkJoin } from 'rxjs';
 import { Router } from "@angular/router";
 import { DeviceService } from "src/app/services/device.service";
 import { BatchService } from "src/app/services/batch.service";
@@ -80,7 +76,8 @@ import { ReminderPopupComponent } from "../../notifications/reminder-popup/remin
 import { BulkSelectPopupComponent } from "../bulk-select-popup/bulk-select-popup.component";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-import { BreakpointObserver, BreakpointState } from "@angular/cdk/layout";
+
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { PageSyncService } from "src/app/commons/pagesync.service";
 import { Observable, Subscription } from "rxjs";
 import { LegalReceiptPopupComponent } from "../../make-transaction/legal-receipt-popup/legal-receipt-popup.component";
@@ -91,29 +88,31 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
 import { XLSXService } from "src/app/services/xlsx.service";
 import { AnalyticsService } from "src/app/services/analytics.service";
 
+
 interface ColFieldObj {
-  id: number;
-  title?: string;
-  class?: string;
-  isTotalPanel: boolean;
+  id: number,
+  title?: string,
+  class?: string,
+  isTotalPanel: boolean,
   items: Array<{
-    colId: string;
-    colName: string;
-    isVisible: boolean;
-    sortName: string;
-    disabled: boolean;
-    isAdvancedField: boolean;
-  }>;
+    colId: string,
+    colName: string,
+    isVisible: boolean,
+    sortName: string,
+    disabled: boolean,
+    isAdvancedField: boolean
+  }>,
 }
+
 
 declare var $: any;
 @Component({
   selector: "app-payment-transaction",
   templateUrl: "./payment-transaction.component.html",
   styleUrls: ["./payment-transaction.component.scss"],
-  providers: [DonaryDateFormatPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  providers: [DonaryDateFormatPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentTransactionComponent implements OnInit {
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
@@ -171,10 +170,11 @@ export class PaymentTransactionComponent implements OnInit {
     endDate: moment(new Date()),
   };
 
+
   EngHebCalPlaceholder: string = "Last 7 Days";
   presetClickId: string;
-  id: string = "id_Last7days";
-  hid: string = "id_Last7days_h";
+  id: string = 'id_Last7days';
+  hid: string = 'id_Last7days_h'
   popTitle: any;
   selectedWeekSearchFilter: string;
   selectedDueDate: any;
@@ -182,7 +182,7 @@ export class PaymentTransactionComponent implements OnInit {
   sortType: any = [{ id: 1, itemName: "A-Z" }];
   modalOptions: NgbModalOptions;
   gridData: Array<any>;
-  otherGridData: Array<any>;
+  otherGridData: Array<any>
   nocampaignWithSplitData: Array<any>;
   noReasonWithSplitData: Array<any>;
   gridFilterData: Array<any>;
@@ -345,6 +345,7 @@ export class PaymentTransactionComponent implements OnInit {
           disabled: false,
           isAdvancedField: false,
         },
+
 
         {
           colId: "scheduleNum",
@@ -659,6 +660,7 @@ export class PaymentTransactionComponent implements OnInit {
   @Input("selectedDateRange") emtOutputDateRange?: any;
   @Input("paymentMode") emtOutputradioVal?: any;
 
+
   isMobile: Observable<BreakpointState>;
   isOpen: boolean = false;
   private calendarSubscription: Subscription;
@@ -674,6 +676,7 @@ export class PaymentTransactionComponent implements OnInit {
   isdateChanged: boolean = false;
   isEventBatchEdit: boolean = false;
   private analytics = inject(AnalyticsService);
+
 
   constructor(
     public pageSyncService: PageSyncService,
@@ -703,7 +706,9 @@ export class PaymentTransactionComponent implements OnInit {
     public paymentApiGatewayService: PaymentApiGatewayService,
     private xlsxService: XLSXService
   ) {
+
     // this.isMobile = this.breakpointObserver.observe(['(max-width: 767px)']);
+
   }
 
   initMultiSelect() {
@@ -783,8 +788,7 @@ export class PaymentTransactionComponent implements OnInit {
     return Intl.NumberFormat("en-US", {
       style: "currency",
       currency: currency != null ? currency : "USD",
-    }).format(value);
-    ("");
+    }).format(value); ''
   }
   // Remove count for All card
   multiSelectCount(length) {
@@ -795,24 +799,22 @@ export class PaymentTransactionComponent implements OnInit {
     this.analytics.visitedPayment();
     this.isDevEnv = environment.baseUrl.includes("https://dev-api.donary.com/");
     if (!this.isDevEnv) {
-      this.colFields[0].items = this.colFields[0].items.filter(
-        (item) => !(item.colName === "LEGALRECEIPT")
-      );
+      this.colFields[0].items = this.colFields[0].items.filter(item => !(item.colName === "LEGALRECEIPT"));
     }
     this.colfieldsValue = this.pageSyncService.paymentFieldsCol;
     this.colfieldsValue.forEach((obj: { key: boolean }) => {
       let key = Object.keys(obj)[0];
       let value: boolean = Object.values(obj)[0];
       let data = this.colFields[0].items.find((data) => data.colName === key);
-      data.isVisible = value;
-    });
+      data.isVisible = value
+    })
     if (this.pageSyncService.sumbyPayment) {
       this.cardType = this.pageSyncService.sumbyPayment;
     }
     this.getAllPaymentAPIGateway();
-    this.getFeatureSettingValues();
+    this.getFeatureSettingValues()
     this.commonMethodService.getEngHebJsonData();
-    this.isMobile = this.breakpointObserver.observe(["(max-width: 767px)"]);
+    this.isMobile = this.breakpointObserver.observe(['(max-width: 767px)']);
     this.cdr.detectChanges();
     this.pageSyncService.calculateTimeDifference("payment");
     this.initMultiSelect();
@@ -824,19 +826,13 @@ export class PaymentTransactionComponent implements OnInit {
     ];
     $("body").addClass("sticky_table_list");
 
-    this.paymentTransSubscription = this.commonMethodService
-      .getPaymentTrans()
-      .subscribe((res: any) => {
-        if (res) {
-          this.searchPaymentTransactionsData();
-          this.commonMethodService.PaymentTransObservable.next(false);
-        }
-      });
-    if (
-      !this.pageSyncService.paymentFlag ||
-      (!this.pageSyncService.isPaymentTabClicked &&
-        this.pageSyncService.paymentTransList == undefined)
-    ) {
+    this.paymentTransSubscription = this.commonMethodService.getPaymentTrans().subscribe((res: any) => {
+      if (res) {
+        this.searchPaymentTransactionsData();
+        this.commonMethodService.PaymentTransObservable.next(false);
+      }
+    });
+    if (!this.pageSyncService.paymentFlag || (!this.pageSyncService.isPaymentTabClicked && this.pageSyncService.paymentTransList == undefined)) {
       let objLayout = {
         uiPageSettingId: this.uiPageSettingId,
         userId: this.localstoragedataService.getLoginUserId(),
@@ -850,35 +846,31 @@ export class PaymentTransactionComponent implements OnInit {
           this.uiPageSetting = JSON.parse(res.setting);
           if (this.uiPageSetting.isPaymentReceiptNoColVisible != undefined) {
             this.setUIPageSettings(this.uiPageSetting);
-            if (
-              this.uiPageSetting.advancedFields &&
-              this.uiPageSetting.advancedFields.items.length > 0
-            ) {
-              this.colFields[1] = this.uiPageSetting.advancedFields;
+            if (this.uiPageSetting.advancedFields && this.uiPageSetting.advancedFields.items.length > 0) {
+              this.colFields[1] = this.uiPageSetting.advancedFields
             }
 
             this.getRedirectData();
 
-            this.colFields.forEach((element) => {
+            this.colFields.forEach(element => {
               if (element.id == 1) {
-                element.items.forEach((item) => {
-                  let colVisible = this.checkVisibility(item.colName);
+                element.items.forEach(item => {
+                  let colVisible = this.checkVisibility(item.colName)
                   if (item.isVisible != colVisible) {
-                    let columnVisibility = { [item.colName]: colVisible };
-                    this.colfieldsValue.push(columnVisibility);
+                    let columnVisibility = { [item.colName]: colVisible }
+                    this.colfieldsValue.push(columnVisibility)
                   }
                   item.isVisible = this.checkVisibility(item.colName);
                 });
               }
             });
+
           }
           this.getAFVColumns(true);
-          if (
-            !this.pageSyncService.paymentFlag ||
-            this.pageSyncService.paymentTransList == undefined
-          ) {
+          if (!this.pageSyncService.paymentFlag || this.pageSyncService.paymentTransList == undefined) {
             this.searchPaymentTransactionsData();
-          } else {
+          }
+          else {
             this.gridData = this.pageSyncService.paymentTransList;
             this.resGridDataModification();
             this.isloading = false;
@@ -886,27 +878,28 @@ export class PaymentTransactionComponent implements OnInit {
           }
         } else {
           if (this.pageSyncService.paymentTransList == undefined) {
-            this.getRedirectData();
+            this.getRedirectData()
             this.searchPaymentTransactionsData();
             this.changeDetectorRef.detectChanges();
           }
         }
       });
-    } else {
-      if (this.pageSyncService.uiPageSettings["paymentList"]) {
-        this.uiPageSetting =
-          this.pageSyncService?.uiPageSettings?.["paymentList"];
+    }
+
+    else {
+      if (this.pageSyncService.uiPageSettings['paymentList']) {
+        this.uiPageSetting = this.pageSyncService?.uiPageSettings?.['paymentList'];
         this.setUIPageSettings(this.uiPageSetting);
       }
 
-      this.getRedirectData();
+      this.getRedirectData()
       this.gridData = this.pageSyncService.paymentTransList;
       this.resGridDataModification();
       this.isloading = false;
       this.changeDetectorRef.detectChanges();
     }
     if (this.pageSyncService.paymentFilterData) {
-      this.advancedSearchData(this.pageSyncService.paymentFilterData);
+      this.advancedSearchData(this.pageSyncService.paymentFilterData)
     }
     if (this.pageSyncService.paymentCalDate) {
       if (
@@ -917,23 +910,13 @@ export class PaymentTransactionComponent implements OnInit {
         this.selectedDateRange.endDate = null;
         this.EngHebCalPlaceholder = "All Time";
       } else {
-        this.pageSyncService.paymentCalDate.startDate = moment(
-          this.pageSyncService.paymentCalDate.startDate
-        ).format("YYYY-MM-DD");
-        this.pageSyncService.paymentCalDate.endDate = moment(
-          this.pageSyncService.paymentCalDate.endDate
-        ).format("YYYY-MM-DD");
-        this.getSelectedDateRange(
-          this.pageSyncService.paymentCalDate.startDate,
-          this.pageSyncService.paymentCalDate.endDate
-        );
+        this.pageSyncService.paymentCalDate.startDate = moment(this.pageSyncService.paymentCalDate.startDate).format("YYYY-MM-DD");
+        this.pageSyncService.paymentCalDate.endDate = moment(this.pageSyncService.paymentCalDate.endDate).format("YYYY-MM-DD");
+        this.getSelectedDateRange(this.pageSyncService.paymentCalDate.startDate, this.pageSyncService.paymentCalDate.endDate);
       }
     }
 
-    if (
-      this.localstoragedataService.getLoginUserEventGuId() ==
-      "1acca970-da93-463f-896d-519db76f0b49"
-    ) {
+    if (this.localstoragedataService.getLoginUserEventGuId() == "1acca970-da93-463f-896d-519db76f0b49") {
       this.isEventBatchEdit = true;
     }
   }
@@ -945,8 +928,10 @@ export class PaymentTransactionComponent implements OnInit {
       this.uiPageSetting.isPaymentDateTimeColVisible;
     this.isPaymentAmountColVisible =
       this.uiPageSetting.isPaymentAmountColVisible;
-    this.isPaymentTypeColVisible = this.uiPageSetting.isPaymentTypeColVisible;
-    this.isPaymentRefNoColVisible = this.uiPageSetting.isPaymentRefNoColVisible;
+    this.isPaymentTypeColVisible =
+      this.uiPageSetting.isPaymentTypeColVisible;
+    this.isPaymentRefNoColVisible =
+      this.uiPageSetting.isPaymentRefNoColVisible;
     this.isPaymentApprovalColVisible =
       this.uiPageSetting.isPaymentApprovalColVisible;
     this.isPaymentAddtnlAmountColVisible =
@@ -973,7 +958,8 @@ export class PaymentTransactionComponent implements OnInit {
       this.uiPageSetting.isPaymentDeviceColVisible;
     this.isPaymentLocationColVisible =
       this.uiPageSetting.isPaymentLocationColVisible;
-    this.isPaymentNoteColVisible = this.uiPageSetting.isPaymentNoteColVisible;
+    this.isPaymentNoteColVisible =
+      this.uiPageSetting.isPaymentNoteColVisible;
     this.isPaymentPhoneNumberColVisible =
       this.uiPageSetting.isPaymentPhoneNumberColVisible;
     this.isPaymentScheduleNoColVisible =
@@ -986,9 +972,12 @@ export class PaymentTransactionComponent implements OnInit {
       this.uiPageSetting.isPaymentAddressColVisible;
     this.isPaymentCityStateZipColVisible =
       this.uiPageSetting.isPaymentCityStateZipColVisible;
-    this.isPaymentEmailColVisible = this.uiPageSetting.isPaymentEmailColVisible;
-    this.isPaymentGroupColVisible = this.uiPageSetting.isPaymentGroupColVisible;
-    this.isPaymentClassColVisible = this.uiPageSetting.isPaymentClassColVisible;
+    this.isPaymentEmailColVisible =
+      this.uiPageSetting.isPaymentEmailColVisible;
+    this.isPaymentGroupColVisible =
+      this.uiPageSetting.isPaymentGroupColVisible;
+    this.isPaymentClassColVisible =
+      this.uiPageSetting.isPaymentClassColVisible;
     this.isPaymentFatherColVisible =
       this.uiPageSetting.isPaymentFatherColVisible;
     this.isPaymentFatherInLawColVisible =
@@ -1015,7 +1004,8 @@ export class PaymentTransactionComponent implements OnInit {
       this.uiPageSetting.isPledgePaymentColVisible;
     this.isCurrencyAmountColVisible =
       this.uiPageSetting.isCurrencyAmountColVisible;
-    this.isCurrencyTypeColVisible = this.uiPageSetting.isCurrencyTypeColVisible;
+    this.isCurrencyTypeColVisible =
+      this.uiPageSetting.isCurrencyTypeColVisible;
     this.isTagsColVisible = this.uiPageSetting.isTagsColVisible;
     this.isGateWayBatchColVisible = this.uiPageSetting.isGateWayBatchColVisible;
     this.isLegalRecieptColVisible = this.uiPageSetting.isLegalRecieptColVisible;
@@ -1025,15 +1015,11 @@ export class PaymentTransactionComponent implements OnInit {
     if (!this.pageSyncService.paymentFilterData) {
       this.pageSyncService.paymentFilterData = paymentFilterArray[0];
     }
-    this.EngHebCalPlaceholder =
-      this.pageSyncService.PaymentEngCalPlaceholder ||
-      uiPageSetting.EngHebCalPlaceholder ||
-      this.EngHebCalPlaceholder;
+    this.EngHebCalPlaceholder = this.pageSyncService.PaymentEngCalPlaceholder || uiPageSetting.EngHebCalPlaceholder || this.EngHebCalPlaceholder;
     this.pageSyncService.PaymentEngCalPlaceholder = this.EngHebCalPlaceholder;
 
     if (uiPageSetting?.paymentCalendarPlaceHolderId)
-      this.hebrewEngishCalendarService.id =
-        uiPageSetting?.paymentCalendarPlaceHolderId;
+      this.hebrewEngishCalendarService.id = uiPageSetting?.paymentCalendarPlaceHolderId;
 
     if (
       this.uiPageSetting.startDate == null &&
@@ -1042,47 +1028,42 @@ export class PaymentTransactionComponent implements OnInit {
       this.selectedDateRange.startDate = null;
       this.selectedDateRange.endDate = null;
       this.EngHebCalPlaceholder = "All Time";
-    } else
-      this.getSelectedDateRange(
-        this.uiPageSetting.startDate,
-        this.uiPageSetting.endDate
-      );
+    }
+    else
+      this.getSelectedDateRange(this.uiPageSetting.startDate, this.uiPageSetting.endDate);
 
-    this.pageSyncService.uiPageSettings["paymentList"] = uiPageSetting;
+    this.pageSyncService.uiPageSettings['paymentList'] = uiPageSetting;
+
   }
 
   getAllPaymentAPIGateway() {
     let eventGuId = this.localstoragedataService.getLoginUserEventGuId();
-    this.paymentApiGatewayService
-      .getAllPaymentAPIGateway(eventGuId)
-      .subscribe((res: any) => {
-        res.forEach((item) => {
-          if (!(item.countryCodeId == 1 || item.countryCodeId == null)) {
-            this.TransColName = true;
-            this.changeDetectorRef.detectChanges();
-          }
-        });
-        if (this.TransColName == false) {
-          this.colFields[0].items = this.colFields[0].items.filter(
-            (item) => !(item.colName === "LEGALRECEIPT")
-          );
-          this.isLegalRecieptColVisible = false;
+    this.paymentApiGatewayService.getAllPaymentAPIGateway(eventGuId).subscribe((res: any) => {
+      res.forEach(item => {
+        if (!(item.countryCodeId == 1 || item.countryCodeId == null)) {
+          this.TransColName = true;
+          this.changeDetectorRef.detectChanges();
         }
+
       });
+      if (this.TransColName == false) {
+        this.colFields[0].items = this.colFields[0].items.filter(item => !(item.colName === "LEGALRECEIPT"));
+        this.isLegalRecieptColVisible = false
+      }
+
+    })
   }
   detectChanges() {
-    if (!this.changeDetectorRef["destroyed"]) {
+    if (!this.changeDetectorRef['destroyed']) {
       this.changeDetectorRef.detectChanges();
     }
   }
-  class_id: string;
-  class_hid: string;
+  class_id: string
+  class_hid: string
+
 
   getRedirectData() {
-    if (
-      this.commonMethodService.recentStartDate &&
-      this.commonMethodService.isRedirect == true
-    ) {
+    if (this.commonMethodService.recentStartDate && this.commonMethodService.isRedirect == true) {
       this.commonMethodService.isRedirect = false;
       if (
         this.commonMethodService.recentStartDate == null &&
@@ -1091,22 +1072,20 @@ export class PaymentTransactionComponent implements OnInit {
         this.selectedDateRange.startDate = null;
         this.selectedDateRange.endDate = null;
         this.EngHebCalPlaceholder = "All Time";
-      } else {
-        this.getSelectedDateRange(
-          this.commonMethodService.recentStartDate,
-          this.commonMethodService.recentEndDate
-        );
+      }
+      else {
+        this.getSelectedDateRange(this.commonMethodService.recentStartDate, this.commonMethodService.recentEndDate);
         if (this.pageSyncService.isPaymentTabClicked) {
-          this.searchPaymentTransactionsData();
+          this.searchPaymentTransactionsData()
         }
       }
     }
   }
 
+
+
   isCheckedFieldsLabel(element: string = "", index: number = 0) {
-    let result = this.colFields[index].items.filter(
-      (x) => x.sortName == element.trim()
-    );
+    let result = this.colFields[index].items.filter(x => x.sortName == element.trim());
     return result && result.length > 0 ? result[0].isVisible : false;
   }
   onDateChange(sDate, eDate, preset) {
@@ -1114,9 +1093,9 @@ export class PaymentTransactionComponent implements OnInit {
     const startDate = new Date(sDate);
     const endDate = new Date(eDate);
 
-    const ftoday = this.datePipe.transform(today, "dd/MM/yyyy");
-    const fstartDate = this.datePipe.transform(startDate, "dd/MM/yyyy");
-    const fendDate = this.datePipe.transform(endDate, "dd/MM/yyyy");
+    const ftoday = this.datePipe.transform(today, 'dd/MM/yyyy');
+    const fstartDate = this.datePipe.transform(startDate, 'dd/MM/yyyy');
+    const fendDate = this.datePipe.transform(endDate, 'dd/MM/yyyy');
     if (preset == "PresetOption") {
       if (
         fstartDate <= ftoday &&
@@ -1125,100 +1104,87 @@ export class PaymentTransactionComponent implements OnInit {
         startDate.getMonth() === today.getMonth() &&
         startDate.getFullYear() === today.getFullYear()
       ) {
-        this.class_id = "id_today";
-        this.class_hid = "id_today_h";
-        this.EngHebCalPlaceholder = "Today";
-        this.presetOption = "Today";
+        this.class_id = "id_today"
+        this.class_hid = "id_today_h"
+        this.EngHebCalPlaceholder = 'Today';
+        this.presetOption = 'Today';
       } else if (
         fstartDate <= ftoday &&
         fendDate >= ftoday &&
-        startDate >=
-          new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate() - 6
-          ) &&
+        startDate >= new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6) &&
         fendDate <= ftoday
       ) {
-        this.class_id = "id_Last7days";
-        this.class_hid = "id_Last7days_h";
-        this.EngHebCalPlaceholder = "Last 7 Days";
-        this.presetOption = "Last 7 Days";
-      } else if (
+        this.class_id = "id_Last7days"
+        this.class_hid = "id_Last7days_h"
+        this.EngHebCalPlaceholder = 'Last 7 Days';
+        this.presetOption = 'Last 7 Days';
+      }
+      else if (
         startDate <= today &&
         endDate >= today &&
         startDate <= today &&
-        endDate <=
-          new Date(today.getFullYear(), today.getMonth(), today.getDate() + 6)
+        endDate <= new Date(today.getFullYear(), today.getMonth(), today.getDate() + 6)
       ) {
-        this.class_id = "id_thisweek";
-        this.class_hid = "id_thisweek_h";
-        this.EngHebCalPlaceholder = "This Week";
-        this.presetOption = "This Week";
+        this.class_id = "id_thisweek"
+        this.class_hid = "id_thisweek_h"
+        this.EngHebCalPlaceholder = 'This Week';
+        this.presetOption = 'This Week';
       } else if (
         startDate.getMonth() === today.getMonth() &&
         startDate.getFullYear() === today.getFullYear()
       ) {
-        this.class_id = "id_ThisMonth";
-        this.class_hid = "id_ThisMonth_h";
-        this.EngHebCalPlaceholder = "This Month";
-        this.presetOption = "This Month";
+        this.class_id = "id_ThisMonth"
+        this.class_hid = "id_ThisMonth_h"
+        this.EngHebCalPlaceholder = 'This Month';
+        this.presetOption = 'This Month';
       } else if (
         startDate.getMonth() === today.getMonth() - 1 &&
-        startDate.getFullYear() === today.getFullYear() &&
-        startDate.getMonth() != today.getMonth() &&
-        endDate.getMonth() !== today.getMonth() + 1
+        startDate.getFullYear() === today.getFullYear() && startDate.getMonth() != today.getMonth() && endDate.getMonth() !== today.getMonth() + 1
       ) {
-        this.class_id = "id_LastMonth";
-        this.class_hid = "id_LastMonth_h";
-        this.EngHebCalPlaceholder = "Last Month";
-        this.presetOption = "Last Month";
+        this.class_id = "id_LastMonth"
+        this.class_hid = "id_LastMonth_h"
+        this.EngHebCalPlaceholder = 'Last Month';
+        this.presetOption = 'Last Month';
       } else if (
         startDate.getMonth() === today.getMonth() + 1 &&
         startDate.getFullYear() === today.getFullYear()
       ) {
-        this.class_id = "id_NextMonth";
-        this.class_hid = "id_NextMonth_h";
-        this.EngHebCalPlaceholder = "Next Month";
-        this.presetOption = "Next Month";
+        this.class_id = "id_NextMonth"
+        this.class_hid = "id_NextMonth_h"
+        this.EngHebCalPlaceholder = 'Next Month';
+        this.presetOption = 'Next Month';
       } else if (startDate.getFullYear() === today.getFullYear()) {
         const thisYearStart = new Date(today.getFullYear(), 0, 1);
-        const formattedStartDate = this.datePipe.transform(
-          thisYearStart,
-          "dd/MM/yyyy"
-        );
+        const formattedStartDate = this.datePipe.transform(thisYearStart, 'dd/MM/yyyy');
 
         const thisYearEnd = new Date(today.getFullYear(), 11, 31);
-        const formattedEndDate = this.datePipe.transform(
-          thisYearEnd,
-          "dd/MM/yyyy"
-        );
+        const formattedEndDate = this.datePipe.transform(thisYearEnd, 'dd/MM/yyyy');
 
         if (fstartDate == formattedStartDate && fendDate == formattedEndDate) {
-          this.EngHebCalPlaceholder = "This Year";
-          this.presetOption = "This Year";
-          this.class_id = "id_ThisYear";
-          this.class_hid = "id_ThisYear_h";
+          this.EngHebCalPlaceholder = 'This Year';
+          this.presetOption = 'This Year';
+          this.class_id = "id_ThisYear"
+          this.class_hid = "id_ThisYear_h"
         } else {
-          this.class_id = "id_CustomRange";
-          this.class_hid = "id_CustomRange_h";
+          this.class_id = "id_CustomRange"
+          this.class_hid = "id_CustomRange_h"
           this.EngHebCalPlaceholder = fstartDate + " - " + fendDate;
         }
       } else if (startDate.getFullYear() === today.getFullYear() - 1) {
-        this.class_id = "id_LastYear";
-        this.class_hid = "id_LastYear_h";
-        this.EngHebCalPlaceholder = "Last Year";
-        this.presetOption = "Last Year";
+        this.class_id = "id_LastYear"
+        this.class_hid = "id_LastYear_h"
+        this.EngHebCalPlaceholder = 'Last Year';
+        this.presetOption = 'Last Year';
       } else if (startDate.getFullYear() === today.getFullYear() + 1) {
-        this.class_id = "id_NextYear";
-        this.class_hid = "id_NextYear_h";
-        this.EngHebCalPlaceholder = "Next Year";
-        this.presetOption = "Next Year";
+        this.class_id = "id_NextYear"
+        this.class_hid = "id_NextYear_h"
+        this.EngHebCalPlaceholder = 'Next Year';
+        this.presetOption = 'Next Year';
       }
     }
     if (preset == "CustomRange") {
-      this.class_id = "id_CustomRange";
-      this.class_hid = "id_CustomRange_h";
+      this.class_id = "id_CustomRange"
+      this.class_hid = "id_CustomRange_h"
       this.EngHebCalPlaceholder = sDate + " - " + eDate;
     }
     if (this.pageSyncService.PaymentEngCalPlaceholder && this.isdateChanged) {
@@ -1232,66 +1198,60 @@ export class PaymentTransactionComponent implements OnInit {
       this.isloading = true;
     }
     const eventGuId = this.localstoragedataService.getLoginUserEventGuId();
-    this.advancedFieldService.getAll(eventGuId).subscribe(
-      (res) => {
-        if (res) {
-          const itemArr = [];
-          for (let index = 0; index < res.length; index++) {
-            const element = res[index];
-            if (element.fieldName) {
-              let trimValue = this.advancedFieldService.formatFieldName(
-                element.fieldName
-              );
-              itemArr.push({
-                colName: trimValue,
-                isVisible: false,
-                colId: element.advancedFieldId,
-                sortName: trimValue,
-                isAdvancedField: true,
-              });
-            }
-          }
+    this.advancedFieldService.getAll(eventGuId).subscribe((res) => {
 
-          //get visible adv. columns
-          var selectedColumns = [];
-          var AdvFields = this.colFields.filter((obj) => {
-            if (obj.title && obj.title.indexOf("ADVANCEDFIELDS") > -1) {
-              for (let index = 0; index < obj.items.length; index++) {
-                if (obj.items[index].isVisible) {
-                  selectedColumns.push(obj.items[index]);
-                }
+      if (res) {
+        const itemArr = [];
+        for (let index = 0; index < res.length; index++) {
+          const element = res[index];
+          if (element.fieldName) {
+            let trimValue = this.advancedFieldService.formatFieldName(element.fieldName);
+            itemArr.push({
+              "colName": trimValue,
+              "isVisible": false,
+              "colId": element.advancedFieldId,
+              "sortName": trimValue,
+              "isAdvancedField": true
+            })
+          }
+        }
+
+        //get visible adv. columns
+        var selectedColumns = [];
+        var AdvFields = this.colFields.filter((obj) => {
+          if (obj.title && obj.title.indexOf("ADVANCEDFIELDS") > -1) {
+            for (let index = 0; index < obj.items.length; index++) {
+              if (obj.items[index].isVisible) {
+                selectedColumns.push(obj.items[index]);
               }
             }
-          });
+          }
+        });
 
-          //bind selected column
-          itemArr.map(function (x) {
-            var result = selectedColumns.filter(
-              (a1) => a1.colName == x.colName
-            );
-            if (result.length > 0) {
-              x.isVisible = result[0].isVisible;
-            }
-            return x;
-          });
+        //bind selected column
+        itemArr.map(function (x) {
+          var result = selectedColumns.filter(a1 => a1.colName == x.colName);
+          if (result.length > 0) {
+            x.isVisible = result[0].isVisible;
+          }
+          return x
+        });
 
-          this.colFields = this.colFields.map((o) => {
-            if (o.id !== 2) {
-              return o;
-            }
-            return {
-              ...o,
-              items: itemArr,
-            };
-          });
-        }
-      },
-      (err) => {
-        if (isInit) {
-          this.isloading = false;
-        }
+        this.colFields = this.colFields.map((o) => {
+          if (o.id !== 2) {
+            return o
+          }
+          return {
+            ...o,
+            items: itemArr
+          }
+        })
       }
-    );
+    }, err => {
+      if (isInit) {
+        this.isloading = false;
+      }
+    })
   }
 
   getSelectedDateRange(sDate, eDate) {
@@ -1300,20 +1260,20 @@ export class PaymentTransactionComponent implements OnInit {
       const dates = this.commonMethodService.getStartAndEndDate(sDate);
       this.selectedDateRange.startDate = dates.startDate;
       this.selectedDateRange.endDate = dates.endDate;
-      this.onDateChange(
-        this.selectedDateRange.startDate,
-        this.selectedDateRange.endDate,
-        "PresetOption"
-      );
-    } else if (sDate != null && eDate != null) {
+      this.onDateChange(this.selectedDateRange.startDate, this.selectedDateRange.endDate, "PresetOption")
+    }
+    else if (sDate != null && eDate != null) {
       this.selectedDateRange.startDate = moment(sDate);
       this.selectedDateRange.endDate = moment(eDate);
       this.onDateChange(sDate, eDate, "CustomRange");
     }
+
+
   }
 
+
   paymentActions(id) {
-    this.gridFilterData.forEach((element) => {
+    this.gridFilterData.forEach(element => {
       element.isPaymentActionsVisible = false;
       if (element.paymentId == id) {
         element.isPaymentActionsVisible = true;
@@ -1321,8 +1281,9 @@ export class PaymentTransactionComponent implements OnInit {
     });
   }
 
+
   closePaymentPop(id) {
-    this.gridFilterData.forEach((element) => {
+    this.gridFilterData.forEach(element => {
       element.isPaymentActionsVisible = false;
       if (element.paymentId == id) {
         element.isPaymentActionsVisible = false;
@@ -1369,16 +1330,16 @@ export class PaymentTransactionComponent implements OnInit {
     this.searchPaymentTransactionsData();
   }
 
+
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.colFields, event.previousIndex, event.currentIndex);
   }
 
   setGridColVisibility($event, colName, isVisible) {
     var fieldsData = this.pageSyncService.paymentFieldsCol;
-    var obj = fieldsData.find((data) => Object.keys(data)[0] === colName);
-    obj
-      ? (obj[colName] = isVisible)
-      : fieldsData.push({ [colName]: isVisible });
+    var obj = (fieldsData.find((data) => Object.keys(data)[0] === colName))
+    obj ? obj[colName] = isVisible : fieldsData.push({ [colName]: isVisible });
     colName = colName.toLowerCase().replace(/\s/g, "");
     switch (colName) {
       case "receipt#":
@@ -1559,19 +1520,16 @@ export class PaymentTransactionComponent implements OnInit {
         break;
     }
 
+
     $event.stopPropagation();
   }
   checkColVisibility(colName) {
-    let col = this.colfieldsValue.find(
-      (data) => Object.keys(data)[0] == colName
-    );
-    return col ? col[colName] : false;
+    let col = this.colfieldsValue.find((data) => Object.keys(data)[0] == colName)
+    return col ? col[colName] : false
   }
 
   checkVisibility(colName) {
-    let col = this.colfieldsValue.find(
-      (data) => Object.keys(data)[0] == colName
-    );
+    let col = this.colfieldsValue.find((data) => Object.keys(data)[0] == colName);
     if (col) {
       return col[colName];
     } else {
@@ -1670,9 +1628,7 @@ export class PaymentTransactionComponent implements OnInit {
       case "legalreceipt":
         return this.isLegalRecieptColVisible;
       default:
-        let result = this.colFields[0].items.filter(
-          (x) => x.colName.toLowerCase() == colName
-        );
+        let result = this.colFields[0].items.filter(x => x.colName.toLowerCase() == colName);
 
         return result && result.length > 0 ? result[0].isVisible : false;
     }
@@ -1705,14 +1661,10 @@ export class PaymentTransactionComponent implements OnInit {
         (err) => {
           modalRef.close();
           Swal.fire({
-            title: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.SOMETHING_WENT_WRONG"
-            ),
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
             text: err.error,
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -1761,7 +1713,7 @@ export class PaymentTransactionComponent implements OnInit {
     this.isinitialize = 1 + empVal;
   }
 
-  CalendarFocus() {}
+  CalendarFocus() { }
   // popup
   openAdvanceSearchFilterPopup() {
     this.modalOptions = {
@@ -1780,9 +1732,10 @@ export class PaymentTransactionComponent implements OnInit {
     modalRef.componentInstance.AdvancedFilterData = this.objAdvancedSearch;
     modalRef.componentInstance.FeatureName = "Filter_Payments";
 
+
     modalRef.componentInstance.emtOutputAdvancedFilterData.subscribe(
       (objResponse) => {
-        this.advancedSearchData(objResponse);
+        this.advancedSearchData(objResponse)
       }
     );
   }
@@ -1888,6 +1841,7 @@ export class PaymentTransactionComponent implements OnInit {
     );
   }
   OpenLegalReceipt(paymentId, transactionData, paymentType) {
+
     this.modalOptions = {
       centered: true,
       size: "md",
@@ -1902,23 +1856,26 @@ export class PaymentTransactionComponent implements OnInit {
     modalRef.componentInstance.paymentId = paymentId;
     modalRef.componentInstance.transactionData = transactionData;
     modalRef.componentInstance.gridFilterData = this.gridFilterData;
+
+
+
+
+
   }
+
 
   BulkLegalTransaction() {
     var paymentIds = [];
-    var paymentType = [];
+    var paymentType = []
     var legalReceiptNums = [];
     for (const item of this.recordSelectedArray) {
-      var legalReceiptPaymentId = this.gridFilterData.find(
-        (x) => x.paymentId == item
-      );
+      var legalReceiptPaymentId = this.gridFilterData.find((x) => x.paymentId == item);
       if (legalReceiptPaymentId) {
-        paymentIds.push(legalReceiptPaymentId.paymentId);
-        paymentType.push(legalReceiptPaymentId.paymentType);
-        legalReceiptNums.push(legalReceiptPaymentId.legalReceiptNum);
-        this.isLegalReceiptNumPresent = legalReceiptNums.some(
-          (num) => num !== null
-        );
+        paymentIds.push(legalReceiptPaymentId.paymentId)
+        paymentType.push(legalReceiptPaymentId.paymentType)
+        legalReceiptNums.push(legalReceiptPaymentId.legalReceiptNum)
+        this.isLegalReceiptNumPresent = legalReceiptNums.some((num) => num !== null);
+
       }
     }
     //this.isCashCreditPaymentType = paymentType.some((paymentType) => paymentType== "Cash" || paymentType== "Check")
@@ -1934,21 +1891,19 @@ export class PaymentTransactionComponent implements OnInit {
       LegalReceiptCountryPopupComponent,
       this.modalOptions
     );
-    var commaSeparatedPaymentIds = paymentIds.join(",");
+    var commaSeparatedPaymentIds = paymentIds.join(',');
     modalRef.componentInstance.paymentId = commaSeparatedPaymentIds;
     modalRef.componentInstance.isBlukTransaction = true;
-    modalRef.componentInstance.isLegalReceiptNumPresent =
-      this.isLegalReceiptNumPresent;
+    modalRef.componentInstance.isLegalReceiptNumPresent = this.isLegalReceiptNumPresent
+
+
+
   }
   editBatchPaymentPopup() {
-    this.commonMethodService.featureName = "close_batch";
+    this.commonMethodService.featureName = 'close_batch'
     this.commonMethodService.getFeatureSettingValues();
-    let btnTxt = this.commonMethodService.isfeatureSetting
-      ? "Batch Payments"
-      : "Upgrade to save";
-    let btnClass = this.commonMethodService.isfeatureSetting
-      ? "btn_batch"
-      : "btn_batch btn-core";
+    let btnTxt = this.commonMethodService.isfeatureSetting ? 'Batch Payments' : 'Upgrade to save';
+    let btnClass = this.commonMethodService.isfeatureSetting ? 'btn_batch' : 'btn_batch btn-core';
     var selectedArray = this.recordSelectedArray;
     Swal.fire({
       title: "<b>Batch " + selectedArray.length + " payments</b>",
@@ -1956,7 +1911,7 @@ export class PaymentTransactionComponent implements OnInit {
       //icon: "warning",
       showCancelButton: true,
       confirmButtonText: btnTxt,
-      cancelButtonText: this.commonMethodService.getTranslate("CANCEL"),
+      cancelButtonText: this.commonMethodService.getTranslate('CANCEL'),
       customClass: {
         confirmButton: btnClass,
         container: "batch_prnt",
@@ -1965,9 +1920,9 @@ export class PaymentTransactionComponent implements OnInit {
       if (result.value) {
         this.isloading = true;
         if (!this.commonMethodService.isfeatureSetting) {
-          this.onUpgrade();
+          this.onUpgrade()
           this.isloading = false;
-          return;
+          return
         }
         var objBatch = {
           paymentIds: selectedArray,
@@ -1982,9 +1937,7 @@ export class PaymentTransactionComponent implements OnInit {
               Swal.fire({
                 title: "<b>" + selectedArray.length + " payments batched</b>",
                 text: "batch#" + res.batchNum,
-                confirmButtonText: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                ),
+                confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                 customClass: {
                   confirmButton: "btn_ok",
                   container: "batched_prnt",
@@ -1995,15 +1948,11 @@ export class PaymentTransactionComponent implements OnInit {
             }
           },
           (error) => {
-            Swal.fire(
-              this.commonMethodService.getTranslate(
-                "WARNING_SWAL.SOMETHING_WENT_WRONG"
-              ),
-              error.error,
-              "error"
-            ).then(() => {
-              this.commonMethodService.sendPaymentTrans(true);
-            });
+            Swal.fire(this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'), error.error, "error").then(
+              () => {
+                this.commonMethodService.sendPaymentTrans(true);
+              }
+            );
           }
         );
       } else {
@@ -2085,8 +2034,8 @@ export class PaymentTransactionComponent implements OnInit {
           a.paymentTypeId > b.paymentTypeId
             ? 1
             : b.paymentTypeId > a.paymentTypeId
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
         if (allTypeCard[1] != undefined) {
           this.paymentTypeChipData.unshift(allTypeCard[1]);
@@ -2097,8 +2046,8 @@ export class PaymentTransactionComponent implements OnInit {
           a.paymentType > b.paymentType
             ? 1
             : b.paymentType > a.paymentType
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
         if (allTypeCard[1] != undefined) {
           this.paymentTypeChipData.unshift(allTypeCard[1]);
@@ -2112,8 +2061,8 @@ export class PaymentTransactionComponent implements OnInit {
             a.paymentTypeId > b.paymentTypeId
               ? 1
               : b.paymentTypeId > a.paymentTypeId
-              ? -1
-              : 0
+                ? -1
+                : 0
           )
           .reverse();
         if (allTypeCard[1] != undefined) {
@@ -2126,8 +2075,8 @@ export class PaymentTransactionComponent implements OnInit {
             a.paymentType > b.paymentType
               ? 1
               : b.paymentType > a.paymentType
-              ? -1
-              : 0
+                ? -1
+                : 0
           )
           .reverse();
         if (allTypeCard[1] != undefined) {
@@ -2141,8 +2090,8 @@ export class PaymentTransactionComponent implements OnInit {
           a.totalAmount > b.totalAmount
             ? 1
             : b.totalAmount > a.totalAmount
-            ? -1
-            : 0
+              ? -1
+              : 0
         )
         .reverse();
       if (allTypeCard[1] != undefined) {
@@ -2154,8 +2103,8 @@ export class PaymentTransactionComponent implements OnInit {
         a.totalAmount > b.totalAmount
           ? 1
           : b.totalAmount > a.totalAmount
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
       if (allTypeCard[1] != undefined) {
         this.paymentTypeChipData.unshift(allTypeCard[1]);
@@ -2175,14 +2124,8 @@ export class PaymentTransactionComponent implements OnInit {
       resultArray.push(donorDetails);
       if (donorDetails.paymentType == "Check") {
         selectedCheckTypeIDs.push(donorDetails.paymentId);
-        selectedLocations.push({
-          locationId: donorDetails.locationId,
-          locationName: donorDetails.locationName,
-        });
-        selectedCollectors.push({
-          collectorId: donorDetails.collectorId,
-          collectorName: donorDetails.colectorName,
-        });
+        selectedLocations.push({ locationId: donorDetails.locationId, locationName: donorDetails.locationName });
+        selectedCollectors.push({ collectorId: donorDetails.collectorId, collectorName: donorDetails.colectorName })
         this.isPaymentTypeCheck = true;
       }
     }
@@ -2208,6 +2151,7 @@ export class PaymentTransactionComponent implements OnInit {
     };
     modalRef.componentInstance.locations = selectedLocations;
     modalRef.componentInstance.collectors = selectedCollectors;
+
   }
 
   calculatesumBy(list: Array<any>, byKey: string, typeName: string) {
@@ -2280,26 +2224,22 @@ export class PaymentTransactionComponent implements OnInit {
       "campaignId",
       "campaignName"
     );
-    let nullPaymentReasonTypeId = byReason.filter(
-      (x) => x.paymentTypeId == "null"
-    );
+    let nullPaymentReasonTypeId = byReason.filter((x) => x.paymentTypeId == "null");
 
     byReason.forEach(function (element, i) {
       if (element.paymentTypeId == "null") {
         element.paymentType = "No reason";
         element.paymentTypeId = -1;
         element.totalAmount = element.totalAmount;
-        element.paymentCount;
+        element.paymentCount
       }
       if (element.paymentTypeId !== "null") {
         list.find((val) => {
           if (element.paymentType === val.reasonName) {
-            element.paymentType;
+            element.paymentType
             element.paymentTypeId = element.paymentTypeId;
-            element.totalAmount = val.reasonAmounts
-              ? val.reasonAmounts
-              : element.totalAmount;
-            element.paymentCount;
+            element.totalAmount = val.reasonAmounts ? val.reasonAmounts : element.totalAmount;
+            element.paymentCount
           }
         });
       }
@@ -2312,19 +2252,19 @@ export class PaymentTransactionComponent implements OnInit {
         paymentTypeId: -1,
         paymentTypeChipCSSClass: "info-box bg-gradient-info",
         totalAmount: reminder,
-        paymenttypeName: "reasonName",
-      });
+        paymenttypeName: "reasonName"
+      })
     }
 
     let noSplitReasonMany = this.noReasonCardCalculation(this.gridFilterData);
-    let noSplitReasonOne = this.gridFilterData.filter(
-      (x) => x.noReasonSplit == true
-    );
+    let noSplitReasonOne = this.gridFilterData.filter(x => x.noReasonSplit == true);
     let splitReasonCount = noSplitReasonMany.length + noSplitReasonOne.length;
 
     if (splitReasonCount > 0) {
       byReason.forEach(function (element, i) {
-        if (element.paymentType == "No reason") {
+        if (
+          element.paymentType == "No reason"
+        ) {
           element.paymentCount += splitReasonCount;
         }
       });
@@ -2339,6 +2279,7 @@ export class PaymentTransactionComponent implements OnInit {
         )
     );
 
+
     let nullPaymentTypeId = byCampaign.filter((x) => x.paymentTypeId == "null");
 
     byCampaign.forEach(function (element, i) {
@@ -2346,17 +2287,15 @@ export class PaymentTransactionComponent implements OnInit {
         element.paymentType = "No campaign";
         element.paymentTypeId = -1;
         element.totalAmount = element.totalAmount + reminder;
-        element.paymentCount;
+        element.paymentCount
       }
       if (element.paymentTypeId == "null") {
         list.find((val) => {
           if (element.paymentType === val.campaignName) {
-            element.paymentType;
+            element.paymentType
             element.paymentTypeId = element.paymentTypeId;
-            element.totalAmount = val.campaignAmounts
-              ? val.campaignAmounts
-              : element.totalAmount + reminder;
-            element.paymentCount;
+            element.totalAmount = val.campaignAmounts ? val.campaignAmounts : element.totalAmount + reminder;
+            element.paymentCount
           }
         });
       }
@@ -2369,22 +2308,19 @@ export class PaymentTransactionComponent implements OnInit {
         paymentTypeId: -1,
         paymentTypeChipCSSClass: "info-box bg-gradient-info",
         totalAmount: reminder,
-        paymenttypeName: "campaignName",
-      });
+        paymenttypeName: "campaignName"
+      })
     }
 
-    let noSplitCampaignMany = this.noCampaignCardCalculation(
-      this.gridFilterData
-    );
-    let noSplitCampaignOne = this.gridFilterData.filter(
-      (x) => x.noCampaignSplit == true
-    );
-    let splitCampaignCount =
-      noSplitCampaignOne.length + noSplitCampaignMany.length;
+    let noSplitCampaignMany = this.noCampaignCardCalculation(this.gridFilterData);
+    let noSplitCampaignOne = this.gridFilterData.filter(x => x.noCampaignSplit == true);
+    let splitCampaignCount = noSplitCampaignOne.length + noSplitCampaignMany.length;
 
     if (splitCampaignCount > 0) {
       byCampaign.forEach(function (element, i) {
-        if (element.paymentType == "No campaign") {
+        if (
+          element.paymentType == "No campaign"
+        ) {
           element.paymentCount += splitCampaignCount;
         }
       });
@@ -2399,6 +2335,7 @@ export class PaymentTransactionComponent implements OnInit {
             t.paymenttypeName != "parentCampaignNames"
         )
     );
+
 
     byLocation.forEach(function (element, i) {
       if (element.paymentType == null) {
@@ -2449,30 +2386,14 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   SaveLayout() {
-    if (
-      this.presetOption == "Today" ||
-      this.presetOption == "This Week" ||
-      this.presetOption == "This Month" ||
-      this.presetOption == "This Year" ||
-      this.presetOption == "Last Month" ||
-      this.presetOption == "Next Month" ||
-      this.presetOption == "Last Year" ||
-      this.presetOption == "Next Year" ||
-      this.presetOption == "Last 7 Days"
-    ) {
+    if (this.presetOption == "Today" || this.presetOption == "This Week" || this.presetOption == "This Month" || this.presetOption == "This Year" || this.presetOption == "Last Month"
+      || this.presetOption == "Next Month" || this.presetOption == "Last Year" || this.presetOption == "Next Year" || this.presetOption == "Last 7 Days") {
       this.selectedDateRange.startDate = this.presetOption;
       this.selectedDateRange.endDate = null;
-    } else {
-      this.selectedDateRange.startDate =
-        this.selectedDateRange != undefined &&
-        this.selectedDateRange.startDate != null
-          ? moment(this.selectedDateRange.startDate).format("YYYY-MM-DD")
-          : null;
-      this.selectedDateRange.endDate =
-        this.selectedDateRange != undefined &&
-        this.selectedDateRange.endDate != null
-          ? moment(this.selectedDateRange.endDate).format("YYYY-MM-DD")
-          : null;
+    }
+    else {
+      this.selectedDateRange.startDate = this.selectedDateRange != undefined && this.selectedDateRange.startDate != null ? moment(this.selectedDateRange.startDate).format("YYYY-MM-DD") : null;
+      this.selectedDateRange.endDate = this.selectedDateRange != undefined && this.selectedDateRange.endDate != null ? moment(this.selectedDateRange.endDate).format("YYYY-MM-DD") : null;
     }
     let setting = {
       isPaymentReceiptNoColVisible: this.isPaymentReceiptNoColVisible,
@@ -2542,9 +2463,7 @@ export class PaymentTransactionComponent implements OnInit {
         Swal.fire({
           title: "Layout Saved Successfully",
           icon: "success",
-          confirmButtonText: this.commonMethodService
-            .getTranslate("WARNING_SWAL.BUTTON.CONFIRM.OK")
-            .commonMethodService.getTranslate("WARNING_SWAL.BUTTON.CONFIRM.OK"),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK').commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -2599,14 +2518,12 @@ export class PaymentTransactionComponent implements OnInit {
         }
       } else {
         if (element.split != true) {
-          if (
-            element.amount != null &&
-            element.amount > Number(element.amount)
-          ) {
+          if (element.amount != null && element.amount > Number(element.amount)) {
             sumofreminder += element.amount - Number(element.amount);
-            element.amountt = element.amount;
-            element.noReasonSplit = true;
+            element.amountt = element.amount
+            element.noReasonSplit = true
             element.amount = Number(element.amount);
+
           }
           element.split = false;
         }
@@ -2668,14 +2585,12 @@ export class PaymentTransactionComponent implements OnInit {
         //}
       } else {
         if (element.split != true) {
-          if (
-            element.campaignAmounts != null &&
-            element.amount > Number(element.campaignAmounts)
-          ) {
+          if (element.campaignAmounts != null && element.amount > Number(element.campaignAmounts)) {
             sumofreminder += element.amount - Number(element.campaignAmounts);
-            element.amountt = element.amount;
-            element.noCampaignSplit = true;
+            element.amountt = element.amount
+            element.noCampaignSplit = true
             element.amount = Number(element.campaignAmounts);
+
           }
           element.split = false;
         }
@@ -2693,16 +2608,13 @@ export class PaymentTransactionComponent implements OnInit {
     this.isSelected = false;
     this.isRetrySelected = false;
     //  Excludes loader when adding a phone number for sending text receipt
-    if (
-      this.commonMethodService.notToShowLoader == false &&
-      this.commonMethodService.notshowPaymentLoader == false
-    ) {
-      this.isloading = true;
+    if (this.commonMethodService.notToShowLoader == false && this.commonMethodService.notshowPaymentLoader == false) {
+      this.isloading = true
     } else {
       this.commonMethodService.notToShowLoader = false;
       this.commonMethodService.notshowPaymentLoader = false;
     }
-    this.detectChanges();
+    this.detectChanges()
 
     var objsearchPaymentTrans;
     if (this.paymentMode == true) {
@@ -2737,6 +2649,7 @@ export class PaymentTransactionComponent implements OnInit {
       .getPaymentTransactions(objsearchPaymentTrans)
       .subscribe(
         (res: any) => {
+
           let endReq = Date.now();
           this.isFiltered = false;
           if (res.paymentTransGridModel.length !== 0) {
@@ -2744,20 +2657,13 @@ export class PaymentTransactionComponent implements OnInit {
             this.gridData = res.paymentTransGridModel;
             //  this.legalReceiptNum = res.paymentTransGridModel.legalReceiptNum;
             this.otherGridData = res.paymentTransGridModel;
-            this.pageSyncService.paymentTransList = this.gridData;
+            this.pageSyncService.paymentTransList = this.gridData
             this.pageSyncService.isPaymentTabClicked = true;
-            var timezone =
-              this.commonMethodService.getTimeZoneFromLoginCurrency();
-            this.pageSyncService.lastSyncPaymentTime =
-              this.commonMethodService.convertUTCToTimezone(
-                new Date(),
-                timezone
-              );
+            var timezone = this.commonMethodService.getTimeZoneFromLoginCurrency()
+            this.pageSyncService.lastSyncPaymentTime = this.commonMethodService.convertUTCToTimezone(new Date(), timezone);
             this.pageSyncService.calculateTimeDifference("payment");
             this.resGridDataModification();
-            this.commonMethodService.sendPaymentTransactionData(
-              this.gridFilterData
-            );
+            this.commonMethodService.sendPaymentTransactionData(this.gridFilterData);
             let innerend = Date.now();
           } else {
             this.gridData = [];
@@ -2773,7 +2679,7 @@ export class PaymentTransactionComponent implements OnInit {
           setTimeout(() => {
             this.tableRowFocued();
           }, 10);
-          this.detectChanges();
+          this.detectChanges()
         },
         (error) => {
           this.totalRecord = 0;
@@ -2792,7 +2698,9 @@ export class PaymentTransactionComponent implements OnInit {
       this.gridData
     );
 
-    this.noReasonWithSplitData = this.noReasonCardCalculation(this.gridData);
+    this.noReasonWithSplitData = this.noReasonCardCalculation(
+      this.gridData
+    );
 
     this.filterLocalData();
     this.localSumCalCulation();
@@ -2803,6 +2711,7 @@ export class PaymentTransactionComponent implements OnInit {
     const hebrewRegex = /[\u0590-\u05FF]/; // Range of Hebrew Unicode characters
     return hebrewRegex.test(input);
   }
+
 
   uniqueFilter(value, index, self) {
     return self.indexOf(value) === index;
@@ -2882,7 +2791,7 @@ export class PaymentTransactionComponent implements OnInit {
   }
   noReasonCardCalculation(gridData) {
     let newGridFilterData = [];
-    const newData = gridData.map((element) => {
+    const newData = gridData.map(element => {
       if (
         element.reasonIds &&
         element.reasonIds.indexOf(",") > -1 &&
@@ -2895,7 +2804,8 @@ export class PaymentTransactionComponent implements OnInit {
           var amount = element.amount;
         } else if (element.amountt == element.amount) {
           var amount = element.amountt;
-        } else {
+        }
+        else {
           var amount = element.amount;
         }
         var sumOfreasonAmount = 0;
@@ -2912,13 +2822,13 @@ export class PaymentTransactionComponent implements OnInit {
         }
         newElement.forEach((x) => newGridFilterData.push(x));
       }
-    });
+    })
     return newGridFilterData;
   }
 
   noCampaignCardCalculation(gridData) {
     let newGridFilterData = [];
-    const newData = gridData.map((element) => {
+    const newData = gridData.map(element => {
       if (
         element.campaignIds &&
         element.campaignIds.indexOf(",") > -1 &&
@@ -2931,7 +2841,8 @@ export class PaymentTransactionComponent implements OnInit {
           var amount = element.amount;
         } else if (element.amountt == element.amount) {
           var amount = element.amountt;
-        } else {
+        }
+        else {
           var amount = element.amount;
         }
         //var amount = element.amount;
@@ -2952,11 +2863,11 @@ export class PaymentTransactionComponent implements OnInit {
         }
         newElement.forEach((x) => newGridFilterData.push(x));
       }
-    });
+    })
     return newGridFilterData;
   }
   getUniqueListByKey(arr, key) {
-    return [...new Map(arr.map((item) => [item[key], item])).values()];
+    return [...new Map(arr.map(item => [item[key], item])).values()]
   }
 
   GetPaymentTransByPaymentChipType(objPaymentTypeChip) {
@@ -2976,42 +2887,28 @@ export class PaymentTransactionComponent implements OnInit {
           if (objPaymentTypeChip.paymentTypeId == "-2") {
             // For All
             this.campaignlist.forEach((campaign) => {
-              campaign.amount =
-                campaign.amountt != undefined
-                  ? campaign.amountt
-                  : campaign.amount;
-            });
+              campaign.amount = campaign.amountt != undefined ? campaign.amountt : campaign.amount;
+            })
             this.gridFilterData = this.campaignlist;
             this.filterLocalData(this.gridFilterData);
-            this.gridFilterData = this.getUniqueListByKey(
-              this.gridFilterData,
-              "receiptNum"
-            );
+            this.gridFilterData = this.getUniqueListByKey(this.gridFilterData, "receiptNum")
             this.filterRecord = this.gridFilterData.length;
             this.isFiltered = false;
           } else if (objPaymentTypeChip.paymentTypeId == "-1") {
             //For showing no campaign rows & count after clicking on "No campaign" chipcard
             let newGridFilter = [];
             let newGridFilterData = this.nocampaignWithSplitData;
-            newGridFilter = this.gridData.filter(
-              (s) =>
-                s.campaignId == null ||
-                (s.campaignAmounts < s.amount &&
-                  s.campaignAmounts != null &&
-                  s.noCampaignSplit == true)
-            );
+            newGridFilter = this.gridData.filter((s) => s.campaignId == null || (s.campaignAmounts < s.amount && s.campaignAmounts != null && s.noCampaignSplit == true));
             this.gridFilterData = newGridFilterData.concat(newGridFilter);
             this.filterLocalData(this.gridFilterData);
             this.gridFilterData.forEach((campaign) => {
-              campaign.amount =
-                campaign.amountt != undefined
-                  ? campaign.amountt
-                  : campaign.amount;
-            });
+              campaign.amount = campaign.amountt != undefined ? campaign.amountt : campaign.amount;
+            })
             this.filterRecord = this.gridFilterData.length;
             this.isFiltered = true;
             objPaymentTypeChip.paymentCount = this.gridFilterData.length;
           } else {
+
             this.campaignlist.forEach((campaign) => {
               campaign.amount =
                 campaign.amountt != undefined
@@ -3022,6 +2919,7 @@ export class PaymentTransactionComponent implements OnInit {
             this.gridFilterData = this.campaignlist.filter(
               (s) =>
                 s.campaignId && s.campaignId == objPaymentTypeChip.paymentTypeId
+
             );
             //code for adding campaignAmounts total amount in amount field
             this.gridFilterData.map((s) => {
@@ -3034,6 +2932,7 @@ export class PaymentTransactionComponent implements OnInit {
               }
             });
 
+
             this.filterRecord = this.gridFilterData.length;
             this.isFiltered = true;
           }
@@ -3042,44 +2941,36 @@ export class PaymentTransactionComponent implements OnInit {
           if (objPaymentTypeChip.paymentTypeId == "-2") {
             // For All
             this.reasonlist.forEach((reason) => {
-              reason.amount =
-                reason.amountt != undefined ? reason.amountt : reason.amount;
-            });
+              reason.amount = reason.amountt != undefined ? reason.amountt : reason.amount;
+            })
             this.gridFilterData = this.gridData;
             this.filterLocalData(this.gridFilterData);
-            this.gridFilterData = this.getUniqueListByKey(
-              this.gridFilterData,
-              "receiptNum"
-            );
+            this.gridFilterData = this.getUniqueListByKey(this.gridFilterData, "receiptNum")
             this.filterRecord = this.gridFilterData.length;
             this.isFiltered = false;
           } else if (objPaymentTypeChip.paymentTypeId == "-1") {
             let newGridFilter = [];
             let newGridFilterData = this.noReasonWithSplitData;
-            newGridFilter = this.gridData.filter(
-              (s) =>
-                s.reasonId == null || (s.amount < s.amount && s.amount != null)
-            );
+            newGridFilter = this.gridData.filter((s) => s.reasonId == null || (s.amount < s.amount && s.amount != null));
             this.gridFilterData = newGridFilterData.concat(newGridFilter);
             this.filterLocalData(this.gridFilterData);
             this.gridFilterData.forEach((reason) => {
-              reason.amount =
-                reason.amountt != undefined ? reason.amountt : reason.amount;
-            });
+              reason.amount = reason.amountt != undefined ? reason.amountt : reason.amount;
+            })
             this.filterRecord = this.gridFilterData.length;
             this.isFiltered = true;
             objPaymentTypeChip.paymentCount = this.gridFilterData.length;
           } else {
             this.reasonlist.forEach((reason) => {
               reason.amount =
-                reason.amountt != undefined ? reason.amountt : reason.amount;
+                reason.amountt != undefined
+                  ? reason.amountt
+                  : reason.amount;
             });
             this.gridFilterData = this.reasonlist.filter(
               (s) =>
                 s.reasonId &&
-                s.reasonId
-                  .toString()
-                  .includes(objPaymentTypeChip.paymentTypeId.toString())
+                s.reasonId.toString().includes(objPaymentTypeChip.paymentTypeId.toString())
             );
             this.gridFilterData.map((s) => {
               if (s.amount != null) {
@@ -3375,15 +3266,15 @@ export class PaymentTransactionComponent implements OnInit {
               obj.amount.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.receiptNum &&
               obj.receiptNum.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.paymentType &&
               obj.paymentType.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.refNum &&
               obj.refNum.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.approval &&
               obj.approval.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.paymentJewishDate &&
               obj.paymentJewishDate
                 .toString()
@@ -3391,64 +3282,64 @@ export class PaymentTransactionComponent implements OnInit {
                 .indexOf(searchValue) > -1) ||
             (obj.approval &&
               obj.approval.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.accountNum &&
               obj.accountNum.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.fullNameJewish &&
               obj.fullNameJewish.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.colectorName &&
               obj.colectorName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.campaignName &&
               obj.campaignName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.reasonName &&
               obj.reasonName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.device &&
               obj.device.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.locationName &&
               obj.locationName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.note &&
               obj.note.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.fatherInLaw &&
               obj.fatherInLaw.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.batchNum &&
               obj.batchNum.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.class &&
               obj.class.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.father &&
               obj.father.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.emailAddresses &&
               obj.emailAddresses.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.group &&
               obj.group.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.address &&
               obj.address.toString().toLowerCase().indexOf(searchValue) > -1) ||
             (obj.cityStateZip &&
               obj.cityStateZip.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.cardHolderName &&
               obj.cardHolderName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.fullName &&
               obj.fullName.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.scheduleNum &&
               obj.scheduleNum.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.scheduleInfo &&
               obj.scheduleInfo.toString().toLowerCase().indexOf(searchValue) >
-                -1) ||
+              -1) ||
             (obj.phoneNumbers &&
               obj.phoneNumbers.toString().toLowerCase().indexOf(searchValue) >
-                -1)
+              -1)
         );
         this.gridFilterData = filterdRecord;
         record = this.gridFilterData;
@@ -3495,7 +3386,7 @@ export class PaymentTransactionComponent implements OnInit {
         res.globalId = globalId;
         modalRef.componentInstance.PaymentCardData = res;
         modalRef.componentInstance.legalReceiptNum = legalReceiptNum;
-        modalRef.componentInstance.gridFilterData = this.gridFilterData;
+        modalRef.componentInstance.gridFilterData = this.gridFilterData
       });
       modalRef.componentInstance.emtRetryPayment.subscribe(($e) => {
         this.searchPaymentTransactionsData();
@@ -3569,9 +3460,7 @@ export class PaymentTransactionComponent implements OnInit {
               title: "",
               text: "No data found",
               icon: "info",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+              confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
               customClass: {
                 confirmButton: "btn_ok",
               },
@@ -3647,11 +3536,7 @@ export class PaymentTransactionComponent implements OnInit {
       );
       if (donorDetails) {
         let { phoneNumberList, phoneLabels } = donorDetails;
-        let rowColumn = this.commonMethodService.getLabelArray(
-          phoneLabels,
-          phoneNumberList,
-          phoneCountryCodeID
-        );
+        let rowColumn = this.commonMethodService.getLabelArray(phoneLabels, phoneNumberList, phoneCountryCodeID);
         const modalRef = this.commonMethodService.openPopup(
           SendTextreceiptPopupComponent,
           this.modalOptions
@@ -3677,6 +3562,7 @@ export class PaymentTransactionComponent implements OnInit {
     phoneNumberList,
     pledgePayment
   ) {
+
     if (globalId != "688008") {
       this.modalOptions = {
         centered: true,
@@ -3689,13 +3575,10 @@ export class PaymentTransactionComponent implements OnInit {
         (x) => x.paymentId == paymentId
       );
       if (donorDetails) {
+
         let { emailList, emailLabels } = donorDetails;
 
-        let rowColumn = this.commonMethodService.getLabelArray(
-          emailLabels,
-          emailList,
-          null
-        );
+        let rowColumn = this.commonMethodService.getLabelArray(emailLabels, emailList, null);
         const modalRef = this.commonMethodService.openPopup(
           SendEmailreceiptPopupComponent,
           this.modalOptions
@@ -3712,7 +3595,7 @@ export class PaymentTransactionComponent implements OnInit {
               ? phoneNumberList[0]
               : null,
           isPaymentByClicked: true,
-          pledgePayment: pledgePayment,
+          pledgePayment: pledgePayment
         };
       }
     }
@@ -3778,14 +3661,10 @@ export class PaymentTransactionComponent implements OnInit {
             };
           } else {
             Swal.fire({
-              title: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.TRY_AGAIN"
-              ),
+              title: this.commonMethodService.getTranslate('WARNING_SWAL.TRY_AGAIN'),
               text: res.errorResponse,
               icon: "error",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+              confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
               customClass: {
                 confirmButton: "btn_ok",
               },
@@ -3800,9 +3679,7 @@ export class PaymentTransactionComponent implements OnInit {
             title: "Error while fetching data !!",
             text: error.error,
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -3851,6 +3728,7 @@ export class PaymentTransactionComponent implements OnInit {
       this.modalOptions
     );
   }
+
 
   AdvanceMailReceiptAction() {
     this.modalOptions = {
@@ -3908,10 +3786,7 @@ export class PaymentTransactionComponent implements OnInit {
       BulkMailReceiptComponent,
       this.modalOptions
     );
-    modalRef.componentInstance.Info = {
-      type: "Payment",
-      recordSelectedArray: this.recordSelectedArray,
-    };
+    modalRef.componentInstance.Info = { type: "Payment", recordSelectedArray: this.recordSelectedArray };
     modalRef.componentInstance.Duration = this.selectedDateRange;
 
     forkJoin(allValidationReq).subscribe((results) => {
@@ -3965,8 +3840,8 @@ export class PaymentTransactionComponent implements OnInit {
             emailAddresses && emailAddresses.indexOf(",") > -1
               ? emailAddresses.split(",")
               : emailAddresses
-              ? [emailAddresses]
-              : [],
+                ? [emailAddresses]
+                : [],
         };
 
         resultArray.push(newDonotRcd);
@@ -3975,10 +3850,7 @@ export class PaymentTransactionComponent implements OnInit {
 
     // modalRef.componentInstance.List = resultArray;
 
-    modalRef.componentInstance.Info = {
-      type: "Payment",
-      recordSelectedArray: this.recordSelectedArray,
-    };
+    modalRef.componentInstance.Info = { type: "Payment", recordSelectedArray: this.recordSelectedArray };
     modalRef.componentInstance.Duration = this.selectedDateRange;
 
     modalRef.componentInstance.List = _(resultArray)
@@ -4035,7 +3907,7 @@ export class PaymentTransactionComponent implements OnInit {
         title: "Payment is batched!",
         text: "",
         showCancelButton: true,
-        cancelButtonText: this.commonMethodService.getTranslate("CANCEL"),
+        cancelButtonText: this.commonMethodService.getTranslate('CANCEL'),
         confirmButtonText: "Void from portal",
         customClass: {
           cancelButton: "btn-Issue-refund",
@@ -4046,14 +3918,10 @@ export class PaymentTransactionComponent implements OnInit {
           this.onDeletePyament(paymentIdsArray);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: this.commonMethodService.getTranslate("CANCELLED"),
-            text: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.NO_ACTION_TAKEN"
-            ),
+            title: this.commonMethodService.getTranslate('CANCELLED'),
+            text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -4061,14 +3929,10 @@ export class PaymentTransactionComponent implements OnInit {
         }
       });
     } else {
-      this.commonMethodService.featureName = "preset_amounts";
+      this.commonMethodService.featureName = 'preset_amounts'
       this.commonMethodService.getFeatureSettingValues();
-      let btnTxt = this.commonMethodService.isfeatureSetting
-        ? "Confirm"
-        : "Upgrade to save";
-      let btnClass = this.commonMethodService.isfeatureSetting
-        ? "modal-are-you-sure"
-        : "modal-are-you-sure btn-core";
+      let btnTxt = this.commonMethodService.isfeatureSetting ? 'Confirm' : 'Upgrade to save';
+      let btnClass = this.commonMethodService.isfeatureSetting ? 'modal-are-you-sure' : 'modal-are-you-sure btn-core';
       //old code logic
       Swal.fire({
         icon: "warning",
@@ -4076,7 +3940,7 @@ export class PaymentTransactionComponent implements OnInit {
         showClass: {
           popup: `
               swal2-modal-primary
-            `,
+            `
         },
         html: `<div>
                    <h2>Edit ${totalrecords} transactions?</h2>
@@ -4085,14 +3949,13 @@ export class PaymentTransactionComponent implements OnInit {
                </div>`,
         showCloseButton: true,
         confirmButtonText: btnTxt,
-        confirmButtonColor: "#7b5bc4",
-        customClass: { confirmButton: btnClass },
+        confirmButtonColor: '#7b5bc4',
+        customClass: { confirmButton: btnClass, },
 
-        onOpen: function () {},
+        onOpen: function () {
+        },
         didOpen: () => {
-          $(".swal2-actions").on("click", () =>
-            $("#swal2-content + .swal2-input").focus()
-          );
+          $(".swal2-actions").on('click', () => $("#swal2-content + .swal2-input").focus());
         },
         inputValidator: (value: any) => {
           if (value != totalrecords) {
@@ -4100,13 +3963,14 @@ export class PaymentTransactionComponent implements OnInit {
           } else {
           }
         },
+
       }).then((result) => {
         if (result.value) {
           this.isloading = true;
           if (!this.commonMethodService.isfeatureSetting) {
             this.onUpgrade();
             this.isloading = false;
-            return;
+            return
           }
           const formData = {
             LoginUserId: this.localstoragedataService.getLoginUserId(),
@@ -4144,14 +4008,10 @@ export class PaymentTransactionComponent implements OnInit {
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: this.commonMethodService.getTranslate("CANCELLED"),
-            text: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.NO_ACTION_TAKEN"
-            ),
+            title: this.commonMethodService.getTranslate('CANCELLED'),
+            text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -4177,10 +4037,7 @@ export class PaymentTransactionComponent implements OnInit {
       BulkSMSReceiptComponent,
       this.modalOptions
     );
-    modalRef.componentInstance.Info = {
-      type: "Payment",
-      recordSelectedArray: this.recordSelectedArray,
-    };
+    modalRef.componentInstance.Info = { type: "Payment", recordSelectedArray: this.recordSelectedArray };
     modalRef.componentInstance.Duration = this.selectedDateRange;
     modalRef.componentInstance.List = objRes.list;
   }
@@ -4202,19 +4059,13 @@ export class PaymentTransactionComponent implements OnInit {
       var donorDetails = this.gridFilterData.find((x) => x.paymentId == item);
       resultArray.push(donorDetails);
     }
-    resultArray.forEach((element) => {
-      if (
-        element.defaultAddress != null &&
-        element.defaultAddress.indexOf(",") > -1
-      ) {
-        element.defaultAddress = element.defaultAddress.replaceAll(",", "");
+    resultArray.forEach(element => {
+      if (element.defaultAddress != null && element.defaultAddress.indexOf(',') > -1) {
+        element.defaultAddress = element.defaultAddress.replaceAll(',', '');
       }
     });
 
-    modalRef.componentInstance.Info = {
-      type: "Payment",
-      recordSelectedArray: this.recordSelectedArray,
-    };
+    modalRef.componentInstance.Info = { type: "Payment", recordSelectedArray: this.recordSelectedArray };
     modalRef.componentInstance.Duration = this.selectedDateRange;
     // address validation
     let listMailData = _(resultArray)
@@ -4244,9 +4095,7 @@ export class PaymentTransactionComponent implements OnInit {
           Swal.fire({
             title: "This function can only be used on payments from schedule",
             icon: "info",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -4261,11 +4110,11 @@ export class PaymentTransactionComponent implements OnInit {
       var title = totalrecords + " Payments selected";
       Swal.fire({
         title: title,
-        text: this.commonMethodService.getTranslate("WARNING_SWAL.TEXT"),
+        text: this.commonMethodService.getTranslate('WARNING_SWAL.TEXT'),
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, retry it!",
-        cancelButtonText: this.commonMethodService.getTranslate("CANCEL"),
+        cancelButtonText: this.commonMethodService.getTranslate('CANCEL'),
         customClass: {
           confirmButton: "btn_retry",
         },
@@ -4286,9 +4135,7 @@ export class PaymentTransactionComponent implements OnInit {
                 title: "",
                 html: res.errorMessage,
                 icon: res.isSucceed == false ? "error" : "success",
-                confirmButtonText: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                ),
+                confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                 customClass: {
                   confirmButton: "btn_ok",
                 },
@@ -4303,14 +4150,10 @@ export class PaymentTransactionComponent implements OnInit {
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: this.commonMethodService.getTranslate("CANCELLED"),
-            text: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.NO_ACTION_TAKEN"
-            ),
+            title: this.commonMethodService.getTranslate('CANCELLED'),
+            text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -4327,7 +4170,7 @@ export class PaymentTransactionComponent implements OnInit {
       if (event.target.checked) {
         this.isSelected = true;
         this.recordSelectedArray = [];
-        this.gridFilterData.map((element) => {
+        this.gridFilterData.map(element => {
           if (
             element.paymentStatus == "Declined" ||
             element.paymentStatus == "Error"
@@ -4336,7 +4179,7 @@ export class PaymentTransactionComponent implements OnInit {
             this.retrySelectedArray.push(element.paymentId);
           }
           this.recordSelectedArray.push(element.paymentId);
-        });
+        })
       } else {
         this.isSelected = false;
         this.isRetrySelected = false;
@@ -4459,16 +4302,12 @@ export class PaymentTransactionComponent implements OnInit {
         });
       } else {
         Swal.fire({
-          title: this.commonMethodService.getTranslate("WARNING_SWAL.TITLE"),
-          text: this.commonMethodService.getTranslate("WARNING_SWAL.TEXT"),
+          title: this.commonMethodService.getTranslate('WARNING_SWAL.TITLE'),
+          text: this.commonMethodService.getTranslate('WARNING_SWAL.TEXT'),
           icon: "warning",
           showCancelButton: true,
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT"
-          ),
-          cancelButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT'),
+          cancelButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT'),
         }).then((result) => {
           if (result.value) {
             this.isloading = true;
@@ -4488,19 +4327,10 @@ export class PaymentTransactionComponent implements OnInit {
                   if (res.status == "Success") {
                     let transformedText = this.getTransformedText(res.message);
                     Swal.fire({
-                      title: this.commonMethodService.getTranslate(
-                        "WARNING_SWAL.SUCCESS_TITLE"
-                      ),
-                      text:
-                        paymentType == "Cash"
-                          ? this.commonMethodService.getTranslate(
-                              transformedText
-                            )
-                          : res.message,
+                      title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
+                      text: paymentType == 'Cash' ? this.commonMethodService.getTranslate(transformedText) : res.message,
                       icon: "success",
-                      confirmButtonText: this.commonMethodService.getTranslate(
-                        "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                      ),
+                      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                       customClass: {
                         confirmButton: "btn_ok",
                       },
@@ -4510,14 +4340,10 @@ export class PaymentTransactionComponent implements OnInit {
                     this.deletePayment(paymentId, res.message, currencyAmount);
                   } else {
                     Swal.fire({
-                      title: this.commonMethodService.getTranslate(
-                        "WARNING_SWAL.TRY_AGAIN"
-                      ),
+                      title: this.commonMethodService.getTranslate('WARNING_SWAL.TRY_AGAIN'),
                       text: res.errorResponse,
                       icon: "error",
-                      confirmButtonText: this.commonMethodService.getTranslate(
-                        "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                      ),
+                      confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                       customClass: {
                         confirmButton: "btn_ok",
                       },
@@ -4529,14 +4355,10 @@ export class PaymentTransactionComponent implements OnInit {
                 this.isloading = false;
                 console.log(error);
                 Swal.fire({
-                  title: this.commonMethodService.getTranslate(
-                    "WARNING_SWAL.SOMETHING_WENT_WRONG"
-                  ),
+                  title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
                   text: error.error,
                   icon: "error",
-                  confirmButtonText: this.commonMethodService.getTranslate(
-                    "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                  ),
+                  confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                   customClass: {
                     confirmButton: "btn_ok",
                   },
@@ -4545,14 +4367,10 @@ export class PaymentTransactionComponent implements OnInit {
             );
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
-              title: this.commonMethodService.getTranslate("CANCELLED"),
-              text: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.NO_ACTION_TAKEN"
-              ),
+              title: this.commonMethodService.getTranslate('CANCELLED'),
+              text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
               icon: "error",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+              confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
               customClass: {
                 confirmButton: "btn_ok",
               },
@@ -4568,6 +4386,7 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   editPaymentPopup(paymentId, paymentType, refNum) {
+
     this.modalOptions = {
       centered: true,
       size: "lg",
@@ -4583,6 +4402,7 @@ export class PaymentTransactionComponent implements OnInit {
     this.paymentService
       .EditPayment(eventGuId, paymentId)
       .subscribe((res: any) => {
+
         // hide loader
         this.isloading = false;
         modalRef.componentInstance.EditPaymentData = res;
@@ -4625,35 +4445,30 @@ export class PaymentTransactionComponent implements OnInit {
     }
     this.paymentTransactionService
       .getTransactionData(objsearchPaymentTrans)
-      .subscribe((res: any) => {
-        let results = res && res.paymentTransGridModel;
-        const fiterResults = results.filter((o) => {
-          if (!this.objAdvancedSearch) {
-            return true;
-          }
-          return this.inAllFields(o);
-        });
+      .subscribe(
+        (res: any) => {
+          let results = res && res.paymentTransGridModel;
+          const fiterResults = results.filter((o) => {
+            if (!this.objAdvancedSearch) {
+              return true;
+            }
+            return this.inAllFields(o);
+          });
 
-        this.downloadExcel(this.gridFilterData);
-      });
+          this.downloadExcel(this.gridFilterData);
+        });
   }
 
   downloadExcel(results) {
     let data = [];
-    this.isdownloadExcelGuid =
-      this.commonMethodService.idDownloadExcelEventGuid();
-    let addressValue: {
-      houseNumber: string;
-      streetName: string;
-      apartment: string;
-    };
+    this.isdownloadExcelGuid = this.commonMethodService.idDownloadExcelEventGuid();
+    let addressValue: { houseNumber: string, streetName: string, apartment: string };
     if (results) {
       Object.values(results).forEach((item: any, i) => {
         let cityStateZipArr = [];
         if (item && item.cityStateZip) {
           cityStateZipArr = this.getCityStateZip(item.cityStateZip);
-          if (cityStateZipArr && cityStateZipArr.length === 2)
-            cityStateZipArr.splice(1, 0, "");
+          if (cityStateZipArr && cityStateZipArr.length === 2) cityStateZipArr.splice(1, 0, '');
         }
 
         addressValue = this.getAddress(item.address);
@@ -4706,7 +4521,7 @@ export class PaymentTransactionComponent implements OnInit {
         let CurrencyName = item && item.currencyName;
         let GatewayBatchNum = item && item.gatewayBatchNum;
         let PaymentJewishDate = item && item.paymentJewishDate;
-        let legalReceipt = item && item.legalReceiptNum;
+        let legalReceipt = item && item.legalReceiptNum
 
         let row = {};
         let identifier = 0;
@@ -4716,19 +4531,14 @@ export class PaymentTransactionComponent implements OnInit {
           identifier += 1;
         }
         if (this.isPaymentDateTimeColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("PAYMENTDATE")
-            : "Payment Date";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('PAYMENTDATE') : "Payment Date";
           if (this.isdownloadExcelGuid) {
             row[ColName] = {
               v: this.datePipe.transform(item.paymentDateTime, "name"),
-              t: "d", // 'd' indicates the cell should be treated as a date type in Excel
+              t: 'd' // 'd' indicates the cell should be treated as a date type in Excel
             };
           } else {
-            row[ColName] = this.datePipe.transform(
-              item.paymentDateTime,
-              "name"
-            );
+            row[ColName] = this.datePipe.transform(item.paymentDateTime, "name");
           }
           identifier += 1;
         }
@@ -4737,33 +4547,25 @@ export class PaymentTransactionComponent implements OnInit {
           identifier += 1;
         }
         if (this.isPaymentCreatedDateColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("CREATEDDATETIME")
-            : "Created Date & Time";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('CREATEDDATETIME') : "Created Date & Time";
           if (this.isdownloadExcelGuid) {
             row[ColName] = {
               v: this.datePipe.transform(item.createdDate, "name-long"),
-              t: "d",
+              t: 'd'
             };
           } else {
-            row[ColName] = this.datePipe.transform(
-              item.createdDate,
-              "name-long"
-            );
+
+            row[ColName] = this.datePipe.transform(item.createdDate, "name-long");
           }
           identifier += 1;
         }
         if (this.isPaymentAmountColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("AMOUNT")
-            : "Amount";
-          row[ColName] = Number(item.currencyAmount);
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('AMOUNT') : "Amount";
+          row[ColName] = Number(item.currencyAmount)
           identifier += 1;
         }
         if (this.isPaymentTypeColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("PAYMENTTYPE")
-            : "Payment Type";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('PAYMENTTYPE') : "Payment Type";
           row[ColName] = PaymentType;
           identifier += 1;
         }
@@ -4772,88 +4574,62 @@ export class PaymentTransactionComponent implements OnInit {
           identifier += 1;
         }
         if (this.isPaymentApprovalColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("APPROVAL")
-            : "Approval";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('APPROVAL') : "Approval";
           row[ColName] = Approval;
           identifier += 1;
         }
         if (this.isPaymentRefNoColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("REF#")
-            : "Ref #";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('REF#') : "Ref #";
           row[ColName] = RefNum;
           identifier += 1;
         }
         if (this.isPaymentStatusColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("STATUS")
-            : "Status";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('STATUS') : "Status";
           row[ColName] = PaymentStatus;
         }
         if (this.isPaymentScheduleNoColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("SCHEDULE#")
-            : "Schedule #";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('SCHEDULE#') : "Schedule #";
           row[ColName] = ScheduleNo;
         }
         if (this.isPaymentScheduleInfoColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("SCHEDULEINFO")
-            : "Schedule Info";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('SCHEDULEINFO') : "Schedule Info";
           row[ColName] = ScheduleInfo;
         }
         if (this.isPaymentCardHolderColVisible) {
           row["Card Holder Name"] = CardHolderName;
         }
         if (this.isPaymentNoteColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("NOTE")
-            : "Note";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('NOTE') : "Note";
           row[ColName] = Note;
         }
         if (this.isPaymentCampaignColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("CAMPAIGN")
-            : "Campaign";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('CAMPAIGN') : "Campaign";
           row[ColName] = Campaign;
         }
         if (this.isPaymentReasonColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("REASON")
-            : "Reason";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('REASON') : "Reason";
           row[ColName] = Reason;
         }
         if (this.isPaymentReasonNumColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("REASON#")
-            : "Reason#";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('REASON#') : "Reason#";
           row[ColName] = ReasonNum;
         }
         if (this.isPaymentLocationColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("LOCATION")
-            : "Location";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('LOCATION') : "Location";
           row[ColName] = Location;
         }
 
         if (this.isPaymentCollectorColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("COLLECTOR")
-            : "Collector";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('COLLECTOR') : "Collector";
           row[ColName] = Collector;
         }
         if (this.isPaymentDeviceColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("SOURCE")
-            : "Source";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('SOURCE') : "Source";
           row[ColName] = Device;
         }
 
         if (this.isPaymentAccountNoColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("ACCOUNT#")
-            : "Account #";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('ACCOUNT#') : "Account #";
           row[ColName] = AccountNum;
         }
 
@@ -4861,26 +4637,18 @@ export class PaymentTransactionComponent implements OnInit {
           row["Donor English Name"] = FullName;
         }
         if (this.isPaymentAddressColVisible) {
-          row["House Num"] = (addressValue && addressValue.houseNumber) || "";
-          row["Street Name"] = (addressValue && addressValue.streetName) || "";
-          row["Apt"] = (addressValue && addressValue.apartment) || "";
+          row["House Num"] = addressValue && addressValue.houseNumber || '';
+          row["Street Name"] = addressValue && addressValue.streetName || '';
+          row["Apt"] = addressValue && addressValue.apartment || '';
         }
         if (this.isPaymentCityStateZipColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("CITY")
-            : "City";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('CITY') : "City";
           row[ColName] = City;
-          let ColName2: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("STATE")
-            : "State";
+          let ColName2: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('STATE') : "State";
           row[ColName2] = State;
-          let ColName3: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("ZIP")
-            : "Zip";
+          let ColName3: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('ZIP') : "Zip";
           row[ColName3] = Zip;
-          let ColName4: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("COUNTRY")
-            : "Country";
+          let ColName4: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('COUNTRY') : "Country";
           row[ColName4] = Country;
         }
         if (this.isPaymentPhoneNumberColVisible) {
@@ -4901,82 +4669,56 @@ export class PaymentTransactionComponent implements OnInit {
           }
         }
         if (this.isPaymentEmailColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("EMAIL")
-            : "Email";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('EMAIL') : "Email";
           row[ColName] = Email;
         }
         if (this.isPaymentBatchNumColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("BATCH#")
-            : "Batch #";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('BATCH#') : "Batch #";
           row[ColName] = BatchNum;
         }
         if (this.isPaymentGroupColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("GROUP")
-            : "Group";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('GROUP') : "Group";
           row[ColName] = Group;
         }
         if (this.isPaymentClassColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("CLASS")
-            : "Class";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('CLASS') : "Class";
           row[ColName] = Class;
         }
         if (this.isPaymentFatherColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("FATHER")
-            : "Father";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('FATHER') : "Father";
           row[ColName] = Father;
         }
         if (this.isPaymentFatherInLawColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("FATHERINLAW")
-            : "Father in law";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('FATHERINLAW') : "Father in law";
           row[ColName] = FatherInLaw;
         }
         //added new
         if (this.isPaymentEnglishTitleColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("ENGLISHTITLE")
-            : "English Title";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('ENGLISHTITLE') : "English Title";
           row[ColName] = Title;
         }
         if (this.isPaymentFirstNameColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("ENGLISHFIRSTNAME")
-            : "English First name";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('ENGLISHFIRSTNAME') : "English First name";
           row[ColName] = FirstName;
         }
         if (this.isPaymentLastNameColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("ENGLISHLASTNAME")
-            : "English Last name";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('ENGLISHLASTNAME') : "English Last name";
           row[ColName] = LastName;
         }
         if (this.isPaymentTitleJewishColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("YIDDISHFIRSTTITLE")
-            : "Yiddish First Title";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('YIDDISHFIRSTTITLE') : "Yiddish First Title";
           row[ColName] = TitleJewish;
         }
         if (this.isPaymentFirstNameJewishColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("YIDDISHFIRSTNAME")
-            : "Yiddish First name";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('YIDDISHFIRSTNAME') : "Yiddish First name";
           row[ColName] = FirstNameJewish;
         }
         if (this.isPaymentLastNameJewishColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("YIDDISHLASTNAME")
-            : "Yiddish Last name";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('YIDDISHLASTNAME') : "Yiddish Last name";
           row[ColName] = LastNameJewish;
         }
         if (this.isPaymentSuffixJewishColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("YIDDISHLASTTITLE")
-            : "Yiddish Last Title";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('YIDDISHLASTTITLE') : "Yiddish Last Title";
           row[ColName] = SuffixJewish;
         }
         if (this.isPledgePaymentColVisible) {
@@ -4984,23 +4726,21 @@ export class PaymentTransactionComponent implements OnInit {
         }
         if (this.isCurrencyAmountColVisible) {
           row["Converted Amount"] = Amount;
+
         }
         if (this.isCurrencyTypeColVisible) {
           row["Currency Type"] = CurrencyName;
         }
         if (this.isTagsColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("TAGS")
-            : "Tags";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('TAGS') : "Tags";
           row[ColName] = item.tagNames;
         }
         if (this.isGateWayBatchColVisible) {
+
           row["Gateway batch#"] = GatewayBatchNum;
         }
         if (this.isPaymentJewishDateColVisible) {
-          let ColName: any = this.isdownloadExcelGuid
-            ? this.commonMethodService.getColName("HEBREWDATE")
-            : "Hebrew Date";
+          let ColName: any = this.isdownloadExcelGuid ? this.commonMethodService.getColName('HEBREWDATE') : "Hebrew Date";
           row[ColName] = PaymentJewishDate;
         }
         if (
@@ -5014,7 +4754,7 @@ export class PaymentTransactionComponent implements OnInit {
           ) {
             const element = item.advancedFieldNameAndValue[index];
             if (this.isCheckedFieldsLabel(element.fieldname, 1)) {
-              if (element.fieldValue && element.fieldValue != "null") {
+              if (element.fieldValue && element.fieldValue != 'null') {
                 row[element.fieldname] = element.fieldValue;
               }
             }
@@ -5061,7 +4801,7 @@ export class PaymentTransactionComponent implements OnInit {
       }
 
       let fmt = '"$"#,##0.00_);\\("$"#,##0.00\\)';
-      let _currencyFormat = "$#,##0.00";
+      let _currencyFormat = '$#,##0.00';
       for (var R = range.s.r; R <= range.e.r; ++R) {
         if (R == 0) continue;
         if (!!amountColumn) {
@@ -5071,6 +4811,7 @@ export class PaymentTransactionComponent implements OnInit {
             worksheet[amount_cell_ref].t = "n";
             //worksheet[amount_cell_ref].z = fmt;
             worksheet[amount_cell_ref].z = _currencyFormat;
+
           }
         }
 
@@ -5121,6 +4862,7 @@ export class PaymentTransactionComponent implements OnInit {
         cellStyles: true,
       });
 
+
       const excelData: Blob = new Blob([excelBuffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });
@@ -5133,30 +4875,25 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   RetryPayment(paymentId, walletId) {
-    this.isRetryClicked = true;
+    this.isRetryClicked = true
     this.isloading = true;
     const objRetryPayment = {
       PaymentId: paymentId,
       WalletId: walletId,
       UpdatedBy: this.localstoragedataService.getLoginUserId(),
-      uniqueTransactionId:
-        this.commonMethodService.generateUniqueTransactionId(),
+      uniqueTransactionId: this.commonMethodService.generateUniqueTransactionId()
     };
 
     this.paymentService.RetryPayment(objRetryPayment).subscribe(
       (res: any) => {
-        this.isRetryClicked = false;
+        this.isRetryClicked = false
         this.isloading = false;
         if (res.paymentStatus === "Success") {
           Swal.fire({
-            title: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.SUCCESS_TITLE"
-            ),
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
             text: "Payment done successfully",
             icon: "success",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -5165,14 +4902,10 @@ export class PaymentTransactionComponent implements OnInit {
           });
         } else {
           Swal.fire({
-            title: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.TRY_AGAIN"
-            ),
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.TRY_AGAIN'),
             text: res.errorResponse,
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -5191,34 +4924,32 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   getCityStateZip(cityStateZip: string) {
+
     let CSZLength: number = cityStateZip.split(" ").length;
     let CSZArr: string[] = [];
     if (CSZLength > 3) {
       const input = cityStateZip;
       CSZArr = input.match(/.*?,.*?\s*,|\b\d{5}\b|[A-Za-z\s]+[A-Za-z]{2}/g);
+      return CSZArr
+    }
+
+    else if (/^\d+$/.test(cityStateZip)) {
+      CSZArr[2] = cityStateZip
       return CSZArr;
-    } else if (/^\d+$/.test(cityStateZip)) {
-      CSZArr[2] = cityStateZip;
-      return CSZArr;
-    } else return cityStateZip.split(" ");
+    }
+    else return cityStateZip.split(" ")
+
   }
 
   getAddress(address: string) {
-    const regex =
-      /^(?<houseNumber>-?\s*\d+(?:(\s|\-)+\d+)*)\s+(?<streetName>[A-Za-z0-9]+.*?)\s*(?<apartment>[A-Za-z0-9]*[^\s]*)?$/;
+    const regex = /^(?<houseNumber>-?\s*\d+(?:(\s|\-)+\d+)*)\s+(?<streetName>[A-Za-z0-9]+.*?)\s*(?<apartment>[A-Za-z0-9]*[^\s]*)?$/;
     const match = address?.match(regex);
 
     if (match) {
       return {
-        houseNumber: match.groups.houseNumber
-          ? match.groups.houseNumber.trim()
-          : null,
-        streetName: match.groups.streetName
-          ? match.groups.streetName.trim()
-          : null,
-        apartment: match.groups.apartment
-          ? match.groups.apartment.trim()
-          : null,
+        houseNumber: match.groups.houseNumber ? match.groups.houseNumber.trim() : null,
+        streetName: match.groups.streetName ? match.groups.streetName.trim() : null,
+        apartment: match.groups.apartment ? match.groups.apartment.trim() : null
       };
     } else {
       return null;
@@ -5381,9 +5112,7 @@ export class PaymentTransactionComponent implements OnInit {
           row["Donor Jewish Name"] = FullNameJewish;
         }
         if (this.isPaymentAmountColVisible) {
-          row["Amount"] = this.commonMethodService.formatAmount(
-            item.currencyAmount
-          );
+          row["Amount"] = this.commonMethodService.formatAmount(item.currencyAmount);
         }
         if (this.isPaymentTypeColVisible) {
           row["Payment Type"] = PaymentType;
@@ -5577,9 +5306,8 @@ export class PaymentTransactionComponent implements OnInit {
       "amount"
     );
     data.forEach((campaign) => {
-      campaign.amount =
-        campaign.amountt != undefined ? campaign.amountt : campaign.amount;
-    });
+      campaign.amount = campaign.amountt != undefined ? campaign.amountt : campaign.amount;
+    })
     this.cardTypeChange(this.cardType);
     this.changeSortType(this.sortType);
     this.recordSelectedArray = [];
@@ -5607,23 +5335,13 @@ export class PaymentTransactionComponent implements OnInit {
       this.inMaxDate(o) &&
       this.inBatch(o) &&
       this.inArray(this.objAdvancedSearch.donors, o.accountId) &&
-      this.inArrayNew(
-        this.objAdvancedSearch.collectors,
-        o.collectorId,
-        o,
-        "collector"
-      ) &&
+      this.inArrayNew(this.objAdvancedSearch.collectors, o.collectorId, o, 'collector') &&
       this.inArrayCampaign(this.objAdvancedSearch.campaigns, o.campaignId, o) &&
       this.inArray(this.objAdvancedSearch.paymentTypes, o.paymentTypeId) &&
       this.inArrayReason(this.objAdvancedSearch.paymentReason, o.reasonId, o) &&
       this.inArray(this.objAdvancedSearch.paymentDevices, o.deviceId) &&
       this.inArray(this.objAdvancedSearch.paymentStatus, o.paymentStatusId) &&
-      this.inArrayNew(
-        this.objAdvancedSearch.locations,
-        o.locationId,
-        o,
-        "location"
-      ) &&
+      this.inArrayNew(this.objAdvancedSearch.locations, o.locationId, o, 'location') &&
       this.inArrayValue(this.objAdvancedSearch.approvals, o.approval) &&
       this.inAdavcedFieldArrayNew(
         this.objAdvancedSearch.AdvancedFields,
@@ -5683,16 +5401,11 @@ export class PaymentTransactionComponent implements OnInit {
     }
     return false;
   }
-  inArrayNew(
-    filterKeyArray: Array<{ id: number }> | null,
-    rowFieldValue: any,
-    o,
-    type: string
-  ) {
+  inArrayNew(filterKeyArray: Array<{ id: number }> | null, rowFieldValue: any, o, type: string) {
     if (!filterKeyArray || filterKeyArray.length === 0) {
       return true;
     }
-    const found = filterKeyArray.some((el) => {
+    const found = filterKeyArray.some(el => {
       if (type == "collector") {
         if (el.id === -1) {
           return o.collectorId === null;
@@ -5787,6 +5500,7 @@ export class PaymentTransactionComponent implements OnInit {
     }
 
     return false;
+
   }
 
   inBatch(o) {
@@ -5875,16 +5589,14 @@ export class PaymentTransactionComponent implements OnInit {
       status.includes("OneGiv could not be supported void")
     ) {
       Swal.fire({
-        title: this.commonMethodService.getTranslate("WARNING_SWAL.TITLE"),
+        title: this.commonMethodService.getTranslate('WARNING_SWAL.TITLE'),
         html:
           status +
           "<br> Payment cannot be voided.<br> This action will remove payment from DRM",
         icon: "warning",
         showCancelButton: true,
         cancelButtonText: "Delete",
-        denyButtonText: this.commonMethodService.getTranslate(
-          "WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT"
-        ),
+        denyButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT'),
         confirmButtonText: "Refund",
         showDenyButton: true,
         customClass: {
@@ -5938,19 +5650,15 @@ export class PaymentTransactionComponent implements OnInit {
               this.isloading = false;
               ///
               Swal.fire({
-                title: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.SUCCESS_TITLE"
-                ),
+                title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
                 text: res,
                 icon: "success",
-                confirmButtonText: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                ),
+                confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                 customClass: {
                   confirmButton: "btn_ok",
                 },
               }).then(() => {
-                this.commonMethodService.sendPaymentTrans(true);
+                this.commonMethodService.sendPaymentTrans(true)
               });
               ///
             },
@@ -5960,14 +5668,10 @@ export class PaymentTransactionComponent implements OnInit {
           );
         } else if (result.isDenied) {
           Swal.fire({
-            title: this.commonMethodService.getTranslate("CANCELLED"),
-            text: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.NO_ACTION_TAKEN"
-            ),
+            title: this.commonMethodService.getTranslate('CANCELLED'),
+            text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -5976,18 +5680,14 @@ export class PaymentTransactionComponent implements OnInit {
       });
     } else {
       Swal.fire({
-        title: this.commonMethodService.getTranslate("WARNING_SWAL.TITLE"),
+        title: this.commonMethodService.getTranslate('WARNING_SWAL.TITLE'),
         html:
           status +
           "</br> Payment cannot be voided.<br> This action will remove payment from DRM",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: this.commonMethodService.getTranslate(
-          "WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT"
-        ),
-        cancelButtonText: this.commonMethodService.getTranslate(
-          "WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT"
-        ),
+        confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.YES_VOID_IT'),
+        cancelButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CANCEL.NO_KEEP_IT'),
       }).then((result) => {
         if (result.value) {
           var paymentIdsArray = [];
@@ -6001,14 +5701,10 @@ export class PaymentTransactionComponent implements OnInit {
               this.isloading = false;
               ///
               Swal.fire({
-                title: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.SUCCESS_TITLE"
-                ),
+                title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
                 text: res,
                 icon: "success",
-                confirmButtonText: this.commonMethodService.getTranslate(
-                  "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                ),
+                confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                 customClass: {
                   confirmButton: "btn_ok",
                 },
@@ -6017,8 +5713,7 @@ export class PaymentTransactionComponent implements OnInit {
                   paymentId: paymentId,
                   loginUserId: this.localstoragedataService.getLoginUserId(),
                   macAddress: this.localstoragedataService.getLoginUserGuid(),
-                  eventGuId:
-                    this.localstoragedataService.getLoginUserEventGuId(),
+                  eventGuId: this.localstoragedataService.getLoginUserEventGuId(),
                   IsSkipGateway: true,
                 };
                 this.paymentService
@@ -6030,15 +5725,10 @@ export class PaymentTransactionComponent implements OnInit {
                         : res.message;
                       if (res.status == "Success") {
                         Swal.fire({
-                          title: this.commonMethodService.getTranslate(
-                            "WARNING_SWAL.SUCCESS_TITLE"
-                          ),
+                          title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
                           text: res.message,
                           icon: "success",
-                          confirmButtonText:
-                            this.commonMethodService.getTranslate(
-                              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                            ),
+                          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                           customClass: {
                             confirmButton: "btn_ok",
                           },
@@ -6047,15 +5737,10 @@ export class PaymentTransactionComponent implements OnInit {
                         });
                       } else if (res.status == "Error") {
                         Swal.fire({
-                          title: this.commonMethodService.getTranslate(
-                            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-                          ),
+                          title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
                           text: res.message,
                           icon: "error",
-                          confirmButtonText:
-                            this.commonMethodService.getTranslate(
-                              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-                            ),
+                          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
                           customClass: {
                             confirmButton: "btn_ok",
                           },
@@ -6072,14 +5757,10 @@ export class PaymentTransactionComponent implements OnInit {
           );
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: this.commonMethodService.getTranslate("CANCELLED"),
-            text: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.NO_ACTION_TAKEN"
-            ),
+            title: this.commonMethodService.getTranslate('CANCELLED'),
+            text: this.commonMethodService.getTranslate('WARNING_SWAL.NO_ACTION_TAKEN'),
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -6099,14 +5780,10 @@ export class PaymentTransactionComponent implements OnInit {
       (res: any) => {
         this.isloading = false;
         Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SUCCESS_TITLE"
-          ),
+          title: this.commonMethodService.getTranslate('WARNING_SWAL.SUCCESS_TITLE'),
           text: res,
           icon: "success",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -6133,9 +5810,7 @@ export class PaymentTransactionComponent implements OnInit {
         Swal.fire({
           text: res.message,
           icon: res.status.toLowerCase(),
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -6145,7 +5820,8 @@ export class PaymentTransactionComponent implements OnInit {
       }
     });
   }
-  checkRefundAmount() {}
+  checkRefundAmount() {
+  }
   // import
   changeText = "";
   file: File;
@@ -6214,9 +5890,7 @@ export class PaymentTransactionComponent implements OnInit {
               title: "",
               text: res + " see import updates in users email",
               icon: "success",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+              confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
               customClass: {
                 confirmButton: "btn_ok",
               },
@@ -6231,14 +5905,10 @@ export class PaymentTransactionComponent implements OnInit {
           (err) => {
             this.isloadingModel = false;
             Swal.fire({
-              title: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.SOMETHING_WENT_WRONG"
-              ),
+              title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
               text: err.error,
               icon: "error",
-              confirmButtonText: this.commonMethodService.getTranslate(
-                "WARNING_SWAL.BUTTON.CONFIRM.OK"
-              ),
+              confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
               customClass: {
                 confirmButton: "btn_ok",
               },
@@ -6248,14 +5918,10 @@ export class PaymentTransactionComponent implements OnInit {
       } else {
         this.isloadingModel = false;
         Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-          ),
+          title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
           text: "No file chosen",
           icon: "error",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -6264,14 +5930,10 @@ export class PaymentTransactionComponent implements OnInit {
     } else {
       this.isloadingModel = false;
       Swal.fire({
-        title: this.commonMethodService.getTranslate(
-          "WARNING_SWAL.SOMETHING_WENT_WRONG"
-        ),
+        title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
         text: "No file chosen",
         icon: "error",
-        confirmButtonText: this.commonMethodService.getTranslate(
-          "WARNING_SWAL.BUTTON.CONFIRM.OK"
-        ),
+        confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
         customClass: {
           confirmButton: "btn_ok",
         },
@@ -6283,9 +5945,11 @@ export class PaymentTransactionComponent implements OnInit {
     const itemArr = [];
 
     this.gridData.map((x) => {
+
       const advancedFieldNames = x.advancedFieldNames
         ? x.advancedFieldNames.split(",")
         : null;
+
 
       if (advancedFieldNames) {
         for (let index = 0; index < advancedFieldNames.length; index++) {
@@ -6299,7 +5963,7 @@ export class PaymentTransactionComponent implements OnInit {
                 isVisible: false,
                 colId: trimValue.toLowerCase().replace(/\s/g, "") + "Id",
                 sortName: trimValue,
-                isAdvancedField: true,
+                isAdvancedField: true
               });
             }
           }
@@ -6319,11 +5983,13 @@ export class PaymentTransactionComponent implements OnInit {
       }
     });
 
+
     //bind selected column
     itemArr.map(function (x) {
       let result = selectedColumns.filter((a1) => a1.colName == x.colName);
       if (result.length > 0) {
         x.isVisible = result[0].isVisible;
+
       }
       return x;
     });
@@ -6333,13 +5999,11 @@ export class PaymentTransactionComponent implements OnInit {
           return {
             ...o,
             items: o.items.map((oi) => {
-              const isAdvancedField = itemArr.find((inObj) => {
-                return inObj.colId === oi.colId;
-              });
+              const isAdvancedField = itemArr.find((inObj) => { return inObj.colId === oi.colId })
               return {
                 ...oi,
-                isAdvancedField: isAdvancedField ? true : false,
-              };
+                isAdvancedField: isAdvancedField ? true : false
+              }
             }),
           };
         }
@@ -6348,41 +6012,39 @@ export class PaymentTransactionComponent implements OnInit {
           items: itemArr,
         };
       });
-    } else {
+    }
+    else {
       this.colFields = this.colFields.map((o) => {
         if (o.id !== 2) {
           return {
             ...o,
             items: o.items.map((oi) => {
-              const isAdvancedField = itemArr.find((inObj) => {
-                return inObj.colId === oi.colId;
-              });
+              const isAdvancedField = itemArr.find((inObj) => { return inObj.colId === oi.colId })
               return {
                 ...oi,
-                isAdvancedField: isAdvancedField ? true : false,
-              };
+                isAdvancedField: isAdvancedField ? true : false
+              }
             }),
           };
         }
         return {
           ...o,
           items: o.items.map((oi) => {
-            const isAdvancedField = itemArr.find((inObj) => {
-              return inObj.colName === oi.colName;
-            });
+            const isAdvancedField = itemArr.find((inObj) => { return inObj.colName === oi.colName })
             return {
               ...oi,
-              isAdvancedField: isAdvancedField ? true : false,
-            };
+              isAdvancedField: isAdvancedField ? true : false
+            }
           }),
         };
       });
+
     }
     this.colFields.map((o) => {
       if (o.id == 2) {
-        o.items = o.items.filter((obj) => obj.isAdvancedField == true);
+        o.items = o.items.filter((obj) => obj.isAdvancedField == true)
       }
-    });
+    })
   }
 
   dropGroupItem(event: CdkDragDrop<string[]>) {
@@ -6393,7 +6055,9 @@ export class PaymentTransactionComponent implements OnInit {
         event.currentIndex
       );
     }
+
   }
+
 
   checkGridAdvancedColVisibilityIfMove(id) {
     const advGroup = this.colFields.find((o) => {
@@ -6430,14 +6094,15 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   setGridAdvancedColVisibility(id) {
-    const targetObject = this.colFields.find((o) => o.id === 2);
+    const targetObject = this.colFields.find(o => o.id === 2);
     if (targetObject) {
-      const targetItem = targetObject.items.find((v) => v.colId === id);
+      const targetItem = targetObject.items.find(v => v.colId === id);
       if (targetItem) {
         targetItem.isVisible = targetItem.isVisible;
       }
     }
   }
+
 
   viewOfAdvanceFieldValue(name, item) {
     if (!item) {
@@ -6457,22 +6122,22 @@ export class PaymentTransactionComponent implements OnInit {
   }
 
   checkIsAdvanceFieldColId(value) {
-    return typeof value === "number";
+    return typeof value === 'number'
   }
   dropGroupItemAdavance(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
+
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
+    }
+    else {
+      transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex
-      );
+        event.currentIndex);
     }
   }
   paymentSelectedTotalCount() {
@@ -6519,9 +6184,8 @@ export class PaymentTransactionComponent implements OnInit {
       this.isSelectPopupShow = true;
       event.target.checked = false;
       this.isBulkCheckbox = false;
-      let count = $("#paymentTypePayment tr").length;
-      this.displayThisPageCount =
-        this.gridFilterData && this.gridFilterData.length > 0 ? count - 1 : 0;
+      let count = $('#paymentTypePayment tr').length;
+      this.displayThisPageCount = this.gridFilterData && this.gridFilterData.length > 0 ? count - 1 : 0;
       return;
     }
     this.isSelected = false;
@@ -6539,7 +6203,7 @@ export class PaymentTransactionComponent implements OnInit {
     this.isSelected = true;
     this.recordSelectedArray = this.displayThisPageArray;
     this.retrySelectedArray = [];
-    this.gridFilterData.map((element) => {
+    this.gridFilterData.map(element => {
       if (
         element.paymentStatus == "Declined" ||
         element.paymentStatus == "Error"
@@ -6549,7 +6213,7 @@ export class PaymentTransactionComponent implements OnInit {
           this.retrySelectedArray.push(element.paymentId);
         }
       }
-    });
+    })
     this.isSelectPopupShow = false;
     this.paymentSelectedTotalCount();
   }
@@ -6557,63 +6221,41 @@ export class PaymentTransactionComponent implements OnInit {
     this.isSelectPopupShow = false;
   }
   onClickedOutsidePopover(p1: any) {
-    if (!(event.target as HTMLElement).closest(".popover")) {
+    if (!(event.target as HTMLElement).closest('.popover')) {
       p1.close();
     } else {
     }
   }
   openHebrewCalendarPopup() {
-    this.commonMethodService.featureName = null;
+    this.commonMethodService.featureName = null
     this.isOpen = true;
-    this.commonMethodService.openCalendarPopup(
-      this.class_id,
-      this.class_hid,
-      this.selectedDateRange,
-      false,
-      "paymentTransactionsCalender"
-    );
-    this.calendarSubscription = this.commonMethodService
-      .getCalendarArray()
-      .subscribe((items) => {
-        if (
-          items &&
-          items.pageName == "PaymentTransPage" &&
-          this.commonMethodService.isCalendarClicked == true
-        ) {
-          this.commonMethodService.isCalendarClicked = false;
-          this.calendarSubscription.unsubscribe();
-          if (this.popContent) {
-            this.popContent.close();
-          }
-          this.selectedDateRange = items.obj;
-          this.pageSyncService.paymentCalDate = items.obj;
-          this.EngHebCalPlaceholder =
-            this.hebrewEngishCalendarService.EngHebCalPlaceholder;
-          this.presetOption = this.EngHebCalPlaceholder;
-          this.EngHebCalPlaceholder =
-            this.hebrewEngishCalendarService.EngHebCalPlaceholder;
-          this.isdateChanged = true;
-          this.pageSyncService.PaymentEngCalPlaceholder =
-            this.EngHebCalPlaceholder;
-          if (this.pageSyncService.uiPageSettings["paymentList"] != undefined) {
-            this.pageSyncService.uiPageSettings[
-              "paymentList"
-            ].paymentCalendarPlaceHolderId =
-              this.hebrewEngishCalendarService.id;
-          }
-          this.class_id = this.hebrewEngishCalendarService.id;
-          this.class_hid = this.hebrewEngishCalendarService.hid;
-          if (this.objAdvancedSearch.createdDate != undefined) {
-            this.objAdvancedSearch.createdDate.startDate = moment(
-              this.selectedDateRange.startDate
-            ).format("YYYY-MM-DD");
-            this.objAdvancedSearch.createdDate.endDate = moment(
-              this.selectedDateRange.endDate
-            ).format("YYYY-MM-DD");
-          }
-          this.searchPaymentTransactionsData();
+    this.commonMethodService.openCalendarPopup(this.class_id, this.class_hid, this.selectedDateRange, false, "paymentTransactionsCalender");
+    this.calendarSubscription = this.commonMethodService.getCalendarArray().subscribe((items) => {
+      if (items && items.pageName == "PaymentTransPage" && this.commonMethodService.isCalendarClicked == true) {
+        this.commonMethodService.isCalendarClicked = false;
+        this.calendarSubscription.unsubscribe();
+        if (this.popContent) {
+          this.popContent.close();
         }
-      });
+        this.selectedDateRange = items.obj;
+        this.pageSyncService.paymentCalDate = items.obj;
+        this.EngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder
+        this.presetOption = this.EngHebCalPlaceholder;
+        this.EngHebCalPlaceholder = this.hebrewEngishCalendarService.EngHebCalPlaceholder;
+        this.isdateChanged = true;
+        this.pageSyncService.PaymentEngCalPlaceholder = this.EngHebCalPlaceholder;
+        if (this.pageSyncService.uiPageSettings['paymentList'] != undefined) {
+          this.pageSyncService.uiPageSettings['paymentList'].paymentCalendarPlaceHolderId = this.hebrewEngishCalendarService.id;
+        }
+        this.class_id = this.hebrewEngishCalendarService.id;
+        this.class_hid = this.hebrewEngishCalendarService.hid;
+        if (this.objAdvancedSearch.createdDate != undefined) {
+          this.objAdvancedSearch.createdDate.startDate = moment(this.selectedDateRange.startDate).format("YYYY-MM-DD")
+          this.objAdvancedSearch.createdDate.endDate = moment(this.selectedDateRange.endDate).format("YYYY-MM-DD")
+        }
+        this.searchPaymentTransactionsData();
+      }
+    });
   }
   hideShowActionButton(item) {
     if (item == "Voided") {
@@ -6627,15 +6269,11 @@ export class PaymentTransactionComponent implements OnInit {
     }
     return true;
   }
-  inArrayCampaign(
-    filterKeyArray: Array<{ id: number; itemName: string }> | null,
-    rowFieldValue: any,
-    o
-  ) {
+  inArrayCampaign(filterKeyArray: Array<{ id: number, itemName: string }> | null, rowFieldValue: any, o) {
     if (!filterKeyArray || filterKeyArray.length === 0) {
       return true;
     }
-    const found = filterKeyArray.some((el) => {
+    const found = filterKeyArray.some(el => {
       // If the filterKey is -1, return true for all campaigns with campaignId as null
       if (el.id === -1) {
         return o.campaignId === null;
@@ -6644,27 +6282,22 @@ export class PaymentTransactionComponent implements OnInit {
         return true;
       }
 
-      let filterValue = el.itemName.split(",").map((str) => str.trim());
-      let oValue = o.campaignName.split(",").map((str) => str.trim());
+      let filterValue = el.itemName.split(',').map(str => str.trim());
+      let oValue = o.campaignName.split(',').map(str => str.trim());
       let result = this.containsContents(oValue, filterValue);
 
       if (el.id == rowFieldValue || result) {
         return true;
       }
-      if (o.campaignId && o.campaignId.includes(",")) {
-        let camsplit = o.campaignId.split(",");
-        let campAmts = o.campaignAmounts.split(",");
+      if (o.campaignId && o.campaignId.includes(',')) {
+        let camsplit = o.campaignId.split(',');
+        let campAmts = o.campaignAmounts.split(',');
         let campAmtNum = campAmts.map(Number);
-        let campAmtSum = campAmtNum.reduce(function (a, b) {
-          return a + b;
-        });
+        let campAmtSum = campAmtNum.reduce(function (a, b) { return a + b; });
         let equalTest = () => campAmtSum < o.amount;
-        camsplit = camsplit.map((s) => s.trim());
+        camsplit = camsplit.map(s => s.trim());
         const res = camsplit.some(equalTest);
-        if (
-          res &&
-          !camsplit.map((x) => x == el.id).every((val) => val === false)
-        ) {
+        if (res && !camsplit.map(x => x == el.id).every(val => val === false)) {
           return true;
         }
       }
@@ -6675,15 +6308,11 @@ export class PaymentTransactionComponent implements OnInit {
     });
     return found;
   }
-  inArrayReason(
-    filterKeyArray: Array<{ id: number; itemName: string }> | null,
-    rowFieldValue: any,
-    o
-  ) {
+  inArrayReason(filterKeyArray: Array<{ id: number, itemName: string }> | null, rowFieldValue: any, o) {
     if (!filterKeyArray || filterKeyArray.length === 0) {
       return true;
     }
-    const found = filterKeyArray.some((el) => {
+    const found = filterKeyArray.some(el => {
       if (el.id === -1) {
         return o.reasonId === null;
       }
@@ -6693,15 +6322,13 @@ export class PaymentTransactionComponent implements OnInit {
       if (el.id == rowFieldValue) {
         return true;
       }
-      if (o.reasonId && o.reasonId.includes(",")) {
-        let reasonIDsplit = o.reasonId.split(",");
-        let reasonAmts = o.reasonAmounts.split(",");
+      if (o.reasonId && o.reasonId.includes(',')) {
+        let reasonIDsplit = o.reasonId.split(',');
+        let reasonAmts = o.reasonAmounts.split(',');
         let reasonAmtNum = reasonAmts.map(Number);
-        let reasonAmtSum = reasonAmtNum.reduce(function (a, b) {
-          return a + b;
-        });
+        let reasonAmtSum = reasonAmtNum.reduce(function (a, b) { return a + b; });
         let equalTest = () => reasonAmtSum < o.amount;
-        reasonIDsplit = reasonIDsplit.map((s) => s.trim());
+        reasonIDsplit = reasonIDsplit.map(s => s.trim());
         const res = reasonIDsplit.some(equalTest);
         if (res) {
           return true;
@@ -6727,22 +6354,20 @@ export class PaymentTransactionComponent implements OnInit {
     return false;
   }
   isGlobalId(item) {
-    return item.globalId === 688008;
+    return item.globalId === 688008
   }
   getFeatureSettingValues() {
-    this.commonMethodService.featureName = "Import_Payments";
+    this.commonMethodService.featureName = 'Import_Payments'
     this.commonMethodService.getFeatureSettingValues();
   }
   onUpgrade() {
     this.reseteFile();
-    this.commonMethodService.commenSendUpgradeEmail(
-      this.commonMethodService.featureDisplayName
-    );
+    this.commonMethodService.commenSendUpgradeEmail(this.commonMethodService.featureDisplayName);
   }
 
   ngOnDestroy() {
     this.paymentTransSubscription.unsubscribe();
-    this.commonMethodService.removeNoOptions();
+    this.commonMethodService.removeNoOptions()
   }
   generateUniqueTransactionId(): string {
     const timestamp = new Date().getTime();

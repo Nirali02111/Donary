@@ -22,8 +22,8 @@ declare var $: any;
 @Component({
   selector: "app-schedule-pledgecard-popup",
   templateUrl: "./schedule-pledgecard-popup.component.html",
-  styleUrls: ["./schedule-pledgecard-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./schedule-pledgecard-popup.component.scss"],
 })
 export class SchedulePledgecardPopupComponent implements OnInit {
   @Output() emtScheduleUpdate: EventEmitter<any> = new EventEmitter();
@@ -1008,42 +1008,6 @@ export class SchedulePledgecardPopupComponent implements OnInit {
 
   onResumeClick() {
     if (this.upcomingSchedules && this.upcomingSchedules.length !== 0) {
-      /*this.modalOptions = {
-        centered: true,
-        size: 'lg',
-        backdrop : 'static',
-        keyboard : false,
-        windowClass: 'drag_popup next_schedule_date'
-      };
-
-      let objWalletData = {
-        EventGuId: this.localstoragedataService.getLoginUserEventGuId(),
-        ScheduleId:this.scheduleId,
-        WalletId: null,
-        UpdatedBy:this.localstoragedataService.getLoginUserId(),
-        Status: "SCHEDULED"
-      }
-
-      const modalRef = this.commonMethodService.openPopup(NextScheduleDatePopupComponent, this.modalOptions);
-
-      modalRef.componentInstance.emtOutputDate.subscribe(($e) => {
-        this.isloading = true;
-        this.scheduleService.putScheduleUpdateWallet({...objWalletData, NextScheduleDate: $e}).subscribe((res: any) => {
-          this.isloading = false;
-          if(res) {
-            Swal.fire("Schedule Updated",'','success').then(()=>{
-              this.emtScheduleUpdate.emit(res);
-              this.reloadCardData()
-            })
-          }
-          else {
-            Swal.fire(this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),'','error');
-          }
-        }, err => {
-          console.log(err);
-        });
-      });*/
-
       this.modalOptions = {
         centered: true,
         size: "lg",

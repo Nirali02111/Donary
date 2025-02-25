@@ -161,12 +161,6 @@ export class SaveLocationPopupComponent implements OnInit {
     }
   }
 
-  /*SearchGlobalLocation() {
-    var text = $("#globalLocationText").val();
-    this.showGlobalLocation = true;
-    this.commonMethodService.onDonorSearchFieldChange(text, true);
-  }*/
-
   onClickedOutside() {
     this.showGlobalLocation = false;
   }

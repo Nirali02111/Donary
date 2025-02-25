@@ -22,8 +22,8 @@ declare var $: any;
 @Component({
   selector: "app-report-filter-popup",
   templateUrl: "./report-filter-popup.component.html",
-  styleUrls: ["./report-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./report-filter-popup.component.scss"],
 })
 export class ReportFilterPopupComponent implements OnInit {
   @ViewChild(NgbPopover, { static: false }) popContent: NgbPopover;

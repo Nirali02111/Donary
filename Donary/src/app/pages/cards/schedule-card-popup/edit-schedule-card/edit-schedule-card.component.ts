@@ -29,8 +29,8 @@ declare var $: any;
 @Component({
   selector: "app-edit-schedule-card",
   templateUrl: "./edit-schedule-card.component.html",
-  styleUrls: ["./edit-schedule-card.component.scss"],
   standalone: false,
+  styleUrls: ["./edit-schedule-card.component.scss"],
 })
 export class EditScheduleCardComponent implements OnInit {
   isloading: boolean = false;

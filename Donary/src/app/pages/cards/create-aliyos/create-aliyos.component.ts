@@ -46,8 +46,8 @@ interface PledgeSmsData {
 @Component({
   selector: "app-create-aliyos",
   templateUrl: "./create-aliyos.component.html",
-  styleUrls: ["./create-aliyos.component.scss"],
   standalone: false,
+  styleUrls: ["./create-aliyos.component.scss"],
 })
 export class CreateAliyosComponent implements OnInit {
   @Output() emtOutputAliyos: EventEmitter<any> = new EventEmitter();

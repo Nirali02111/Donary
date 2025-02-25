@@ -8,8 +8,8 @@ declare let $: any;
 @Component({
   selector: "app-branding",
   templateUrl: "./branding.component.html",
-  styleUrls: ["./branding.component.scss"],
   standalone: false,
+  styleUrls: ["./branding.component.scss"],
 })
 export class BrandingComponent implements OnInit {
   @Input() formGroup!: UntypedFormGroup;

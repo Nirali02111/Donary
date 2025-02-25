@@ -23,8 +23,8 @@ declare var $: any;
 @Component({
   selector: "app-savecard-popup",
   templateUrl: "./savecard-popup.component.html",
-  styleUrls: ["./savecard-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./savecard-popup.component.scss"],
 })
 export class SavecardPopupComponent implements OnInit {
   title: string;

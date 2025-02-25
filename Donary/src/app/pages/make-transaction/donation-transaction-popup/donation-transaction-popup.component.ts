@@ -15,11 +15,7 @@ import {
 import { ScheduleOfTransactionComponent } from "../schedule-of-transaction/schedule-of-transaction.component";
 import { PaymentMethodOfTransactionComponent } from "../payment-method-of-transaction/payment-method-of-transaction.component";
 import { CommonModule, JsonPipe, NgTemplateOutlet } from "@angular/common";
-import {
-  NgbActiveModal,
-  NgbModalOptions,
-  NgbPopoverModule,
-} from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal, NgbModalOptions, NgbPopoverModule } from "@ng-bootstrap/ng-bootstrap";
 import { CommonMethodService } from "src/app/commons/common-methods.service";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { TranslateModule } from "@ngx-translate/core";
@@ -45,7 +41,9 @@ declare var $: any;
   selector: "app-donation-transaction-popup",
   standalone: true,
   imports: [
+    NgTemplateOutlet,
     ReactiveFormsModule,
+    JsonPipe,
     NgSelectModule,
     TranslateModule,
     NgbPopoverModule,
@@ -64,15 +62,14 @@ declare var $: any;
   providers: [TransactionControlProviderService],
 })
 export class DonationTransactionPopupComponent
-  implements OnInit, AfterViewInit
-{
+  implements OnInit, AfterViewInit {
   readonly changeDetectorRef = inject(ChangeDetectorRef);
   controlsProvider = inject(TransactionControlProviderService);
   commonMethodService = inject(CommonMethodService);
   private activeModal = inject(NgbActiveModal);
   private localStorageDataService = inject(LocalstoragedataService);
   private paymentService = inject(PaymentService);
-  messengerService = inject(MessengerService);
+  messengerService= inject(MessengerService)
 
   formGroup = this.controlsProvider.formGroup;
   EmailCheckbox: boolean = false;
@@ -147,7 +144,7 @@ export class DonationTransactionPopupComponent
       locationId: formValues.details.locationId,
       paymentDate: formValues.details.paymentDate,
       collectorId: formValues.details.collectorId,
-      note: formValues.paymentMethod.noteType.note,
+      note:formValues.paymentMethod.noteType.note,
       paymentMethodId,
       ...paymentFields,
     };
@@ -182,9 +179,9 @@ export class DonationTransactionPopupComponent
           return;
         }
 
-        this.type = "Pledge";
+        this.type = "Pledge";        
         this.paymentId = res.responseMessage[0].paymentId;
-        if (res) {
+        if (res) {      
           if (this.EmailCheckbox) {
             this.sendEmailRecieptApi(this.type, this.paymentId);
           }
@@ -247,14 +244,10 @@ export class DonationTransactionPopupComponent
       (error) => {
         this.activeModal.dismiss();
         Swal.fire({
-          title: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.SOMETHING_WENT_WRONG"
-          ),
+          title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
           text: error.error,
           icon: "error",
-          confirmButtonText: this.commonMethodService.getTranslate(
-            "WARNING_SWAL.BUTTON.CONFIRM.OK"
-          ),
+          confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
           customClass: {
             confirmButton: "btn_ok",
           },
@@ -307,14 +300,10 @@ export class DonationTransactionPopupComponent
         (error) => {
           this.activeModal.dismiss();
           Swal.fire({
-            title: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.SOMETHING_WENT_WRONG"
-            ),
+            title: this.commonMethodService.getTranslate('WARNING_SWAL.SOMETHING_WENT_WRONG'),
             text: error.error,
             icon: "error",
-            confirmButtonText: this.commonMethodService.getTranslate(
-              "WARNING_SWAL.BUTTON.CONFIRM.OK"
-            ),
+            confirmButtonText: this.commonMethodService.getTranslate('WARNING_SWAL.BUTTON.CONFIRM.OK'),
             customClass: {
               confirmButton: "btn_ok",
             },
@@ -369,7 +358,7 @@ export class DonationTransactionPopupComponent
   //if clicked outside close dropdown for email and sms code ended
 
   donarNotifyDwnHideShow(cls) {
-    if (this.account.value == "" || this.account.value == null) {
+    if (this.account.value == '' || this.account.value == null) {
       return false;
     }
     this.isDropDownOpen = true;
@@ -377,7 +366,7 @@ export class DonationTransactionPopupComponent
     $(clsSelected).toggleClass("show");
   }
   donarSmsNotifyDwnHideShow(cls) {
-    if (this.account.value == "" || this.account.value == null) {
+    if (this.account.value == '' || this.account.value == null) {
       return false;
     }
     this.isSmsDropDownOpen = true;
@@ -540,43 +529,54 @@ export class DonationTransactionPopupComponent
     );
   }
 
-  getDonor(ev) {
-    //code for adding email & phone numbers
-    const item = ev; // Assuming res is now a single object
-    const emails = item.emails ? item.emails.split(",") : [];
-    const emailLabels = item.emailLabels ? item.emailLabels.split(",") : [];
-    const emailResult = this.margeKeyValue(emails, emailLabels, "email");
+  getDonor(ev){
+      //code for adding email & phone numbers
+      const item = ev; // Assuming res is now a single object
+      const emails = item.emails ? item.emails.split(",") : [];
+      const emailLabels = item.emailLabels
+        ? item.emailLabels.split(",")
+        : [];
+      const emailResult = this.margeKeyValue(
+        emails,
+        emailLabels,
+        "email"
+      );
 
-    const phoneNumber = item.additionalPhoneNumbers
-      ? item.additionalPhoneNumbers.split(",")
-      : [];
-    const phoneLabels = item.additionalPhoneLabels
-      ? item.additionalPhoneLabels.split(",")
-      : [];
-    const phoneResult = this.margeKeyValue(phoneNumber, phoneLabels, "phone");
+      const phoneNumber = item.additionalPhoneNumbers
+        ? item.additionalPhoneNumbers.split(",")
+        : [];
+      const phoneLabels = item.additionalPhoneLabels
+        ? item.additionalPhoneLabels.split(",")
+        : [];
+      const phoneResult = this.margeKeyValue(
+        phoneNumber,
+        phoneLabels,
+        "phone"
+      );
 
-    const donarDetails = { email: emailResult, phone: phoneResult };
+      const donarDetails = { email: emailResult, phone: phoneResult };
 
-    this.notifyDonarEmailArray =
-      donarDetails && donarDetails.email ? donarDetails.email : [];
-    this.notifyDonarEmail =
-      this.notifyDonarEmailArray.length > 0
-        ? this.notifyDonarEmailArray[0]
-        : "";
+      this.notifyDonarEmailArray =
+        donarDetails && donarDetails.email ? donarDetails.email : [];
+      this.notifyDonarEmail =
+        this.notifyDonarEmailArray.length > 0
+          ? this.notifyDonarEmailArray[0]
+          : "";
 
-    if (!this.isNotifyDonarEmailShow) {
-      this.notifyDonarEmail = {
-        email: "Select Email",
-        label: "",
-      };
-    }
+      if (!this.isNotifyDonarEmailShow) {
+        this.notifyDonarEmail = {
+          email: "Select Email",
+          label: "",
+        };
+      }
 
-    this.EmailCheckbox =
-      this.notifyDonarEmail && this.notifyDonarEmail.email != "Select Email";
-    this.tempemailCheckbox = this.EmailCheckbox;
-    this.tempnotifyDonarEmail = this.notifyDonarEmail;
-    this.notifyDonarPhoneArray =
-      donarDetails && donarDetails.phone ? donarDetails.phone : [];
+      this.EmailCheckbox =
+        this.notifyDonarEmail &&
+        this.notifyDonarEmail.email != "Select Email";
+      this.tempemailCheckbox = this.EmailCheckbox;
+      this.tempnotifyDonarEmail = this.notifyDonarEmail;
+      this.notifyDonarPhoneArray =
+        donarDetails && donarDetails.phone ? donarDetails.phone : [];
   }
 
   margeKeyValue(keys = [], values = [], item = "") {
@@ -590,4 +590,5 @@ export class DonationTransactionPopupComponent
     }
     return resultArray;
   }
+
 }

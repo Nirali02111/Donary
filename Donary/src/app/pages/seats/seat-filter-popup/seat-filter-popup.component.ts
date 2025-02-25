@@ -6,8 +6,8 @@ import { PageSyncService } from "src/app/commons/pagesync.service";
 @Component({
   selector: "app-seat-filter-popup",
   templateUrl: "./seat-filter-popup.component.html",
-  styleUrls: ["./seat-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./seat-filter-popup.component.scss"],
 })
 export class SeatFilterPopupComponent implements OnInit {
   sectionList = [];

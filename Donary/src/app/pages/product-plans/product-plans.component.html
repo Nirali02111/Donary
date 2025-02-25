@@ -6,66 +6,14 @@
         <div class="product-page">
 
             <!-- Last View and added cart -->
-            <!-- <div class="container" *ngIf="lastProduct">
-                <div class="last-product-added">
-
-                    <div class="row">
-                        <div class="col-sm-1 products-small-img">
-
-                            <ng-container *ngIf="lastProduct.productImage;else defaultLastProductImage">
-                                <img [src]="lastProduct.productImage" alt="product-img" title="product-img" width="100%" />
-                            </ng-container>
-
-                            <ng-template #defaultLastProductImage>
-                                <img src="assets/dist/img/product/product-img.png" alt="product-img" title="product-img" width="100%"/>
-                            </ng-template>
-
-                        </div>
-                        <div class="col-sm-3 product_name">
-                            <h6>Selected Product :</h6>
-                            <h4>
-                                {{lastProduct.productName}}-{{ commonMethod.formatAmount(lastProduct.price) }}
-                                <span class="small-text sale-text">{{lastProduct.saleType}}</span>
-                            </h4>
-                        </div>
-                        <div class="col-sm-4 product-plan">
-                            <h6>Selected Plan :</h6>
-                            <div class="plan-data">
-                                <ng-container *ngIf="lastProductPlan">
-                                    <ng-container *ngFor="let item of lastProductPlan">
-                                        <ng-container *ngIf="item.user !== 0">
-                                            <h4>{{item.planName}}- {{ commonMethod.formatAmount(item.price) }}/{{item.recurringType}}</h4>
-                                        </ng-container>
-                                    </ng-container>
-                                </ng-container>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 subtotal-text">
-                            <h6>Subtotal:</h6>
-                            <h4>{{ commonMethod.formatAmount(subTotalAmount()) }}</h4>
-                        </div>
-                        <div class="col-sm-2 btn-wrap">
-                            <!--<button class="btn btn-primary" (click)="onCheckout()">Checkout</button>
-                            <button class="btn btn-secondary" (click)="onViewCart()">View Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+        
             <div class="container">
                 <div class="product-header text-center">
                     <h1>Our products</h1>
                 </div>
 
-                <!-- <div class="mode-wrapper text-center">
-                    <label class="switch btn-color-mode-switch">
-                        <input type="checkbox" name="color_mode" id="color_mode" value="1">
-                        <label for="color_mode" data-on="Rental" data-off="Sale" class="btn-color-mode-switch-inner"></label>
-                    </label>
-                </div> -->
-
                 <div class="row product_row">
                     <ng-container *ngFor="let productItem of listData">
-                        <!-- <div class="col-lg-4 mb-4" (click)="goToProductPage(productItem.productId)"> -->
                           <div class="col-lg-4 mb-4 product_col" *ngIf="productItem.productName != isCore">
                             <div class="product-inner">
                                 <div class="product-wrapper">
@@ -75,7 +23,6 @@
                                             <span *ngIf="productItem.productNote">{{productItem.productNote}}</span>
                                         </h4>
                                         <div class="price" *ngIf="productItem.productName.trim()!='DRM'">${{ productItem.price }}</div>
-                                       <!-- <p class="title-content">One-time purchase price</p>-->
                                         <p class="title-content">{{productItem.productName.trim()=="DRM"?"":"One-time purchase price"}}</p>
                                         <ng-container *ngIf="productItem.productName.trim()!='DRM'; else MonthlyFee">
                                             <p><b>Plus Monthly Fee</b></p>
@@ -96,14 +43,6 @@
                                             <img src="assets/dist/img/product/product-img.png" alt="product-img" width="100%"/>
                                         </ng-template>
                                     </div>
-
-                                    <!-- <div class="product--info">
-                                        <ul>
-                                            <li>Pouch included</li>
-                                            <li>20 minutes training included</li>
-                                        </ul>
-                                    </div> -->
-
                                     <div class="product--info" [innerHtml]="productItem.features">
                                     </div>
                                 </div>
@@ -116,7 +55,6 @@
                 </div>
             </div>
         </div>
-        <!--  -->
 
     </div>
 </div>

@@ -323,7 +323,6 @@ export class EditPledgePopupComponent implements OnInit {
         ? this.commonMethodService.donorList[0].fullNameJewish
         : this.commonMethodService.donorList[0]?.displayText;
     }
-    console.log("Donor", this.commonMethodService.donorList);
   }
   RemoveDonor() {
     this.nonEditable = false;

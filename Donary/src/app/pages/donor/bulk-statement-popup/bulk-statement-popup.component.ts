@@ -23,8 +23,8 @@ import { AnalyticsService } from "src/app/services/analytics.service";
 @Component({
   selector: "app-bulk-statement-popup",
   templateUrl: "./bulk-statement-popup.component.html",
-  styleUrls: ["./bulk-statement-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-statement-popup.component.scss"],
 })
 export class BulkStatementPopupComponent implements OnInit {
   modalOptions: NgbModalOptions;
@@ -140,62 +140,6 @@ export class BulkStatementPopupComponent implements OnInit {
     this.uiPageSettingService.Save(objLayout).subscribe((res: any) => {});
   }
 
-  //   Send()
-  //   {
-  //     this.modalOptions = {
-  //       centered: true,
-  //       size: "lg",
-  //       backdrop: "static",
-  //       keyboard: true,
-  //       windowClass: "drag_popup advance_receipt advance_action bulk_advance_statement",
-  //     };
-  //     const modalRef = this.commonMethodService.openPopup(
-  //       BulkAdvanceStatementComponent,
-  //       this.modalOptions
-  //     );
-  //     let resultArray = [];
-  //     // for (const item of this.recordSelectedArray) {
-  //     //   let donorDetails = this.gridData.find(x => x.accountId == item);
-  //     //   resultArray.push(donorDetails);
-  //     // }
-  //     if (this.isDevEnv) {
-  //       for (const item of this.donorIds) {
-  //         let donorDetails = this.gridData.find(x => x.accountId == item);
-  //         resultArray.push(donorDetails);
-  //       }
-  //     }
-  //     else {
-  //     for (const item of this.recordSelectedArray) {
-  //       let donorDetails = this.gridData.find(x => x.accountId == item);
-  //       resultArray.push(donorDetails);
-  //     }
-  //   }
-
-  // // address validation
-  // let listMailData = _(resultArray)
-  // .chain()
-  // .groupBy((p) => p.accountId)
-  // .map((props) => {
-  //   return {
-  //     ..._.head(props),
-  //     //paymentIds: _.map(props, (p) => p.paymentId),
-  //   };
-  // })
-  // .value();
-
-  //     modalRef.componentInstance.List = listMailData;
-  //     modalRef.componentInstance.Info = { type: "Statement" };
-  //     modalRef.componentInstance.Duration = this.selectedDateRange;
-  //     modalRef.componentInstance.OnlyPledgePayment =this.isOnlyPledgePayment;
-  //     modalRef.componentInstance.statementTypeV = this.commonMethodService.statementType;
-  //     modalRef.componentInstance.PaymentAndBalancePledges ={"hidePaymentsList":this.hidePaymentsList,"hide0BalancePledges":this.hide0BalancePledges};
-  //     modalRef.componentInstance.objAdvancedSearch = {
-  //       "reasonIds":this.commonMethodService.selectedPaymentReasons.length > 0 ? this.commonMethodService.selectedPaymentReasons.map(s => s.id) : null,
-  //       "collectorIds": this.commonMethodService.selectedPaymentCollectors.length > 0 ? this.commonMethodService.selectedPaymentCollectors.map(s => s.id) : null,
-  //       "locationIds": this.commonMethodService.selectedPaymentLocations.length > 0 ? this.commonMethodService.selectedPaymentLocations.map(s => s.id) : null,
-  //       "campaignIds": this.commonMethodService.selectedFromCampaignList.length > 0 ? this.commonMethodService.selectedFromCampaignList.map(s => s.id):null,
-  //       }
-  //   }
   Send() {
     this.modalOptions = {
       centered: true,

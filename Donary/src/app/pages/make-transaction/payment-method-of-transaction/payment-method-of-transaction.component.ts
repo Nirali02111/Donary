@@ -35,6 +35,7 @@ import { CommonMethodService } from "src/app/commons/common-methods.service";
     NgTemplateOutlet,
     NgbNavModule,
     TranslateModule,
+    JsonPipe,
     CreditCardTypeMethodComponent,
     ACHTypeMethodComponent,
     WalletTypeMethodComponent,
@@ -193,7 +194,7 @@ export class PaymentMethodOfTransactionComponent
         expiry: values.exp,
         cVV: values.cvv,
         isSaveToWallet: values.isSaveToWallet,
-        note: values.note,
+        note:values.note
       };
     }
 
@@ -207,7 +208,7 @@ export class PaymentMethodOfTransactionComponent
           accountType: values.accountType,
           checkType: values.bankType,
           nameOnAccount: values.nameOnAccount,
-          note: values.note,
+          note:values.note
         },
       };
     }
@@ -216,7 +217,7 @@ export class PaymentMethodOfTransactionComponent
       const values = this.formGroup.get("paymentMethod").get("noteType").value;
 
       return {
-        note: values.note,
+        note:values.note
       };
     }
 
@@ -235,7 +236,7 @@ export class PaymentMethodOfTransactionComponent
         .get("walletType").value;
       return {
         walletId: values.walletId,
-        note: values.note,
+        note:values.note
       };
     }
 

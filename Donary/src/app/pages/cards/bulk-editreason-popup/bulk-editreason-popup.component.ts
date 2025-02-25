@@ -13,8 +13,8 @@ interface option {
 @Component({
   selector: "app-bulk-editreason-popup",
   templateUrl: "./bulk-editreason-popup.component.html",
-  styleUrls: ["./bulk-editreason-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-editreason-popup.component.scss"],
 })
 export class BulkEditreasonPopupComponent implements OnInit {
   @Input("SelectedIds") SelectedIds: Array<number>;

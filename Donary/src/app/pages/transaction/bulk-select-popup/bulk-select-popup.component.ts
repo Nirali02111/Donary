@@ -31,8 +31,8 @@ declare var $: any;
 @Component({
   selector: "app-bulk-select-popup",
   templateUrl: "./bulk-select-popup.component.html",
-  styleUrls: ["./bulk-select-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-select-popup.component.scss"],
 })
 export class BulkSelectPopupComponent implements OnInit {
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;

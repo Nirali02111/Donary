@@ -30,8 +30,8 @@ interface PanelRes {
 @Component({
   selector: "app-bulk-custom-report",
   templateUrl: "./bulk-custom-report.component.html",
-  styleUrls: ["./bulk-custom-report.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-custom-report.component.scss"],
 })
 export class BulkCustomReportComponent implements OnInit {
   isloading: boolean = false;
@@ -347,14 +347,11 @@ export class BulkCustomReportComponent implements OnInit {
 
     var objTotalPanel = {
       eventGuId: this.localstoragedataService.getLoginUserEventGuId(),
-      //"fromDate": this.selectedDateRange != undefined ? this.selectedDateRange.startDate != null ? moment(this.selectedDateRange.startDate).format("YYYY-MM-DD") : null : null,
-      // "toDate": this.selectedDateRange != undefined ? this.selectedDateRange.endDate != null ? moment(this.selectedDateRange.endDate).format("YYYY-MM-DD") : null : null,
     };
 
     this.totalPanelService.getTotals(objTotalPanel).subscribe(
       (res: Array<PanelRes>) => {
         this.isloading = false;
-        //console.log(res);
         var resultRes = res;
         for (let index = 0; index < resultRes.length; index++) {
           const element = resultRes[index];

@@ -10,8 +10,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-email",
   templateUrl: "./donor-email.component.html",
-  styleUrls: ["./donor-email.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-email.component.scss"],
 })
 export class DonorEmailComponent implements OnInit {
   gridData: Array<any>;

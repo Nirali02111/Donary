@@ -15,10 +15,12 @@ export interface PostUserBodyData {
   Phone: string;
   PlanTypeId: number;
   EventGuid: string;
-  lstPermissionModel: [{
+  lstPermissionModel: [
+    {
       PermissionId: number;
       IsActive: boolean;
-  }];
+    }
+  ];
 }
 
 @Injectable({
@@ -49,9 +51,9 @@ export class UserService {
       });
   }
 
-  getUser(userId:string,eventGuid: string): Observable<any> {
+  getUser(userId: string, eventGuid: string): Observable<any> {
     return this.http
-      .get(this.GET_USER_URL+ '?userId=' + userId + '&&eventGuid=' + eventGuid)
+      .get(this.GET_USER_URL + "?userId=" + userId + "&&eventGuid=" + eventGuid)
       .pipe((response) => {
         return response;
       });
@@ -64,30 +66,31 @@ export class UserService {
   }
   public userGoogle: GoogleLoginModel = new GoogleLoginModel();
   saveGoogleToken(userGoogle: any) {
+    return this.http
+      .post(this.SAVE_USERS_GOOGLE_URL, userGoogle)
+      .pipe((response) => {
+        return response;
+      });
+  }
+  DeleteUser(userId: any) {
+    return this.http
+      .delete(this.DELETE_USERS_URL + "?userId=" + userId)
+      .pipe((response) => {
+        return response;
+      });
+  }
 
-    return this.http.post(this.SAVE_USERS_GOOGLE_URL, userGoogle).pipe((response) => {
+  getInvite(inviteId: string): Observable<any> {
+    return this.http
+      .get(this.GETINVITE_USERS_URL + "?inviteId=" + inviteId)
+      .pipe((response) => {
+        return response;
+      });
+  }
 
-      console.log(response);
+  inviteUser(formData: any) {
+    return this.http.post(this.INVITE_USERS_URL, formData).pipe((response) => {
       return response;
     });
   }
-  DeleteUser(userId:any) {
-    return this.http.delete(this.DELETE_USERS_URL + '?userId=' + userId ).pipe(response => {
-      return response;
-    });
-}
-
-getInvite(inviteId:string): Observable<any> {
-  return this.http
-    .get(this.GETINVITE_USERS_URL+ '?inviteId=' + inviteId)
-    .pipe((response) => {
-      return response;
-    });
-}
-
-inviteUser(formData: any) {
-  return this.http.post(this.INVITE_USERS_URL, formData).pipe((response) => {
-    return response;
-  });
-}
 }

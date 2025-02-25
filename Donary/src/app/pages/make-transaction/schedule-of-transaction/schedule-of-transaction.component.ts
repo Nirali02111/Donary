@@ -36,6 +36,9 @@ import { DonaryDateFormatPipe } from "src/app/commons/donary-date-format.pipe";
     TranslateModule,
     CalendarModule,
     NgbPopoverModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    DonaryDateFormatPipe,
   ],
   templateUrl: "./schedule-of-transaction.component.html",
   styleUrl: "./schedule-of-transaction.component.scss",
@@ -59,15 +62,13 @@ export class ScheduleOfTransactionComponent
   selectedStartDate: any = { startDate: moment(new Date()) };
 
   private isDefaultPlaceHolder = true;
-  protected EngHebCalPlaceholder: moment.Moment | string = moment(new Date());
-
+  protected EngHebCalPlaceholder : moment.Moment | string = moment(new Date());
+  
   get PlaceHolderForDate() {
     if (this.isDefaultPlaceHolder) {
-      return this.datePipe.transform(
-        (this.EngHebCalPlaceholder as moment.Moment).toISOString()
-      );
+      return this.datePipe.transform( (this.EngHebCalPlaceholder as moment.Moment).toISOString() )  
     }
-    return this.EngHebCalPlaceholder;
+    return this.EngHebCalPlaceholder
   }
 
   parentControl = inject(ControlContainer);
@@ -110,7 +111,7 @@ export class ScheduleOfTransactionComponent
     public hebrewEnglishCalendarService: HebrewEngishCalendarService,
     private localStorageDataService: LocalstoragedataService,
     private uiPageSettingApi: UIPageSettingService,
-    private datePipe: DonaryDateFormatPipe
+    private datePipe: DonaryDateFormatPipe,
   ) {}
 
   displayTotal() {
@@ -139,10 +140,7 @@ export class ScheduleOfTransactionComponent
     if (this.commonMethodService.localscheduleRepatTypeList.length == 0) {
       this.commonMethodService.getScheduleRepeatTypeList();
     }
-    this.EngHebCalPlaceholder = this.datePipe.transform(
-      (this.EngHebCalPlaceholder as moment.Moment).toISOString(),
-      "short"
-    );
+    this.EngHebCalPlaceholder = this.datePipe.transform((this.EngHebCalPlaceholder as moment.Moment).toISOString(),'short');
   }
 
   ngAfterViewInit(): void {

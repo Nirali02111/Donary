@@ -118,16 +118,7 @@
 							{{commonMethodService.formatAmount(paidAmount)}}
 						</div>
 					</div>
-					<!-- <div class="inline-col" *ngIf="totalNotProcessed!=0">
-						<h6>Not Processed:</h6>
-						<div class="value small-text not_processed">
-							{{commonMethodService.formatAmount(totalNotProcessed)}}
-						</div>
-						<div class="original_total">
-						<span class="orig_lbl">Orig Total:</span>
-						<span class="orig_amt">{{commonMethodService.formatAmount(originalTotal)}}</span>
-						</div>
-					</div> -->
+					
 	
 					</div>
 			</div>
@@ -135,32 +126,7 @@
 		 
 			<!-- end new code -->
 		</div>
-		<!-- <div class="amounts_info">
-			<div class="inline-col">
-				<h6>Scheduled:</h6>
-				<div class="value small-text">
-					$30.00
-				</div>
-			</div>
-			<div class="inline-col">
-				<h6>Frequency:</h6>
-				<div class="value small-text">
-					Monthly
-				</div>
-			</div>
-			<div class="inline-col">
-				<h6>Pledges Left:</h6>
-				<div class="value small-text">
-					12/20
-				</div>
-			</div>
-			<div class="inline-col">
-				<h6>Next Pledge:</h6>
-				<div class="value small-text">
-					09/25/2020
-				</div>
-			</div>
-		</div> -->
+	
 		<div class="tabs__wrap">
 			<ul class="nav nav-tabs">
 			<li class="active"><a  href="#info" data-toggle="tab">{{'INFO' |translate }}</a></li>
@@ -422,12 +388,10 @@
 		<td class="text-center"><strong>{{commonMethodService.formatAmount(item.scheduleAmount)}}</strong></td>
 		<td class="text-center">{{item.paymentDate | donaryDateFormat: "short"}}</td>
 		<td class="text-right"> <strong class="lng_hebrew">{{item.scheduleDateJewish}}</strong>  </td>
-		<!-- <td class="status text-center" [ngClass]="getStatusClss(item.scheduleStatus)">
-			<span class="status" [ngClass]="getStatusClss(item.scheduleStatus)">{{item.scheduleStatus}}</span> -->
+		
 			<td>
 				<span class="status" [ngClass]="getStatusClss(item.paymentStatus)">{{item.paymentStatus}}</span>
 
-			<!-- <span class="arrow" style="cursor: pointer;">&nbsp;</span> -->
 		</td>
 	</tr>
 </ng-template>

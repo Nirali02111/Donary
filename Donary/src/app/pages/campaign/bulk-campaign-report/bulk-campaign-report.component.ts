@@ -16,8 +16,8 @@ import * as moment from "moment";
 @Component({
   selector: "app-bulk-campaign-report",
   templateUrl: "./bulk-campaign-report.component.html",
-  styleUrls: ["./bulk-campaign-report.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-campaign-report.component.scss"],
 })
 export class BulkCampaignReportComponent implements OnInit {
   isloading: boolean = false;

@@ -36,46 +36,6 @@
                         </angular2-multiselect>
                     </div>
                 </div>
-
-                <!-- <ng-template #popContent><app-common-hebrew-english-calendar [pageName]="PageName"
-                        [data]="selectedDateRange" [isOneDate]="isOneDate"></app-common-hebrew-english-calendar>
-                </ng-template>
-                <div class="input-group date_picker" (clickOutside)="onClickedOutsidePopover(p1)" container="body"
-                    #p1="ngbPopover" (click)="openHebrewCalendarPopup()" popoverClass="calender-modal"
-                    [ngbPopover]="popContent" [popoverTitle]="popTitle" [autoClose]="false"
-                    placement="bottom start end bottom-start bottom-end end-top end-bottom" id="schedulePledgeCalender">
-                    <input type="text" class="form-control" value="" [placeholder]="EngHebCalPlaceholder" />
-                    <div class="input-group-append">
-                        <span class="input-group-text">
-                            <i class="far fa-calendar-alt ngx-daterangepicker-action"></i>
-                        </span>
-                    </div>
-                </div> -->
-
-                <!-- <div class="input-group date_picker" *ngIf="false">
-                <input type="text" class="form-control" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
-                    [showCustomRangeLabel]="commonMethodService.showCustomRangeLabel"
-                    [alwaysShowCalendars]="commonMethodService.alwaysShowCalendars"
-                    [ranges]="commonMethodService.isHebrew==true?commonMethodService.hebranges:commonMethodService.ranges"
-                    [locale]="commonMethodService.isHebrew==true?commonMethodService.heblocale:commonMethodService.locale" [linkedCalendars]="commonMethodService.linkedCalendars"
-                    [opens]="commonMethodService.open" [drops]="commonMethodService.drop"
-                    [showRangeLabelOnInput]="commonMethodService.showRangeLabelOnInput"
-                    [showClearButton]="commonMethodService.showClearButton"
-                    [placeholder]="commonMethodService.placeholder" (datesUpdated)="datesUpdated($event)" />
-                <div class="input-group-append">
-                    <span class="input-group-text">
-                        <i class="far fa-calendar-alt ngx-daterangepicker-action" (click)="CalendarFocus()"></i>
-                    </span>
-                </div>
-
-
-            </div> -->
-                <!-- <div class="input-group filter_field" >
-                <button type="button" (click)="openAdvanceSearchFilterPopup()" class="btn btn-default">
-                    <span class="filter_count" *ngIf="filtercount!=0">{{filtercount}}</span>
-                    <span class="filter_text">Filter</span>
-                </button>
-            </div> -->
             </div>
             <div class="refresh-div d-flex align-items-center">
                 <span class="refresh-icon" (click)="RefreshList()" style="cursor:pointer;">
@@ -210,58 +170,6 @@
         <!-- Card Type Chip -->
         <div class="row">
             <div class="col-12">
-
-                <!--
-        <div class="row parent_cardchip">
-            <div class="col-3" *ngFor="let objPaymentTypeChip of paymentTypeChipData">
-                <div [class]="objPaymentTypeChip.paymentTypeChipCSSClass"
-                    (click)="GetScheduleTransByPaymentChipType(objPaymentTypeChip)">
-                    <div class="info-box-content">
-                        <div class="row">
-                            <div class="col-12 top_value">
-                                <span class="info-box-text"
-                                    [title]="objPaymentTypeChip.paymentType">{{ (objPaymentTypeChip.paymentType != null && objPaymentTypeChip.paymentType.length>18)? (objPaymentTypeChip.paymentType | slice:0:18)+'..':(objPaymentTypeChip.paymentType) }}</span>
-                                    <span class="info-box-count ">({{objPaymentTypeChip.paymentCount}}) </span>
-                            </div>
-                            <div class="col-12 bottom_value">
-                                <span class="info-box-number">{{commonMethodService.formatAmount(objPaymentTypeChip.totalAmount)}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-
-                <!--
-        <ng-container *ngIf="paymentTypeChipData && paymentTypeChipData.length < 15;else defaultProductImage">
-            <div class="row parent_cardchip all-in-single">
-                <ng-container *ngFor="let objPaymentTypeChip of paymentTypeChipData; let i = index">
-                    <ng-template  [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{item: objPaymentTypeChip}"></ng-template>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <ng-template #defaultProductImage>
-            <div class="row parent_cardchip">
-                <ng-container *ngFor="let objPaymentTypeChip of paymentTypeChipData; let i = index">
-                    <ng-container *ngIf="i < (paymentTypeChipData.length/2) ">
-                        <ng-template  [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{item: objPaymentTypeChip}"></ng-template>
-                    </ng-container>
-                </ng-container>
-            </div>
-
-            <div class="row parent_cardchip">
-                <ng-container *ngFor="let objPaymentTypeChip of paymentTypeChipData; let i = index">
-                    <ng-container *ngIf="i > (paymentTypeChipData.length/2) ">
-                        <ng-template  [ngTemplateOutlet]="chipCardTemp" [ngTemplateOutletContext]="{item: objPaymentTypeChip}"></ng-template>
-                    </ng-container>
-                </ng-container>
-            </div>
-        </ng-template>
-        -->
-
-
                 <!-- chip cards with slider -->
                 <ngx-slick class="carousel sumcard-wrapper" #slickModal="slick-modal" [config]="slideConfig">
                     <ng-container *ngFor="let item of paymentTypeChipData; let i = index">
@@ -306,17 +214,9 @@
         <div class="row action_list">
             <span class="action_lbl" *ngIf="isSelected">{{'ACTIONS' | translate}}: </span>
             <div class="custom_action" *ngIf="isSelected">
-                <!-- <span data-toggle="tooltip" t-title="Edit"  class="icn_edit" (click)="editTransactionInfoPopup()"></span>
-        <span class="icn_text_receipt"  data-toggle="tooltip" t-title="{{'PRINT' | translate}} {{'RECEIPT' | translate}}" (click)="AdvancePrintReceipt()"></span>
-        <span class="icn_text_msg"   data-toggle="tooltip" t-title="{{'TEXT' | translate}}  {{'RECEIPT' | translate}}" (click)="AdvanceSMSReceiptAction()"></span>
-        <span class="icn_mail"  data-toggle="tooltip" t-title="{{'EMAIL' | translate}}  {{'RECEIPT' | translate}}" (click)="AdvanceEmailReceiptAction()"  ></span>
-        <span class="icn_message"  data-toggle="tooltip" t-title="{{'MAIL' | translate}} {{'RECEIPT' | translate}}" (click)="AdvanceMailReceiptAction()"></span>
-        <span class="icn_block"  data-toggle="tooltip" t-title="{{'VOIDPAYMENT' | translate}}"></span>
-        <span class="icn_advance" data-toggle="tooltip" t-title="{{'ADVANCE' | translate}} {{'ACTION' | translate}}" (click)="AdvanceReceiptAction()">Advance</span> -->
+              
             </div>
         </div>
-
-
 
         <ng-container *ngIf="!isTabulator">
 
@@ -330,10 +230,6 @@
                                 #sv="svDataTable" [svRowsOnPage]="25" svSortBy="nextPaymentDate" svSortOrder="asc">
                                 <thead>
                                     <tr>
-                                        <!-- <th>
-                                        <input type="checkbox" appHoverTooltip labelText="{{'SELECT' | translate}}"  name="selectAll" id="schpldg_select_all" (change)="selectRecord($event,'selectAll',null)"/>
-                                        <label for="schpldg_select_all" class="custom-checkbox"></label>
-                                    </th> -->
                                         <ng-container *ngFor="let objHeader of headerList; let i=index">
                                             <th resizable *ngIf="checkVisibility(objHeader.colName)">
                                                 <sv-default-sorter [by]="objHeader.sortName">{{objHeader.colName
@@ -346,8 +242,6 @@
                                 <tbody *ngIf="sv.data?.length > 0">
                                     <tr *ngFor="let item of sv.data; let i=index" tabindex={{i}}
                                         class="table-row table-row-{{i}}">
-                                        <!-- <td ><input #checkboxes  id="{{item.firstScheduleId}}"  type="checkbox" name="singlecheck" (change)="selectRecord($event,'singlecheck',item.firstScheduleId)" [checked]="checkselectRecord(item.firstScheduleId)"/>
-                                        <label for="{{item.firstScheduleId}}" class="custom-checkbox"></label><span class="tooltip-custom">{{'SELECT' | translate}}</span></td> -->
                                         <ng-container *ngFor="let objHeader of headerList;">
                                             <ng-container *ngIf="checkVisibility(objHeader.colName)">
                                                 <td *ngIf="objHeader.sortName=='scheduleNum'"
@@ -547,9 +441,6 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- <div class="col-12 bottom_value">
-                        <span class="info-box-number">{{commonMethodService.formatAmount(item.totalAmount)}}</span>
-                    </div> -->
                 </div>
             </div>
         </div>

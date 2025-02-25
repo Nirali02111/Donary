@@ -9,8 +9,8 @@ import { CommonAPIMethodService } from "../../../../services/common-api-method.s
 @Component({
   selector: "app-import-pledge",
   templateUrl: "./import-pledge.component.html",
-  styleUrls: ["./import-pledge.component.scss"],
   standalone: false,
+  styleUrls: ["./import-pledge.component.scss"],
 })
 export class ImportPledgeComponent implements OnInit {
   uploadedFileName: string = "Choose file";

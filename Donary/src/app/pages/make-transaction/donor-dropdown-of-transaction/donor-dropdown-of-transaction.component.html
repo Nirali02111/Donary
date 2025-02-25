@@ -8,11 +8,6 @@
             bindLabel="fullNameJewish" bindValue="accountId" [clearable]="true" [searchable]="false"
             formControlName="accountId" [searchFn]="customSearchFn"
             [loading]="isGlobal && commonMethodService.loaderSearch" (change)="donorChange.emit($event)">
-
-            <!-- <ng-template ng-header-tmp>
-            <ng-template [ngTemplateOutlet]="donorHeader"></ng-template>
-        </ng-template> -->
-
             <ng-template ng-label-tmp let-item="item">
                 <div class="d-flex justify-content-between align-items-center "   >
                     <span class="ng-name" >{{

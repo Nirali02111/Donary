@@ -10,8 +10,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-phone",
   templateUrl: "./donor-phone.component.html",
-  styleUrls: ["./donor-phone.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-phone.component.scss"],
 })
 export class DonorPhoneComponent implements OnInit {
   gridData: Array<any>;

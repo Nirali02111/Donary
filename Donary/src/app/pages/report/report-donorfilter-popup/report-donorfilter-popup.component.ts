@@ -7,8 +7,8 @@ declare var $: any;
 @Component({
   selector: "app-report-donorfilter-popup",
   templateUrl: "./report-donorfilter-popup.component.html",
-  styleUrls: ["./report-donorfilter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./report-donorfilter-popup.component.scss"],
 })
 export class ReportDonorfilterPopupComponent implements OnInit {
   @Output() emtOutputAdvancedFilterData: EventEmitter<any> = new EventEmitter();
@@ -144,6 +144,5 @@ export class ReportDonorfilterPopupComponent implements OnInit {
     this.father = "";
     this.fatherInLaw = "";
     this.status = "";
-    //this.isCommonDropDownloading = false;
   }
 }

@@ -11,8 +11,8 @@ import { PageRouteVariable } from "src/app/commons/page-route-variable";
 @Component({
   selector: "app-thank-you",
   templateUrl: "./thank-you.component.html",
-  styleUrls: ["./thank-you.component.scss"],
   standalone: false,
+  styleUrls: ["./thank-you.component.scss"],
 })
 export class ThankYouComponent implements OnInit {
   isloading: boolean = false;
@@ -152,17 +152,6 @@ export class ThankYouComponent implements OnInit {
   }
 
   getSubTotal() {
-    /*this.subTotalAmount =
-      this.monthlyTotalAmount +
-      this.yearlyTotalAmount +
-      this.deviceTotalAmount +
-      this.shippingAmount;
-      //this.taxTotalAmount;
-
-    this.subTotalAmount;
-    this.IsSelfPickup?this.subTotalAmount=this.subTotalAmount-this.shippingAmount:this.subTotalAmount;//added new
-    */
-
     const val =
       this.monthlyTotalAmount +
       this.yearlyTotalAmount +
@@ -183,7 +172,6 @@ export class ThankYouComponent implements OnInit {
 
   ContinueShopping() {
     if (this.needFullyRegister) {
-      // this.router.navigate([PageRouteVariable.DonorProductPlans_url, "register"], {queryParamsHandling: "merge"});
       location.href = `${PageRouteVariable.DonorProductPlans_url}/register`;
       return;
     }
@@ -196,8 +184,6 @@ export class ThankYouComponent implements OnInit {
   yMonth: any;
   yDay: any;
   changeDate() {
-    //var _now= new Date().toLocaleDateString();
-    //this.monthlyNextCharge=_now;
     if (this.monthlyTotalAmount > 0) {
       var now = new Date();
       var year = now.getFullYear();

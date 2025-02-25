@@ -28,8 +28,8 @@ declare var $: any;
 @Component({
   selector: "app-campaign-card-popup",
   templateUrl: "./campaign-card-popup.component.html",
-  styleUrls: ["./campaign-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./campaign-card-popup.component.scss"],
 })
 export class CampaignCardPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

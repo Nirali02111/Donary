@@ -6,8 +6,8 @@ declare var $: any;
 @Component({
   selector: "app-paypledge-filter-popup",
   templateUrl: "./paypledge-filter-popup.component.html",
-  styleUrls: ["./paypledge-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./paypledge-filter-popup.component.scss"],
 })
 export class PaypledgeFilterPopupComponent implements OnInit {
   @Output() emtFilterValues: EventEmitter<any> = new EventEmitter();

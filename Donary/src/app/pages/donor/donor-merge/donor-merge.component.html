@@ -36,7 +36,6 @@
 						<div class="pop_head">
 							<div class="left_title">
 								<h3>{{'PRIMARYCARD' | translate}}</h3>
-								<!-- <p style="cursor: pointer" (click)="openDonorCardPopup(item.accountId1)">{{ item.accountNum }}</p> -->
 								<p [ngStyle]="item.accountId1 ?{'cursor': 'pointer'} : null" (click)="openDonorCardPopup(item.accountId1,'accountId1')">{{ item.accountNum }}</p>
 							</div>
 

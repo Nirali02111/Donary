@@ -326,7 +326,6 @@ export class AliyasPledgeComponent implements OnInit {
     };
     modalRef.componentInstance.emtOutputDonorTransaction.subscribe(
       (response) => {
-        console.log(response);
         if (radioBtn == 1) {
           this.pledgeAliyaNames.forEach((element) => {
             if (
@@ -1068,25 +1067,6 @@ export class AliyasPledgeComponent implements OnInit {
           p2.close();
         }
       });
-    // this.modalOptions = {
-    //   centered: true,
-    //   size: "lg",
-    //   keyboard: true,
-    //   windowClass: "advance_search calender-modal aliyas-calender",
-    // };
-    // let tPostion = $("#dynamicsCalender").offset();
-    // setTimeout(() => {
-    //   // $(".advance_search .modal-dialog").css("left", +tPostion.left);
-    //   // $(".advance_search .modal-dialog").css("top", +tPostion.top + 40);
-    // }, 1);
-    // const modalRef = this.commonMethodService.openPopup(
-    //   AliyasReportdatePopupComponent,
-    //   this.modalOptions
-    // );
-    // modalRef.componentInstance.data = { isEngCal: false, formPage: "Aliyas-pledge" };
-    // modalRef.componentInstance.emtOutput.subscribe((res) => {
-    //   this.selectedDateRange = res;
-    // });
   }
 
   getDonorReport() {

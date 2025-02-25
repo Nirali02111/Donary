@@ -18,8 +18,8 @@ declare var $: any;
 @Component({
   selector: "app-bulk-custom-report",
   templateUrl: "./bulk-custom-report.component.html",
-  styleUrls: ["./bulk-custom-report.component.scss"],
   standalone: false,
+  styleUrls: ["./bulk-custom-report.component.scss"],
 })
 export class BulkCustomReportComponent implements OnInit {
   isloading: boolean = false;
@@ -75,10 +75,7 @@ export class BulkCustomReportComponent implements OnInit {
       this.getLocationsReport();
     }
   }
-  onDeSelectAll(event) {
-    //this.ActionControl.value[0].id=null;
-    //this.selectList=undefined;
-  }
+  onDeSelectAll(event) {}
   OnItemDeSelect(item: any) {
     if (this.selectList && this.selectList.length > 0) {
       this.isRunBtnDisable = false;

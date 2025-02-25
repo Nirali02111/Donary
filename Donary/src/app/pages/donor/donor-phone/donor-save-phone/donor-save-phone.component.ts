@@ -5,8 +5,8 @@ declare var $: any;
 @Component({
   selector: "app-donor-save-phone",
   templateUrl: "./donor-save-phone.component.html",
-  styleUrls: ["./donor-save-phone.component.scss"],
   standalone: false,
+  styleUrls: ["./donor-save-phone.component.scss"],
 })
 export class DonorSavePhoneComponent implements OnInit {
   isloading: boolean = true;

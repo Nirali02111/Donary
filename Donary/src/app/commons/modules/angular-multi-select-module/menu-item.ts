@@ -64,7 +64,7 @@ export class TemplateRenderer implements OnInit, OnDestroy {
   constructor(public viewContainer: ViewContainerRef) {}
   ngOnInit() {
     this.view = this.viewContainer.createEmbeddedView(this.data.template, {
-      "$implicit": this.data,
+      $implicit: this.data,
       item: this.item,
     });
   }
@@ -76,6 +76,7 @@ export class TemplateRenderer implements OnInit, OnDestroy {
 
 @Component({
   selector: "c-icon",
+  standalone: false,
   template: `<svg
       *ngIf="name == 'remove'"
       width="100%"
@@ -205,7 +206,6 @@ export class TemplateRenderer implements OnInit, OnDestroy {
       </g>
     </svg>`,
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
 })
 export class CIcon {
   @Input() name: any;

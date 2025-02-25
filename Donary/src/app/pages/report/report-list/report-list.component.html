@@ -6,16 +6,6 @@
       [ngClass]="[isSelectedSavedQuery ? 'query--selected' : '']"
     >
       <div class="search_opts">
-        <!-- <div class="input-group search_input">
-                <input type="text" name="advanceSearch" class="form-control float-right" placeholder="Search" (keyup)="search($event.target.value)">
-            </div> -->
-        <!-- Card Type Drop Down -->
-        <!-- <div class="query_name">
-                <input type="text" name="queryName" class="form-control float-right" placeholder="Query Name">
-               </div>
-               <div class="save_query">
-                <button type="button"  class="btn btn-default">Save Query </button>
-               </div>                       -->
 
         <div id="div_report_search" class="colm searcg_txt report_search">
           <!-- <input type="text" name="advanceSearch" class="form-control float-right" placeholder="Search"  (keyup)="search($event.target.value)">    -->
@@ -167,7 +157,6 @@
                     [svData]="gridFilterData"
                     #sv="svDataTable"
                   >
-                    <!-- class="table table-striped" -->
                     <tr
                       class="thead-tr first-name"
                       style="background-color: transparent"
@@ -186,9 +175,7 @@
                         *ngFor="let item of displayFields; let i = index"
                         class="col-{{ item.itemName }}"
                       >
-                        <!-- <th *ngFor="let item of displayFields; let i=index" [ngClass]="displayFields.length==1 ? 'column-one' : '' "> -->
                         <div class="title_header">
-                          <!-- <sv-default-sorter by="fullName"> -->
                           <span class="col-bckground"
                             >{{ fieldHeaderFullName(item) }}
                           </span>
@@ -204,15 +191,6 @@
                               (click)="Sort('asc')"
                             ></i>
                           </span>
-
-                          <!-- <i class="fa fa-angle-up" style="cursor: pointer;" (click)="Sort('desc')"></i>
-                                                     <i class="fa fa-angle-down" style="cursor: pointer;" (click)="Sort('asc')"></i> -->
-                          <!-- <i class="fa fa-edit" (click)="OpenDonorFilterPopup(false)" style="color:white;cursor: pointer;"></i>
-                                                    </div>
-                                                    <div class="grandtotal_space">
-                                                        &nbsp;
-                                                    </div> -->
-                          <!-- </sv-default-sorter> -->
                         </div>
                       </th>
                       <th>
@@ -241,7 +219,6 @@
                           </table>
                         </td>
                       </tr>
-                      <!--  <tr *ngFor="let item of sv.data; let i=index" [ngClass]="[oneline ? 'oneline_height' : 'twoline_height']" >    -->
                       <tr
                         *ngFor="let item of sv.data; let i = index"
                         tabindex="{{ i }}"
@@ -404,7 +381,6 @@
                     <!-- changes start -->
                     <tbody *ngIf="sv.data?.length == 0">
                       <tr>
-                        <!-- <td *ngFor="let item of displayFields; let i=index"></td> -->
                         <td
                           [attr.colspan]="displayFields.length"
                           class="no-data-found"
@@ -425,8 +401,6 @@
                     *ngIf="hasDonor"
                     (click)="OpenSearchFilter()"
                   ></div>
-                  <!-- <div class="save_button" *ngIf="hasDonor"></div>
-                                <div class="delete_button" *ngIf="hasDonor" (click)="DeleteDonorQuery()"></div> -->
                   <div
                     class="addon_button"
                     style="display: none"
@@ -477,20 +451,8 @@
             </div>
           </div>
 
-          <!-- <div class="compare_button" *ngIf="hasDonor" (click)="OpenComparePopup()"> Compare</div> -->
         </div>
       </div>
-
-      <!-- <div class="card__action">
-                    <div class="card__adon">
-                    Insert here new section on click
-                    </div>
-                    <div class="addon_button">
-                    <span class="icon icon_plus">
-
-                    </span>
-                    </div>
-                    </div> -->
     </div>
   </div>
   <div *ngIf="isloading" class="overlay generate-report-loader">

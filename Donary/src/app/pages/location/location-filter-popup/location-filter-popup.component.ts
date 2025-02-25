@@ -6,8 +6,8 @@ declare var $: any;
 @Component({
   selector: "app-location-filter-popup",
   templateUrl: "./location-filter-popup.component.html",
-  styleUrls: ["./location-filter-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./location-filter-popup.component.scss"],
 })
 export class LocationFilterPopupComponent implements OnInit {
   locationName: string;

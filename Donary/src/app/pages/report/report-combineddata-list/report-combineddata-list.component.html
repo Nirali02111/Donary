@@ -42,9 +42,6 @@
                 </button>
             </div>
             </div>
-            <!-- <div class="input-group help_icon">
-                <i class="far fa-question-circle fa-lg" style="margin-top: 11px !important;"></i>
-            </div> -->
             <div class="fields_opts">
                 <div class="dropdown field_nwdsgn tbl_field">
                     <button id="dLabel" type="button" class="btn btn-default dropdown-toggle"
@@ -72,7 +69,6 @@
                         </li>     
                         <hr class="seprator" />                          
                       <li class="dropdown"><a class="dropdown-item" (click)="downloadExcel()"><i class="fa fa-file-excel"></i> {{'EXCEL'|translate}}</a></li>
-                    <!-- <li class="dropdown"><a class="dropdown-item"><i class="fa fa-print" ></i> Print</a></li> -->
                     </ul>
                 </div>   
                 </div>         
@@ -129,33 +125,6 @@
                                            </sv-default-sorter>                                                                                              
                                        </th>  
                                    </ng-container>
-                                <!-- <tr>     
-                                    <th *ngIf="isCampaignDonorNameColVisible">
-                                        <sv-default-sorter by="fullNameJewish">Donor Name
-                                        </sv-default-sorter>
-                                    </th>                                   
-                                    <th *ngIf="isCampaignNameColVisible">
-                                        <sv-default-sorter by="campaignName">Campaign
-                                        </sv-default-sorter>
-                                    </th>
-                                    <th *ngIf="isCampaignTotalAmountColVisible">
-                                        <sv-default-sorter by="totalAmount">Total Amount
-                                        </sv-default-sorter>
-                                    </th>                                                                          
-                                    <th *ngIf="isCampaignPaidAmountColVisible">
-                                        <sv-default-sorter by="paidAmount">Paid 
-                                        </sv-default-sorter>
-                                    </th>
-                                    <th *ngIf="isCampaignPendingAmountColVisible">
-                                        <sv-default-sorter by="pendingAmount">Pending
-                                        </sv-default-sorter>
-                                    </th>
-                                  
-                                    <th *ngIf="isCampaignBalanceColVisible">
-                                        <sv-default-sorter by="balance">Balance
-                                        </sv-default-sorter>
-                                    </th>                                        
-                                </tr> -->
                             </thead>
                             <tbody *ngIf="sv.data?.length > 0">
                                 <tr *ngFor="let item of sv.data; let i=index">    

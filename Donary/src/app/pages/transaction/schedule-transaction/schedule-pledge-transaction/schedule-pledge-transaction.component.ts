@@ -61,9 +61,9 @@ declare var $: any;
   selector: "app-schedule-pledge-transaction",
   templateUrl: "./schedule-pledge-transaction.component.html",
   styleUrls: ["./schedule-pledge-transaction.component.scss"],
+  standalone: false,
   providers: [DonaryDateFormatPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class SchedulePledgeTransactionComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

@@ -30,8 +30,8 @@ declare var $: any;
 @Component({
   selector: "app-paymentlist-card-popup",
   templateUrl: "./paymentlist-card-popup.component.html",
-  styleUrls: ["./paymentlist-card-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./paymentlist-card-popup.component.scss"],
 })
 export class PaymentlistCardPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })

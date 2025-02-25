@@ -19,10 +19,7 @@
 
             <div class="row">
                 <div class="col-12" >
-                  <!--  <select class="selct_box"  formControlName="action">
-                        <option selected>Choose...</option>
-                        <option *ngFor="let state of stateList" [value]="state.value">{{state.label}}</option>
-                    </select> -->
+                
                     <angular2-multiselect  id="ddllist"
                     [settings]="commonMethodService.setDropDownSettings('',2,false,true,false)"
                     [data]="customRepostList"
@@ -36,14 +33,7 @@
             </div>
         </div>
 
-        <!-- <div class="modal-custom-footer">
-            <ul class="custom-report-buttons">
-                <li><button class="btn btn-default">Print</button></li>
-                <li><button class="btn btn-primary">Text</button></li>
-                <li><button class="btn btn-primary">Mail</button></li>
-                <li><button class="btn btn-primary">Email</button></li>
-            </ul>
-        </div> -->
+      
         <div class="btn-run">
             <button [disabled]="isRunBtnDisable" class="btn btn-primary">{{'RUN' | translate}}</button>
         </div>

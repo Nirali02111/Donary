@@ -31,8 +31,8 @@ import { HebrewEngishCalendarService } from "src/app/services/hebrew-engish-cale
 @Component({
   selector: "app-export-statement-popup",
   templateUrl: "./export-statement-popup.component.html",
-  styleUrls: ["./export-statement-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./export-statement-popup.component.scss"],
 })
 export class ExportStatementPopupComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: false })
@@ -277,7 +277,6 @@ export class ExportStatementPopupComponent implements OnInit {
       keyboard: true,
       windowClass: "drag_popup send_emailreceipt",
     };
-    console.log(this.emailList);
     const modalRef = this.commonMethodService.openPopup(
       SendEmailreceiptPopupComponent,
       this.modalOptions

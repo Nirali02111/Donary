@@ -23,8 +23,8 @@ declare var $: any;
 @Component({
   selector: "app-pledge-payment-pay-popup",
   templateUrl: "./pledge-payment-pay-popup.component.html",
-  styleUrls: ["./pledge-payment-pay-popup.component.scss"],
   standalone: false,
+  styleUrls: ["./pledge-payment-pay-popup.component.scss"],
 })
 export class PledgePaymentPayPopupComponent implements OnInit {
   @Input() lstSelectedPledgeDetailsObj: Array<PledgePaymentModel>;
@@ -308,11 +308,9 @@ export class PledgePaymentPayPopupComponent implements OnInit {
                       confirmButton: "btn_ok",
                     },
                   });
-                  // this.notificationService.showError(element.message, "Error !!");
                 }
               },
               (error: any) => {
-                //this.buttonDisabled=false;
                 this.isloading = false;
                 this.payButtonClickLoading = false;
                 console.log(error);
@@ -327,7 +325,6 @@ export class PledgePaymentPayPopupComponent implements OnInit {
                     confirmButton: "btn_ok",
                   },
                 });
-                // this.notificationService.showError(error.error, "Error while saving data !!");
               }
             );
         }
@@ -341,7 +338,6 @@ export class PledgePaymentPayPopupComponent implements OnInit {
         this.amtPerPayment = this.totalPaidAmount / Number(this.scheduleCount);
         this.isHighCount = false;
       } else {
-        console.log(parseInt(this.scheduleCount));
         this.isHighCount = true;
       }
     } else {
@@ -509,7 +505,6 @@ export class PledgePaymentPayPopupComponent implements OnInit {
   }
 
   ValidExpiryDate(event) {
-    console.log(event.target.value.length);
     if (event.target.value.length == 5) {
       this.isInValid = false;
       var currentMonth = new Date().getMonth() + 1;
@@ -531,19 +526,10 @@ export class PledgePaymentPayPopupComponent implements OnInit {
       }
     }
     if (event.target.value.length == 2) {
-      // var spt=event.target.value;
-      // var resSpt=spt.split('/');
-      // var st=resSpt[0];
-      // var sptLast=resSpt[1].split('');
-      // var actulReult=st+'/'+ sptLast[2]+''+sptLast[3];
-      // this.expDate=actulReult;
-      // $('#expiryDate').val(actulReult);
-      // //this.maskExpDateValue="00/0000";
     }
   }
   isCvvHideShow = true;
   onCvvHideShow(event) {
-    //var str=event.target.value;
     if (this.creditCardNumber.length == 4) {
       var strFirstFour = this.creditCardNumber.substring(0, 4);
       if (strFirstFour == "8628") {

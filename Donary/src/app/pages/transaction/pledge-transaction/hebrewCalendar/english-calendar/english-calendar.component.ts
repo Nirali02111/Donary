@@ -27,8 +27,8 @@ interface DateObject {
 @Component({
   selector: "app-english-calendar",
   templateUrl: "./english-calendar.component.html",
-  styleUrls: ["./english-calendar.component.scss"],
   standalone: false,
+  styleUrls: ["./english-calendar.component.scss"],
 })
 export class EnglishCalendarComponent implements OnInit {
   @ViewChild("dp", { static: true }) datepicker: NgbDatepicker;

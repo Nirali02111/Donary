@@ -26,22 +26,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="modal-custom-footer">
-            <ul class="custom-report-buttons">
-                <li><button class="btn btn-default">Print</button></li>
-                <li><button class="btn btn-primary">Text</button></li>
-                <li><button class="btn btn-primary">Mail</button></li>
-                <li><button class="btn btn-primary">Email</button></li>
-            </ul>
-        </div> -->
         <div class="btn-run">
             <button class="btn btn-primary" [disabled]="isRunBtnDisable">{{'RUN'  |translate}}</button>
         </div>
 
     </form>
 
-    <!-- {{ customReportActionForm.value | json }} -->
     <div *ngIf="isloading" class="card-overlay">
         <i class="fas fa-2x fa-sync-alt fa-spin"></i>
     </div>
